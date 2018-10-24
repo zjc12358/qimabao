@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+        "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+    <defs>
+        <style type="text/css">.cls-166 {
+            fill: none;
+            stroke: #c1c1c1;
+            stroke-width: 5px;
+            }
+
+            .cls-166, .cls-167 {
+            fill-rule: evenodd;
+            }
+
+            .cls-167 {
+            fill: #c1c1c1;
+            }
+
+        </style>
+    </defs>
+    <path class="cls-166" d="M29,33H139s12,0,12,12V186s-0.667,13-14,13H28s-10-3.333-10-12V45S15.667,36.333,29,33Z"/>
+    <path class="cls-167"
+          d="M49,24h99s10,1,10,13V166h13s12-.333,12-14V11S182,1,171,1H61S49,0.667,49,12V24ZM63,75L82,96l19-22s11.2-.2,8,9L90,103h24s4,0.2,4,7c0,0-.2,4-6,4H87v12h27s4,0.6,4,6c0,0-.4,4-6,4H87v17s1,3.8-5,4-6-4-6-4V136H54s-4,.2-4-6c0,0,.4-4,7-4H76V114H55s-5,0-5-6c0,0-.8-5,7-5H73L54,83s-3-4.4,1-7C55,76,58.6,72.4,63,75Z"/>
+</svg>
