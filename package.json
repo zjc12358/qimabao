@@ -13,7 +13,6 @@
     "dependencies": {
         "@types/node": "^10.12.0",
         "antd-mobile": "^2.2.3",
-
         "bizcharts": "^3.2.1-beta.2",
         "bizcharts-plugin-slider": "^2.0.4",
         "http-proxy-middleware": "^0.18.0",
@@ -32,12 +31,10 @@
         "whatwg-fetch": "^2.0.4",
         "react-svg": "^5.0.21",
         "react-router-dom": "^4.3.1",
-
         "react": "^16.4.1",
         "react-dom": "^16.4.1",
         "react-redux": "^5.0.7",
         "redux": "^4.0.0"
-
     },
     "devDependencies": {
         "@svgr/webpack": "^2.2.1",
