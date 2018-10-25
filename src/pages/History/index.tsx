@@ -25,6 +25,7 @@ class History extends React.Component<Props, State> {
     return (
       <div>
         Hello History
+        dsxafjdkslafjdsklafdsfdsa
       </div>
     )
   }
