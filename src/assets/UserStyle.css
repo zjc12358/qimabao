@@ -1,0 +1,15 @@
+
+
+/** 可以自适配屏幕宽度的分割线 **/
+.Segment_line{
+  height: 1px;
+  border-top: 1px solid #eee;
+  text-align: center;
+  margin-left:11px;
+  margin-right: 11px;
+}
+.Segment_line2{
+  height: 1px;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
