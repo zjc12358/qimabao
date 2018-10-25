@@ -22,7 +22,7 @@ class Statusbar extends React.Component<Props, State> {
   public render () {
     return (
       <div>
-        Hello Home
+        Statusbar
       </div>
     )
   }

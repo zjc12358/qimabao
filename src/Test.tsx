@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import { addPageIndex, deletePageIndex } from '@store/actions/global-data'
+import history from 'history/createHashHistory'
 
 export interface Props {
   globalData: GlobalData
@@ -30,7 +31,7 @@ class Test extends React.Component<Props, State> {
         <span>测试Redux</span>
         <Button onClick={() => this.props.deletePageIndex(this.props.globalData.pageIndex)}>上一页</Button>
         <Button onClick={() => this.props.addPageIndex(this.props.globalData.pageIndex)}>下一页</Button>
-        <span>{this.props.globalData.pageIndex}</span>
+        <div style={{ width: '100%', height: 200,backgroundColor: 'white' }}>{this.props.globalData.pageIndex}{() => history().goBack()}</div>
       </div>
     )
   }

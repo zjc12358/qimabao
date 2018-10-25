@@ -1,16 +1,19 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, Carousel } from 'antd-mobile'
+import { TabBar, Carousel, Toast } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
+import { HomeCategoryItemBean } from '@datasources/HomeCategoryItemBean'
 import Statusbar from '@components/Statusbar'
+import axios from 'axios'
 
 export interface Props {
 
 }
 
 interface State {
-  imgData: any
+  imgData: any,
+  homeCategoryItemData: Array<HomeCategoryItemBean>
 }
 
 class Home extends React.Component<Props, State> {
@@ -18,8 +21,25 @@ class Home extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      imgData: []
+      imgData: [],
+      homeCategoryItemData: []
     }
+  }
+
+  componentWillMount () {
+    let categoryList: Array<HomeCategoryItemBean> = []
+    for (let i = 0; i < 10; i++) {
+      let categoryItem: HomeCategoryItemBean = {
+        category_id: i,
+        category_name: '类别' + i,
+        category_picture: '' + i
+      }
+      categoryList.push(categoryItem)
+      this.setState({
+        homeCategoryItemData: categoryList
+      })
+    }
+    // this.getHomeCategory()
   }
 
   componentDidMount () {
@@ -37,23 +57,31 @@ class Home extends React.Component<Props, State> {
   renderHead = () => {
     return (
       <div style={{
+        position: 'fixed',
+        top: '0',
+        width: '100%',
+        height: '40px',
+        background: '#0084E7',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        height: 40,
-        width: '100%',
-        backgroundColor: '#0084e7',
+        zIndex: 100,
         paddingLeft: 10,
         paddingRight: 10
       }}>
-        <div style={{
+        {/*<div style={{*/}
+        {/*flex: 1*/}
+        {/*}} onClick={this.locationOnclick}>*/}
+        {/*定位图标*/}
+        {/*</div>*/}
+        <Link style={{
           flex: 1
-        }} onClick={this.locationOnclick}>
-          定位图标
-        </div>
+        }} to='/test'>
+          测试
+        </Link>
         <div style={{
-          flex: 6,
+          flex: 5,
           borderStyle: 'solid',
           borderWidth: 0,
           borderRadius: 25,
@@ -65,7 +93,7 @@ class Home extends React.Component<Props, State> {
         <div style={{
           flex: 1
         }} onClick={this.scanOnclick}>
-          扫一扫图标
+          扫一扫
         </div>
         <div style={{
           flex: 1
@@ -86,14 +114,7 @@ class Home extends React.Component<Props, State> {
         infinite={true}
         style={{
           height: 140,
-          width: '100%',
-          marginTop: 10,
-          borderStyle: 'solid',
-          borderWidth: 0,
-          borderRadius: 10,
-          marginLeft: 10,
-          marginRight: 10,
-          marginBottom: 10
+          marginTop: 40
         }}
       >
         {this.state.imgData.map(val => (
@@ -101,14 +122,17 @@ class Home extends React.Component<Props, State> {
             key={val}
             href='http://www.alipay.com'
             style={{
-              display: 'inline-block', width: '100%', height: 140
+              display: 'inline-block', height: 140
             }}
           >
             <img
               src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
               alt=''
               style={{
-                width: '100%', verticalAlign: 'top'
+                borderStyle: 'solid',
+                borderWidth: 0,
+                borderRadius: 10,
+                verticalAlign: 'top'
               }}
               onLoad={() => {
                 // fire window resize event to change height
@@ -121,15 +145,26 @@ class Home extends React.Component<Props, State> {
     )
   }
 
+  /**
+   * 分类选择区
+   */
   renderIconList = () => {
     return (
-      <div>
-
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        width: '100%',
+        flexWrap: 'wrap',
+        marginTop: 10
+      }}>
+        {this.state.homeCategoryItemData.map((item) => this.renderIconListItem(item))}
       </div>
     )
   }
 
-  renderIconListItem = () => {
+  renderIconListItem = (item) => {
     return (
       <div style={{
         display: 'flex',
@@ -140,10 +175,52 @@ class Home extends React.Component<Props, State> {
         height: 0,
         width: '33%',
         paddingBottom: '34%'
-      }}>
-
+      }} onClick={() => this.iconItemOnclick()}>
+        <div style={{
+          position: 'relative',
+          bottom: '83%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingTop: 10
+        }}>
+          <div>
+            {item.category_picture}
+          </div>
+          <div>
+            {item.category_name}
+          </div>
+        </div>
       </div>
     )
+  }
+
+  getHomeCategory = () => {
+    const url = 'CanteenProcurementManager/homepage/productCategory/firstPageList'
+    axios.get(url)
+      .then(data => {
+        console.log('--- data =', data)
+
+        if (data.data.status === '0') {
+          this.setState({
+            homeCategoryItemData: data.data.data
+          })
+        } else {
+          if (data.data.status === '-100') {
+            let redirectUrl = window.location.hash.includes('redirectUrl')
+              ? `/${window.location.hash.split('=')[1]}`
+              : '/'
+            window.location.hash = redirectUrl === '/userCenter' ? '/?tabBar=userCenter' : redirectUrl
+            Toast.info('登录失效,请先登录', 1)
+          } else {
+            Toast.info(data.data.msg, 1)
+          }
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 1)
+      })
   }
 
   /**
@@ -178,18 +255,23 @@ class Home extends React.Component<Props, State> {
     console.log('打开消息')
   }
 
+  /**
+   * 点击类别
+   */
+  iconItemOnclick = () => {
+    // TODO 2018/10/25 点击单个类别
+    console.log('打开商品列表')
+  }
+
   public render () {
     return (
       <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        width: '100%'
+        height: '100%'
       }}>
         <Statusbar />
         {this.renderHead()}
         {this.renderCarousel()}
+        {this.renderIconList()}
       </div>
     )
   }
