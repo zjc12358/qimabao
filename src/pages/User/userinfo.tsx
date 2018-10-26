@@ -78,7 +78,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <span style={{ marginTop: 8 }}>手机号、密码</span>
+            <span style={{ marginTop: 5 }}>手机号、密码</span>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
