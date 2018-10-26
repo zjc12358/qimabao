@@ -9,18 +9,18 @@ export interface Props {
   title: String,
   showLeftIcon: Boolean,
   showRightIcon: Boolean,
-  backgroundColor: String,
+  backgroundColor: string,
   rightIconOnClick: any,
-  rightIconContent: String
+  rightIconContent: string
 }
 
 interface State {
   title: String,
   showLeftIcon: Boolean,
   showRightIcon: Boolean,
-  backgroundColor: String,
+  backgroundColor: string,
   rightIconOnClick: any,
-  rightIconContent: String
+  rightIconContent: string
 }
 
 class Head extends React.Component<Props, State> {
@@ -69,7 +69,7 @@ class Head extends React.Component<Props, State> {
         alignItems: 'center',
         paddingLeft: 10,
         paddingRight: 10,
-        backgroundColor: '#0084e7',
+        backgroundColor: this.state.backgroundColor,
         zIndex: 100
       }}>
         <div style={{ flex: 1 }} onClick={() => this.leftIconOnClick()}>

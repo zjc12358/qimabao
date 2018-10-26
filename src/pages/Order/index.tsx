@@ -1,25 +1,32 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, ActionSheet } from 'antd-mobile'
+import { TabBar, ActionSheet, ImagePicker } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import Statusbar from '@components/Statusbar'
 import Head from '@components/Head'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo } from '@store/actions/global-data'
+import { ImagePickerBean } from '@datasources/ImagePickerBean'
 
 export interface Props {
 }
 
 interface State {
-
+  pictures: Array<ImagePickerBean>
+  multiple: boolean,
+  bigPicture: string
 }
 
 class Order extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      pictures: [],
+      multiple: false,
+      bigPicture: ''
+    }
   }
 
   /**
@@ -34,30 +41,54 @@ class Order extends React.Component<Props, State> {
         alignItems: 'center',
         width: '100%'
       }}>
-        <span style={{ marginTop: 60, fontWeight: 'bold' }}>拍摄/上传您的菜谱或采购清单</span>
-        <div style={{
-          backgroundColor: 'white',
-          marginTop: 20,
-          marginBottom: 20,
-          width: '80%',
-          height: 150,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }} onClick={this.uploadPicturesOnClick}>
-          <span>照相机图片</span>
-          <span style={{ fontSize: 15, color: '#0084e7' }}>点击拍摄/上传您的菜谱</span>
-        </div>
+        <span style={{ marginTop: 60, fontWeight: 'bold', marginBottom: 20 }}>拍摄/上传您的菜谱或采购清单</span>
+        {/*<div style={{*/}
+        {/*backgroundColor: 'white',*/}
+        {/*marginTop: 20,*/}
+        {/*marginBottom: 20,*/}
+        {/*width: '80%',*/}
+        {/*height: 150,*/}
+        {/*display: 'flex',*/}
+        {/*flexDirection: 'column',*/}
+        {/*justifyContent: 'center',*/}
+        {/*alignItems: 'center'*/}
+        {/*}} onClick={this.uploadPicturesOnClick}>*/}
+        {/*<span>照相机图片</span>*/}
+        {/*<span style={{ fontSize: 15, color: '#0084e7' }}>点击拍摄/上传您的菜谱</span>*/}
+        {/*</div>*/}
       </div>
     )
   }
 
+  /**
+   * 大图显示区
+   */
+  renderShowBigPicture = () => {
+    return (
+      <img style={{
+        height: 150,
+        width: '80%'
+      }} src={this.state.bigPicture}/>
+    )
+  }
+
+  /**
+   * 图片缩略图列表
+   */
   renderPicturesList = () => {
     return (
-      <div>
-        1
-      </div>
+      <ImagePicker
+        style={{
+          marginTop: 20,
+          width: '80%'
+        }}
+        files={this.state.pictures}
+        onChange={this.onChange}
+        onImageClick={(index, fs) => this.pictureSelectOnClick(index)}
+        selectable={this.state.pictures.length < 7}
+        length={4}
+        multiple={this.state.multiple}
+      />
     )
   }
 
@@ -79,17 +110,18 @@ class Order extends React.Component<Props, State> {
       message: '',
       title: ' ',
       maskClosable: true
-    },
-      (buttonIndex) => {
-        switch (buttonIndex) {
-          case 0:
-            break
-          case 1:
-            break
-          default:
-            break
-        }
-      })
+    }, (buttonIndex) => {
+      switch (buttonIndex) {
+        case 0:
+          this.photographOnClick()
+          break
+        case 1:
+          this.albumOnClick()
+          break
+        default:
+          break
+      }
+    })
   }
 
   /**
@@ -106,6 +138,31 @@ class Order extends React.Component<Props, State> {
     console.log('从相册中选择')
   }
 
+  onChange = (pictures: Array<ImagePickerBean>, type, index) => {
+    console.log(pictures, type, index)
+    this.setState({
+      pictures
+    })
+    if (pictures != null && pictures.length > 0) {
+      this.setState({
+        bigPicture: pictures[pictures.length - 1].url
+      })
+    }
+  }
+
+  onSegChange = (e) => {
+    const index = e.nativeEvent.selectedSegmentIndex
+    this.setState({
+      multiple: index === 1
+    })
+  }
+
+  pictureSelectOnClick = (index) => {
+    this.setState({
+      bigPicture: this.state.pictures[index].url
+    })
+  }
+
   public render () {
     return (
       <div style={{
@@ -119,6 +176,8 @@ class Order extends React.Component<Props, State> {
         <Head showRightIcon={true} backgroundColor={'#0084e7'} title={'菜谱'} showLeftIcon={false}
               rightIconOnClick={this.okOnClick.bind(this)} rightIconContent={'确定'}/>
         {this.renderContent()}
+        {(this.state.pictures != null && this.state.pictures.length > 0) && this.renderShowBigPicture()}
+        {this.renderPicturesList()}
       </div>
     )
   }
