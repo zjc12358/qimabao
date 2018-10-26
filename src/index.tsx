@@ -8,9 +8,10 @@ const { store } = getStore()
 
 import Test from './Test'
 import Home from './pages'
-import setting from './pages/User/setting'
-import index1 from './pages/User/index'
-import NavBar from './pages/index'
+import setting from './pages/User/setting' /* 我的页面设置 */
+import index1 from './pages/User/index' /* 我的页面 */
+import NavBar from './pages/index'  /* 底部导航栏页面 */
+import UserInfoEdit from './pages/User/userinfo' /* 用户信息修改页面 */
 
 ReactDOM.render(
   <Provider store={store}>
@@ -21,6 +22,7 @@ ReactDOM.render(
         <Route path='/setting' component={setting} />
         <Route path='/index1' component={index1} />
         <Route path='/NavBar' component={NavBar} />
+        <Route path='/UserInfoEdit' component={UserInfoEdit} />
       </Switch>
     </HashRouter>
   </Provider>,
