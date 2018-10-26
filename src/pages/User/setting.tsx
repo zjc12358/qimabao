@@ -3,11 +3,16 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import { Icon } from 'antd-mobile'
-import WhiteSpace from 'antd-mobile/lib/white-space'
 import Button from 'antd-mobile/lib/button'
+import { PageTab } from '@datasources/PageTab'
+import { UserInfo } from '@datasources/UserInfo'
+import { upateUserInfo, updatePageTab } from '@store/actions/global-data'
 
 export interface Props {
-
+  pageTab: PageTab
+  userInfo: UserInfo
+  updatePageTab: (pageTab: PageTab) => void
+  upateUserInfo: (userInfo: UserInfo) => void
 }
 
 interface State {
@@ -34,13 +39,16 @@ class User extends React.Component<Props, State> {
         marginTop: 8
       }}
       >
-        <Link to='/index1'><Icon type='left' color='#000000' size='lg'/></Link>
+        <Link to='/NavBar'><Icon type='left' color='#000000' size='lg' onClick={this.backOnclick} /></Link>
         <div style={{
           fontSize: 20,
           paddingTop: 6
         }}>设置</div>
       </div>
     )
+  }
+  backOnclick = () => {
+    this.props.updatePageTab({ pageName: 'UserPageTabBar' })
   }
 
   public renderContent = () => {
@@ -147,12 +155,14 @@ class User extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-
+    pageTab: state.globalData.pageTab,
+    userInfo: state.globalData.userInfo
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-
+  updatePageTab,
+  upateUserInfo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

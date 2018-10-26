@@ -10,6 +10,7 @@ import Test from './Test'
 import Home from './pages'
 import setting from './pages/User/setting'
 import index1 from './pages/User/index'
+import NavBar from './pages/index'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -19,6 +20,7 @@ ReactDOM.render(
         <Route path='/test' component={Test} />
         <Route path='/setting' component={setting} />
         <Route path='/index1' component={index1} />
+        <Route path='/NavBar' component={NavBar} />
       </Switch>
     </HashRouter>
   </Provider>,

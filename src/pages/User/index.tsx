@@ -2,17 +2,21 @@ import * as React from 'react'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { NavBar,Icon } from 'antd-mobile'
-import { GlobalData } from '@store/reducers/globalDataReducer'
+import { upateUserInfo,updatePageTab } from '@store/actions/global-data'
 import '../../assets/UserStyle.css'
-
-import setting from './setting'
+import { PageTab } from '@datasources/PageTab'
+import { UserInfo } from '@datasources/UserInfo'
 
 export interface Props {
-
+  pageTab: PageTab
+  userInfo: UserInfo
+  updatePageTab: (pageName: string) => void
+  upateUserInfo: (userInfo: UserInfo) => void
 }
 interface State {
 
 }
+
 class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
@@ -41,13 +45,16 @@ class User extends React.Component<Props, State> {
           width: '96%',
           padding: '8px'
         }}>
-          <Link to='/setting'><Icon type='check' color='#ffffff' size='lg'/></Link>
+          <Link to='/setting'><Icon type='check' color='#ffffff' size='lg' onClick={this.settingOnclick} /></Link>
           <Icon type='check' color='#ffffff' size='lg'/>
         </div>
       </div>
     )
   }
 
+  settingOnclick = () => {
+    this.props.upateUserInfo({ userName: 'dd',isLogin: true })
+  }
   public renderContent = () => {
     return (
       <div>
@@ -256,8 +263,8 @@ class User extends React.Component<Props, State> {
           <Icon type='right'></Icon>
         </div>
         <div style={{
-          height: 15,
-          backgroundColor: '#f6f6f6'
+          height: 8,
+          backgroundColor: '#efeff5'
         }}></div>
         <div style={{
           display: 'flex',
@@ -279,8 +286,8 @@ class User extends React.Component<Props, State> {
     return (
       <div>
         <div style={{
-          height: 15,
-          backgroundColor: '#f6f6f6'
+          height: 8,
+          backgroundColor: '#efeff5'
         }}></div>
         <div style={{
           display: 'flex',
@@ -353,12 +360,14 @@ class User extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-
+    pageTab: state.globalData.pageTab,
+    userInfo: state.globalData.userInfo
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-
+  updatePageTab,
+  upateUserInfo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
