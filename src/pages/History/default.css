@@ -15,3 +15,9 @@
   min-height: 30px;
   background-color: transparent;
 }
+.food .am-stepper.showNumber{
+  width: 120px;
+}
+.food .am-stepper-handler{
+  border-radius: 0;
+}
