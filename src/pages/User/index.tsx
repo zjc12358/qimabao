@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { NavBar,Icon } from 'antd-mobile'
-import { upateUserInfo,updatePageTab } from '@store/actions/global-data'
+import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
 import '../../assets/UserStyle.css'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
@@ -11,7 +11,7 @@ export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
   updatePageTab: (pageName: string) => void
-  upateUserInfo: (userInfo: UserInfo) => void
+  updateUserInfo: (userInfo: UserInfo) => void
 }
 interface State {
 
@@ -53,7 +53,7 @@ class User extends React.Component<Props, State> {
   }
 
   settingOnclick = () => {
-    this.props.upateUserInfo({ userName: 'dd',isLogin: true })
+    this.props.updateUserInfo({ userName: 'dd',isLogin: true })
   }
   public renderContent = () => {
     return (
@@ -367,7 +367,7 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
-  upateUserInfo
+  updateUserInfo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

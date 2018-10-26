@@ -14,7 +14,6 @@ export interface GlobalDataAction extends Action {
   userInfo: UserInfo
   pageIndex: number
   pageTab: PageTab
-  userInfo: UserInfo
   error?: any
   fetchFlag?: boolean // 传递是否loading状态
 }

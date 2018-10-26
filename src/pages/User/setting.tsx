@@ -6,13 +6,13 @@ import { Icon } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
-import { upateUserInfo, updatePageTab } from '@store/actions/global-data'
+import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
 
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
   updatePageTab: (pageTab: PageTab) => void
-  upateUserInfo: (userInfo: UserInfo) => void
+  updateUserInfo: (userInfo: UserInfo) => void
 }
 
 interface State {
@@ -162,7 +162,7 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
-  upateUserInfo
+  updateUserInfo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
