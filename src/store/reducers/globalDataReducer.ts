@@ -9,7 +9,10 @@ export interface GlobalData {
 }
 
 const initialState: GlobalData = {
-  userInfo: {} as UserInfo,
+  userInfo: {
+    userName: '用户0',
+    isLogin: true
+  } as UserInfo,
   isFetching: false,
   pageIndex: 0,
   errMsg: ''
@@ -20,7 +23,7 @@ export default (state = initialState, action: GlobalDataAction) => {
     case Type.UPDATE_USERINFO:
       return {
         ...state,
-        userInfo: action.response
+        userInfo: action.userInfo
       }
     case Type.ADD_PAGEINDEX:
       console.log('xxx', action.pageIndex)
