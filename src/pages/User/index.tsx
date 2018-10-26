@@ -144,15 +144,29 @@ class User extends React.Component<Props, State> {
             </div>
           </div>
         </div>
+        <Link to='/UserInfoEdit'>
         <div style={{
           top: 50,
           left: 40,
           position: 'absolute'
         }}>
-          <div style={{ borderRadius: '50%',backgroundColor: '#35de19',width: 85, height: 85 }}></div>
+          <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden' }} onClick={this.userInfoOnclick}><img style={{
+            width: 'auto',
+            height: 'auto',
+            maxWidth: '100%',
+            maxHeight: '100%'
+          }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' /></div>
         </div>
+        </Link>
       </div>
     )
+  }
+  /**
+   * 点击头像
+   */
+  userInfoOnclick = () => {
+    // TODO 2018/10/26 点击头像
+    console.log('点击头像')
   }
 
   public renderBody = () => {
