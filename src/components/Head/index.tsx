@@ -9,14 +9,18 @@ export interface Props {
   title: String,
   showLeftIcon: Boolean,
   showRightIcon: Boolean,
-  backgroundColor: String
+  backgroundColor: String,
+  rightIconOnClick: any,
+  rightIconContent: String
 }
 
 interface State {
   title: String,
   showLeftIcon: Boolean,
   showRightIcon: Boolean,
-  backgroundColor: String
+  backgroundColor: String,
+  rightIconOnClick: any,
+  rightIconContent: String
 }
 
 class Head extends React.Component<Props, State> {
@@ -27,7 +31,9 @@ class Head extends React.Component<Props, State> {
       title: this.props.title,
       showLeftIcon: this.props.showLeftIcon,
       showRightIcon: this.props.showRightIcon,
-      backgroundColor: this.props.backgroundColor
+      backgroundColor: this.props.backgroundColor,
+      rightIconOnClick: this.props.rightIconOnClick,
+      rightIconContent: this.props.rightIconContent
     }
   }
 
@@ -46,8 +52,7 @@ class Head extends React.Component<Props, State> {
    */
   rightIconOnClick = () => {
     if (this.state.showRightIcon) {
-      // TODO 2018/10/26 右边菜单点击事件
-      console.log('点击菜单')
+      this.props.rightIconOnClick()
     }
   }
 
@@ -82,7 +87,7 @@ class Head extends React.Component<Props, State> {
           {this.state.title}
         </div>
         <div style={{ flex: 1 }} onClick={() => this.rightIconOnClick()}>
-          {this.state.showRightIcon && <div>菜单按钮</div>}
+          {this.state.showRightIcon && <div>{this.state.rightIconContent}</div>}
         </div>
       </div>
     )
