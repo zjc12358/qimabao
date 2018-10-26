@@ -12,7 +12,7 @@ export interface Props {
 }
 
 interface State {
-  imgData: any,
+  imgData: any
   homeCategoryItemData: Array<HomeCategoryItemBean>
 }
 
@@ -109,39 +109,44 @@ class Home extends React.Component<Props, State> {
    */
   renderCarousel = () => {
     return (
-      <Carousel
-        autoplay={true}
-        infinite={true}
-        style={{
-          height: 140,
-          marginTop: 40
-        }}
-      >
-        {this.state.imgData.map(val => (
-          <a
-            key={val}
-            href='http://www.alipay.com'
-            style={{
-              display: 'inline-block', height: 140
-            }}
-          >
-            <img
-              src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
-              alt=''
+      <div style={{
+        margin: 10,
+        borderStyle: 'solid',
+        borderWidth: 0,
+        borderRadius: 10,
+        marginTop: 70
+      }}>
+        <Carousel
+          autoplay={true}
+          infinite={true}
+          style={{
+            height: 140
+          }}
+        >
+          {this.state.imgData.map(val => (
+            <a
+              key={val}
+              href='http://www.alipay.com'
               style={{
-                borderStyle: 'solid',
-                borderWidth: 0,
-                borderRadius: 10,
-                verticalAlign: 'top'
+                display: 'inline-block', height: 140
               }}
-              onLoad={() => {
-                // fire window resize event to change height
-                window.dispatchEvent(new Event('resize'))
-              }}
-            />
-          </a>
-        ))}
-      </Carousel>
+            >
+              <img
+                src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
+                alt=''
+                style={{
+                  verticalAlign: 'top'
+                }}
+                onLoad={() => {
+                  // fire window resize event to change height
+                  window.dispatchEvent(new Event('resize'))
+                }}
+              />
+            </a>
+          ))}
+        </Carousel>
+      </div>
+
     )
   }
 
@@ -268,7 +273,7 @@ class Home extends React.Component<Props, State> {
       <div style={{
         height: '100%'
       }}>
-        <Statusbar />
+        <Statusbar/>
         {this.renderHead()}
         {this.renderCarousel()}
         {this.renderIconList()}

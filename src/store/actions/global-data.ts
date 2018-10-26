@@ -11,14 +11,14 @@ export enum Type {
 
 export interface GlobalDataAction extends Action {
   type: Type
+  userInfo: UserInfo
   pageIndex: number
   pageTab: PageTab
-  userInfo: UserInfo
   error?: any
   fetchFlag?: boolean // 传递是否loading状态
 }
 
-export const upateUserInfo = (userInfo: UserInfo) =>
+export const updateUserInfo = (userInfo: UserInfo) =>
   (dispatch) => dispatch({ type: Type.UPDATE_USERINFO, userInfo })
 
 export const addPageIndex = (pageIndex: number) =>

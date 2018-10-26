@@ -11,7 +11,10 @@ export interface GlobalData {
 }
 
 const initialState: GlobalData = {
-  userInfo: {} as UserInfo,
+  userInfo: {
+    userName: '用户0',
+    isLogin: true
+  } as UserInfo,
   pageTab: {} as PageTab,
   isFetching: false,
   pageIndex: 0,
