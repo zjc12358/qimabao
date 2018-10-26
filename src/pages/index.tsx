@@ -10,9 +10,10 @@ import Home from '@pages/Home'
 import Order from '@pages/Order'
 import History from '@pages/History'
 import User from '@pages/User'
+import { PageTab } from '@datasources/PageTab'
 
 export interface Props {
-
+  pageTab: PageTab
 }
 
 interface State {
@@ -34,6 +35,8 @@ class App extends React.Component<Props, State> {
 
   componentDidMount () {
     this.setState({ pageContent: this.renderHomePage() })
+    console.log(this.props.pageTab.pageName)
+    this.onTabBarSelectChange(this.props.pageTab.pageName)
   }
 
   onTabBarSelectChange = (tabBarName) => {
@@ -49,8 +52,11 @@ class App extends React.Component<Props, State> {
       case 'HistoryPageTabBar':
         pageContent = this.renderHistoryPage() // 历史页面
         break
-      default:
+      case 'UserPageTabBar':
         pageContent = this.renderUserCenter()	// 用户中心页面
+        break
+      default:
+        pageContent = this.renderHomePage()	// 首页
         break
     }
     this.setState({
@@ -155,7 +161,7 @@ class App extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-
+    pageTab: state.globalData.pageTab
   }
 }
 
