@@ -28,7 +28,19 @@ class History extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      type: 'money'
+      data: [
+        {
+          value: 0,
+          name: '衢州炒菜软件有限公司',
+          foodList: [
+            { value: 0, name: '精选有机红皮洋葱',img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540454190461&di=4ec63d020893da20eb87e4913bf558fd&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fk2%2FM0E%2F5B%2FDB%2FwKhQxVidG2-Ea2fJAAAAAOyzV4A037.jpg',price: '15.5',unit: '500g',count: '' },
+            { value: 1, name: '精选有机红皮土豆',img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540454256654&di=998aa4f7beaf2baff77e44379940ca2c&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fblog_extra%2F201408%2F27%2F20140827163148_8WrGv.jpeg',price: '25.5',unit: '500g',count: '' },
+            { value: 2, name: '精选有机红皮黄瓜',img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540454284106&di=c0eadb783134644f2e577eb1fd7983f5&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Feaf81a4c510fd9f9ba7fb76e2f2dd42a2834a449.jpg',price: '35.5',unit: '500g',count: '' }
+          ]
+        },
+        { value: 1, name: '大范德萨都是撒反对' },
+        { value: 2, name: '电话司法局看到回复撒' }
+      ]
     }
   }
 
@@ -59,8 +71,17 @@ class History extends React.Component<Props, State> {
                   </div>
                   <div style={{ display: 'flex',color: '#8c8c8c',fontSize: 14 }}>
                     <div style={{ display: 'flex',alignItems: 'center',justifyContent: 'center' ,width: 30,height: 30,border: '1px solid #8C8C8C' }} onClick={this.subtractOnClick}>-</div>
-                    <div style={{ display: 'flex',alignItems: 'center',justifyContent: 'center',border: '1px solid #8C8C8C',borderLeft: 0,borderRight: 0,width: 50,height: 30 }}>1</div>
-                    <div style={{ display: 'flex',alignItems: 'center',justifyContent: 'center' ,width: 30,height: 30,border: '1px solid #8C8C8C' }} onClick={this.addOnClick}>+</div>
+                    <div style={{ display: 'flex',alignItems: 'center',justifyContent: 'center' }}><InputItem
+                      type='number'
+                      onChange={(v) => { i.count = v,console.log(i.count) }}
+                      onBlur={(v) => { console.log('onBlur', v) }}
+                      moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                      style={{
+                        border: '1px solid #8C8C8C',borderLeft: 0,borderRight: 0,width: 50,height: 30,textAlign: 'center'
+                      }}
+                    ></InputItem></div>
+                    <div style={{ display: 'flex',alignItems: 'center',justifyContent: 'center' ,width: 30,height: 30,border: '1px solid #8C8C8C' }} onClick={ () => { i.count += 1 } }>+</div>
+                    {i.count}
                   </div>
                 </div>
               </div>
@@ -110,8 +131,8 @@ class History extends React.Component<Props, State> {
   /**
    * 食物数量加减按钮 '+'
    */
-  addOnClick = () => {
-    console.log('食物+1')
+  addOnClick = (hh) => {
+    console.log(hh)
   }
   /**
    * 实物数量加减按钮 '-'
@@ -123,15 +144,6 @@ class History extends React.Component<Props, State> {
     return (
       <div>
         {this.renderSupplierItem()}
-        <InputItem
-          type='money'
-          placeholder= 'start from right'
-          defaultValue = '1'
-          clear
-          onChange={(v) => { console.log('onChange', v) }}
-          onBlur={(v) => { console.log('onBlur', v) }}
-          moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-        >光标在右</InputItem>
       </div>
     )
   }

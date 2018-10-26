@@ -4,3 +4,14 @@
 .food .am-list-item .am-list-line .am-list-content{
   padding: 0;
 }
+.food .am-list-item.am-input-item{
+  height: 0;
+  padding-left: 0;
+}
+.food .am-list-item .am-list-line{
+  padding-right: 0;
+}
+.food .am-list-item{
+  min-height: 30px;
+  background-color: transparent;
+}
