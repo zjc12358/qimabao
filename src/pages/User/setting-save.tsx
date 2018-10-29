@@ -305,7 +305,7 @@ class User extends React.Component<Props, State> {
             width: '90%',
             color: '#ffffff',
             marginLeft: '5%'
-          }} onClick={this.phoneEditOnclick}
+          }} onClick={this.nextOnclick}
           >下一步</Button>
         </div>
       </div>
@@ -325,6 +325,11 @@ class User extends React.Component<Props, State> {
   public adressOnclick = () => {
     this.setState({
       step: 3
+    })
+  }
+  public nextOnclick = () => {
+    this.setState({
+      step: 4
     })
   }
   public backOnclick2 = () => {
@@ -404,66 +409,25 @@ class User extends React.Component<Props, State> {
    */
   public renderContent4 = () => {
     return(
-      <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
+      <div>
         <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>手机号</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(this.state.data.phone.slice(3,9),'******')}</span>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+        <div style={{ backgroundColor: '#ffffff',color: '#858585',textAlign: 'center',width: '100%',height: 120 }}>
+          <div style={{ paddingTop: 25 }}>
+            <span style={{ fontSize: 16 }}>我们已发送 </span>
+            <span style={{ fontSize: 20,color: '#000000' }}>验证码</span>
+            <span style={{ fontSize: 16 }}> 到您的手机</span>
+            <br/>
+            <br/>
+            <span style={{ fontSize: 20,color: '#000000' }}>1235756566</span>
           </div>
         </div>
         <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>支付密码设置</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
-          </div>
-        </div>
       </div>
     )
   }
   public backOnclick4 = () => {
     this.setState({
-      step: 3
+      step: 2
     })
   }
   /**
