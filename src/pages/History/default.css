@@ -21,3 +21,10 @@
 .food .am-stepper-handler{
   border-radius: 0;
 }
+.settlement .am-checkbox-agree{
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
