@@ -16,7 +16,7 @@ export interface Props {
 }
 
 interface State {
-
+  data: any
 }
 
 class User extends React.Component<Props, State> {
@@ -24,7 +24,7 @@ class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-
+      data: { img: 'http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg', username: 'pubg',name: '阿木木',phone: '17568452298', qr: '',sex: '男' }
     }
   }
 
@@ -44,7 +44,7 @@ class User extends React.Component<Props, State> {
         <div style={{
           fontSize: 20,
           paddingTop: 5
-        }}>设置</div>
+        }}>个人资料</div>
       </div>
     )
   }
@@ -53,6 +53,7 @@ class User extends React.Component<Props, State> {
   }
 
   public renderContent = () => {
+    console.log(this.state.data.img)
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
         <div className='Segment_line2'></div>
@@ -70,15 +71,19 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>安全设置</span>
+            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>用户头像</span>
           </div>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <span style={{ marginTop: 5 }}>手机号、密码</span>
+            <div style={{ borderRadius: '50%',width: 50, height: 50,overflow: 'hidden' }} ><img style={{
+              width: 'auto',
+              height: 'auto',
+              maxWidth: '100%',
+              maxHeight: '100%'
+            }} src={this.state.data.img} /></div>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
@@ -97,14 +102,39 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>支付设置</span>
+            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>账号</span>
           </div>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
+            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.username}</span>
+          </div>
+        </div>
+        <div className='Segment_line2'></div>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          paddingTop: 15,
+          paddingLeft: 10,
+          paddingBottom: 15,
+          paddingRight: 10
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row'
+          }}>
+            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>昵称</span>
+          </div>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row'
+          }}>
+            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.name}</span>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
@@ -123,14 +153,14 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>收货地址</span>
+            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>手机号码</span>
           </div>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
+            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.phone}</span>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
@@ -149,14 +179,14 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>清除缓存</span>
+            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>我的二维码名片</span>
           </div>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
+            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.qr}</span>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
@@ -175,40 +205,14 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>关于我们</span>
+            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>性别</span>
           </div>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
-          </div>
-        </div>
-        <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>开启通知</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
+            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.sex}</span>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
@@ -221,12 +225,6 @@ class User extends React.Component<Props, State> {
       <div>
         {this.renderNav()}
         {this.renderContent()}
-        <Button type='warning' style={{
-          marginTop: 35,
-          width: '90%',
-          color: '#ffffff',
-          marginLeft: '5%'
-        }}>退出当前账号</Button>
       </div>
     )
   }
