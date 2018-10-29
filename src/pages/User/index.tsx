@@ -45,14 +45,14 @@ class User extends React.Component<Props, State> {
           width: '96%',
           padding: '8px'
         }}>
-          <Link to='/setting'><Icon type='check' color='#ffffff' size='lg' onClick={this.settingOnclick} /></Link>
-          <Icon type='check' color='#ffffff' size='lg'/>
+          <Link to='/setting'><Icon type='check' color='#ffffff' size='lg'/></Link>
+          <Link to='/message'><Icon type='check' color='#ffffff' size='lg'/></Link>
         </div>
       </div>
     )
   }
 
-  settingOnclick = () => {
+  couponOnclick = () => {
     this.props.updateUserInfo({ userName: 'dd',isLogin: true })
   }
   public renderContent = () => {
@@ -111,8 +111,9 @@ class User extends React.Component<Props, State> {
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'row',
-            padding: 20
+            padding: 15
           }}>
+            <Link to='/coupon'>
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -123,6 +124,8 @@ class User extends React.Component<Props, State> {
               <span style={{ fontSize: '18px' }}>6</span>
               <span style={{ fontSize: '14px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
             </div>
+            </Link>
+            <Link to='/coupon'>
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -132,6 +135,8 @@ class User extends React.Component<Props, State> {
               <span style={{ fontSize: '18px' }}>0.00</span>
               <span style={{ fontSize: '14px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
             </div>
+            </Link>
+            <Link to='/coupon'>
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -142,13 +147,16 @@ class User extends React.Component<Props, State> {
               <span style={{ fontSize: '18px' }}>0</span>
               <span style={{ fontSize: '14px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
             </div>
+            </Link>
           </div>
         </div>
         <Link to='/UserInfoEdit'>
         <div style={{
           top: 50,
           left: 40,
-          position: 'absolute'
+          position: 'absolute',
+          backgroundColor: '#344edd',
+          zIndex: 98
         }}>
           <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden' }} onClick={this.userInfoOnclick}><img style={{
             width: 'auto',

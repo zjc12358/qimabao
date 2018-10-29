@@ -31,20 +31,23 @@ class User extends React.Component<Props, State> {
   public renderNav = () => {
     return (
       <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        height: '40px',
-        width: '53%',
-        marginTop: 8,
-        marginLeft: 2
+        backgroundColor: '#ffffff',
+        position: 'relative',
+        height: 40
       }}
       >
-        <Link to='/NavBar'><Icon type='left' color='#000000' size='lg' onClick={this.backOnclick} /></Link>
+        <div style={{ float: 'left', position: 'absolute' }}>
+          <Link to='/NavBar'><Icon type='left' color='#000000' size='lg' onClick={this.backOnclick} /></Link>
+        </div>
         <div style={{
           fontSize: 20,
-          paddingTop: 5
-        }}>设置</div>
+          paddingTop: 5,
+          color: '#000000',
+          width: '100%',
+          textAlign: 'center'
+        }}>
+          <span>设置</span>
+        </div>
       </div>
     )
   }
@@ -56,6 +59,7 @@ class User extends React.Component<Props, State> {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
         <div className='Segment_line2'></div>
+        <Link to='/setting-save'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -82,6 +86,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
+        </Link>
         <div className='Segment_line2'></div>
         <div style={{
           display: 'flex',

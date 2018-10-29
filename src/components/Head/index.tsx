@@ -4,6 +4,7 @@ import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import { isWhiteSpace } from 'tslint'
+import history from 'history/createHashHistory'
 
 export interface Props {
   title: String,
@@ -42,8 +43,7 @@ class Head extends React.Component<Props, State> {
    */
   leftIconOnClick = () => {
     if (this.state.showLeftIcon) {
-      // TODO 2018/10/26 回退
-      console.log('返回')
+      history().goBack()
     }
   }
 
