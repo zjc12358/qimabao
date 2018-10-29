@@ -656,7 +656,7 @@ class User extends React.Component<Props, State> {
         </div>)
       case 4 : return (
         <div>
-          {this.renderNav1('更换手机号','#ffffff',this.backOnclick3)}
+          {this.renderNav1('更换手机号','#ffffff',this.backOnclick4)}
           {this.renderContent4()}
         </div>)
     }
