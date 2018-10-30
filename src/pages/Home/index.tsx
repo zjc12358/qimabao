@@ -272,7 +272,7 @@ class Home extends React.Component<Props, State> {
     console.log('打开商品列表')
     this.props.updateCategoryItem(this.state.homeCategoryItemData, index)
     // this.state.commodityListState.index = index
-    history().push('/commodityList')
+    history().push('/productList')
   }
 
   public render () {

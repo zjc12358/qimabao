@@ -10,9 +10,11 @@ import { SecondProductCategoryBean } from '@datasources/SecondProductCategoryBea
 import './homeCss.css'
 import { ProductBean } from '@datasources/ProductBean'
 import { updateCategoryItem } from '@store/actions/categoryItem-data'
+import { chooseProduct } from '@store/actions/productDetails-data'
 
 export interface Props {
   categoryItemData: CategoryItemData
+  chooseProduct: (id: number) => void
 }
 
 interface State {
@@ -268,11 +270,11 @@ class Home extends React.Component<Props, State> {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-start',
-          alignItems: 'center',
-          flex: 1
+          alignItems: 'center'
         }}>
           {this.state.productList.map((item) => this.renderRightProductListItem(item))}
         </div>
+        <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
       </div>
     )
   }
@@ -288,31 +290,43 @@ class Home extends React.Component<Props, State> {
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        width: '100%'
-      }}>
+        height: 71,
+        width: '100%',
+        backgroundColor: 'white'
+      }} onClick={() => this.productOnClick(item.id)}>
         <div style={{
-          height: 55,
-          width: '100%',
+          height: 70,
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'flex-start',
+          width: '100%',
           alignItems: 'center'
         }}>
-          <img style={{ padding: 5, width: 55, height: 55 }} src={item.img}/>
+          <img style={{ margin: 5, width: 60, height: 60 }} src={item.img}/>
           <div style={{
-            padding: 5,
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-start',
-            alignItems: 'center'
+            alignItems: 'flex-start',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            width: '100%',
+            height: '100%',
+            marginLeft: 5,
+            marginRight: 5
           }}>
-            <span>{item.name}</span>
-            <span style={{ whiteSpace: 'nowrap', color: '#e5e5e5', fontSize: 12 }}>{item.describe}</span>
+            <span style={{ marginTop: 5 }}>{item.name}</span>
+            <div style={{
+              fontSize: 12,
+              color: '#e5e5e5',
+              textOverflow: 'ellipsis'
+            }}>{item.describe}</div>
             <div style={{
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
+              width: '100%',
               alignItems: 'center'
             }}>
               <div style={{
@@ -326,14 +340,13 @@ class Home extends React.Component<Props, State> {
                 <span style={{ color: '#e5e5e5', fontSize: 12 }}>/{item.weight}</span>
               </div>
               <div style={{
-                padding: 2
-              }} onClick={() => this.addCartOnClick(item.id)}>
-                添
+                padding: 10
+              }} onClick={(e) => this.addCartOnClick(e, item.id)}>添
               </div>
             </div>
           </div>
         </div>
-        <span style={{ height: 1, backgroundColor: '#e5e5e5', width: '100%' }}></span>
+        <span style={{ height: 1, backgroundColor: '#e5e5e5', width: '100%', position: 'fixed', bottom: 0 }}></span>
       </div>
     )
   }
@@ -376,11 +389,23 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
+   * 跳转到商品详情
+   * @param id
+   */
+  productOnClick = (id: number) => {
+    this.props.chooseProduct(id)
+    history().push('/productDetail')
+  }
+
+  /**
    * 添加到购物车
    * @param id
    */
-  addCartOnClick = (id: number) => {
+  addCartOnClick = (e, id: number) => {
     // TODO 2018/10/29 添加到购物车
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
+    console.log(id + '添加到购物车')
   }
 
   public render () {
@@ -409,6 +434,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  chooseProduct
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
