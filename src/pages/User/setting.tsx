@@ -88,6 +88,7 @@ class User extends React.Component<Props, State> {
         </div>
         </Link>
         <div className='Segment_line2'></div>
+        <Link to='/message'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -113,6 +114,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
+        </Link>
         <div className='Segment_line2'></div>
         <div style={{
           display: 'flex',
