@@ -25,13 +25,21 @@ class Test extends React.Component<Props, State> {
     }
   }
 
+  goBack = () => {
+    history().goBack()
+  }
+
   public render () {
     return (
       <div style={{ flex: 1 }}>
         <span>测试Redux</span>
         <Button onClick={() => this.props.deletePageIndex(this.props.globalData.pageIndex)}>上一页</Button>
         <Button onClick={() => this.props.addPageIndex(this.props.globalData.pageIndex)}>下一页</Button>
-        <div style={{ width: '100%', height: 200,backgroundColor: 'white' }}>{this.props.globalData.pageIndex}{() => history().goBack()}</div>
+        <div style={{
+          width: '100%',
+          height: 200,
+          backgroundColor: 'white'
+        }} onClick={() => this.goBack()}>{this.props.globalData.pageIndex}</div>
       </div>
     )
   }

@@ -42,20 +42,6 @@ class Order extends React.Component<Props, State> {
         width: '100%'
       }}>
         <span style={{ marginTop: 60, fontWeight: 'bold', marginBottom: 20 }}>拍摄/上传您的菜谱或采购清单</span>
-        {/*<div style={{*/}
-        {/*backgroundColor: 'white',*/}
-        {/*marginTop: 20,*/}
-        {/*marginBottom: 20,*/}
-        {/*width: '80%',*/}
-        {/*height: 150,*/}
-        {/*display: 'flex',*/}
-        {/*flexDirection: 'column',*/}
-        {/*justifyContent: 'center',*/}
-        {/*alignItems: 'center'*/}
-        {/*}} onClick={this.uploadPicturesOnClick}>*/}
-        {/*<span>照相机图片</span>*/}
-        {/*<span style={{ fontSize: 15, color: '#0084e7' }}>点击拍摄/上传您的菜谱</span>*/}
-        {/*</div>*/}
       </div>
     )
   }
@@ -64,12 +50,34 @@ class Order extends React.Component<Props, State> {
    * 大图显示区
    */
   renderShowBigPicture = () => {
-    return (
-      <img style={{
-        height: 150,
-        width: '80%'
-      }} src={this.state.bigPicture}/>
-    )
+    if (this.state.pictures != null && this.state.pictures.length > 0) {
+      return (
+        <img style={{
+          height: 150,
+          width: '80%'
+        }} src={this.state.bigPicture}
+             onClick={this.bigPicOnClick}/>
+      )
+    } else {
+      return (
+        <div style={{
+          backgroundColor: 'white',
+          marginTop: 20,
+          marginBottom: 20,
+          width: '80%',
+          height: 150,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }} onClick={this.uploadPicturesOnClick}>
+          <span>照相机图片</span>
+          <span style={{ fontSize: 15, color: '#0084e7' }}>点击拍摄/上传您的菜谱</span>
+        </div>
+      )
+
+    }
+
   }
 
   /**
@@ -77,6 +85,7 @@ class Order extends React.Component<Props, State> {
    */
   renderPicturesList = () => {
     return (
+      // this.state.pictures != null && this.state.pictures.length > 0 &&
       <ImagePicker
         style={{
           marginTop: 20,
@@ -122,6 +131,17 @@ class Order extends React.Component<Props, State> {
           break
       }
     })
+  }
+
+  /**
+   * 大图点击事件
+   */
+  bigPicOnClick = () => {
+    if (this.state.pictures != null && this.state.pictures.length > 0) {
+      console.log('显示大图')
+    } else {
+      this.uploadPicturesOnClick()
+    }
   }
 
   /**
@@ -176,8 +196,9 @@ class Order extends React.Component<Props, State> {
         <Head showRightIcon={true} backgroundColor={'#0084e7'} title={'菜谱'} showLeftIcon={false}
               rightIconOnClick={this.okOnClick.bind(this)} rightIconContent={'确定'}/>
         {this.renderContent()}
-        {(this.state.pictures != null && this.state.pictures.length > 0) && this.renderShowBigPicture()}
+        {this.renderShowBigPicture()}
         {this.renderPicturesList()}
+        {/*<input type='file' accept='image/*' capture='camera'></input>*/}
       </div>
     )
   }
