@@ -118,7 +118,21 @@ class History extends React.Component<Props, State> {
       <div key={item.value}>
         <div className='food' style={{ display: 'flex', alignItems: 'center' }}>
           <CheckboxItem
-            checked={ this.state.allSupplierItemCheck ? this.state.allSupplierItemCheck : this.state.data[index1].allChecked }
+            checked={ this.state.data[index1].foodList[index].isChecked }
+            onChange={() => {
+              let data = this.state.data
+              let len = 0
+              data[index1].foodList[index].isChecked = !data[index1].foodList[index].isChecked
+              for (let i = 0; i < this.state.data[index1].foodList.length; i++) {
+                if (this.state.data[index1].foodList[i].isChecked === true) len += 1
+                if (len === this.state.data[index1].foodList.length) data[index1].allChecked = true
+              }
+              if (data[index1].foodList[index].isChecked === false) {
+                this.setState({ allSupplierItemCheck: false })
+                data[index1].allChecked = false
+              }
+              this.setState({ data: data })
+            }}
             style={{ width: '100%', background: 'transparent', height: 125 }}
           >
             <div style={{
@@ -194,13 +208,19 @@ class History extends React.Component<Props, State> {
             height: 40
           }}>
             <div className='checkBox'>
-              <AgreeItem defaultChecked={this.state.data[index1].allChecked} checked={this.state.allSupplierItemCheck ? this.state.allSupplierItemCheck : this.state.data[index1].allChecked} onChange={() => {
+              <AgreeItem defaultChecked={this.state.data[index1].allChecked} checked={this.state.data[index1].allChecked} onChange={() => {
                 let data = this.state.data
+                let len = 0
                 data[index1].allChecked = !data[index1].allChecked
-                if (!data[index1].allChecked) {
-                  for (let i = 0; i < this.state.data[index1].foodList.length; i++) {
-                    this.setState({ allSupplierItemCheck: false })
-                  }
+                for (let i = 0; i < this.state.data[index1].foodList.length; i++) {
+                  data[index1].foodList[i].isChecked = data[index1].allChecked
+                }
+                for (let i = 0; i < this.state.data.length; i++) {
+                  if (this.state.data[i].allChecked === true) len += 1
+                  if (len === this.state.data.length) this.setState({ allSupplierItemCheck: true })
+                }
+                if (data[index1].allChecked === false) {
+                  this.setState({ allSupplierItemCheck: false })
                 }
                 this.setState({ data: data })
               }} />
@@ -251,6 +271,17 @@ class History extends React.Component<Props, State> {
     console.log('食物-1')
   }
 
+  /**
+   * 循环复制
+   */
+  assign = (arr,obj) => {
+    for (let i = 0; i < arr.length; i++) {
+      console.log(obj)
+      obj[i].allChecked = !this.state.allSupplierItemCheck
+      this.setState({ data: obj })
+    }
+  }
+
   public render () {
     return (
       <div>
@@ -278,6 +309,7 @@ class History extends React.Component<Props, State> {
             checked={ this.state.allSupplierItemCheck }
             onChange={ () => {
               this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck })
+              this.assign(this.state.data,this.state.data)
             }}
           >
             <div style={{ display: 'flex',alignItems: 'center' }}>
