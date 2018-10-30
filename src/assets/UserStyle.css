@@ -13,3 +13,17 @@
   border-top: 1px solid #e5e5e5;
   text-align: center;
 }
+
+.Verification{
+  background-color: transparent !important;
+  width: 35px;
+  border-bottom: 1px solid #7b7b7b;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+.Verification .fake-input{
+  font-size: 25px !important;
+  text-align: center !important;
+}
+
