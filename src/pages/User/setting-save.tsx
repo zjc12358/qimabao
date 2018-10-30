@@ -2,11 +2,11 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { Icon,InputItem } from 'antd-mobile'
-import Button from 'antd-mobile/lib/button'
+import { Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 'antd-mobile'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
+import '../../assets/UserStyle.css'
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
 // https://github.com/ant-design/ant-design-mobile/issues/307
@@ -32,6 +32,7 @@ interface State {
   step: number
   phoneConfirmButtonType: boolean
   phone: string
+  modal2: boolean
 }
 
 class User extends React.Component<Props, State> {
@@ -71,6 +72,7 @@ class User extends React.Component<Props, State> {
         { Y: ['中国澳门','中国台湾','中国香港','中国大陆','','','','','','','','','','','',''], YCode: ['','','',''] },
         { Z: ['中国澳门','中国台湾','中国香港','中国大陆','','','','','','','','','','','',''], ZCode: ['','','',''] }
       ],
+      modal2: false,
       phone: ''
     }
   }
@@ -99,6 +101,9 @@ class User extends React.Component<Props, State> {
         </div>
       </div>
     )
+  }
+  componentDidMount () {
+    return 0
   }
   /**
    * 页面导航栏本页面内跳转
@@ -157,7 +162,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(this.state.data.phone.slice(3,9),'******')}</span>
+            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
@@ -229,7 +234,7 @@ class User extends React.Component<Props, State> {
               justifyContent: 'center',
               flexDirection: 'row'
             }}>
-              <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(this.state.data.phone.slice(3,9),'******')}</span>
+              <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
             </div>
           </div>
         </div>
@@ -369,7 +374,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(this.state.data.phone.slice(3,9),'******')}</span>
+            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{4})(\d{4})/,'$1****$3')}</span>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
@@ -421,16 +426,73 @@ class User extends React.Component<Props, State> {
             <span style={{ fontSize: 16 }}> 到您的手机</span>
             <br/>
             <br/>
-            <span style={{ fontSize: 20,color: '#000000' }}>{this.state.phone.replace(this.state.phone.slice(3,9),'******')}</span>
+            <span style={{ fontSize: 20,color: '#000000' }}>{this.state.phone.replace(/\s+/g,'').replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
           </div>
         </div>
         <div className='Segment_line2'></div>
+        <div style={{ backgroundColor: 'transparent',textAlign: 'center' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            flexDirection: 'row',
+            paddingTop: 50
+          }}>
+            <InputItem
+              maxLength={1}
+              className='Verification'
+              autoFocus={true}
+              type={'money'}
+              moneyKeyboardAlign='left'
+              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+            />
+            <InputItem
+              maxLength={1}
+              className='Verification'
+              autoFocus={true}
+              type={'money'}
+              moneyKeyboardAlign='left'
+              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+            />
+            <InputItem
+              maxLength={1}
+              className='Verification'
+              type={'money'}
+              moneyKeyboardAlign='left'
+              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+            />
+            <InputItem
+              maxLength={1}
+              className='Verification'
+              type={'money'}
+              moneyKeyboardAlign='left'
+              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+            />
+          </div>
+          <div style={{
+            paddingTop: 20
+          }}>
+            <span style={{
+              fontSize: 16,
+              color: '#6265ee'
+            }}>重发短信</span>
+          </div>
+          <div style={{
+            paddingTop: 50
+          }}>
+            <span style={{
+              fontSize: 14,
+              color: '#6265ee'
+            }}>&nbsp;&nbsp;&nbsp;收不到验证码？</span>
+          </div>
+        </div>
       </div>
     )
   }
+
   public backOnclick4 = () => {
     this.setState({
-      step: 2
+      step: 2,
+      phoneConfirmButtonType: false
     })
   }
   /**
@@ -462,7 +524,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(this.state.data.phone.slice(3,9),'******')}</span>
+            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{4})(\d{4})/,'$1****$3')}</span>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
@@ -529,7 +591,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(this.state.data.phone.slice(3,9),'******')}</span>
+            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{4})(\d{4})/,'$1****$3')}</span>
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
@@ -678,5 +740,4 @@ const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
   updateUserInfo
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(User)
