@@ -8,6 +8,7 @@ const { store } = getStore()
 
 import Test from './Test'
 import Home from './pages'
+import CommodityList from './pages/Home/productList' /*商品列表页面*/
 import setting from './pages/User/setting' /* 我的页面设置 */
 import index1 from './pages/User/index' /* 我的页面 */
 import NavBar from './pages/index'  /* 底部导航栏页面 */
@@ -24,6 +25,7 @@ ReactDOM.render(
     <HashRouter history={hashHistory}>
       <Switch>
         <Route exact path='/' component={Home} />
+        <Route path='/commodityList' component={CommodityList}/>
         <Route path='/test' component={Test} />
         <Route path='/setting' component={setting} />
         <Route path='/index1' component={index1} />

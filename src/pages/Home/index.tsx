@@ -6,14 +6,18 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import { HomeCategoryItemBean } from '@datasources/HomeCategoryItemBean'
 import Statusbar from '@components/Statusbar'
 import axios from 'axios'
+import history from 'history/createHashHistory'
+import { ProductListState } from '@datasources/ProductListState'
+import { updateCategoryItem } from '@store/actions/categoryItem-data'
 
 export interface Props {
-
+  updateCategoryItem: (categoryItemData: Array<HomeCategoryItemBean>, index: number) => void
 }
 
 interface State {
   imgData: any
   homeCategoryItemData: Array<HomeCategoryItemBean>
+  // commodityListState: ProductListState
 }
 
 class Home extends React.Component<Props, State> {
@@ -164,12 +168,12 @@ class Home extends React.Component<Props, State> {
         flexWrap: 'wrap',
         marginTop: 10
       }}>
-        {this.state.homeCategoryItemData.map((item) => this.renderIconListItem(item))}
+        {this.state.homeCategoryItemData.map((item, index) => this.renderIconListItem(item, index))}
       </div>
     )
   }
 
-  renderIconListItem = (item) => {
+  renderIconListItem = (item, index) => {
     return (
       <div style={{
         display: 'flex',
@@ -180,7 +184,7 @@ class Home extends React.Component<Props, State> {
         height: 0,
         width: '33%',
         paddingBottom: '34%'
-      }} onClick={() => this.iconItemOnclick()}>
+      }} onClick={() => this.iconItemOnclick(index)}>
         <div style={{
           position: 'relative',
           bottom: '83%',
@@ -263,9 +267,12 @@ class Home extends React.Component<Props, State> {
   /**
    * 点击类别
    */
-  iconItemOnclick = () => {
+  iconItemOnclick = (index) => {
     // TODO 2018/10/25 点击单个类别
     console.log('打开商品列表')
+    this.props.updateCategoryItem(this.state.homeCategoryItemData, index)
+    // this.state.commodityListState.index = index
+    history().push('/commodityList')
   }
 
   public render () {
@@ -286,6 +293,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {}
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  updateCategoryItem
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

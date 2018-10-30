@@ -31,6 +31,7 @@ interface State {
   country: any
   step: number
   phoneConfirmButtonType: boolean
+  phone: string
 }
 
 class User extends React.Component<Props, State> {
@@ -69,7 +70,8 @@ class User extends React.Component<Props, State> {
         { X: ['中国澳门','中国台湾','中国香港','中国大陆','','','','','','','','','','','',''], XCode: ['','','',''] },
         { Y: ['中国澳门','中国台湾','中国香港','中国大陆','','','','','','','','','','','',''], YCode: ['','','',''] },
         { Z: ['中国澳门','中国台湾','中国香港','中国大陆','','','','','','','','','','','',''], ZCode: ['','','',''] }
-      ]
+      ],
+      phone: ''
     }
   }
   /**
@@ -314,7 +316,8 @@ class User extends React.Component<Props, State> {
   public onPhoneChange = (value) => {
     if (value.length === 13) {
       this.setState({
-        phoneConfirmButtonType: true
+        phoneConfirmButtonType: true,
+        phone: value
       })
     } else {
       this.setState({
@@ -418,7 +421,7 @@ class User extends React.Component<Props, State> {
             <span style={{ fontSize: 16 }}> 到您的手机</span>
             <br/>
             <br/>
-            <span style={{ fontSize: 20,color: '#000000' }}>1235756566</span>
+            <span style={{ fontSize: 20,color: '#000000' }}>{this.state.phone.replace(this.state.phone.slice(3,9),'******')}</span>
           </div>
         </div>
         <div className='Segment_line2'></div>
