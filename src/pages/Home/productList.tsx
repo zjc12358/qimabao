@@ -394,7 +394,7 @@ class Home extends React.Component<Props, State> {
    */
   productOnClick = (id: number) => {
     this.props.chooseProduct(id)
-    history().push('/productDetail')
+    history().push('/productDetails')
   }
 
   /**
@@ -403,6 +403,7 @@ class Home extends React.Component<Props, State> {
    */
   addCartOnClick = (e, id: number) => {
     // TODO 2018/10/29 添加到购物车
+    // 阻止事件冒泡
     e.stopPropagation()
     e.nativeEvent.stopImmediatePropagation()
     console.log(id + '添加到购物车')

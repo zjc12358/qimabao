@@ -7,12 +7,12 @@ import { isWhiteSpace } from 'tslint'
 import history from 'history/createHashHistory'
 
 export interface Props {
-  title: String,
-  showLeftIcon: Boolean,
-  showRightIcon: Boolean,
-  backgroundColor: string,
-  rightIconOnClick: any,
-  rightIconContent: string
+  title: String, // 标题
+  showLeftIcon: Boolean, // 是否显示左边
+  showRightIcon: Boolean, // 是否显示右边
+  backgroundColor: string, // 背景颜色
+  rightIconOnClick: any, // 右边点击事件
+  rightIconContent: any // 右边组件
 }
 
 interface State {
@@ -21,7 +21,7 @@ interface State {
   showRightIcon: Boolean,
   backgroundColor: string,
   rightIconOnClick: any,
-  rightIconContent: string
+  rightIconContent: any
 }
 
 class Head extends React.Component<Props, State> {
@@ -52,7 +52,7 @@ class Head extends React.Component<Props, State> {
    */
   rightIconOnClick = () => {
     if (this.state.showRightIcon) {
-      this.props.rightIconOnClick()
+      this.props.rightIconOnClick !== null && this.props.rightIconOnClick()
     }
   }
 

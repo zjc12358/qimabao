@@ -5,6 +5,8 @@ import { TabBar, List, Checkbox, Stepper, SwipeAction } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
+import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
+import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem
@@ -22,8 +24,11 @@ export interface Props {
 
 interface State {
   num: any,
-  data: any,
-  allSupplierItemCheck: Boolean
+  data: Array<ShopCartSupplierBean>,
+  total: number,
+  allSupplierItemCheck: Boolean,
+  isEmpty: boolean,
+  yourLink: any
 }
 
 class History extends React.Component<Props, State> {
@@ -33,82 +38,100 @@ class History extends React.Component<Props, State> {
     this.state = {
       num: '',
       allSupplierItemCheck: false,
-      data: [
-        {
-          value: 0,
-          name: '衢州炒菜软件有限公司',
-          allChecked: false,
-          foodList: [
-            {
-              value: 0,
-              isChecked: false,
-              name: '精选有机红皮洋葱',
-              img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540454190461&di=4ec63d020893da20eb87e4913bf558fd&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fk2%2FM0E%2F5B%2FDB%2FwKhQxVidG2-Ea2fJAAAAAOyzV4A037.jpg',
-              price: '15.5',
-              unit: '500g',
-              count: 1,
-              summary: ''
-            },
-            {
-              value: 1,
-              isChecked: false,
-              name: '精选有机红皮土豆',
-              img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540454256654&di=998aa4f7beaf2baff77e44379940ca2c&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fblog_extra%2F201408%2F27%2F20140827163148_8WrGv.jpeg',
-              price: '25.5',
-              unit: '500g',
-              count: 1,
-              summary: ''
-            },
-            {
-              value: 2,
-              isChecked: false,
-              name: '精选有机红皮黄瓜',
-              img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540454284106&di=c0eadb783134644f2e577eb1fd7983f5&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Feaf81a4c510fd9f9ba7fb76e2f2dd42a2834a449.jpg',
-              price: '35.5',
-              unit: '500g',
-              count: 1,
-              summary: ''
-            }
-          ]
-        },
-        {
-          value: 1,
-          name: '大范德萨都是撒反对',
-          allChecked: false,
-          foodList: [
-            {
-              value: 0,
-              isChecked: false,
-              name: '扬州炒饭',
-              img: 'http://pic31.photophoto.cn/20140519/0042040255624242_b.jpg',
-              price: 20,
-              unit: '份',
-              count: 1,
-              summary: 0
-            }
-          ]
-        },
-        {
-          value: 2,
-          name: '电话司法局看到回复撒',
-          allChecked: false,
-          foodList: [
-            {
-              value: 0,
-              isChecked: false,
-              name: '黄焖鸡米饭',
-              img: 'http://img003.hc360.cn/m5/M00/D0/BD/wKhQ6lSXdzCEVE20AAAAAHLQb60687.jpg',
-              price: 30,
-              unit: '份',
-              count: 1,
-              summary: 0
-            }
-          ]
-        }
-      ]
+      total: 0,
+      isEmpty: false,
+      yourLink: [1,2,3,4,5],
+      data: []
     }
   }
 
+  /**
+   * 空购物车
+   */
+  reanderEmptyCart = () => {
+    return (
+      <div>
+        <div style={{ display: 'flex',justifyContent: 'center', paddingTop: 20 }}>
+          <div style={{ width: 135,height: 135,borderRadius: '50%',backgroundColor: '#cccccc' }}></div>
+        </div>
+        <div style={{ display: 'flex',justifyContent: 'center', fontSize: 18, marginTop: 12 }}>菜篮为空</div>
+        <div style={{ display: 'flex',justifyContent: 'center', fontSize: 13, color: 'rgb(140, 140, 140)', marginTop: 12 }}>“赶紧去采购吧”</div>
+        <div style={{ display: 'flex',justifyContent: 'center', alignItems: 'center',marginTop: 40 }}>
+          <div style={{ width: '20%',height: 4, backgroundColor: '#cccccc' }}></div>
+          <div style={{ fontSize: 18, padding: '0 6px' }}>猜您喜欢</div>
+          <div style={{ width: '20%',height: 4, backgroundColor: '#cccccc' }}></div>
+        </div>
+        <div>
+          <div style={{ overflow: 'hidden' }}>
+            {this.state.yourLink.map((i, key) => (
+              <div style={{ width: '49%', float: 'left' }}>
+                <img style={{ display: 'block', width: '100%' }} src='http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg' />
+                <div>北海道原味吐司</div>
+                <div>
+                  <span style={{ color: 'red' }}>￥4.5</span>
+                  /500g
+                  <div></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  /**
+   * 非空菜篮尾部
+   */
+  renderCartFooter = () => {
+    return (
+      <div className= 'settlement' style={{
+        position: 'fixed',
+        bottom: 50,
+        height: 50,
+        display: 'flex',
+        backgroundColor: 'white',
+        width: '100%'
+      }}>
+        <AgreeItem
+          checked={ this.state.allSupplierItemCheck }
+          onChange={ () => {
+            this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck })
+            for (let i = 0; i < this.state.data.length; i++) {
+              let data = this.state.data
+              data[i].allChecked = !this.state.allSupplierItemCheck
+              let data2 = data[i].foodList
+              console.log(data2.length)
+              for (let j = 0; j < data2.length; j++) {
+                console.log(data2[j].isChecked)
+                data2[j].isChecked = !this.state.allSupplierItemCheck
+              }
+              data[i].foodList = data2
+              this.setState({ data: data })
+            }
+            // 计算一遍总计
+            this.count()
+          }}
+        >
+          <div style={{ display: 'flex',alignItems: 'center' }}>
+            <span>全选</span>
+          </div>
+        </AgreeItem>
+        <div style={{ flex: 1,display: 'flex' }}>
+          <div style={{ flex: 1,display: 'flex',alignItems: 'center',justifyContent: 'center',color: 'rgb(140, 140, 140)' }}>
+            合计：
+            <span style={{ color: 'red',fontSize: 18 }}>
+                ￥{this.state.total}
+              </span>
+            （免运费）
+          </div>
+          <div
+            style={{ display: 'flex', alignItems: 'center',justifyContent: 'center',backgroundColor: '#0084e7',height: 50,width: 90,color: 'white' }}
+          >去结算</div>
+        </div>
+      </div>
+    )
+  }
   /**
    * 供应商下的食物
    * index-----食物下标,index1供应商下标
@@ -122,6 +145,7 @@ class History extends React.Component<Props, State> {
             onChange={() => {
               let data = this.state.data
               let len = 0
+              let len2 = 0
               data[index1].foodList[index].isChecked = !data[index1].foodList[index].isChecked
               for (let i = 0; i < this.state.data[index1].foodList.length; i++) {
                 if (this.state.data[index1].foodList[i].isChecked === true) len += 1
@@ -131,7 +155,16 @@ class History extends React.Component<Props, State> {
                 this.setState({ allSupplierItemCheck: false })
                 data[index1].allChecked = false
               }
+              for (let i = 0; i < this.state.data.length; i++) {
+                let data = this.state.data
+                if (data[i].allChecked === true) len2 += 1
+                if (len2 === this.state.data.length) {
+                  this.setState({ allSupplierItemCheck: true })
+                }
+              }
               this.setState({ data: data })
+              // 计算一遍总计
+              this.count()
             }}
             style={{ width: '100%', background: 'transparent', height: 125 }}
           >
@@ -163,8 +196,9 @@ class History extends React.Component<Props, State> {
                     onChange={(v) => {
                       let data = this.state.data
                       data[index1].foodList[index].count = v
-                      data[index1].foodList[index].summary = v * data[index1].foodList[index].price
                       this.setState({ data: data })
+                      // 计算一遍总计
+                      this.count()
                     }}
                   />
                 </div>
@@ -183,7 +217,7 @@ class History extends React.Component<Props, State> {
             borderTop: '1px solid #e5e5e5'
           }}>
             <div>小计: <span
-              style={{ color: 'red' }}>￥{this.state.data[index1].foodList[index].summary ? this.state.data[index1].foodList[index].summary : this.state.data[index1].foodList[index].count * this.state.data[index1].foodList[index].price}</span>
+              style={{ color: 'red' }}>￥{this.state.data[index1].foodList[index].count * this.state.data[index1].foodList[index].price}</span>
             </div>
           </div>
           <div style={{ width: 30 }}></div>
@@ -223,6 +257,8 @@ class History extends React.Component<Props, State> {
                   this.setState({ allSupplierItemCheck: false })
                 }
                 this.setState({ data: data })
+                // 计算一遍总计
+                this.count()
               }} />
             </div>
             <div style={{ width: 20 }}></div>
@@ -241,9 +277,7 @@ class History extends React.Component<Props, State> {
                 {
                   text: '删除',
                   onPress: () => {
-                    let data = this.state.data
-                    data[index1].foodList.splice(index, 1)
-                    this.setState({ data: data })
+                    this.SlipRightDeleteOnClick(index1,index)
                   },
                   style: { backgroundColor: '#F4333C', color: 'white' }
                 }
@@ -282,47 +316,126 @@ class History extends React.Component<Props, State> {
     }
   }
 
+  /**
+   * 合计计算
+   */
+  count = () => {
+    console.log(111)
+    let total = 0
+    for (let i = 0; i < this.state.data.length; i++) {
+      let data = this.state.data
+      let data2 = data[i].foodList
+      for (let j = 0; j < data2.length; j++) {
+        if (data2[j].isChecked === true) {
+          console.log(total)
+          let subtotal = data2[j].count * data2[j].price
+          total += subtotal
+        }
+      }
+      this.setState({ total: total })
+    }
+  }
+
+  /**
+   * 右滑删除( index1:供应商下标,  index:该食物下标  )
+   */
+  SlipRightDeleteOnClick = (index1,index) => {
+    let data = this.state.data
+    data[index1].foodList.splice(index, 1)
+    if (data[index1].foodList.length === 0) data.splice(index,1)
+    this.setState({ data: data })
+  }
+
+  /**
+   * 头部删除
+   */
+  HeadDeleteOnclick = () => {
+    console.log(1111)
+    if (this.state.allSupplierItemCheck) {
+      // 全选状态下清空购物车,总计归0
+      this.setState({ data: [],total: 0 })
+    } else {
+      console.log('我被组织了')
+      let data = this.state.data
+      for (let i = 0; i < this.state.data.length; i++) {
+        if (data[i].allChecked) {
+          data.splice(i,1)
+          this.setState({ data: data })
+        } else {
+          let foodList = data[i].foodList
+          for (let j = 0; j < foodList.length; j++) {
+            if (foodList[j].isChecked) {
+              foodList.splice(j,1)
+              if (foodList.length === 0) {
+                data.splice(i,1)
+              }
+              data[i].foodList = foodList
+              this.setState({ data: data })
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * 页面加载时判断选中项计算合计
+   */
+  componentDidMount () {
+    this.count()
+    let data = [
+      {
+        value: 1,
+        name: '衢州炒菜软件有限公司',
+        allChecked: false,
+        foodList: [
+          {
+            isChecked: false,
+            name: '红烧秃头',
+            img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540889948447&di=ca343fa9d6d7f4bbb02cf277e48028fb&imgtype=0&src=http%3A%2F%2Fs06.lmbang.com%2FM00%2F37%2FDD%2FecloA1kw5S6ALagJAAKooS2esTQ657.jpg',
+            price: 15.5,
+            unit: '500g',
+            count: 1
+          },
+          {
+            isChecked: false,
+            name: '蛋炒饭',
+            img: 'http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg',
+            price: 35.5,
+            unit: '份',
+            count: 1
+          }
+        ]
+      },
+      {
+        value: 1,
+        name: '衢州都是煎熬分开了软件有限公司',
+        allChecked: false,
+        foodList: [
+          {
+            isChecked: false,
+            name: '烤串',
+            img: 'http://imgsrc.baidu.com/imgad/pic/item/f11f3a292df5e0fe52737e28576034a85edf72b4.jpg',
+            price: 25.5,
+            unit: '份',
+            count: 1
+          }
+        ]
+      }
+    ]
+    this.setState({ data: data })
+  }
   public render () {
     return (
       <div>
-        <Head title='菜篮子' backgroundColor='#0084e7'></Head>
+        <Head title='菜篮子' backgroundColor='#0084e7' rightIconContent='删除' showRightIcon='true' rightIconOnClick={ this.HeadDeleteOnclick }></Head>
         <div style={{ height: 40 }}></div>
-        {this.state.data.map((i, index1) => (
+        {this.state.data.length ? this.state.data.map((i, index1) => (
           <div style={{ backgroundColor: 'white' }}>
             {this.renderSupplierItem(i, index1)}
           </div>
-        ))}
-        <List>
-          <List.Item>123456</List.Item>
-          <List.Item>123456</List.Item>
-          <List.Item>123456</List.Item>
-        </List>
-        <div className= 'settlement' style={{
-          position: 'fixed',
-          bottom: 50,
-          height: 50,
-          display: 'flex',
-          backgroundColor: 'white',
-          width: '100%'
-        }}>
-          <AgreeItem
-            checked={ this.state.allSupplierItemCheck }
-            onChange={ () => {
-              this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck })
-              this.assign(this.state.data,this.state.data)
-            }}
-          >
-            <div style={{ display: 'flex',alignItems: 'center' }}>
-              <span>全选</span>
-            </div>
-          </AgreeItem>
-          <div style={{ flex: 1,display: 'flex' }}>
-            <div style={{ flex: 1,display: 'flex',alignItems: 'center',justifyContent: 'center',color: 'rgb(140, 140, 140)' }}>合计： <span style={{ color: 'red',fontSize: 18 }}>￥62</span>（免运费）</div>
-            <div
-              style={{ display: 'flex', alignItems: 'center',justifyContent: 'center',backgroundColor: '#0084e7',height: 50,width: 90,color: 'white' }}
-            >去结算</div>
-          </div>
-        </div>
+        )) : this.reanderEmptyCart()}
+        {this.state.data.length ? this.renderCartFooter() : <div></div>}
         <div style={{ height: 100 }}></div>
       </div>
     )
