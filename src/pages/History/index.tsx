@@ -1,12 +1,14 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, List, Checkbox, Stepper, SwipeAction } from 'antd-mobile'
+import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
+import history from 'history/createHashHistory'
+import supplierRevise from '.'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem
@@ -48,7 +50,7 @@ class History extends React.Component<Props, State> {
   /**
    * 空购物车
    */
-  reanderEmptyCart = () => {
+  renderEmptyCart = () => {
     return (
       <div>
         <div style={{ display: 'flex',justifyContent: 'center', paddingTop: 20 }}>
@@ -56,16 +58,26 @@ class History extends React.Component<Props, State> {
         </div>
         <div style={{ display: 'flex',justifyContent: 'center', fontSize: 18, marginTop: 12 }}>菜篮为空</div>
         <div style={{ display: 'flex',justifyContent: 'center', fontSize: 13, color: 'rgb(140, 140, 140)', marginTop: 12 }}>“赶紧去采购吧”</div>
+      </div>
+    )
+  }
+
+  /**
+   * 猜您喜欢
+   */
+  renderYourLike = () => {
+    return (
+      <div>
         <div style={{ display: 'flex',justifyContent: 'center', alignItems: 'center',marginTop: 40 }}>
-          <div style={{ width: '20%',height: 4, backgroundColor: '#cccccc' }}></div>
+          <div style={{ width: '20%',height: 2, backgroundColor: '#cccccc' }}></div>
           <div style={{ fontSize: 18, padding: '0 6px' }}>猜您喜欢</div>
-          <div style={{ width: '20%',height: 4, backgroundColor: '#cccccc' }}></div>
+          <div style={{ width: '20%',height: 2, backgroundColor: '#cccccc' }}></div>
         </div>
-        <div>
-          <div style={{ overflow: 'hidden' }}>
+        <div style={{ paddingTop: 30 }}>
+          <div style={{ display: 'flex',flexFlow: 'row wrap' }}>
             {this.state.yourLink.map((i, key) => (
-              <div style={{ width: '49%', float: 'left' }}>
-                <img style={{ display: 'block', width: '100%' }} src='http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg' />
+              <div style={{ width: '50%',display: 'flex',flexDirection: 'column',alignItems: 'center' }}>
+                <img style={{ display: 'block', width: 180,height: 157 }} src='http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg' />
                 <div>北海道原味吐司</div>
                 <div>
                   <span style={{ color: 'red' }}>￥4.5</span>
@@ -263,6 +275,7 @@ class History extends React.Component<Props, State> {
             </div>
             <div style={{ width: 20 }}></div>
             <div style={{ color: '#8C8C8C' }}>{i.name}</div>
+            <div style={{ float: 'right' }}><Icon type='right' onClick={ () => { history().push('/supplierRevise') } } /></div>
           </div>
           <div style={{
             display: 'flex',
@@ -434,7 +447,8 @@ class History extends React.Component<Props, State> {
           <div style={{ backgroundColor: 'white' }}>
             {this.renderSupplierItem(i, index1)}
           </div>
-        )) : this.reanderEmptyCart()}
+        )) : this.renderEmptyCart()}
+        {this.renderYourLike()}
         {this.state.data.length ? this.renderCartFooter() : <div></div>}
         <div style={{ height: 100 }}></div>
       </div>

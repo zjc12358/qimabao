@@ -23,6 +23,9 @@ import settingSave from './pages/User/setting-save' /* 用户信息修改页面 
 import Message from './pages/User/message' /* 用户消息页面 */
 import Coupon from './pages/User/coupon' /* 用户优惠券页面 */
 
+// 菜篮子
+import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */
+import index2 from './pages/History/index'
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter history={hashHistory}>
@@ -40,6 +43,9 @@ ReactDOM.render(
         <Route path='/message' component={Message} />
         <Route path='/coupon' component={Coupon} />
         <Route path='/setting-save' component={settingSave} />
+        {/*菜篮*/}
+        <Route path='/supplierRevise' component={supplierRevise} />
+        <Route path='/index2' component={index2} />
       </Switch>
     </HashRouter>
   </Provider>,
