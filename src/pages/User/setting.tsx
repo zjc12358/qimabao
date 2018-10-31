@@ -111,11 +111,12 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+            <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
         </Link>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
+        <Link to='/setting-address'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -141,7 +142,8 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
-        <div className='Segment_line2'></div>
+        </Link>
+        <div className='Segment_line2' />
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -156,7 +158,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'center',
             flexDirection: 'row'
           }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
+            <Icon type='loading' style={{ marginTop: 3 }} />
             <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>清除缓存</span>
           </div>
           <div style={{
@@ -167,7 +169,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -193,7 +195,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
