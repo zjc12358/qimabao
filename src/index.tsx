@@ -27,6 +27,7 @@ import Coupon from './pages/User/coupon' /* 用户优惠券页面 */
 // 菜篮子
 import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */
 import index2 from './pages/History/index'
+import orderMakeSure from './pages/History/orderMakeSure'
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter history={hashHistory}>
@@ -50,6 +51,7 @@ ReactDOM.render(
         {/*菜篮*/}
         <Route path='/supplierRevise' component={supplierRevise} />
         <Route path='/index2' component={index2} />
+        <Route path='/orderMakeSure' component={orderMakeSure} />
         <Route path='/setting-address' component={settingAddress} />
       </Switch>
     </HashRouter>
