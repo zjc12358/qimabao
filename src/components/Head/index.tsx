@@ -7,7 +7,8 @@ import { isWhiteSpace } from 'tslint'
 import history from 'history/createHashHistory'
 
 export interface Props {
-  title: String, // 标题
+  title: string, // 标题
+  titleColor: string // 标题文字颜色
   showLeftIcon: Boolean, // 是否显示左边
   showRightIcon: Boolean, // 是否显示右边
   backgroundColor: string, // 背景颜色
@@ -17,6 +18,7 @@ export interface Props {
 
 interface State {
   title: String,
+  titleColor: string,
   showLeftIcon: Boolean,
   showRightIcon: Boolean,
   backgroundColor: string,
@@ -30,11 +32,24 @@ class Head extends React.Component<Props, State> {
     super(props)
     this.state = {
       title: this.props.title,
+      titleColor: this.props.titleColor,
       showLeftIcon: this.props.showLeftIcon,
       showRightIcon: this.props.showRightIcon,
       backgroundColor: this.props.backgroundColor,
       rightIconOnClick: this.props.rightIconOnClick,
       rightIconContent: this.props.rightIconContent
+    }
+  }
+
+  /**
+   * 判断是否传入颜色
+   * @param color
+   */
+  checkColor = (color: string): string => {
+    if (color === null || color.indexOf('#') === -1) {
+      return 'white'
+    } else {
+      return color
     }
   }
 
@@ -73,7 +88,7 @@ class Head extends React.Component<Props, State> {
         zIndex: 100
       }}>
         <div style={{ flex: 2 }} onClick={() => this.leftIconOnClick()}>
-          {this.state.showLeftIcon && <div style={{ paddingLeft: 10 }} >返回</div>}
+          {this.state.showLeftIcon && <div style={{ paddingLeft: 10 }}>返回</div>}
         </div>
         <div style={{
           flex: 5,
@@ -81,13 +96,13 @@ class Head extends React.Component<Props, State> {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          color: 'white',
+          color: (this.checkColor(this.state.titleColor)),
           fontSize: 18
         }}>
           {this.state.title}
         </div>
         <div style={{ flex: 2 }} onClick={() => this.rightIconOnClick()}>
-          {this.state.showRightIcon && <div style={{ paddingRight: 10 }} >{this.state.rightIconContent}</div>}
+          {this.state.showRightIcon && <div style={{ paddingRight: 10 }}>{this.state.rightIconContent}</div>}
         </div>
       </div>
     )
