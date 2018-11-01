@@ -154,7 +154,6 @@ class User extends React.Component<Props, State> {
           top: 50,
           left: 40,
           position: 'absolute',
-          backgroundColor: '#344edd',
           zIndex: 98
         }}>
           <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden' }} onClick={this.userInfoOnclick}><img style={{

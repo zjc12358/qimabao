@@ -171,7 +171,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
