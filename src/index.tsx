@@ -18,9 +18,9 @@ import index1 from './pages/User/index' /* 我的页面 */
 import NavBar from './pages/index'  /* 底部导航栏页面 */
 import UserInfoEdit from './pages/User/userinfo' /* 用户信息修改页面 */
 import settingSave from './pages/User/setting-save' /* 我的页面设置 --》安全设置 */
-// import settingPay from './pages/User/setting-pay' /* 我的页面设置 --》支付设置 */
+import settingPay from './pages/User/setting-pay' /* 我的页面设置 --》支付设置 */
 import settingAddress from './pages/User/setting-address' /* 我的页面设置 --》收货地址 */
-// import settingAbout from './pages/User/setting-about' /* 我的页面设置 --》关于我们 */
+import settingAbout from './pages/User/setting-about' /* 我的页面设置 --》关于我们 */
 import Message from './pages/User/message' /* 用户消息页面 */
 import Coupon from './pages/User/coupon' /* 用户优惠券页面 */
 
@@ -46,6 +46,8 @@ ReactDOM.render(
         <Route path='/message' component={Message} />
         <Route path='/coupon' component={Coupon} />
         <Route path='/setting-save' component={settingSave} />
+        <Route path='/setting-about' component={settingAbout} />
+        <Route path='/setting-pay' component={settingPay} />
         {/*菜篮*/}
         <Route path='/supplierRevise' component={supplierRevise} />
         <Route path='/index2' component={index2} />

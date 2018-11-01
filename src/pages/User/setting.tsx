@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { Icon } from 'antd-mobile'
+import { Icon, Toast } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
@@ -58,7 +58,7 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
         <Link to='/setting-save'>
         <div style={{
           display: 'flex',
@@ -88,7 +88,7 @@ class User extends React.Component<Props, State> {
         </div>
         </Link>
         <div className='Segment_line2'></div>
-        <Link to='/message'>
+        <Link to='/setting-pay'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -152,7 +152,9 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }}
+             onClick={this.EliminateOnclick}
+        >
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -170,6 +172,7 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
+        <Link to='/setting-about'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -195,6 +198,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
+        </Link>
         <div className='Segment_line2' />
         <div style={{
           display: 'flex',
@@ -225,6 +229,9 @@ class User extends React.Component<Props, State> {
     )
   }
 
+  EliminateOnclick = () => {
+    Toast.info('清除缓存成功！', 1)
+  }
   public render () {
     return (
       <div>
@@ -239,7 +246,6 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {

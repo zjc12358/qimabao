@@ -5,7 +5,7 @@
   height: 1px;
   border-top: 1px solid #e5e5e5;
   text-align: center;
-  margin-left:11px;
+  margin-left:12px;
   margin-right: 11px;
 }
 .Segment_line2{
@@ -76,4 +76,25 @@
 .editpasswordinput::-webkit-input-placeholder {
   color: #b6b4bf;
   opacity: 1;
+}
+.addressInput {
+  width: 50%;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  padding-top: 0px;
+  outline: none;
+  font-size: 13px;
+  text-align: left;
+  color: #a3a3a3;
+  float: left;
+  position: absolute;
+  left: 80px;
+}
+
+.addressText {
+  font-size: 15px;
+  color: #818181;
+  padding: 12px;
+  float: left;
 }
