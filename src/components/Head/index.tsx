@@ -46,7 +46,7 @@ class Head extends React.Component<Props, State> {
    * @param color
    */
   checkColor = (color: string): string => {
-    if (color === null || color.indexOf('#') === -1) {
+    if (color === null || color === undefined || color.indexOf('#') < 0) {
       return 'white'
     } else {
       return color
