@@ -35,7 +35,7 @@ const config = {
     port,
     proxy: {
       '/api': {
-        target: 'http://192.168.1.110:8080/'   //本地测试地址
+        target: 'http://192.168.2.110:8080/'   //本地测试地址
       }
     }
   },
