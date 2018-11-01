@@ -11,7 +11,7 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
-  updatePageTab: (pageTab: PageTab) => void
+  updatePageTab: (pageTab: string) => void
   updateUserInfo: (userInfo: UserInfo) => void
 }
 
@@ -51,7 +51,7 @@ class User extends React.Component<Props, State> {
     )
   }
   backOnclick = () => {
-    this.props.updatePageTab({ pageName: 'UserPageTabBar' })
+    this.props.updatePageTab('UserPageTabBar')
   }
 
   public renderContent = () => {
