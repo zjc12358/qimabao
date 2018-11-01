@@ -4,11 +4,10 @@ import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { NavBar,Icon } from 'antd-mobile'
 import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
 import '../../assets/UserStyle.css'
-import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 
 export interface Props {
-  pageTab: PageTab
+  pageTab: string
   userInfo: UserInfo
   updatePageTab: (pageName: string) => void
   updateUserInfo: (userInfo: UserInfo) => void
