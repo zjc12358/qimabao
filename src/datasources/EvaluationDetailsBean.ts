@@ -7,5 +7,4 @@ export interface EvaluationDetailsBean {
   title0: number
   title1: number
   title3: number
-  list: Array<EvaluationBean>
 }

@@ -13,7 +13,7 @@ import User from '@pages/User'
 import { PageTab } from '@datasources/PageTab'
 
 export interface Props {
-  pageTab: PageTab
+  pageTab: string
 }
 
 interface State {
@@ -34,9 +34,9 @@ class App extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    this.setState({ pageContent: this.renderHomePage() })
-    console.log(this.props.pageTab.pageName)
-    this.onTabBarSelectChange(this.props.pageTab.pageName)
+    // this.setState({ pageContent: this.renderHomePage() })
+    console.log(this.props.pageTab)
+    this.onTabBarSelectChange(this.props.pageTab)
   }
 
   onTabBarSelectChange = (tabBarName) => {
@@ -53,6 +53,7 @@ class App extends React.Component<Props, State> {
         pageContent = this.renderHistoryPage() // 历史页面
         break
       case 'UserPageTabBar':
+        console.log(tabBarName)
         pageContent = this.renderUserCenter()	// 用户中心页面
         break
       default:
@@ -65,27 +66,42 @@ class App extends React.Component<Props, State> {
     })
   }
 
+  getIndex = (tabBarName: string): number => {
+    switch (tabBarName) {
+      case 'HomePageTabBar':
+        return 0
+      case 'OrderPageTabBar':
+        return 1
+      case 'HistoryPageTabBar':
+        return 2
+      case 'UserPageTabBar':
+        return 3
+      default:
+        return 0
+    }
+  }
+
   renderHomePage = () => {
     return (
-      <Home />
+      <Home/>
     )
   }
 
   renderOrderPage = () => {
     return (
-      <Order />
+      <Order/>
     )
   }
 
   renderHistoryPage = () => {
     return (
-      <History />
+      <History/>
     )
   }
 
   renderUserCenter = () => {
     return (
-      <User />
+      <User/>
     )
   }
 
@@ -101,8 +117,8 @@ class App extends React.Component<Props, State> {
         <TabBar.Item
           title='首页'
           key='HomePage'
-          icon={<ReactSVG path='./assets/images/foot_home.svg' svgStyle={{ width: 22, height: 22 }} />}
-          selectedIcon={<ReactSVG path='./assets/images/foot_home_on.svg' svgStyle={{ width: 22, height: 22 }} />}
+          icon={<ReactSVG path='./assets/images/foot_home.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/foot_home_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'HomePageTabBar'}
           onPress={() => this.onTabBarSelectChange('HomePageTabBar')}
         >
@@ -112,8 +128,8 @@ class App extends React.Component<Props, State> {
         <TabBar.Item
           title='菜谱'
           key='OrderPage'
-          icon={<ReactSVG path='./assets/images/foot_jiaoyi.svg' svgStyle={{ width: 22, height: 22 }} />}
-          selectedIcon={<ReactSVG path='./assets/images/foot_jiaoyi_on.svg' svgStyle={{ width: 22, height: 22 }} />}
+          icon={<ReactSVG path='./assets/images/foot_jiaoyi.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/foot_jiaoyi_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'OrderPageTabBar'}
           onPress={() => this.onTabBarSelectChange('OrderPageTabBar')}
         >
@@ -123,8 +139,8 @@ class App extends React.Component<Props, State> {
         <TabBar.Item
           title='菜篮'
           key='HistoryPage'
-          icon={<ReactSVG path='./assets/images/foot_history.svg' svgStyle={{ width: 22, height: 22 }} />}
-          selectedIcon={<ReactSVG path='./assets/images/foot_history_on.svg' svgStyle={{ width: 22, height: 22 }} />}
+          icon={<ReactSVG path='./assets/images/foot_history.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/foot_history_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'HistoryPageTabBar'}
           onPress={() => this.onTabBarSelectChange('HistoryPageTabBar')}
         >
@@ -134,8 +150,8 @@ class App extends React.Component<Props, State> {
         <TabBar.Item
           title='我的'
           key='UserPage'
-          icon={<ReactSVG path='./assets/images/foot_my.svg' svgStyle={{ width: 22, height: 22 }} />}
-          selectedIcon={<ReactSVG path='./assets/images/foot_my_on.svg' svgStyle={{ width: 22, height: 22 }} />}
+          icon={<ReactSVG path='./assets/images/foot_my.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/foot_my_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'UserPageTabBar'}
           onPress={() => this.onTabBarSelectChange('UserPageTabBar')}
         >
@@ -165,8 +181,6 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {
-
-}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

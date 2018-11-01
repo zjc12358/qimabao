@@ -17,13 +17,15 @@ export interface Props {
 
 interface State {
   evaluationDetails: EvaluationDetailsBean
+  listData: Array<EvaluationBean>
 }
 
 class Home extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      evaluationDetails: null
+      evaluationDetails: null,
+      listData: []
     }
   }
 
@@ -47,9 +49,9 @@ class Home extends React.Component<Props, State> {
         all: 999,
         title0: 666,
         title1: 333,
-        title3: 0,
-        list: list
-      }
+        title3: 0
+      },
+      listData: list
     })
   }
 
@@ -100,7 +102,12 @@ class Home extends React.Component<Props, State> {
    * 评论列表
    */
   renderList = () => {
-    let data = this.state.evaluationDetails.list
+    // 分割线
+    const separator = (sectionID, rowID) => (
+      <div style={{}}>
+      </div>
+    )
+    let data = this.state.listData
     let index = data.length - 1
     const row = (rowData, sectionID, rowID) => {
       if (index < 0) {
@@ -121,7 +128,7 @@ class Home extends React.Component<Props, State> {
         alignItems: 'center',
         flex: 1
       }}>
-        <ListView dataSource={this.state.evaluationDetails.list} renderRow={row}/>
+        <ListView dataSource={this.state.listData} renderRow={row}/>
       </div>
     )
   }
@@ -155,7 +162,6 @@ class Home extends React.Component<Props, State> {
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#efeff5'
       }}>
