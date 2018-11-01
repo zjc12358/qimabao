@@ -1,16 +1,19 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { Toast, Carousel } from 'antd-mobile'
+import { Toast, Carousel, Pagination } from 'antd-mobile'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import { ProductDetailBean } from '@datasources/ProductDetailBean'
 import history from 'history/createHashHistory'
+import { PicBean } from '@datasources/PicBean'
+import { chooseProduct } from '@store/actions/productDetails-data'
 
 export interface Props {
   productDetailsData: {
     productId: number
   }
+  chooseProduct: (id: number) => void
 }
 
 interface State {
@@ -19,6 +22,7 @@ interface State {
   imgHeight: any
   scrollY: number
   width: any
+  current: number
 }
 
 class Home extends React.Component<Props, State> {
@@ -30,7 +34,8 @@ class Home extends React.Component<Props, State> {
       topImgData: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
       imgHeight: 176,
       scrollY: 0,
-      width: window.screen.availWidth
+      width: window.screen.availWidth,
+      current: 0
     }
   }
 
@@ -72,7 +77,7 @@ class Home extends React.Component<Props, State> {
         zIndex: 100,
         opacity: (this.state.scrollY / this.state.width)
       }}>
-        默认名{this.state.width}{this.state.productDetails !== null && this.state.productDetails!!.product_name}
+        默认名{this.state.productDetails !== null && this.state.productDetails!!.product_name}
         <div style={{
           display: 'flex',
           flexDirection: 'row',
@@ -113,11 +118,13 @@ class Home extends React.Component<Props, State> {
       <div style={{
         width: '100%',
         height: 0,
-        paddingBottom: '100%'
+        paddingBottom: '100%',
+        position: 'relative'
       }}>
         <Carousel
           autoplay={true}
           infinite={true}
+          afterChange={(current) => this.afterChange(current)}
         >
           {this.state.topImgData.map(val => (
             <a
@@ -138,35 +145,206 @@ class Home extends React.Component<Props, State> {
             </a>
           ))}
         </Carousel>
+        <div style={{ position: 'absolute', bottom: 10, right: 30, color: '#333333', fontSize: 20 }}>
+          <span>{this.state.current + 1}</span>
+          <span>/</span>
+          <span>{this.state.topImgData.length}</span>
+        </div>
       </div>
     )
   }
 
-  renderContent = () => {
+  /**
+   * 商品详细信息
+   */
+  renderDetailsInfo = () => {
     return (
-      <ul style={{
-        height: 2000
-      }}>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-      </ul>
+      this.state.productDetails === null ?
+        <div style={{
+          fontSize: 20,
+          backgroundColor: 'white',
+          height: 125,
+          width: '100%'
+        }}>
+          未获取到商品详细
+        </div>
+        :
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          height: 125,
+          padding: 20,
+          backgroundColor: 'white',
+          width: '100%'
+        }}>
+          <div>{this.state.productDetails.product_name}</div>
+          <div style={{ color: '#e5e5e5' }}>{this.state.productDetails.product_describe}</div>
+          <div>
+            <span style={{ color: '#ff6161' }}>{this.state.productDetails.product_price}</span>
+            <span>/</span>
+            <span>{this.state.productDetails.product_weight}</span>
+          </div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <div>4星</div>
+            <div>{this.state.productDetails.product_sales}人购买</div>
+          </div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            color: '#e5e5e5'
+          }}>
+            <span style={{ flex: 1 }}>快递:免运费</span>
+            <span style={{ flex: 1 }}>库存:{this.state.productDetails.product_inventory}</span>
+            <span style={{ flex: 1 }}>产地:{this.state.productDetails.product_origin}</span>
+          </div>
+        </div>
     )
+  }
+
+  /**
+   * 评价栏
+   */
+  renderEvaluation = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        width: '100%',
+        backgroundColor: 'white'
+      }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: 18,
+          height: 40,
+          width: '100%',
+          backgroundColor: 'white'
+        }}>
+          <span style={{
+            fontSize: 18,
+            paddingLeft: 20
+          }}>商品评价</span>
+          <span style={{
+            color: 'red',
+            paddingRight: 20
+          }}>({this.state.productDetails === null || this.state.productDetails.product_evaluation_number === null ? 0 : this.state.productDetails.product_evaluation_number})</span>
+        </div>
+        {this.state.productDetails === null || this.state.productDetails.product_evaluation_item === null ?
+          <div style={{ fontSize: 20 }}>暂无评价</div>
+          :
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span></span>
+          </div>
+        }
+        <div style={{
+          width: '100%',
+          height: 60,
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <div style={{
+            paddingLeft: 30,
+            paddingRight: 30,
+            paddingTop: 7,
+            paddingBottom: 7,
+            fontSize: 18,
+            color: '#ffaf7a',
+            borderStyle: 'solid',
+            borderWidth: 1,
+            borderColor: '#ffaf7a',
+            borderRadius: 20
+          }} onClick={this.moreEvaOnClick}>
+            查看更多评论+
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  /**
+   * 底部图片区
+   */
+  renderBottomPic = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        width: '100%',
+        backgroundColor: 'white'
+      }}>
+        <span style={{
+          height: 40,
+          fontSize: 18,
+          paddingLeft: 20,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center'
+        }}>产品详情</span>
+        {this.state.productDetails === null || this.state.productDetails.product_bottom_pic === null || this.state.productDetails.product_bottom_pic.length < 1 ? null :
+          <div>
+            {this.state.productDetails.product_bottom_pic.map((item) => this.renderBottomPicItem(item))}
+          </div>
+        }
+      </div>
+    )
+  }
+
+  /**
+   * 底部单个图片样式
+   */
+  renderBottomPicItem = (item: PicBean) => {
+    return (
+      <img style={{
+        width: '100%',
+        height: 0,
+        paddingBottom: '100%'
+      }} src={item.picture_url}/>
+    )
+  }
+
+  /**
+   * 切换面板后的回调函数
+   */
+  afterChange = (index: number) => {
+    this.setState({
+      current: index
+    })
+  }
+
+  /**
+   * 查看更多评价
+   */
+  moreEvaOnClick = () => {
+    // TODO 2018/10/31 查看更多评论
+    console.log('查看更多评论')
+    if (this.state.productDetails !== null && this.state.productDetails.product_id !== null) {
+      this.props.chooseProduct(this.state.productDetails.product_id)
+      history().push('/moreEvaluation')
+    } else {
+      Toast.info('加载未完成')
+    }
+    history().push('/moreEvaluation')
   }
 
   /**
@@ -195,7 +373,33 @@ class Home extends React.Component<Props, State> {
       }}>
         {this.renderHead()}
         {this.renderTopPic()}
-        {this.renderContent()}
+        {this.renderDetailsInfo()}
+        <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
+        {this.renderEvaluation()}
+        <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
+        {this.renderBottomPic()}
+        <ul>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+        </ul>
       </div>
     )
   }
@@ -207,6 +411,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  chooseProduct
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

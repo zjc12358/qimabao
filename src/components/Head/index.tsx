@@ -72,8 +72,8 @@ class Head extends React.Component<Props, State> {
         backgroundColor: this.state.backgroundColor,
         zIndex: 100
       }}>
-        <div style={{ flex: 1 }} onClick={() => this.leftIconOnClick()}>
-          {this.state.showLeftIcon && <div>返回按钮</div>}
+        <div style={{ flex: 2 }} onClick={() => this.leftIconOnClick()}>
+          {this.state.showLeftIcon && <div style={{ paddingLeft: 10 }} >返回</div>}
         </div>
         <div style={{
           flex: 5,
@@ -86,8 +86,8 @@ class Head extends React.Component<Props, State> {
         }}>
           {this.state.title}
         </div>
-        <div style={{ flex: 1 }} onClick={() => this.rightIconOnClick()}>
-          {this.state.showRightIcon && <div>{this.state.rightIconContent}</div>}
+        <div style={{ flex: 2 }} onClick={() => this.rightIconOnClick()}>
+          {this.state.showRightIcon && <div style={{ paddingRight: 10 }} >{this.state.rightIconContent}</div>}
         </div>
       </div>
     )
