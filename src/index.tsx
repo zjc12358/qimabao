@@ -38,7 +38,6 @@ ReactDOM.render(
         <Route path='/productDetails' component={ProductDetails}/>
         <Route path='/moreEvaluation' component={MoreEvaluation}/>
         <Route path='/test' component={Test} />
-        {/*我的*/}
         {/*首页*/}
         {/*我的*/}
         <Route path='/setting' component={setting} />
