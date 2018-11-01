@@ -34,7 +34,6 @@ class App extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    // this.setState({ pageContent: this.renderHomePage() })
     console.log(this.props.pageTab)
     this.onTabBarSelectChange(this.props.pageTab)
   }
@@ -53,7 +52,6 @@ class App extends React.Component<Props, State> {
         pageContent = this.renderHistoryPage() // 历史页面
         break
       case 'UserPageTabBar':
-        console.log(tabBarName)
         pageContent = this.renderUserCenter()	// 用户中心页面
         break
       default:
@@ -64,21 +62,6 @@ class App extends React.Component<Props, State> {
       selectedTabBar: tabBarName,
       pageContent
     })
-  }
-
-  getIndex = (tabBarName: string): number => {
-    switch (tabBarName) {
-      case 'HomePageTabBar':
-        return 0
-      case 'OrderPageTabBar':
-        return 1
-      case 'HistoryPageTabBar':
-        return 2
-      case 'UserPageTabBar':
-        return 3
-      default:
-        return 0
-    }
   }
 
   renderHomePage = () => {
