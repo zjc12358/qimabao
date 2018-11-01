@@ -80,14 +80,18 @@ class Head extends React.Component<Props, State> {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
         paddingLeft: 10,
         paddingRight: 10,
         backgroundColor: this.state.backgroundColor,
         zIndex: 100
       }}>
-        <div style={{ flex: 2 }} onClick={() => this.leftIconOnClick()}>
+        <div style={{
+          flex: 2, width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }} onClick={() => this.leftIconOnClick()}>
           {this.state.showLeftIcon && <div style={{ paddingLeft: 10 }}>返回</div>}
         </div>
         <div style={{
@@ -97,11 +101,18 @@ class Head extends React.Component<Props, State> {
           justifyContent: 'center',
           alignItems: 'center',
           color: (this.checkColor(this.state.titleColor)),
-          fontSize: 18
+          fontSize: 18,
+          width: '100%'
         }}>
           {this.state.title}
         </div>
-        <div style={{ flex: 2 }} onClick={() => this.rightIconOnClick()}>
+        <div style={{
+          flex: 2, width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center'
+        }} onClick={() => this.rightIconOnClick()}>
           {this.state.showRightIcon && <div style={{ paddingRight: 10 }}>{this.state.rightIconContent}</div>}
         </div>
       </div>

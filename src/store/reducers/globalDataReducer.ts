@@ -1,10 +1,9 @@
 import { GlobalDataAction, Type } from '../actions/global-data'
 import { UserInfo } from '@datasources/UserInfo'
-import { PageTab } from '@datasources/PageTab'
 
 export interface GlobalData {
   userInfo: UserInfo
-  pageTab: PageTab
+  pageTab: string
   isFetching: boolean
   pageIndex: number
   errMsg?: string // update form date error message
@@ -15,7 +14,7 @@ const initialState: GlobalData = {
     userName: '用户0',
     isLogin: true
   } as UserInfo,
-  pageTab: {} as PageTab,
+  pageTab: 'HomePageTabBar',
   isFetching: false,
   pageIndex: 0,
   errMsg: ''

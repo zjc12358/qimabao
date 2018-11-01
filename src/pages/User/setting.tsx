@@ -4,14 +4,13 @@ import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import { Icon } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
-import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
 
 export interface Props {
-  pageTab: PageTab
+  pageTab: string
   userInfo: UserInfo
-  updatePageTab: (pageTab: PageTab) => void
+  updatePageTab: (pageTab: string) => void
   updateUserInfo: (userInfo: UserInfo) => void
 }
 
@@ -52,7 +51,7 @@ class User extends React.Component<Props, State> {
     )
   }
   backOnclick = () => {
-    this.props.updatePageTab({ pageName: 'UserPageTabBar' })
+    this.props.updatePageTab('UserPageTabBar')
   }
 
   public renderContent = () => {
