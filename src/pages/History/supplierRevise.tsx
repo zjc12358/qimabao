@@ -89,7 +89,7 @@ class History extends React.Component<Props, State> {
             id: 0,
             name: '衢州炒菜软件有限公司'
           },
-          otherSupplierList: []
+          otherSupplierList: null
         }
       ]
     }
@@ -236,7 +236,7 @@ class History extends React.Component<Props, State> {
                 }}>
                 </div>
               </div>
-              {this.state.foodList[foodListIndex].otherSupplierList.length ? this.state.foodList[foodListIndex].otherSupplierList.map((i,otherSupplierListIndex) => (
+              {this.state.foodList[foodListIndex].otherSupplierList && this.state.foodList[foodListIndex].otherSupplierList.length ? this.state.foodList[foodListIndex].otherSupplierList.map((i,otherSupplierListIndex) => (
                 this.renderOtherSupplier(otherSupplierListIndex,foodListIndex)
               )) : <div>该菜品暂无其他供应商</div>}
             </div>

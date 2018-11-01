@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar } from 'antd-mobile'
+import { TabBar,Icon } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
@@ -9,12 +9,10 @@ import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
 
-export interface Props {
-
-}
+export interface Props {}
 
 interface State {
-
+  orderData: any
 }
 
 class History extends React.Component<Props, State> {
@@ -22,20 +20,71 @@ class History extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-
+      orderData: {
+        user: {},
+        total: 0,
+        addressData: {},
+        supplier: [
+          {
+            id: 0,
+            name: '衢州炒菜软件有限公司',
+            foodList: []
+          }
+        ]
+      }
     }
   }
 
   public render () {
     return (
-      <div>
+      <div style={{ display: 'flex',flexDirection: 'column',justifyContent: 'flex-start',alignItems: 'center' }}>
         <Head
           title='确认订单'
+          titleColor='#333333'
+          backgroundColor='#ffffff'
           showLeftIcon='true'
         >
         </Head>
-        <div style={{ marginTop: 40 }}>
-          我是确认订单
+        <div style={{ width: '100%' }}>
+          <div>
+            <div
+              style={{ marginTop: 40,borderTop: '1px solid #cccccc',display: 'flex',alignItems: 'center',padding: 20,color: '#8c8c8c' }}
+              onClick={ () => {
+                history().push('/setting-address')
+              }}
+            >
+              <div>1</div>
+              <div style={{ flex: 1,paddingLeft: 12,paddingRight: 10 }}>
+                <div style={{ display: 'flex' }}>
+                  <div>收货人：何静</div>
+                  <div style={{ flex: 1 }}></div>
+                  <div>15657076868</div>
+                </div>
+                <div style={{ marginTop: 3 }}>收货地址：阿里巴巴集团某某事业部123</div>
+              </div>
+              <div><Icon type='right' /></div>
+            </div>
+            <div style={{ height: 5,backgroundColor: '#d69495',marginBottom: 15 }}></div>
+          </div>
+          <div style={{ backgroundColor: 'white' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              borderTop: '1px solid #CCCCCC',
+              borderBottom: '1px solid #CCCCCC',
+              height: 40
+            }}>
+              <div style={{ width: 20 }}></div>
+              <div style={{ color: '#8C8C8C' }}>衢州炒菜软件有限公司</div>
+              <div style={{ flex: 1 }}></div>
+              <div style={{ paddingRight: 15 }}><Icon type='right'/></div>
+            </div>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+            </div>
+          </div>
         </div>
       </div>
     )

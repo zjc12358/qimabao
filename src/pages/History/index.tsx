@@ -9,6 +9,7 @@ import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
 import supplierRevise from '.'
+import { updatePageTab } from '@store/actions/global-data'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem
@@ -21,7 +22,7 @@ if (isIPhone) {
 }
 
 export interface Props {
-
+  updatePageTab: (pageTab: string) => void
 }
 
 interface State {
@@ -413,7 +414,10 @@ class History extends React.Component<Props, State> {
             <div style={{ width: 20 }}></div>
             <div style={{ color: '#8C8C8C' }}>{i.name}</div>
             <div style={{ flex: 1 }}></div>
-            <div style={{ paddingRight: 15 }}><Icon type='right' onClick={ () => { history().push('/supplierRevise') } } /></div>
+            <div style={{ paddingRight: 15 }}><Icon type='right' onClick={ () => {
+              this.props.updatePageTab('HistoryPageTabBar')
+              history().push('/supplierRevise')
+            }} /></div>
           </div>
           <div style={{
             display: 'flex',
@@ -449,13 +453,13 @@ class History extends React.Component<Props, State> {
       <div>
         <Head title='菜篮子' backgroundColor='#0084e7' rightIconContent='删除' showRightIcon='true' rightIconOnClick={ this.HeadDeleteOnclick }></Head>
         <div style={{ height: 40 }}></div>
-        {this.state.data.length ? this.state.data.map((i, index1) => (
+        {this.state.data && this.state.data.length && this.state.data.length ? this.state.data.map((i, index1) => (
           <div style={{ backgroundColor: 'white' }}>
             {this.renderSupplierItem(i, index1)}
           </div>
         )) : this.renderEmptyCart()}
         {this.renderYourLike()}
-        {this.state.data.length ? this.renderCartFooter() : <div></div>}
+        {this.state.data && this.state.data.length ? this.renderCartFooter() : <div></div>}
         <div style={{ height: 100 }}></div>
       </div>
     )
@@ -466,6 +470,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {}
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  updatePageTab
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)
