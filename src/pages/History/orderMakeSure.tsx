@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar,Icon } from 'antd-mobile'
+import { TabBar,Icon,DatePicker } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
@@ -12,7 +12,8 @@ import history from 'history/createHashHistory'
 export interface Props {}
 
 interface State {
-  orderData: any
+  orderData: any,
+  visible: any
 }
 
 class History extends React.Component<Props, State> {
@@ -20,6 +21,7 @@ class History extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
+      visible: false,
       orderData: {
         user: {},
         total: 0,
@@ -28,7 +30,7 @@ class History extends React.Component<Props, State> {
           {
             id: 0,
             name: '衢州炒菜软件有限公司',
-            foodList: []
+            foodList: [1,2,3]
           }
         ]
       }
@@ -66,7 +68,10 @@ class History extends React.Component<Props, State> {
             </div>
             <div style={{ height: 5,backgroundColor: '#d69495',marginBottom: 15 }}></div>
           </div>
-          <div style={{ backgroundColor: 'white' }}>
+          <div
+            style={{ backgroundColor: 'white' }}
+            onClick={() => this.setState({ visible: true })}
+          >
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -75,8 +80,9 @@ class History extends React.Component<Props, State> {
               height: 40
             }}>
               <div style={{ width: 20 }}></div>
-              <div style={{ color: '#8C8C8C' }}>衢州炒菜软件有限公司</div>
+              <div style={{ color: '#8C8C8C' }}>送达时间</div>
               <div style={{ flex: 1 }}></div>
+              <div>选择送达时间</div>
               <div style={{ paddingRight: 15 }}><Icon type='right'/></div>
             </div>
             <div style={{
@@ -85,6 +91,11 @@ class History extends React.Component<Props, State> {
             }}>
             </div>
           </div>
+          <DatePicker
+            visible={this.state.visible}
+            onOk={() => this.setState({  visible: false })}
+            onDismiss={() => this.setState({ visible: false })}
+          />
         </div>
       </div>
     )
