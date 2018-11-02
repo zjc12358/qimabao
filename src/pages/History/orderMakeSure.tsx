@@ -1,19 +1,41 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar,Icon,DatePicker } from 'antd-mobile'
+import { TabBar,Icon,DatePicker,List,Modal,Button,Radio,Checkbox } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
-
 export interface Props {}
+
+const nowTimeStamp = Date.now()
+const now = new Date(nowTimeStamp)
+const RadioItem = Radio.RadioItem
 
 interface State {
   orderData: any,
-  visible: any
+  visible1: any,
+  visible2: any,
+  dpValue1: any,
+  dpValue2: any,
+  dateValue1: any,
+  dateValue2: any,
+  timeIsSet: any,
+  modal1: boolean,
+  dateChooseData: any
+}
+
+function closest (el, selector) {
+  const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector
+  while (el) {
+    if (matchesSelector.call(el, selector)) {
+      return el
+    }
+    el = el.parentElement
+  }
+  return null
 }
 
 class History extends React.Component<Props, State> {
@@ -21,7 +43,18 @@ class History extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      visible: false,
+      dateChooseData: [
+        { text: '当天', checked: false,value: 0 },
+        { text: '隔天', checked: false, value: 1 }
+      ],
+      modal1: false,
+      timeIsSet: false,
+      visible1: false,
+      visible2: false,
+      dpValue1: 0,
+      dpValue2: 0,
+      dateValue1: '',
+      dateValue2: '',
       orderData: {
         user: {},
         total: 0,
@@ -35,6 +68,71 @@ class History extends React.Component<Props, State> {
         ]
       }
     }
+  }
+
+  showModal = (e) => {
+    e.preventDefault() // 修复 Android 上点击穿透
+    this.setState({
+      modal1: true
+    })
+  }
+  onClose = key => () => {
+    this.setState({ modal1: false })
+  }
+
+  onWrapTouchStart = (e) => {
+    // fix touch to scroll background page on iOS
+    if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
+      return
+    }
+    const pNode = closest(e.target, '.am-modal-content')
+    if (!pNode) {
+      e.preventDefault()
+    }
+  }
+
+  radioOnChange = (obj,index) => {
+    console.log(11)
+    for (let i = 0; i < this.state.dateChooseData.length; i++) {
+      let dateChooseData = this.state.dateChooseData
+      dateChooseData[i].checked = false
+      if (i === index) dateChooseData[i].checked = true
+      console.log(dateChooseData[i].checked)
+      this.setState({ dateChooseData: dateChooseData })
+    }
+  }
+
+  FormattedDate = (date) => {
+    date = date + ''
+    date = date.replace(/ GMT.+$/, '')// Or str = str.substring(0, 24)
+    let da = new Date(date)
+    console.log(da)
+    let a = [da.getFullYear(), da.getMonth() + 1, da.getDate(), da.getHours(), da.getMinutes(), da.getSeconds()]
+    let dpValue = a[3] + ':' + a[4]
+    this.setState({ dpValue1: dpValue })
+    return dpValue
+  }
+
+  renderSetTime = () => {
+    return (
+      <div>
+        {this.state.dateChooseData.map((i, index) => (
+          <List.Item key={index}>
+            <div style={{ display: 'flex',fontSize: 13 }}>
+              <div>{i.text}</div>
+              <div style={{ flex: 1,textAlign: 'center' }}>
+                <span onClick={() => this.setState({ visible1: true })}>{this.state.dpValue1}</span>
+                &nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;
+                <span onClick={() => this.setState({ visible2: true })}>{this.state.dpValue2}</span>
+              </div>
+              <div><Checkbox checked={ i.checked } onChange={() => {
+                this.radioOnChange(i,index)
+              }}></Checkbox></div>
+            </div>
+           </List.Item>
+        ))}
+      </div>
+    )
   }
 
   public render () {
@@ -70,7 +168,6 @@ class History extends React.Component<Props, State> {
           </div>
           <div
             style={{ backgroundColor: 'white' }}
-            onClick={() => this.setState({ visible: true })}
           >
             <div style={{
               display: 'flex',
@@ -82,8 +179,8 @@ class History extends React.Component<Props, State> {
               <div style={{ width: 20 }}></div>
               <div style={{ color: '#8C8C8C' }}>送达时间</div>
               <div style={{ flex: 1 }}></div>
-              <div>选择送达时间</div>
-              <div style={{ paddingRight: 15 }}><Icon type='right'/></div>
+              <div onClick={ (e) => { this.showModal(e) } } style={{ color: 'rgb(140, 140, 140)' }}>选择送达时间</div>
+              <div onClick={ (e) => { this.showModal(e) } } style={{ paddingRight: 15 }}><Icon type='right'/></div>
             </div>
             <div style={{
               display: 'flex',
@@ -91,12 +188,36 @@ class History extends React.Component<Props, State> {
             }}>
             </div>
           </div>
-          <DatePicker
-            visible={this.state.visible}
-            onOk={() => this.setState({  visible: false })}
-            onDismiss={() => this.setState({ visible: false })}
-          />
         </div>
+        <DatePicker
+          mode='time'
+          visible={this.state.visible1}
+          value={this.state.dateValue1}
+          onChange={date => this.FormattedDate(date)}
+          onOk = { date => this.setState({ visible1: false,dateValue1: date }) }
+          onDismiss={() => this.setState({ visible1: false })}
+        ></DatePicker>
+        <DatePicker
+          mode='time'
+          visible={this.state.visible2}
+          value={this.state.dateValue2}
+          onChange={date => this.FormattedDate(date)}
+          onOk = { date => this.setState({ visible2: false,dateValue2: date }) }
+          onDismiss={() => this.setState({ visible2: false })}
+        ></DatePicker>
+        <Modal
+          popup
+          visible={this.state.modal1}
+          onClose={this.onClose('modal1')}
+          animationType='slide-up'
+        >
+          <List renderHeader={() => '选择送达时间'} className='popup-list'>
+            {this.renderSetTime()}
+            <List.Item>
+            <Button type='primary' onClick={this.onClose('modal1')}>确定</Button>
+            </List.Item>
+          </List>
+        </Modal>
       </div>
     )
   }

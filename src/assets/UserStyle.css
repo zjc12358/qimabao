@@ -13,7 +13,7 @@
   border-top: 1px solid #e5e5e5;
   text-align: center;
 }
-
+/** 短信验证码输入框样式 **/
 .Verification{
   background-color: transparent !important;
   width: 35px;
@@ -26,7 +26,7 @@
   font-size: 25px !important;
   text-align: center !important;
 }
-
+/** 验证码输入框样式 **/
 .passContainer {
   border: 1px solid #ccc;
   border-radius: 16px;
@@ -47,8 +47,7 @@
 .passItem:not(:last-child) {
   border-right: inherit;
 }
-
-.passwordinput {
+.passWordInput {
   width: 100%;
   height: 100%;
   background-color: transparent;
@@ -59,6 +58,41 @@
   font-size: 40px;
   font-family: "courier new", sans-serif;
   letter-spacing: 0.60em;
+  text-align: left;
+  text-overflow: initial;
+}
+
+.passItem1 {
+  width: 30px;
+  height: 30px;
+  border-radius: 10%;
+  float: left;
+  margin-right: 10px;
+  border: 1px solid;
+}
+.passItem1:not(:last-child) {
+}
+.passContainer1 {
+  width: 100%;
+  height: 50px;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  background-color: transparent;
+}
+.passWordInput1 {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  color:transparent;
+  text-shadow:0 0 0 #181818;
+  position: absolute;
+  border: none;
+  outline: none;
+  margin-left: 8px;
+  margin-top: -10px;
+  font-size: 23px;
+  letter-spacing: 1.23em;
   text-align: left;
   text-overflow: initial;
 }
@@ -77,6 +111,8 @@
   color: #b6b4bf;
   opacity: 1;
 }
+
+/** 收货地址样式 **/
 .addressInput {
   width: 50%;
   height: 40px;
@@ -97,4 +133,41 @@
   color: #818181;
   padding: 12px;
   float: left;
+}
+
+/** 字体样式 **/
+.p1{font:26px Pingfang SC}
+.p2{font:300 26px Pingfang SC}
+.p3{font:bold 26px Pingfang SC}
+.p4{font:900 26px Pingfang SC}
+
+/** 添加银行卡样式 **/
+
+.bankCardText {
+  font-size: 16px;
+  color: #181818;
+  padding-left: 10px;
+  padding-top: 13px;
+  float: left;
+}
+
+.addressInput::-webkit-input-placeholder{
+  color: #b6b6b6;
+}
+.addressInput::-moz-placeholder{   /* Mozilla Firefox 19+ */
+  color: #b6b6b6;
+}
+.addressInput:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+  color: #b6b6b6;
+}
+.addressInput:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+  color: #b6b6b6;
+}
+
+.BankCode{
+  background-color: transparent !important;
+  padding: 0
+}
+.BankCode input{
+  font-size: 17px !important;
 }

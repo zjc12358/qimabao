@@ -637,7 +637,7 @@ class User extends React.Component<Props, State> {
           paddingTop: 40
         }}>
           <div className='passContainer'>
-            <input maxLength={6} autoFocus={true} type='password' className={'passwordinput'} onChange={(e) => this.passwordOnchange(e)}/>
+            <input maxLength={6} autoFocus={true} type='password' className={'passWordInput'} onChange={(e) => this.passwordOnchange(e)}/>
             <div className='passItem'/>
             <div className='passItem'/>
             <div className='passItem'/>
@@ -833,6 +833,7 @@ class User extends React.Component<Props, State> {
       step: 8
     })
   }
+
   public render () {
     switch (this.state.step) {
       case 0 : return (

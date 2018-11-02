@@ -24,6 +24,7 @@ import settingAddress from './pages/User/setting-address' /* 我的页面设置 
 import settingAbout from './pages/User/setting-about' /* 我的页面设置 --》关于我们 */
 import Message from './pages/User/message' /* 用户消息页面 */
 import Coupon from './pages/User/coupon' /* 用户优惠券页面 */
+import BankCard from './pages/User/setting-pay-bankCard' /* 用户优惠券页面 */
 
 // 菜篮子
 import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */
@@ -51,6 +52,7 @@ ReactDOM.render(
         <Route path='/setting-save' component={settingSave} />
         <Route path='/setting-about' component={settingAbout} />
         <Route path='/setting-pay' component={settingPay} />
+        <Route path='/setting-pay-bankCard' component={BankCard} />
         {/*菜篮*/}
         <Route path='/supplierRevise' component={supplierRevise} />
         <Route path='/index2' component={index2} />
