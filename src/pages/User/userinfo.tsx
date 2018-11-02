@@ -127,7 +127,11 @@ class User extends React.Component<Props, State> {
             <span style={{ fontSize: '16px', marginTop: 15, marginLeft: 10 }}>用户头像</span>
           </div>
           <div style={{
-            marginLeft: 200,
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row'
+          }}>
+          <div style={{
             width: 50,
             height: 50
           }}>
@@ -140,7 +144,8 @@ class User extends React.Component<Props, State> {
               }} src={this.state.data.img} />
             </div>
           </div>
-          <Icon type='right' style={{ marginTop: 15 }}></Icon>
+          <Icon type='right' style={{ marginTop: 15, marginRight: 2 }}></Icon>
+        </div>
         </div>
         <div className='Segment_line2'></div>
         <div style={{
