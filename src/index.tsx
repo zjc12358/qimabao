@@ -9,6 +9,7 @@ const { store } = getStore()
 /*首页*/
 import Test from './Test'
 import Home from './pages'
+import Search from './pages/Home/search' /*搜索页面*/
 import ProductList from './pages/Home/productList' /*商品列表页面*/
 import ProductDetails from './pages/Home/productDetails' /*商品详情页*/
 import MoreEvaluation from './pages/Home/moreEvaluation' /*评价详情页*/
@@ -34,9 +35,10 @@ ReactDOM.render(
       <Switch>
         {/*首页*/}
         <Route exact path='/' component={Home} />
-        <Route path='/productList' component={ProductList}/>
+        <Route path='/productList/:id' component={ProductList}/>
         <Route path='/productDetails' component={ProductDetails}/>
         <Route path='/moreEvaluation' component={MoreEvaluation}/>
+        <Route path='/search' component={Search}/>
         <Route path='/test' component={Test} />
         {/*首页*/}
         {/*我的*/}
