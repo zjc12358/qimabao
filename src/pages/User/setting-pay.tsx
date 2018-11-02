@@ -34,29 +34,39 @@ class User extends React.Component<Props, State> {
     return (
       <div style={{
         backgroundColor: '#ffffff',
-        position: 'relative',
-        height: 40
+        width: '100%',
+        height: 40,
+        top: 0,
+        zIndex: 100,
+        position: 'fixed'
       }}
       >
-        <div style={{ float: 'left', position: 'absolute' }}>
-          <Link to='/setting'><Icon type='left' color='#000000' size='lg' /></Link>
-        </div>
+        <Link to={'/setting'}>
+          <div style={{ float: 'left', position: 'absolute' }}>
+            <Icon type='left' color='#000000' size='lg'/>
+          </div>
+        </Link>
         <div style={{
-          fontSize: 20,
-          paddingTop: 5,
+          fontSize: 18,
+          paddingTop: 8,
           color: '#000000',
           width: '100%',
           textAlign: 'center'
         }}>
           <span>支付设置</span>
         </div>
+        <Link to={'/setting-pay-bankCard'}>
+          <div style={{ position: 'absolute',right: 10, top: 10,fontSize: 16,color: '#3e38ee' }}>
+            <span>+</span>
+          </div>
+        </Link>
       </div>
     )
   }
 
   public renderContent = () => {
     return(
-      <div>
+      <div style={{ paddingTop: 40 }}>
         <div className='Segment_line2' />
         <div style={{ backgroundColor: 'transparent',height: 10 }}/>
         <div style={{ backgroundColor: '#ffffff',color: '#585858' }}>
