@@ -23,7 +23,9 @@ class User extends React.Component<Props, State> {
 
     }
   }
-
+  /**
+   * 标题
+   */
   public renderNav = () => {
     return (
       <div style={{
@@ -54,6 +56,9 @@ class User extends React.Component<Props, State> {
   couponOnclick = () => {
     this.props.updateUserInfo({ userName: 'dd',isLogin: true })
   }
+  /**
+   * 内容
+   */
   public renderContent = () => {
     return (
       <div>
@@ -63,7 +68,9 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-
+  /**
+   * 内容头部
+   */
   public renderHead = () => {
     return (
       <div style={{
@@ -154,7 +161,8 @@ class User extends React.Component<Props, State> {
           top: 50,
           left: 40,
           position: 'absolute',
-          zIndex: 98
+          zIndex: 98,
+          borderRadius: '50%'
         }}>
           <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden' }} onClick={this.userInfoOnclick}><img style={{
             width: 'auto',
@@ -174,7 +182,9 @@ class User extends React.Component<Props, State> {
     // TODO 2018/10/26 点击头像
     console.log('点击头像')
   }
-
+  /**
+   * 内容
+   */
   public renderBody = () => {
     return (
       <div style={{
@@ -301,7 +311,9 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-
+  /**
+   * 内容尾部
+   */
   public renderFoot = () => {
     return (
       <div>
