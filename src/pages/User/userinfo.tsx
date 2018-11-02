@@ -511,6 +511,9 @@ class User extends React.Component<Props, State> {
    */
   backOnclick3 = () => {
     this.setState({
+      confirmCss: []
+    })
+    this.setState({
       step: 2
     })
   }
