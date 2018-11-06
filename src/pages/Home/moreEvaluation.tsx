@@ -246,8 +246,6 @@ class Home extends React.Component<Props, State> {
         onScroll={() => {
           console.log('scroll')
         }}
-        // 自定义 body 的包裹组件
-        renderBodyComponent={() => <MyBody/>}
         // 当一个行接近屏幕范围多少像素之内的时候，就开始渲染这一行
         scrollRenderAheadDistance={500}
         onEndReached={this.onEndReached}

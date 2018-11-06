@@ -9,6 +9,9 @@ import { SearchData } from '@store/reducers/searchDataReducer'
 import { updatePageTab } from '@store/actions/global_data'
 import OutSideShade from '@components/OutSideShade'
 import { showShade } from '@store/actions/outSideShade_data'
+import ChooseMenu from '@components/ChooseMenu'
+import { SearchResultBean } from '@datasources/SearchResultBean'
+import './homeCss.css'
 
 export interface Props {
   searchData: SearchData
@@ -17,14 +20,39 @@ export interface Props {
 }
 
 interface State {
-
+  sortData: Array<string>
+  sortIndex: number
+  searchResult: Array<SearchResultBean>
 }
 
 class Home extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      sortData: ['价格高到低', '价格低到高', '销量高到低', '优惠优先'],
+      sortIndex: null,
+      searchResult: []
+    }
+  }
+
+  componentWillMount () {
+    let list: Array<SearchResultBean> = []
+    for (let i = 0; i < 10; i++) {
+      let item: SearchResultBean = {
+        id: i,
+        name: '商品' + i,
+        price: i * 100,
+        weight: '10' + i + 'g',
+        buy: true,
+        store: '商店' + i,
+        storeId: i
+      }
+      list.push(item)
+    }
+    this.setState({
+      searchResult: list
+    })
   }
 
   /**
@@ -91,48 +119,89 @@ class Home extends React.Component<Props, State> {
   renderChoose = () => {
     return (
       <div style={{
-        height: 40,
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+        width: '100%'
+      }}>
+        <div style={{
+          height: 40,
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          backgroundColor: 'white'
+        }}>
+          <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+          {/*<div style={{*/}
+          {/*flex: 1,*/}
+          {/*display: 'flex',*/}
+          {/*flexDirection: 'row',*/}
+          {/*justifyContent: 'center',*/}
+          {/*alignItems: 'center'*/}
+          {/*}} onClick={this.chooseOnClick}>*/}
+          {/*<span>全部分类</span>*/}
+          {/*<span>↓</span>*/}
+          {/*</div>*/}
+          <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative'
+          }} onClick={this.chooseOnClick}>
+            <span>默认排序</span>
+            <span>↓</span>
+          </div>
+          <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <span>筛选</span>
+            <span>→</span>
+          </div>
+        </div>
+        <ChooseMenu chooseHandClick={this.chooseHandClick.bind(this)} data={this.state.sortData}/>
+      </div>
+    )
+  }
+
+  /**
+   * 搜索结果
+   */
+  renderContent = () => {
+    return (
+      <div className='scroll'
+           style={{
+             display: 'flex',
+             flexDirection: 'row',
+             justifyContent: 'space-between',
+             alignItems: 'center',
+             flex: 1,
+             flexWrap: 'wrap',
+             width: '100%'
+           }}>
+        {this.state.searchResult.map((item) => this.renderContentItem(item))}
+      </div>
+    )
+  }
+
+  /**
+   * 搜索结果单项
+   */
+  renderContentItem = (item: SearchResultBean) => {
+    return (
+      <div style={{
+        width: '49%',
+        height: 0,
+        paddingBottom: '130%',
         backgroundColor: 'white'
       }}>
-        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }} onClick={this.chooseOnClick}>
-          <span>全部分类</span>
-          <span>↓</span>
-        </div>
-        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-          <span>默认排序</span>
-          <span>↓</span>
-        </div>
-        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-          <span>筛选</span>
-          <span>→</span>
-        </div>
-
+        {item.name}
       </div>
     )
   }
@@ -158,6 +227,17 @@ class Home extends React.Component<Props, State> {
     this.props.showShade(true)
   }
 
+  /**
+   * 筛选栏回调
+   */
+  chooseHandClick = (index: number) => {
+    console.log(index)
+    this.setState({
+      sortIndex: index
+    })
+    // TODO 2018/11/6 根据index 判断选择类型 请求数据
+  }
+
   public render () {
     return (
       <div>
@@ -172,6 +252,7 @@ class Home extends React.Component<Props, State> {
           {this.renderHead()}
           <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
           {this.renderChoose()}
+          {this.renderContent()}
         </div>
         <OutSideShade/>
       </div>
