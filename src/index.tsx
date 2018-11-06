@@ -18,13 +18,13 @@ import setting from './pages/User/setting' /* 我的页面设置 */
 import index1 from './pages/User/index' /* 我的页面 */
 import NavBar from './pages/index'  /* 底部导航栏页面 */
 import UserInfoEdit from './pages/User/userinfo' /* 用户信息修改页面 */
-import settingSave from './pages/User/setting-save' /* 我的页面设置 --》安全设置 */
-import settingPay from './pages/User/setting-pay' /* 我的页面设置 --》支付设置 */
-import settingAddress from './pages/User/setting-address' /* 我的页面设置 --》收货地址 */
-import settingAbout from './pages/User/setting-about' /* 我的页面设置 --》关于我们 */
+import settingSave from './pages/User/setting_save' /* 我的页面设置 --》安全设置 */
+import settingPay from './pages/User/setting_pay' /* 我的页面设置 --》支付设置 */
+import settingAddress from './pages/User/setting_address' /* 我的页面设置 --》收货地址 */
+import settingAbout from './pages/User/setting_about' /* 我的页面设置 --》关于我们 */
 import Message from './pages/User/message' /* 用户消息页面 */
 import Coupon from './pages/User/coupon' /* 用户优惠券页面 */
-import BankCard from './pages/User/setting-pay-bankCard' /* 用户优惠券页面 */
+import BankCard from './pages/User/setting_pay_bankCard' /* 用户优惠券页面 */
 
 // 菜篮子
 import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */

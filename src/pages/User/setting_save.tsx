@@ -5,6 +5,8 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 'antd-mobile'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
+import Nav from '../../components/Head/nav'
+import Nav1 from '../../components/Head/nav1'
 import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
 import '../../assets/UserStyle.css'
 
@@ -33,9 +35,9 @@ interface State {
   phoneConfirmButtonType: boolean
   phone: string
   modal2: boolean
-  resetpasswordtype: string
+  resetPasswordType: string
   passwordConfirmButtonType: boolean
-  resetpassword: string
+  resetPassword: string
 }
 
 class User extends React.Component<Props, State> {
@@ -76,9 +78,9 @@ class User extends React.Component<Props, State> {
       ],
       modal2: false,
       phone: '',     /*要换绑的手机号  */
-      resetpasswordtype: 'password',       /*要重置的密码输入框类型  */
+      resetPasswordType: 'password',       /*要重置的密码输入框类型  */
       passwordConfirmButtonType: false,  /*false为disabled */
-      resetpassword: ''     /*要重置的密码 */
+      resetPassword: ''     /*要重置的密码 */
     }
   }
   /**
@@ -86,25 +88,7 @@ class User extends React.Component<Props, State> {
    */
   public renderNav = (title, color) => {
     return (
-      <div style={{
-        backgroundColor: color,
-        position: 'relative',
-        height: 40
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }}>
-          <Link to='/setting'><Icon type='left' color='#000000' size='lg'/></Link>
-        </div>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>{title}</span>
-        </div>
-      </div>
+      <Nav title={title} color={color} url={'/setting'} />
     )
   }
   componentDidMount () {
@@ -115,25 +99,7 @@ class User extends React.Component<Props, State> {
    */
   public renderNav1 = (title, color,func) => {
     return (
-      <div style={{
-        backgroundColor: color,
-        position: 'relative',
-        height: 40
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }} onClick={func}>
-          <Icon type='left' color='#000000' size='lg'/>
-        </div>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>{title}</span>
-        </div>
-      </div>
+      <Nav1 title={title} color={color} func={func} />
     )
   }
   /**
@@ -142,61 +108,25 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}
-             onClick={this.phoneOnclick}
-        >
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
+        <div className='Segment_line2' />
+        <div className={'flex-row-space-between-p1510'} onClick={this.phoneOnclick}>
+          <div className={'flex-row-center'}>
+            <Icon type='loading' style={{ marginTop: 3 }} />
             <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>手机号</span>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
+          <div className={'flex-row-center'}>
             <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+            <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}
-             onClick={this.payOnclick}
-        >
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
+        <div className={'flex-row-space-between-p1510'} onClick={this.payOnclick}>
+          <div className={'flex-row-center'}>
+            <Icon type='loading' style={{ marginTop: 3 }} />
             <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>支付密码设置</span>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+          <div className={'flex-row-center'}>
+            <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
       </div>
@@ -212,9 +142,9 @@ class User extends React.Component<Props, State> {
       step: 5
     })
   }
-  public backOnclick = () => {
+  public backOnclick = (step) => {
     this.setState({
-      step: 0
+      step: step
     })
   }
   /**
@@ -224,33 +154,17 @@ class User extends React.Component<Props, State> {
     return(
       <div>
         <div style={{ backgroundColor: '#ffffff' }}>
-          <div className='Segment_line2'></div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            paddingTop: 15,
-            paddingLeft: 10,
-            paddingBottom: 15,
-            paddingRight: 10
-          }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row'
-            }}>
+          <div className='Segment_line2' />
+          <div className={'flex-row-space-between-p1510'}>
+            <div className={'flex-row-center'}>
               <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>当前手机号</span>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row'
-            }}>
+            <div className={'flex-row-center'}>
               <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
             </div>
           </div>
         </div>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
         <div>
           <Button type='primary' style={{
             marginTop: 35,
@@ -269,11 +183,6 @@ class User extends React.Component<Props, State> {
       step: 2
     })
   }
-  public backOnclick1 = () => {
-    this.setState({
-      step: 1
-    })
-  }
   /**
    * 手机号修改
    */
@@ -282,27 +191,11 @@ class User extends React.Component<Props, State> {
       <div>
         <div style={{ backgroundColor: '#ffffff' }}>
           <div className='Segment_line2' />
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            paddingTop: 15,
-            paddingLeft: 10,
-            paddingBottom: 15,
-            paddingRight: 10
-          }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row'
-            }}>
+          <div className={'flex-row-space-between-p1510'}>
+            <div className={'flex-row-center'}>
               <span style={{ fontSize: '18px', paddingTop: 7, paddingLeft: 10 }}>国家和地区</span>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row'
-            }}>
+            <div className={'flex-row-center'}>
               <span style={{ fontSize: '14px', marginTop: 8 }}>{this.state.data.address}</span>
             </div>
           </div>
@@ -342,19 +235,9 @@ class User extends React.Component<Props, State> {
       })
     }
   }
-  public adressOnclick = () => {
-    this.setState({
-      step: 3
-    })
-  }
   public nextOnclick = () => {
     this.setState({
       step: 4
-    })
-  }
-  public backOnclick2 = () => {
-    this.setState({
-      step: 2
     })
   }
   /**
@@ -364,65 +247,28 @@ class User extends React.Component<Props, State> {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
+        <div className={'flex-row-space-between-p1510'}>
+          <div className={'flex-row-center'}>
             <Icon type='loading' style={{ marginTop: 3 }} />
             <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>手机号</span>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
+          <div className={'flex-row-center'}>
             <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{4})(\d{4})/,'$1****$3')}</span>
             <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
+        <div className={'flex-row-space-between-p1510'}>
+          <div className={'flex-row-center'}>
             <Icon type='loading' style={{ marginTop: 3 }} />
             <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>支付密码设置</span>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
+          <div className={'flex-row-center'}>
             <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
       </div>
     )
-  }
-  public backOnclick3 = () => {
-    this.setState({
-      step: 3
-    })
   }
   /**
    * 更改手机号确认短信
@@ -430,7 +276,7 @@ class User extends React.Component<Props, State> {
   public renderContent4 = () => {
     return(
       <div>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
         <div style={{ backgroundColor: '#ffffff',color: '#858585',textAlign: 'center',width: '100%',height: 120 }}>
           <div style={{ paddingTop: 25 }}>
             <span style={{ fontSize: 16 }}>我们已发送 </span>
@@ -441,7 +287,7 @@ class User extends React.Component<Props, State> {
             <span style={{ fontSize: 20,color: '#000000' }}>{this.state.phone.replace(/\s+/g,'').replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
           </div>
         </div>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
         <div style={{ backgroundColor: 'transparent',textAlign: 'center' }}>
           <div style={{
             display: 'flex',
@@ -500,7 +346,7 @@ class User extends React.Component<Props, State> {
     )
   }
 
-  public backOnclick4 = () => {
+  public backOnclick2 = () => {
     this.setState({
       step: 2,
       phoneConfirmButtonType: false
@@ -559,11 +405,6 @@ class User extends React.Component<Props, State> {
       step: 7
     })
   }
-  public backOnclick5 = () => {
-    this.setState({
-      step: 0
-    })
-  }
   /**
    * 忘记密码找回
    */
@@ -579,39 +420,17 @@ class User extends React.Component<Props, State> {
           <span style={{ fontSize: '16px' }}>选一个方式重置密码</span>
         </div>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10,
-          backgroundColor: '#ffffff'
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
+        <div className={'flex-row-space-between-p1510'}>
+          <div className={'flex-row-center'}>
             <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>短信验证码+身份证</span>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
+          <div className={'flex-row-center'}>
             <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
         <div className='Segment_line2' />
       </div>
     )
-  }
-  public backOnclick6 = () => {
-    this.setState({
-      step: 5
-    })
   }
   /**
    * 验证支付密码（6位数字界面）
@@ -655,11 +474,6 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-  public backOnclick7 = () => {
-    this.setState({
-      step: 5
-    })
-  }
   passwordOnchange (e) {
     console.log(e.target.value + '   ' + e.target.value.length)
     if (e.target.value.length === 6) {
@@ -699,7 +513,7 @@ class User extends React.Component<Props, State> {
           border: '1px solid #dddddd',
           backgroundColor: '#ffffff'
         }}>
-          <input type={this.state.resetpasswordtype} className='editpasswordinput' placeholder={'请输入密码'} onChange={this.onPasswordChange}/>
+          <input type={this.state.resetPasswordType} className='editpasswordinput' placeholder={'请输入密码'} onChange={this.onPasswordChange}/>
           <Icon type={'loading'} style={{ marginTop: 8 }} />
         </div>
         <div style={{
@@ -717,26 +531,21 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-  public backOnclick8 = () => {
-    this.setState({
-      step: 7
-    })
-  }
   public next1Onclick = () => {
     let reg2 = /([a-zA-Z0-9!@#$%^&*()_?<>{}]){8,18}/
     let reg3 = /[a-zA-Z]+/
     let reg4 = /[0-9]+/
-    if (reg2.test(this.state.resetpassword) && reg3.test(this.state.resetpassword) && reg4.test(this.state.resetpassword)) {
+    if (reg2.test(this.state.resetPassword) && reg3.test(this.state.resetPassword) && reg4.test(this.state.resetPassword)) {
       this.setState({
         step: 9
       })
-    } else if (!reg2.test(this.state.resetpassword)) {
+    } else if (!reg2.test(this.state.resetPassword)) {
       Toast.info('长度必须在8-18位！', 1)
       return false
-    } else if (!reg3.test(this.state.resetpassword)) {
+    } else if (!reg3.test(this.state.resetPassword)) {
       Toast.info('必须包含字母！', 1)
       return false
-    } else if (!reg4.test(this.state.resetpassword)) {
+    } else if (!reg4.test(this.state.resetPassword)) {
       Toast.info('必须包含数字！', 1)
       return false
     }
@@ -745,7 +554,7 @@ class User extends React.Component<Props, State> {
     if (e.target.value.length > 6) {
       this.setState({
         passwordConfirmButtonType: true,
-        resetpassword: e.target.value
+        resetPassword: e.target.value
       })
     } else {
       this.setState({
@@ -828,11 +637,6 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-  public backOnclick9 = () => {
-    this.setState({
-      step: 8
-    })
-  }
 
   public render () {
     switch (this.state.step) {
@@ -843,47 +647,47 @@ class User extends React.Component<Props, State> {
       </div>)
       case 1 : return (
         <div>
-          {this.renderNav1('手机号','#ffffff',this.backOnclick)}
+          {this.renderNav1('手机号','#ffffff',() => this.backOnclick(0))}
           {this.renderContent1()}
         </div>)
       case 2 : return (
         <div>
-          {this.renderNav1('更换手机号','#ffffff',this.backOnclick1)}
+          {this.renderNav1('更换手机号','#ffffff',() => this.backOnclick(1))}
           {this.renderContent2()}
         </div>)
       case 3 : return (
         <div>
-          {this.renderNav1('国家和地区','#ffffff',this.backOnclick2)}
+          {this.renderNav1('国家和地区','#ffffff',() => this.backOnclick(2))}
           {this.renderContent3()}
         </div>)
       case 4 : return (
         <div>
-          {this.renderNav1('更换手机号','#ffffff',this.backOnclick4)}
+          {this.renderNav1('更换手机号','#ffffff',this.backOnclick2)}
           {this.renderContent4()}
         </div>)
       case 5 : return (
         <div>
-          {this.renderNav1('修改支付密码','#ffffff',this.backOnclick5)}
+          {this.renderNav1('修改支付密码','#ffffff',() => this.backOnclick(0))}
           {this.renderContent5()}
         </div>)
       case 6 : return (
         <div>
-          {this.renderNav1('修改支付密码','#ffffff',this.backOnclick6)}
+          {this.renderNav1('修改支付密码','#ffffff',() => this.backOnclick(5))}
           {this.renderContent6()}
         </div>)
       case 7 : return (
         <div>
-          {this.renderNav1('设置支付密码','#ffffff',this.backOnclick7)}
+          {this.renderNav1('设置支付密码','#ffffff',() => this.backOnclick(5))}
           {this.renderContent7()}
         </div>)
       case 8 : return (
         <div>
-          {this.renderNav1('设置支付密码','#ffffff',this.backOnclick8)}
+          {this.renderNav1('设置支付密码','#ffffff',() => this.backOnclick(7))}
           {this.renderContent8()}
         </div>)
       case 9 : return (
         <div>
-          {this.renderNav1('设置支付密码','#ffffff',this.backOnclick9)}
+          {this.renderNav1('设置支付密码','#ffffff',() => this.backOnclick(8))}
           {this.renderContent9()}
         </div>)
     }

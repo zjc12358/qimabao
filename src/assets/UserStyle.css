@@ -171,3 +171,24 @@
 .BankCode input{
   font-size: 17px !important;
 }
+
+/** flex 布局 **/
+.flex-row-center {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+.flex-row-space-between {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.flex-row-space-between-p1510 {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 15px 10px;
+  background-color: #ffffff;
+}
+
