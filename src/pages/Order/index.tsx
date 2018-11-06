@@ -6,7 +6,7 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import Statusbar from '@components/Statusbar'
 import Head from '@components/Head'
 import { UserInfo } from '@datasources/UserInfo'
-import { updateUserInfo } from '@store/actions/global-data'
+import { updateUserInfo } from '@store/actions/global_data'
 import { ImagePickerBean } from '@datasources/ImagePickerBean'
 
 export interface Props {

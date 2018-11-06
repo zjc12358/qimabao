@@ -5,9 +5,9 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 'antd-mobile'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
+import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import Nav from '../../components/Head/nav'
 import Nav1 from '../../components/Head/nav1'
-import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
 import '../../assets/UserStyle.css'
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题

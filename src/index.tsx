@@ -13,6 +13,7 @@ import Search from './pages/Home/search' /*搜索页面*/
 import ProductList from './pages/Home/productList' /*商品列表页面*/
 import ProductDetails from './pages/Home/productDetails' /*商品详情页*/
 import MoreEvaluation from './pages/Home/moreEvaluation' /*评价详情页*/
+import SearchResult from './pages/Home/searchResult' /*搜索结果页*/
 /*首页*/
 import setting from './pages/User/setting' /* 我的页面设置 */
 import index1 from './pages/User/index' /* 我的页面 */
@@ -37,10 +38,11 @@ ReactDOM.render(
       <Switch>
         {/*首页*/}
         <Route exact path='/' component={Home} />
-        <Route path='/productList/:id' component={ProductList}/>
+        <Route path='/productList' component={ProductList}/>
         <Route path='/productDetails' component={ProductDetails}/>
         <Route path='/moreEvaluation' component={MoreEvaluation}/>
         <Route path='/search' component={Search}/>
+        <Route path='/searchResult' component={SearchResult}/>
         <Route path='/test' component={Test} />
         {/*首页*/}
         {/*我的*/}

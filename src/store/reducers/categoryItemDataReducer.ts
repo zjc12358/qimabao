@@ -1,4 +1,4 @@
-import { CategoryItemAction, Type } from '../actions/categoryItem-data'
+import { CategoryItemAction, Type } from '../actions/categoryItem_data'
 import { HomeCategoryItemBean } from '@datasources/HomeCategoryItemBean'
 
 export interface CategoryItemData {

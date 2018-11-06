@@ -3,12 +3,11 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { Toast, Carousel, Pagination } from 'antd-mobile'
 import axios from 'axios'
-import { GlobalData } from '@store/reducers/globalDataReducer'
 import { ProductDetailBean } from '@datasources/ProductDetailBean'
 import history from 'history/createHashHistory'
 import { PicBean } from '@datasources/PicBean'
-import { chooseProduct } from '@store/actions/productDetails-data'
-import { updatePageTab } from '@store/actions/global-data'
+import { chooseProduct } from '@store/actions/productDetails_data'
+import { updatePageTab } from '@store/actions/global_data'
 
 export interface Props {
   productDetailsData: {

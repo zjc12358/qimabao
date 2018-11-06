@@ -9,12 +9,14 @@ import axios from 'axios'
 import { SecondProductCategoryBean } from '@datasources/SecondProductCategoryBean'
 import './homeCss.css'
 import { ProductBean } from '@datasources/ProductBean'
-import { updateCategoryItem } from '@store/actions/categoryItem-data'
-import { chooseProduct } from '@store/actions/productDetails-data'
+import { updateCategoryItem } from '@store/actions/categoryItem_data'
+import { chooseProduct } from '@store/actions/productDetails_data'
+import { updatePageTab } from '@store/actions/global_data'
 
 export interface Props {
   categoryItemData: CategoryItemData
   chooseProduct: (id: number) => void
+  updatePageTab: (pageIndex: string) => void
 }
 
 interface State {
@@ -179,7 +181,6 @@ class Home extends React.Component<Props, State> {
           <span>筛选</span>
           <span>→</span>
         </div>
-
       </div>
     )
   }
@@ -363,7 +364,7 @@ class Home extends React.Component<Props, State> {
    * 点击搜索
    */
   searchOnClick = () => {
-    // TODO 2018/10/29 搜索点击
+    history().push('/search')
   }
 
   /**
@@ -371,6 +372,8 @@ class Home extends React.Component<Props, State> {
    */
   goCartOnClick = () => {
     // TODO 2018/10/29 点击去购物车
+    this.props.updatePageTab('HistoryPageTabBar')
+    history().push('/')
   }
 
   /**
@@ -436,7 +439,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  chooseProduct
+  chooseProduct,
+  updatePageTab
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

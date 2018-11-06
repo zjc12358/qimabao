@@ -1,4 +1,4 @@
-import { Type, ProductDetailsAction } from '../actions/productDetails-data'
+import { Type, ProductDetailsAction } from '../actions/productDetails_data'
 
 export interface ProductDetailsData {
   productId: number

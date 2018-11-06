@@ -1,4 +1,4 @@
-import { GlobalDataAction, Type } from '../actions/global-data'
+import { GlobalDataAction, Type } from '../actions/global_data'
 import { UserInfo } from '@datasources/UserInfo'
 
 export interface GlobalData {

@@ -8,8 +8,8 @@ import Statusbar from '@components/Statusbar'
 import axios from 'axios'
 import history from 'history/createHashHistory'
 import { ProductListState } from '@datasources/ProductListState'
-import { updateCategoryItem } from '@store/actions/categoryItem-data'
-import { updatePageTab } from '@store/actions/global-data'
+import { updateCategoryItem } from '@store/actions/categoryItem_data'
+import { updatePageTab } from '@store/actions/global_data'
 
 export interface Props {
   updateCategoryItem: (categoryItemData: Array<HomeCategoryItemBean>, index: number) => void
@@ -278,7 +278,7 @@ class Home extends React.Component<Props, State> {
     this.props.updateCategoryItem(this.state.homeCategoryItemData, index)
     // this.state.commodityListState.index = index
     this.props.updatePageTab('HomePageTabBar')
-    history().push('/productList/' + index)
+    history().push('/productList')
   }
 
   public render () {
