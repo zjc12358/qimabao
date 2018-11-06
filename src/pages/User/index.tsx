@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { NavBar,Icon } from 'antd-mobile'
-import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
+import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import '../../assets/UserStyle.css'
 import { UserInfo } from '@datasources/UserInfo'
 
@@ -267,6 +267,7 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2'></div>
+        <Link to='/shoppingCart'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -279,6 +280,7 @@ class User extends React.Component<Props, State> {
           <span style={{ fontSize: '16px' }}>我的购买</span>
           <Icon type='right'></Icon>
         </div>
+        </Link>
         <div className='Segment_line2'></div>
         <div style={{
           display: 'flex',

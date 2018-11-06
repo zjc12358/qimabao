@@ -3,17 +3,18 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { Toast, Carousel, Pagination } from 'antd-mobile'
 import axios from 'axios'
-import { GlobalData } from '@store/reducers/globalDataReducer'
 import { ProductDetailBean } from '@datasources/ProductDetailBean'
 import history from 'history/createHashHistory'
 import { PicBean } from '@datasources/PicBean'
-import { chooseProduct } from '@store/actions/productDetails-data'
+import { chooseProduct } from '@store/actions/productDetails_data'
+import { updatePageTab } from '@store/actions/global_data'
 
 export interface Props {
   productDetailsData: {
     productId: number
   }
   chooseProduct: (id: number) => void
+  updatePageTab: (pageIndex: string) => void
 }
 
 interface State {
@@ -103,7 +104,7 @@ class Home extends React.Component<Props, State> {
           top: 5,
           right: 0,
           height: 30
-        }}>
+        }} onClick={() => this.goHomeOnClick()}>
           主页
         </div>
       </div>
@@ -122,8 +123,8 @@ class Home extends React.Component<Props, State> {
         position: 'relative'
       }}>
         <Carousel
-          autoplay={true}
-          infinite={true}
+          autoplay={false}
+          infinite={false}
           afterChange={(current) => this.afterChange(current)}
         >
           {this.state.topImgData.map(val => (
@@ -311,6 +312,59 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
+   * 按钮区
+   */
+  renderButton = () => {
+    return (
+      <div style={{
+        height: 60,
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        position: 'fixed',
+        bottom: 0
+      }}>
+        <div style={{
+          flex: 1,
+          height: '100%'
+        }} onClick={this.collectionOnClick}>
+          收藏
+        </div>
+        <div style={{
+          flex: 1,
+          height: '100%'
+        }} onClick={this.goCartOnClick}>
+          购物车
+        </div>
+        <div style={{
+          flex: 2,
+          backgroundColor: '#ff6501',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%'
+        }} onClick={this.addCartOnClick}>
+          加入购物车
+        </div>
+        <div style={{
+          flex: 2,
+          backgroundColor: '#ff0000',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%'
+        }} onClick={this.buyOnClick}>
+          立即购买
+        </div>
+      </div>
+    )
+  }
+
+  /**
    * 底部单个图片样式
    */
   renderBottomPicItem = (item: PicBean) => {
@@ -321,6 +375,14 @@ class Home extends React.Component<Props, State> {
         paddingBottom: '100%'
       }} src={item.picture_url}/>
     )
+  }
+
+  /**
+   * 跳转首页
+   */
+  goHomeOnClick = () => {
+    this.props.updatePageTab('HomePageTabBar')
+    history().push('/')
   }
 
   /**
@@ -348,6 +410,36 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
+   * 收藏
+   */
+  collectionOnClick = () => {
+    // TODO 2018/11/2 收藏
+  }
+
+  /**
+   * 跳转购物车
+   */
+  goCartOnClick = () => {
+    // TODO 2018/11/2 跳转购物车
+    this.props.updatePageTab('HistoryPageTabBar')
+    history().push('/')
+  }
+
+  /**
+   * 加入购物车
+   */
+  addCartOnClick = () => {
+    // TODO 2018/11/2 加入购物车
+  }
+
+  /**
+   * 立即购买
+   */
+  buyOnClick = () => {
+    // TODO 2018/11/2 立即购买
+  }
+
+  /**
    * 获取商品详情
    */
   getProductDetail (id: number) {
@@ -368,8 +460,8 @@ class Home extends React.Component<Props, State> {
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
-        height: '100%',
-        backgroundColor: '#efeff5'
+        backgroundColor: '#efeff5',
+        marginBottom: 60
       }}>
         {this.renderHead()}
         {this.renderTopPic()}
@@ -399,7 +491,20 @@ class Home extends React.Component<Props, State> {
           <li>1</li>
           <li>1</li>
           <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
         </ul>
+        {this.renderButton()}
       </div>
     )
   }
@@ -412,7 +517,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  chooseProduct
+  chooseProduct,
+  updatePageTab
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

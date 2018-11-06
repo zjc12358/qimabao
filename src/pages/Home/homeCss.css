@@ -1,7 +1,0 @@
-.scroll{
-  height: 100%;
-  overflow: auto
-}
-.scroll::-webkit-scrollbar {
-  display: none;
-}

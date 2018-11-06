@@ -8,8 +8,8 @@ import Statusbar from '@components/Statusbar'
 import axios from 'axios'
 import history from 'history/createHashHistory'
 import { ProductListState } from '@datasources/ProductListState'
-import { updateCategoryItem } from '@store/actions/categoryItem-data'
-import { updatePageTab } from '@store/actions/global-data'
+import { updateCategoryItem } from '@store/actions/categoryItem_data'
+import { updatePageTab } from '@store/actions/global_data'
 
 export interface Props {
   updateCategoryItem: (categoryItemData: Array<HomeCategoryItemBean>, index: number) => void
@@ -20,6 +20,7 @@ interface State {
   imgData: any
   homeCategoryItemData: Array<HomeCategoryItemBean>
   // commodityListState: ProductListState
+  imgHeight: any
 }
 
 class Home extends React.Component<Props, State> {
@@ -28,7 +29,8 @@ class Home extends React.Component<Props, State> {
     super(props)
     this.state = {
       imgData: [],
-      homeCategoryItemData: []
+      homeCategoryItemData: [],
+      imgHeight: 0
     }
   }
 
@@ -116,36 +118,34 @@ class Home extends React.Component<Props, State> {
   renderCarousel = () => {
     return (
       <div style={{
-        margin: 10,
-        borderStyle: 'solid',
-        borderWidth: 0,
-        borderRadius: 10,
-        marginTop: 70
+        width: '100%',
+        height: 0,
+        paddingBottom: '50%',
+        marginTop: 40
       }}>
         <Carousel
           autoplay={true}
           infinite={true}
-          style={{
-            height: 140
-          }}
         >
           {this.state.imgData.map(val => (
             <a
               key={val}
               href='http://www.alipay.com'
-              style={{
-                display: 'inline-block', height: 140
-              }}
+              style={{ display: 'inline-block', width: '100%', paddingLeft: 10, paddingRight: 10 }}
             >
               <img
                 src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
                 alt=''
                 style={{
-                  verticalAlign: 'top'
+                  width: '100%', verticalAlign: 'top', height: this.state.imgHeight,
+                  borderStyle: 'solid',
+                  borderWidth: 0,
+                  borderRadius: 10
                 }}
                 onLoad={() => {
                   // fire window resize event to change height
                   window.dispatchEvent(new Event('resize'))
+                  this.setState({ imgHeight: 'auto' })
                 }}
               />
             </a>
@@ -168,7 +168,7 @@ class Home extends React.Component<Props, State> {
         alignItems: 'flex-start',
         width: '100%',
         flexWrap: 'wrap',
-        marginTop: 10
+        marginTop: 30
       }}>
         {this.state.homeCategoryItemData.map((item, index) => this.renderIconListItem(item, index))}
       </div>
@@ -194,7 +194,7 @@ class Home extends React.Component<Props, State> {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          paddingTop: 10
+          paddingTop: 20
         }}>
           <div>
             {item.category_picture}
@@ -207,6 +207,9 @@ class Home extends React.Component<Props, State> {
     )
   }
 
+  /**
+   * 获取首页分类
+   */
   getHomeCategory = () => {
     const url = 'CanteenProcurementManager/homepage/productCategory/firstPageList'
     axios.get(url)
@@ -246,8 +249,8 @@ class Home extends React.Component<Props, State> {
    * 点击头部搜索
    */
   searchOnclick = () => {
-    // TODO 2018/10/24 点击搜索跳转搜索页
-    console.log('搜索')
+    this.props.updatePageTab('HomePageTabBar')
+    history().push('/search')
   }
 
   /**
@@ -285,8 +288,16 @@ class Home extends React.Component<Props, State> {
       }}>
         <Statusbar/>
         {this.renderHead()}
-        {this.renderCarousel()}
-        {this.renderIconList()}
+        <div className={'scroll'}
+             style={{
+               display: 'flex',
+               flexDirection: 'column',
+               justifyContent: 'flex-start',
+               alignItems: 'center'
+             }}>
+          {this.renderCarousel()}
+          {this.renderIconList()}
+        </div>
       </div>
     )
   }

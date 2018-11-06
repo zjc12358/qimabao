@@ -13,6 +13,11 @@
   border-top: 1px solid #e5e5e5;
   text-align: center;
 }
+.Segment_line3{
+  height: 2px;
+  border-top: 2px solid #e5e5e5;
+  text-align: center;
+}
 /** 短信验证码输入框样式 **/
 .Verification{
   background-color: transparent !important;
@@ -170,4 +175,52 @@
 }
 .BankCode input{
   font-size: 17px !important;
+}
+
+/** flex 布局 **/
+.flex-row-center {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+.flex-row-space-between {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.flex-row-space-between-p1510 {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 15px 10px;
+  background-color: #ffffff;
+}
+
+/** tab 样式调整 **/
+.am-tabs-default-bar-tab-active{
+  background-color: #ffffff;
+}
+
+.am-tabs-default-bar-tab{
+  border-bottom: 1px solid #ffffff;
+  border-top: 2px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-right: 0;
+}
+
+.am-tabs-default-bar-content{
+  color: #000;
+  background-color: #f2f2f2;
+  border-right: 1px solid #ffffff;
+}
+.am-tabs-default-bar{
+  height: 40px;
+}
+.am-tabs-default-bar-underline{
+  border: none;
+}
+
+html:not([data-scale]) .am-tabs-default-bar-top .am-tabs-default-bar-tab::after {
+  height: 0px;
 }
