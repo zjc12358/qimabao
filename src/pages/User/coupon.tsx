@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { GlobalData } from '@store/reducers/globalDataReducer'
 import { Tabs,Icon } from 'antd-mobile'
-import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
+import '../../assets/UserStyle.css'
 
 export interface Props {
   pageTab: PageTab
@@ -32,7 +31,8 @@ class User extends React.Component<Props, State> {
     return (
       <div style={{
         backgroundColor: '#ffffff',
-        position: 'relative'
+        position: 'relative',
+        height: 40
       }}
       >
         <div style={{ float: 'left', position: 'absolute' }}>
@@ -62,7 +62,8 @@ class User extends React.Component<Props, State> {
     ]
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <Tabs tabs={tabs}
+        <div className={'Segment_line3'} />
+        <Tabs tabs={tabs} animated={false} initialPage={2}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
             Content of first tab
