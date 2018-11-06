@@ -3,7 +3,7 @@ import { Button } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { addPageIndex, deletePageIndex } from '@store/actions/global-data'
+import { addPageIndex, deletePageIndex } from '@store/actions/global_data'
 import history from 'history/createHashHistory'
 
 export interface Props {

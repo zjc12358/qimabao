@@ -5,18 +5,20 @@ import { Toast } from 'antd-mobile'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
-import { updateSearchText } from '@store/actions/search_data'
 import { SearchData } from '@store/reducers/searchDataReducer'
+import { updatePageTab } from '@store/actions/global_data'
+import OutSideShade from '@components/OutSideShade'
+import { showShade } from '@store/actions/outSideShade_data'
 
 export interface Props {
   searchData: SearchData
-  updateSearchText: (text: string) => void
+  updatePageTab: (pageIndex: string) => void,
+  showShade: (isShow: boolean) => void
 }
 
 interface State {
-}
 
-let his = ['面包', '鱼', '白菜', '面包', '鱼', '213', '11111', 'dsadasdas鱼', 'dsadsadasda大叔大婶大']
+}
 
 class Home extends React.Component<Props, State> {
 
@@ -25,6 +27,9 @@ class Home extends React.Component<Props, State> {
     this.state = {}
   }
 
+  /**
+   * 头部
+   */
   renderHead = () => {
     return (
       <div style={{
@@ -33,7 +38,8 @@ class Home extends React.Component<Props, State> {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        width: '100%'
       }}>
         <div style={{
           flex: 1,
@@ -43,8 +49,8 @@ class Home extends React.Component<Props, State> {
           flexDirection: 'row',
           justifyContent: 'flex-start',
           alignItems: 'center'
-        }} onClick={this.searchOnClick}>
-          搜索
+        }} onClick={this.goBackOnClick}>
+          返回
         </div>
         <div style={{
           flex: 4,
@@ -57,12 +63,12 @@ class Home extends React.Component<Props, State> {
           justifyContent: 'flex-start',
           alignItems: 'center',
           backgroundColor: '#f5f5f5'
-        }}>
+        }} onClick={this.goBackOnClick}>
           <span style={{ paddingLeft: 10 }}>搜索</span>
-          <input style={{
+          <span style={{
             backgroundColor: '#f5f5f5', borderStyle: 'solid', paddingLeft: 10,
             borderWidth: 0
-          }} className={'input'} onChange={this.textChange} value={this.props.searchData.searchText}/>
+          }} className={'input'}>{this.props.searchData.searchText}</span>
         </div>
         <div style={{
           flex: 1,
@@ -72,105 +78,104 @@ class Home extends React.Component<Props, State> {
           flexDirection: 'row',
           justifyContent: 'flex-end',
           alignItems: 'center'
-        }} onClick={() => history().goBack()}>
-          取消
+        }} onClick={this.goShopCart}>
+          购物车
         </div>
-
       </div>
     )
   }
 
   /**
-   * 搜索历史
+   * 筛选按钮
    */
-  renderSearchHistory = () => {
+  renderChoose = () => {
     return (
       <div style={{
+        height: 40,
+        width: '100%',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'white'
       }}>
+        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
         <div style={{
+          flex: 1,
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 50,
-          width: '100%',
-          fontSize: 16
-        }}>
-          <span style={{ marginLeft: 20 }}>搜索历史</span>
-          <span style={{ marginRight: 20 }}>清空</span>
+          justifyContent: 'center',
+          alignItems: 'center'
+        }} onClick={this.chooseOnClick}>
+          <span>全部分类</span>
+          <span>↓</span>
         </div>
+        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
         <div style={{
+          flex: 1,
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          flexWrap: 'wrap',
-          width: '100%'
+          justifyContent: 'center',
+          alignItems: 'center'
         }}>
-          {his.map((item, index) => this.renderSearchHistoryItem(item, index))}
+          <span>默认排序</span>
+          <span>↓</span>
         </div>
+        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <span>筛选</span>
+          <span>→</span>
+        </div>
+
       </div>
     )
   }
 
   /**
-   * 搜索历史 单项
+   * 返回
    */
-  renderSearchHistoryItem = (item, index: number) => {
-    return (
-      <div style={{
-        paddingLeft: 12,
-        paddingRight: 12,
-        marginRight: 10,
-        marginLeft: 10,
-        paddingTop: 4,
-        paddingBottom: 4,
-        marginTop: 4,
-        marginBottom: 4,
-        borderStyle: 'solid',
-        borderWidth: 0,
-        borderRadius: 20,
-        backgroundColor: '#f5f5f5'
-      }} onClick={() => this.historySearchOnClick(his[index])}>
-        {item}
-      </div>
-    )
+  goBackOnClick = () => {
+    history().goBack()
   }
 
   /**
-   * 搜索
+   * 跳转到购物车
    */
-  searchOnClick = () => {
-    // TODO 2018/11/2 搜索
-    console.log(this.props.searchData.searchText)
-    history().push('/searchResult')
+  goShopCart = () => {
+    this.props.updatePageTab('HistoryPageTabBar')
   }
 
   /**
-   * 改变输入框文字
-   * @param event
+   * 点击筛选栏
    */
-  textChange = (event) => {
-    this.props.updateSearchText(event.target.value)
-  }
-
-  /**
-   * 历史搜索
-   */
-  historySearchOnClick = (text: string) => {
-    this.props.updateSearchText(text)
+  chooseOnClick = () => {
+    this.props.showShade(true)
   }
 
   public render () {
     return (
-      <div style={{ backgroundColor: '#efeff5' }}>
-        {this.renderHead()}
-        {this.renderSearchHistory()}
+      <div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          backgroundColor: '#efeff5',
+          height: '100vh'
+        }}>
+          {this.renderHead()}
+          <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
+          {this.renderChoose()}
+        </div>
+        <OutSideShade/>
       </div>
+
     )
   }
 }
@@ -182,7 +187,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updateSearchText
+  updatePageTab,
+  showShade
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

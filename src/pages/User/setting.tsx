@@ -5,7 +5,7 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import { Icon, Toast } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { UserInfo } from '@datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
+import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 
 export interface Props {
   pageTab: string

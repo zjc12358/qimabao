@@ -6,7 +6,7 @@ import { Icon, Toast } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '@store/actions/global-data'
+import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 
 export interface Props {
   pageTab: PageTab
