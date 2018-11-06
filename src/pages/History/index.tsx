@@ -8,7 +8,6 @@ import Head from '../../components/Head/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
-import supplierRevise from '.'
 import { updatePageTab } from '@store/actions/global-data'
 
 const CheckboxItem = Checkbox.CheckboxItem
@@ -460,6 +459,7 @@ class History extends React.Component<Props, State> {
         )) : this.renderEmptyCart()}
         {this.renderYourLike()}
         {this.state.data && this.state.data.length ? this.renderCartFooter() : <div></div>}
+        <div onClick={ () => { history().push('/cartTest') } }>点我测试</div>
         <div style={{ height: 100 }}></div>
       </div>
     )

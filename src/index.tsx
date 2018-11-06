@@ -29,6 +29,7 @@ import BankCard from './pages/User/setting-pay-bankCard' /* 用户优惠券页�
 import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */
 import index2 from './pages/History/index'
 import orderMakeSure from './pages/History/orderMakeSure'
+import cartTest from './pages/History/cartTest'
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter history={hashHistory}>
@@ -55,6 +56,7 @@ ReactDOM.render(
         <Route path='/supplierRevise' component={supplierRevise} />
         <Route path='/index2' component={index2} />
         <Route path='/orderMakeSure' component={orderMakeSure} />
+        <Route path='/cartTest' component={cartTest}></Route>
         <Route path='/setting-address' component={settingAddress} />
       </Switch>
     </HashRouter>

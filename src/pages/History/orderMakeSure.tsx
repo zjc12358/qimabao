@@ -8,11 +8,17 @@ import Head from '../../components/Head/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
-export interface Props {}
+import { updataOrderMakeSure } from '@store/actions/oderMakeSure-data'
+import { OrderMakeSureBean } from '@datasources/OrderMakeSureBean'
 
 const nowTimeStamp = Date.now()
 const now = new Date(nowTimeStamp)
 const RadioItem = Radio.RadioItem
+
+export interface Props {
+  updataOrderMakeSure: (orderMakeSure: OrderMakeSureBean) => void,
+  orderData: any
+}
 
 interface State {
   orderData: any,
@@ -55,18 +61,42 @@ class History extends React.Component<Props, State> {
       dpValue2: 0,
       dateValue1: '',
       dateValue2: '',
-      orderData: {
-        user: {},
-        total: 0,
-        addressData: {},
-        supplier: [
-          {
-            id: 0,
-            name: '衢州炒菜软件有限公司',
-            foodList: [1,2,3]
-          }
-        ]
-      }
+      orderData: props.orderData
+    }
+  }
+
+  componentDidMount () {
+    let orderData = {
+      user: {},
+      total: 0,
+      addressData: {},
+      supplier: [
+        {
+          allChecked: false,
+          name: '衢州炒菜软件有限公司',
+          foodList: [
+            {
+              isChecked: false,
+              name: '红烧肉',
+              img: '1231231321',
+              price: 12.1,
+              unit: '份',
+              count: 5
+            }
+          ]
+        }
+      ]
+    }
+    this.props.updataOrderMakeSure(orderData)
+    this.setState({ orderData: this.props.orderData })
+  }
+
+  componentWillReceiveProps (nextProps) {
+    console.log(111)
+    console.log(nextProps)
+    if (nextProps !== this.props) {
+      console.log(111111111111)
+      this.setState({ orderData: nextProps.orderData })
     }
   }
 
@@ -218,15 +248,28 @@ class History extends React.Component<Props, State> {
             </List.Item>
           </List>
         </Modal>
+        <button onClick={ () => {
+          let data = this.props.orderData
+          data.total = 100
+          console.log(this.props.updataOrderMakeSure(data))
+          this.props.updataOrderMakeSure(data)
+          console.log(this.props.orderData.total)
+          this.setState({ orderData: data })
+        } }>点我</button>
+        <div>我是：{this.state.orderData.total}</div>
       </div>
     )
   }
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    orderData: state.orderMakeSure.OrderMakeSureData
+  }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  updataOrderMakeSure
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)
