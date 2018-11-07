@@ -43,7 +43,7 @@ class History extends React.Component<Props, State> {
       allSupplierItemCheck: false,
       total: 0,
       isEmpty: false,
-      yourLink: [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4],
+      yourLink: [1,2,3 ],
       data: []
     }
   }

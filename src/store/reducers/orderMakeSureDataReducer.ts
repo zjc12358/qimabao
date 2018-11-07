@@ -1,4 +1,4 @@
-import { OrderMakeSureAction, Type } from '../actions/oderMakeSure-data'
+import { OrderMakeSureAction, Type } from '../actions/oderMakeSure_data'
 import { OrderMakeSureBean } from '../../datasources/OrderMakeSureBean'
 
 export interface OrderMakeSureData {

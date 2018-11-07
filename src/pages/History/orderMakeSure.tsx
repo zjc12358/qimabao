@@ -5,10 +5,11 @@ import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox } from '
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
+import Dialog from '../../components/Dialog/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
-import { needReload, updataOrderMakeSure } from '@store/actions/oderMakeSure-data'
+import { needReload, updataOrderMakeSure } from '@store/actions/oderMakeSure_data'
 import { OrderMakeSureBean } from '@datasources/OrderMakeSureBean'
 
 const nowTimeStamp = Date.now()
@@ -24,15 +25,16 @@ export interface Props {
 
 interface State {
   orderData: any,
-  visible1: any,
-  visible2: any,
-  dpValue1: any,
-  dpValue2: any,
+  startVisible: any,
+  endVisible: any,
+  startdpValue: any,
+  enddpValue2: any,
   dateValue1: any,
   dateValue2: any,
   timeIsSet: any,
   modal1: boolean,
-  dateChooseData: any
+  dateChooseData: any,
+  dilogIsShow: boolean
 }
 
 function closest (el, selector) {
@@ -51,16 +53,17 @@ class History extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
+      dilogIsShow: false,
       dateChooseData: [
         { text: '当天', checked: false, value: 0 },
         { text: '隔天', checked: false, value: 1 }
       ],
       modal1: false,
       timeIsSet: false,
-      visible1: false,
-      visible2: false,
-      dpValue1: 0,
-      dpValue2: 0,
+      startVisible: false,
+      endVisible: false,
+      startdpValue: 0,
+      enddpValue2: 0,
       dateValue1: '',
       dateValue2: '',
       orderData: this.props.orderData
@@ -70,33 +73,30 @@ class History extends React.Component<Props, State> {
   componentDidMount () {
     console.log('componentDidMount')
     console.log(this.props.needReloadData + '1111111111111111')
-    if (this.props.needReloadData === false) {
-      return
-    } else {
-      let orderData = {
-        user: {},
-        total: 0,
-        addressData: {},
-        supplier: [
-          {
-            allChecked: false,
-            name: '衢州炒菜软件有限公司',
-            foodList: [
-              {
-                isChecked: false,
-                name: '红烧肉',
-                img: '1231231321',
-                price: 12.1,
-                unit: '份',
-                count: 5
-              }
-            ]
-          }
-        ]
-      }
-      this.props.updataOrderMakeSure(orderData)
-      this.props.needReload(false)
+    if (this.props.needReloadData === false) return
+    let orderData = {
+      user: {},
+      total: 0,
+      addressData: {},
+      supplier: [
+        {
+          allChecked: false,
+          name: '衢州炒菜软件有限公司',
+          foodList: [
+            {
+              isChecked: false,
+              name: '红烧肉',
+              img: '1231231321',
+              price: 12.1,
+              unit: '份',
+              count: 5
+            }
+          ]
+        }
+      ]
     }
+    this.props.updataOrderMakeSure(orderData)
+    this.props.needReload(false)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -145,7 +145,7 @@ class History extends React.Component<Props, State> {
     console.log(da)
     let a = [da.getFullYear(), da.getMonth() + 1, da.getDate(), da.getHours(), da.getMinutes(), da.getSeconds()]
     let dpValue = a[3] + ':' + a[4]
-    this.setState({ dpValue1: dpValue })
+    this.setState({ startdpValue: dpValue })
     return dpValue
   }
 
@@ -157,9 +157,9 @@ class History extends React.Component<Props, State> {
             <div style={{ display: 'flex', fontSize: 13 }}>
               <div>{i.text}</div>
               <div style={{ flex: 1, textAlign: 'center' }}>
-                <span onClick={() => this.setState({ visible1: true })}>{this.state.dpValue1}</span>
+                <span onClick={() => this.setState({ startVisible: true })}>{this.state.startdpValue}</span>
                 &nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;
-                <span onClick={() => this.setState({ visible2: true })}>{this.state.dpValue2}</span>
+                <span onClick={() => this.setState({ endVisible: true })}>{this.state.enddpValue2}</span>
               </div>
               <div><Checkbox checked={i.checked} onChange={() => {
                 this.radioOnChange(i, index)
@@ -239,19 +239,19 @@ class History extends React.Component<Props, State> {
         </div>
         <DatePicker
           mode='time'
-          visible={this.state.visible1}
+          visible={this.state.startVisible}
           value={this.state.dateValue1}
           onChange={date => this.FormattedDate(date)}
-          onOk={date => this.setState({ visible1: false, dateValue1: date })}
-          onDismiss={() => this.setState({ visible1: false })}
+          onOk={date => this.setState({ startVisible: false, dateValue1: date })}
+          onDismiss={() => this.setState({ startVisible: false })}
         ></DatePicker>
         <DatePicker
           mode='time'
-          visible={this.state.visible2}
+          visible={this.state.endVisible}
           value={this.state.dateValue2}
           onChange={date => this.FormattedDate(date)}
-          onOk={date => this.setState({ visible2: false, dateValue2: date })}
-          onDismiss={() => this.setState({ visible2: false })}
+          onOk={date => this.setState({ endVisible: false, dateValue2: date })}
+          onDismiss={() => this.setState({ endVisible: false })}
         ></DatePicker>
         <Modal
           popup
@@ -276,6 +276,8 @@ class History extends React.Component<Props, State> {
         }}>点我
         </button>
         <div>我是：{this.state.orderData.total}</div>
+        <Dialog isShow = {this.state.dilogIsShow}></Dialog>
+        <button onClick={ () => { this.setState({ dilogIsShow: true }) } }>点我打开</button>
       </div>
     )
   }
