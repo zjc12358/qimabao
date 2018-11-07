@@ -183,12 +183,27 @@
   justify-content: center;
   flex-direction: row;
 }
+.flex-column-center {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.flex-column-center-p1510 {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 15px 10px;
+}
 .flex-row-space-between {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
 }
-
+.flex-row-space-around {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
 .flex-row-space-between-p1510 {
   display: flex;
   justify-content: space-between;
