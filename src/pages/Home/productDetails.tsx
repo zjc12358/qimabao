@@ -64,47 +64,41 @@ class Home extends React.Component<Props, State> {
    */
   renderHead = () => {
     return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 18,
-        width: '100%',
-        height: 40,
-        backgroundColor: 'white',
-        zIndex: 100,
-        opacity: (this.state.scrollY / this.state.width)
-      }}>
+      <div className='horizontal'
+           style={{
+             position: 'fixed',
+             top: 0,
+             justifyContent: 'center',
+             fontSize: 18,
+             width: '100%',
+             height: 40,
+             backgroundColor: 'white',
+             zIndex: 100,
+             opacity: (this.state.scrollY / this.state.width)
+           }}>
         默认名{this.state.productDetails !== null && this.state.productDetails!!.product_name}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingLeft: 10,
-          paddingRight: 10,
-          position: 'fixed',
-          top: 5,
-          left: 0,
-          height: 30
-        }} onClick={() => history().goBack()}>
+        <div className='horizontal'
+             style={{
+               justifyContent: 'center',
+               paddingLeft: 10,
+               paddingRight: 10,
+               position: 'fixed',
+               top: 5,
+               left: 0,
+               height: 30
+             }} onClick={() => history().goBack()}>
           返回
         </div>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingLeft: 10,
-          paddingRight: 10,
-          position: 'fixed',
-          top: 5,
-          right: 0,
-          height: 30
-        }} onClick={() => this.goHomeOnClick()}>
+        <div className='horizontal'
+             style={{
+               justifyContent: 'center',
+               paddingLeft: 10,
+               paddingRight: 10,
+               position: 'fixed',
+               top: 5,
+               right: 0,
+               height: 30
+             }} onClick={() => this.goHomeOnClick()}>
           主页
         </div>
       </div>
@@ -170,16 +164,13 @@ class Home extends React.Component<Props, State> {
           未获取到商品详细
         </div>
         :
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          height: 125,
-          padding: 20,
-          backgroundColor: 'white',
-          width: '100%'
-        }}>
+        <div className='vertical'
+             style={{
+               height: 125,
+               padding: 20,
+               backgroundColor: 'white',
+               width: '100%'
+             }}>
           <div>{this.state.productDetails.product_name}</div>
           <div style={{ color: '#e5e5e5' }}>{this.state.productDetails.product_describe}</div>
           <div>
@@ -187,22 +178,17 @@ class Home extends React.Component<Props, State> {
             <span>/</span>
             <span>{this.state.productDetails.product_weight}</span>
           </div>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
+          <div className='horizontal'
+               style={{
+                 justifyContent: 'space-between'
+               }}>
             <div>4星</div>
             <div>{this.state.productDetails.product_sales}人购买</div>
           </div>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            color: '#e5e5e5'
-          }}>
+          <div className='horizontal'
+               style={{
+                 color: '#e5e5e5'
+               }}>
             <span style={{ flex: 1 }}>快递:免运费</span>
             <span style={{ flex: 1 }}>库存:{this.state.productDetails.product_inventory}</span>
             <span style={{ flex: 1 }}>产地:{this.state.productDetails.product_origin}</span>
@@ -216,24 +202,19 @@ class Home extends React.Component<Props, State> {
    */
   renderEvaluation = () => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        width: '100%',
-        backgroundColor: 'white'
-      }}>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontSize: 18,
-          height: 40,
-          width: '100%',
-          backgroundColor: 'white'
-        }}>
+      <div className='vertical'
+           style={{
+             width: '100%',
+             backgroundColor: 'white'
+           }}>
+        <div className='horizontal'
+             style={{
+               justifyContent: 'space-between',
+               fontSize: 18,
+               height: 40,
+               width: '100%',
+               backgroundColor: 'white'
+             }}>
           <span style={{
             fontSize: 18,
             paddingLeft: 20
@@ -246,23 +227,19 @@ class Home extends React.Component<Props, State> {
         {this.state.productDetails === null || this.state.productDetails.product_evaluation_item === null ?
           <div style={{ fontSize: 20 }}>暂无评价</div>
           :
-          <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
+          <div className='horizontal'
+               style={{
+                 justifyContent: 'space-between'
+               }}>
             <span></span>
           </div>
         }
-        <div style={{
-          width: '100%',
-          height: 60,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
+        <div className='horizontal'
+             style={{
+               width: '100%',
+               height: 60,
+               justifyContent: 'center'
+             }}>
           <div style={{
             paddingLeft: 30,
             paddingRight: 30,
@@ -287,21 +264,17 @@ class Home extends React.Component<Props, State> {
    */
   renderBottomPic = () => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        width: '100%',
-        backgroundColor: 'white'
-      }}>
-        <span style={{
-          height: 40,
-          fontSize: 18,
-          paddingLeft: 20,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center'
-        }}>产品详情</span>
+      <div className='vertical'
+           style={{
+             width: '100%',
+             backgroundColor: 'white'
+           }}>
+        <span className='horizontal'
+              style={{
+                height: 40,
+                fontSize: 18,
+                paddingLeft: 20
+              }}>产品详情</span>
         {this.state.productDetails === null || this.state.productDetails.product_bottom_pic === null || this.state.productDetails.product_bottom_pic.length < 1 ? null :
           <div>
             {this.state.productDetails.product_bottom_pic.map((item) => this.renderBottomPicItem(item))}
@@ -316,16 +289,13 @@ class Home extends React.Component<Props, State> {
    */
   renderButton = () => {
     return (
-      <div style={{
-        height: 60,
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        position: 'fixed',
-        bottom: 0
-      }}>
+      <div className='horizontal'
+           style={{
+             height: 60,
+             width: '100%',
+             position: 'fixed',
+             bottom: 0
+           }}>
         <div style={{
           flex: 1,
           height: '100%'
@@ -338,26 +308,22 @@ class Home extends React.Component<Props, State> {
         }} onClick={this.goCartOnClick}>
           购物车
         </div>
-        <div style={{
-          flex: 2,
-          backgroundColor: '#ff6501',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100%'
-        }} onClick={this.addCartOnClick}>
+        <div className='vertical'
+             style={{
+               flex: 2,
+               backgroundColor: '#ff6501',
+               justifyContent: 'center',
+               height: '100%'
+             }} onClick={this.addCartOnClick}>
           加入购物车
         </div>
-        <div style={{
-          flex: 2,
-          backgroundColor: '#ff0000',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100%'
-        }} onClick={this.buyOnClick}>
+        <div className='horizontal'
+             style={{
+               flex: 2,
+               backgroundColor: '#ff0000',
+               justifyContent: 'center',
+               height: '100%'
+             }} onClick={this.buyOnClick}>
           立即购买
         </div>
       </div>
@@ -454,15 +420,12 @@ class Home extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        width: '100%',
-        backgroundColor: '#efeff5',
-        marginBottom: 60
-      }}>
+      <div className='vertical'
+           style={{
+             width: '100%',
+             backgroundColor: '#efeff5',
+             marginBottom: 60
+           }}>
         {this.renderHead()}
         {this.renderTopPic()}
         {this.renderDetailsInfo()}

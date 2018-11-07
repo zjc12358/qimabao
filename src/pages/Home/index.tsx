@@ -64,20 +64,17 @@ class Home extends React.Component<Props, State> {
    */
   renderHead = () => {
     return (
-      <div style={{
-        position: 'fixed',
-        top: '0',
-        width: '100%',
-        height: '40px',
-        background: '#0084E7',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        zIndex: 100,
-        paddingLeft: 10,
-        paddingRight: 10
-      }}>
+      <div className='horizontal'
+           style={{
+             position: 'fixed',
+             top: '0',
+             width: '100%',
+             height: '40px',
+             background: '#0084E7',
+             zIndex: 100,
+             paddingLeft: 10,
+             paddingRight: 10
+           }}>
         {/*<div style={{*/}
         {/*flex: 1*/}
         {/*}} onClick={this.locationOnclick}>*/}
@@ -161,15 +158,13 @@ class Home extends React.Component<Props, State> {
    */
   renderIconList = () => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        width: '100%',
-        flexWrap: 'wrap',
-        marginTop: 30
-      }}>
+      <div className='horizontal'
+           style={{
+             alignItems: 'flex-start',
+             width: '100%',
+             flexWrap: 'wrap',
+             marginTop: 30
+           }}>
         {this.state.homeCategoryItemData.map((item, index) => this.renderIconListItem(item, index))}
       </div>
     )
@@ -177,25 +172,21 @@ class Home extends React.Component<Props, State> {
 
   renderIconListItem = (item, index) => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 10,
-        height: 0,
-        width: '33%',
-        paddingBottom: '34%'
-      }} onClick={() => this.iconItemOnclick(index)}>
-        <div style={{
-          position: 'relative',
-          bottom: '83%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingTop: 20
-        }}>
+      <div className='vertical'
+           style={{
+             justifyContent: 'center',
+             paddingTop: 10,
+             height: 0,
+             width: '33%',
+             paddingBottom: '34%'
+           }} onClick={() => this.iconItemOnclick(index)}>
+        <div className='vertical'
+             style={{
+               position: 'relative',
+               bottom: '83%',
+               justifyContent: 'center',
+               paddingTop: 20
+             }}>
           <div>
             {item.category_picture}
           </div>
@@ -288,13 +279,7 @@ class Home extends React.Component<Props, State> {
       }}>
         <Statusbar/>
         {this.renderHead()}
-        <div className={'scroll'}
-             style={{
-               display: 'flex',
-               flexDirection: 'column',
-               justifyContent: 'flex-start',
-               alignItems: 'center'
-             }}>
+        <div className='scroll vertical'>
           {this.renderCarousel()}
           {this.renderIconList()}
         </div>

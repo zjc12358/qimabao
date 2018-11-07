@@ -7,7 +7,6 @@ import { CategoryItemData } from '@store/reducers/categoryItemDataReducer'
 import history from 'history/createHashHistory'
 import axios from 'axios'
 import { SecondProductCategoryBean } from '@datasources/SecondProductCategoryBean'
-import './homeCss.css'
 import { ProductBean } from '@datasources/ProductBean'
 import { updateCategoryItem } from '@store/actions/categoryItem_data'
 import { chooseProduct } from '@store/actions/productDetails_data'
@@ -73,42 +72,35 @@ class Home extends React.Component<Props, State> {
    */
   renderHead = () => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 40,
-        width: '100%',
-        backgroundColor: 'white'
-      }} onClick={this.headOnClick}>
+      <div className='horizontal'
+           style={{
+             justifyContent: 'center',
+             height: 40,
+             width: '100%',
+             backgroundColor: 'white'
+           }} onClick={this.headOnClick}>
         <div style={{ fontSize: 18 }}>
           {this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}↓
         </div>
-        <div style={{
-          position: 'fixed',
-          left: 0,
-          width: 60,
-          height: 40,
-          color: 'black',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          paddingLeft: 10
-        }} onClick={() => history().goBack()}>
+        <div className='horizontal'
+             style={{
+               position: 'fixed',
+               left: 0,
+               width: 60,
+               height: 40,
+               color: 'black',
+               paddingLeft: 10
+             }} onClick={() => history().goBack()}>
           返回
         </div>
         {/*右边2个按钮*/}
-        <div style={{
-          position: 'fixed',
-          right: 0,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 40
-        }}>
+        <div className='horizontal'
+             style={{
+               position: 'fixed',
+               right: 0,
+               justifyContent: 'center',
+               height: 40
+             }}>
           <span style={{
             height: 40,
             width: 40,
@@ -139,45 +131,36 @@ class Home extends React.Component<Props, State> {
    */
   renderChoose = () => {
     return (
-      <div style={{
-        height: 40,
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: 'white'
-      }}>
+      <div className='horizontal'
+           style={{
+             height: 40,
+             width: '100%',
+             backgroundColor: 'white'
+           }}>
         <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
+        <div className='horizontal'
+             style={{
+               flex: 1,
+               justifyContent: 'center'
+             }}>
           <span>全部分类</span>
           <span>↓</span>
         </div>
         <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
+        <div className='horizontal'
+             style={{
+               flex: 1,
+               justifyContent: 'center'
+             }}>
           <span>默认排序</span>
           <span>↓</span>
         </div>
         <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
+        <div className='horizontal'
+             style={{
+               flex: 1,
+               justifyContent: 'center'
+             }}>
           <span>筛选</span>
           <span>→</span>
         </div>
@@ -190,15 +173,12 @@ class Home extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        height: '100%',
-        width: '100%',
-        flex: 1
-      }}>
+      <div className='horizontal'
+           style={{
+             height: '100%',
+             width: '100%',
+             flex: 1
+           }}>
         {this.renderLeftChoose()}
         {this.renderRightProductList()}
       </div>
@@ -210,13 +190,9 @@ class Home extends React.Component<Props, State> {
    */
   renderLeftChoose = () => {
     return (
-      <div className='scroll'>
+      <div className='scroll vertical'>
         <div style={{
-          width: 60,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'center'
+          width: 60
         }}>
           {this.state.secondCategoryList.map((item, index) => this.renderLeftChooseItem(item, index))}
         </div>
@@ -232,24 +208,19 @@ class Home extends React.Component<Props, State> {
    */
   renderLeftChooseItem = (item: SecondProductCategoryBean, index: number) => {
     return (
-      <div style={{
-        width: '100%',
-        height: 41,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-      }}>
-        <div style={{
-          height: 40,
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: 10,
-          backgroundColor: 'white'
-        }} onClick={() =>
+      <div className='vertical'
+           style={{
+             width: '100%',
+             height: 41
+           }}>
+        <div className='horizontal'
+             style={{
+               height: 40,
+               width: '100%',
+               justifyContent: 'center',
+               fontSize: 10,
+               backgroundColor: 'white'
+             }} onClick={() =>
           console.log('点击' + index)
           // this.getProductList(item.category_id, item.second_category_id)
         }>
@@ -267,12 +238,7 @@ class Home extends React.Component<Props, State> {
   renderRightProductList = () => {
     return (
       <div className='scroll' style={{ flex: 1 }}>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'center'
-        }}>
+        <div className='vertical'>
           {this.state.productList.map((item) => this.renderRightProductListItem(item))}
         </div>
         <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
@@ -286,56 +252,41 @@ class Home extends React.Component<Props, State> {
    */
   renderRightProductListItem = (item: ProductBean) => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        height: 71,
-        width: '100%',
-        backgroundColor: 'white'
-      }} onClick={() => this.productOnClick(item.id)}>
-        <div style={{
-          height: 70,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          width: '100%',
-          alignItems: 'center'
-        }}>
+      <div className='vertical'
+           style={{
+             height: 71,
+             width: '100%',
+             backgroundColor: 'white'
+           }} onClick={() => this.productOnClick(item.id)}>
+        <div className='horizontal'
+             style={{
+               height: 70,
+               width: '100%'
+             }}>
           <img style={{ margin: 5, width: 60, height: 60 }} src={item.img}/>
-          <div style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            width: '100%',
-            height: '100%',
-            marginLeft: 5,
-            marginRight: 5
-          }}>
+          <div className='vertical'
+               style={{
+                 flex: 1,
+                 alignItems: 'flex-start',
+                 whiteSpace: 'nowrap',
+                 overflow: 'hidden',
+                 width: '100%',
+                 height: '100%',
+                 marginLeft: 5,
+                 marginRight: 5
+               }}>
             <span style={{ marginTop: 5 }}>{item.name}</span>
             <div style={{
               fontSize: 12,
               color: '#e5e5e5',
               textOverflow: 'ellipsis'
             }}>{item.describe}</div>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: '100%',
-              alignItems: 'center'
-            }}>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center'
-              }}>
+            <div className='horizontal'
+                 style={{
+                   justifyContent: 'space-between',
+                   width: '100%'
+                 }}>
+              <div className='horizontal'>
                 <span style={{ color: '#ff0000', fontSize: 12 }}>¥</span>
                 <span style={{ color: '#ff0000', fontSize: 12 }}>{item.price}</span>
                 <span style={{ color: '#e5e5e5', fontSize: 12 }}>/{item.weight}</span>
@@ -414,14 +365,11 @@ class Home extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#efeff5',
-        height: '100vh'
-      }}>
+      <div className='vertical'
+           style={{
+             backgroundColor: '#efeff5',
+             height: '100vh'
+           }}>
         {this.renderHead()}
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
         {this.renderChoose()}
