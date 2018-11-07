@@ -8,11 +8,11 @@ import history from 'history/createHashHistory'
 import { showShade } from '../../store/actions/outSideShade_data'
 
 export interface Props {
-  showShade: (isShow: boolean) => void
+  showShade?: (isShow: boolean) => void
   data: Array<string>
-  isShow: boolean
+  isShow?: boolean
   chooseHandClick: (index: number) => void
-  chooseIndex?: number
+  chooseIndex: number
 }
 
 interface State {
@@ -36,7 +36,6 @@ class ChooseMenu extends React.Component<Props, State> {
       }}>
         {this.props.data.map((item, index) =>
           <div style={{
-            paddingLeft: 30,
             height: 50,
             fontSize: 19,
             backgroundColor: 'white',
@@ -45,8 +44,10 @@ class ChooseMenu extends React.Component<Props, State> {
             alignItems: 'center',
             color: (index === this.props.chooseIndex ? '#0084e7' : 'black')
           }} onClick={() => this.handClick(index)}>
-            <span>{item} </span>
-            <span> √</span>
+            <span style={{
+              paddingLeft: 30
+            }}>{item} </span>
+            {index === this.props.chooseIndex ? <span> √</span> : <span></span>}
           </div>)}
       </div>
     )

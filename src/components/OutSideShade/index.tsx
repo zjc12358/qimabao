@@ -8,8 +8,8 @@ import history from 'history/createHashHistory'
 import { showShade } from '../../store/actions/outSideShade_data'
 
 export interface Props {
-  isShow: boolean
-  showShade: (isShow: boolean) => void
+  isShow?: boolean
+  showShade?: (isShow: boolean) => void
 }
 
 interface State {

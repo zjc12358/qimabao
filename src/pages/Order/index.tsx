@@ -8,8 +8,11 @@ import Head from '@components/Head'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo } from '@store/actions/global_data'
 import { ImagePickerBean } from '@datasources/ImagePickerBean'
+import { changeMenuState } from '@store/actions/menu_data'
 
 export interface Props {
+  selectMenu: boolean
+  changeMenuState: (selectMenu: boolean) => void
 }
 
 interface State {
@@ -105,7 +108,13 @@ class Order extends React.Component<Props, State> {
    * 右上方确定
    */
   okOnClick = () => {
-    console.log('点击确定')
+    if (this.props.selectMenu) {
+      console.log('点击拍照')
+      this.props.changeMenuState(false)
+    } else {
+      console.log('点击确定')
+      this.props.changeMenuState(true)
+    }
   }
 
   /**
@@ -194,20 +203,24 @@ class Order extends React.Component<Props, State> {
         height: '100%'
       }}>
         <Head showRightIcon={true} backgroundColor={'#0084e7'} title={'菜谱'} showLeftIcon={false}
-              rightIconOnClick={this.okOnClick.bind(this)} rightIconContent={'确定'}/>
+              rightIconOnClick={this.okOnClick.bind(this)}
+              rightIconContent={this.props.selectMenu === true ? '拍照' : '确定'}/>
         {this.renderContent()}
         {this.renderShowBigPicture()}
         {this.renderPicturesList()}
-        {/*<input type='file' accept='image/*' capture='camera'></input>*/}
       </div>
     )
   }
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    selectMenu: state.menuData.selectMenu
+  }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  changeMenuState
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Order)

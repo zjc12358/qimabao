@@ -6,6 +6,7 @@ import shopCartTestDataReducer from './shopCartTestDataReducer'
 import orderMakeSureDataReducer from '@store/reducers/orderMakeSureDataReducer'
 import searchDataReducer from '@store/reducers/searchDataReducer'
 import outSideShadeDataReducer from '@store/reducers/outSideShadeDataReducer'
+import menuDataReducer from '@store/reducers/menuDataReducer'
 
 const rootReducer = combineReducers<any>({
   globalData: globalDataReducer as any,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers<any>({
   shopCartTestData: shopCartTestDataReducer as any,
   orderMakeSure: orderMakeSureDataReducer as any,
   searchData: searchDataReducer as any,
-  outSideShadeData: outSideShadeDataReducer as any
+  outSideShadeData: outSideShadeDataReducer as any,
+  menuData: menuDataReducer as any
 })
 
 export default rootReducer

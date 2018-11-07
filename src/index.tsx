@@ -15,6 +15,7 @@ import ProductDetails from './pages/Home/productDetails' /*商品详情页*/
 import MoreEvaluation from './pages/Home/moreEvaluation' /*评价详情页*/
 import SearchResult from './pages/Home/searchResult' /*搜索结果页*/
 /*首页*/
+/*菜谱*/
 import setting from './pages/User/setting' /* 我的页面设置 */
 import index1 from './pages/User/index' /* 我的页面 */
 import NavBar from './pages/index'  /* 底部导航栏页面 */

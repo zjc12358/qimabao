@@ -11,16 +11,22 @@ import { ProductBean } from '@datasources/ProductBean'
 import { updateCategoryItem } from '@store/actions/categoryItem_data'
 import { chooseProduct } from '@store/actions/productDetails_data'
 import { updatePageTab } from '@store/actions/global_data'
+import OutSideShade from '@components/OutSideShade'
+import { showShade } from '@store/actions/outSideShade_data'
+import ChooseMenu from '@components/ChooseMenu'
 
 export interface Props {
   categoryItemData: CategoryItemData
   chooseProduct: (id: number) => void
   updatePageTab: (pageIndex: string) => void
+  showShade: (isShow: boolean) => void
 }
 
 interface State {
   secondCategoryList: Array<SecondProductCategoryBean>
   productList: Array<ProductBean>
+  chooseData: Array<string>
+  chooseIndex: number
 }
 
 class Home extends React.Component<Props, State> {
@@ -29,7 +35,9 @@ class Home extends React.Component<Props, State> {
     super(props)
     this.state = {
       secondCategoryList: [],
-      productList: []
+      productList: [],
+      chooseData: ['1', '2', '3'],
+      chooseIndex: null
     }
   }
 
@@ -131,39 +139,44 @@ class Home extends React.Component<Props, State> {
    */
   renderChoose = () => {
     return (
-      <div className='horizontal'
-           style={{
-             height: 40,
-             width: '100%',
-             backgroundColor: 'white'
-           }}>
-        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+      <div style={{
+        width: '100%'
+      }}>
         <div className='horizontal'
              style={{
-               flex: 1,
-               justifyContent: 'center'
+               height: 40,
+               width: '100%',
+               backgroundColor: 'white'
              }}>
-          <span>全部分类</span>
-          <span>↓</span>
+          <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+          <div className='horizontal'
+               style={{
+                 flex: 1,
+                 justifyContent: 'center'
+               }} onClick={this.chooseOnClick}>
+            <span>全部分类</span>
+            <span>↓</span>
+          </div>
+          <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+          <div className='horizontal'
+               style={{
+                 flex: 1,
+                 justifyContent: 'center'
+               }}>
+            <span>默认排序</span>
+            <span>↓</span>
+          </div>
+          <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+          <div className='horizontal'
+               style={{
+                 flex: 1,
+                 justifyContent: 'center'
+               }}>
+            <span>筛选</span>
+            <span>→</span>
+          </div>
         </div>
-        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div className='horizontal'
-             style={{
-               flex: 1,
-               justifyContent: 'center'
-             }}>
-          <span>默认排序</span>
-          <span>↓</span>
-        </div>
-        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div className='horizontal'
-             style={{
-               flex: 1,
-               justifyContent: 'center'
-             }}>
-          <span>筛选</span>
-          <span>→</span>
-        </div>
+        <ChooseMenu data={this.state.chooseData} chooseHandClick={this.chooseHandClick.bind(this)} chooseIndex={this.state.chooseIndex}/>
       </div>
     )
   }
@@ -328,6 +341,24 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
+   * 点击筛选
+   */
+  chooseOnClick = () => {
+    this.props.showShade(true)
+  }
+
+  /**
+   * 筛选弹窗回调
+   */
+  chooseHandClick = (index: number) => {
+    console.log(index)
+    this.setState({
+      chooseIndex: index
+    })
+    // TODO 2018/11/7 根据选择类别请求
+  }
+
+  /**
    * 获取商品列表
    * @param categoryId 一级分类id
    * @param secondCategoryId 二级分类id
@@ -370,6 +401,7 @@ class Home extends React.Component<Props, State> {
              backgroundColor: '#efeff5',
              height: '100vh'
            }}>
+        <OutSideShade/>
         {this.renderHead()}
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
         {this.renderChoose()}
@@ -388,7 +420,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   chooseProduct,
-  updatePageTab
+  updatePageTab,
+  showShade
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

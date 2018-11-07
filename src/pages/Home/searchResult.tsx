@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { Toast } from 'antd-mobile'
+import { Toast, ListView } from 'antd-mobile'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
@@ -13,6 +13,87 @@ import ChooseMenu from '@components/ChooseMenu'
 import { SearchResultBean } from '@datasources/SearchResultBean'
 import './homeCss.css'
 
+// 一次加载多少数据
+const NUM_SECTIONS = 1
+// 每页数据 内对象数
+const NUM_ROWS_PER_SECTION = 5
+// 页码
+let pageIndex = 0
+
+// Object {
+//     S0, R0: "S0, R0",
+//     S0, R1: "S0, R1",
+//     S0, R2: "S0, R2",
+//     S0, R3: "S0, R3",
+//     S0, R4: "S0, R4",
+//     Section 0: "Section 0"
+// }
+// S 页数 R 单条
+// ListView 组件 等于把每页数据对应 section id  每页数据内每个对象 对应rowid
+const dataBlobs = {}
+// 标记页码
+let sectionIDs = []
+let rowIDs = []
+// 添加数据
+// dataBlobs 都是在改这个对象的数据
+function genData (pIndex = 0) {
+  // 页数循环
+  for (let i = 0; i < NUM_SECTIONS; i++) {
+    // 实际下标 页数*一页数据 + 循环下标
+    const ii = (pIndex * NUM_SECTIONS) + i
+    //
+    const sectionName = `Section ${ii}`
+    // sectionIDs 下标数组
+    sectionIDs.push(sectionName)
+    // 标记第几页
+    dataBlobs[sectionName] = sectionName
+    console.log(dataBlobs)
+    rowIDs[ii] = []
+    // 一页内 行数循环
+    for (let jj = 0; jj < NUM_ROWS_PER_SECTION; jj++) {
+      const rowName = `S${ii}, R${jj}`
+      rowIDs[ii].push(rowName)
+      dataBlobs[rowName] = rowName
+    }
+
+  }
+  // ["Section 0", "Section 1", "Section 2", "Section 3", "Section 4"]
+  sectionIDs = [...sectionIDs]
+  // [["S0,R0","S0,R1",...],["S1,R0","S1,R1",...]]
+  rowIDs = [...rowIDs]
+}
+
+// const data = [{
+//   id: -1,
+//   name: '商品' + -1,
+//   price: -1 * 100,
+//   weight: '10' + -1 + 'g',
+//   buy: true,
+//   store: '商店' + -1,
+//   storeId: -1,
+//   pic: ''
+// }, {
+//   id: -1,
+//   name: '商品' + -1,
+//   price: -1 * 100,
+//   weight: '10' + -1 + 'g',
+//   buy: true,
+//   store: '商店' + -1,
+//   storeId: -1,
+//   pic: ''
+// },
+//   {
+//     id: -1,
+//     name: '商品' + -1,
+//     price: -1 * 100,
+//     weight: '10' + -1 + 'g',
+//     buy: true,
+//     store: '商店' + -1,
+//     storeId: -1,
+//     pic: ''
+//   }
+// ]
+
 export interface Props {
   searchData: SearchData
   updatePageTab: (pageIndex: string) => void,
@@ -23,22 +104,36 @@ interface State {
   sortData: Array<string>
   sortIndex: number
   searchResult: Array<SearchResultBean>
+  dataSource: any
+  isLoading: boolean
 }
 
 class Home extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
+
+    const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID]
+    const getRowData = (dataBlob, sectionID, rowID) => dataBlob[rowID]
+
+    const dataSource = new ListView.DataSource({
+      getRowData,
+      getSectionHeaderData: getSectionData,
+      rowHasChanged: (row1, row2) => row1 !== row2,
+      sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+    })
     this.state = {
       sortData: ['价格高到低', '价格低到高', '销量高到低', '优惠优先'],
       sortIndex: null,
-      searchResult: []
+      searchResult: [],
+      dataSource: dataSource,
+      isLoading: true
     }
   }
 
-  componentWillMount () {
+  loadData () {
     let list: Array<SearchResultBean> = []
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       let item: SearchResultBean = {
         id: i,
         name: '商品' + i,
@@ -46,13 +141,43 @@ class Home extends React.Component<Props, State> {
         weight: '10' + i + 'g',
         buy: true,
         store: '商店' + i,
-        storeId: i
+        storeId: i,
+        pic: ''
       }
       list.push(item)
     }
     this.setState({
-      searchResult: list
+      searchResult: this.state.searchResult.concat(list)
     })
+  }
+
+  componentDidMount () {
+    setTimeout(() => {
+      genData()
+      this.loadData()
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlobs, sectionIDs, rowIDs),
+        isLoading: false
+      })
+    }, 600)
+  }
+
+  onEndReached = (event) => {
+    // load new data
+    // hasMore: from backend data, indicates whether it is the last page, here is false
+    if (this.state.isLoading) {
+      return
+    }
+    console.log('reach end', event)
+    this.setState({ isLoading: true })
+    setTimeout(() => {
+      genData(++pageIndex)
+      this.loadData()
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlobs, sectionIDs, rowIDs),
+        isLoading: false
+      })
+    }, 1000)
   }
 
   /**
@@ -68,15 +193,15 @@ class Home extends React.Component<Props, State> {
            }}>
         <div className='horizontal'
              style={{
-               flex: 1,
                height: '100%',
-               margin: 15
+               paddingRight: 10,
+               paddingLeft: 15
              }} onClick={this.goBackOnClick}>
           返回
         </div>
         <div className='horizontal'
              style={{
-               flex: 4,
+               flex: 1,
                height: 30,
                borderStyle: 'solid',
                borderWidth: 0,
@@ -91,9 +216,9 @@ class Home extends React.Component<Props, State> {
         </div>
         <div className='horizontal'
              style={{
-               flex: 1,
                height: '100%',
-               marginRight: 15,
+               paddingLeft: 10,
+               paddingRight: 15,
                justifyContent: 'flex-end'
              }} onClick={this.goShopCart}>
           购物车
@@ -147,7 +272,8 @@ class Home extends React.Component<Props, State> {
             <span>→</span>
           </div>
         </div>
-        <ChooseMenu chooseHandClick={this.chooseHandClick.bind(this)} data={this.state.sortData}/>
+        <ChooseMenu chooseHandClick={this.chooseHandClick.bind(this)} data={this.state.sortData}
+                    chooseIndex={this.state.sortIndex}/>
       </div>
     )
   }
@@ -164,23 +290,76 @@ class Home extends React.Component<Props, State> {
              flexWrap: 'wrap',
              width: '100%'
            }}>
-        {this.state.searchResult.map((item) => this.renderContentItem(item))}
       </div>
+    )
+  }
+
+  /**
+   * 搜索结果ListView
+   */
+  renderContentList = () => {
+    // 行数
+    let index = Math.ceil(this.state.searchResult.length / 2)
+    // 大于0时 只有一个数据(单数)
+    let indexMore = this.state.searchResult.length % 2
+    console.log(index)
+    const row = (rowData, sectionID, rowID) => {
+      // if (index < 0) {
+      //   index = data.length - 1
+      // }
+      const obj = this.state.searchResult[Math.ceil(this.state.searchResult.length / 2) - index--]
+      let objNext = null
+      if (indexMore > 0) {
+        objNext = null
+      } else {
+        objNext = this.state.searchResult[Math.ceil(this.state.searchResult.length / 2) + 1 - index--]
+      }
+      return (
+        this.renderContentItem(obj, objNext)
+      )
+    }
+    return (
+      <ListView className='scroll'
+                style={{
+                  flex: 1,
+                  width: '100%'
+                }}
+                dataSource={this.state.dataSource} renderRow={row}
+                onEndReached={this.onEndReached}/>
     )
   }
 
   /**
    * 搜索结果单项
    */
-  renderContentItem = (item: SearchResultBean) => {
+  renderContentItem = (item: SearchResultBean, itemNext: SearchResultBean) => {
     return (
-      <div style={{
-        width: '49%',
-        height: 0,
-        paddingBottom: '130%',
-        backgroundColor: 'white'
-      }}>
-        {item.name}
+      <div className='scroll horizontal'
+           style={{
+             justifyContent: 'space-between',
+             flex: 1,
+             flexWrap: 'wrap',
+             width: '100%'
+           }}>
+        <div style={{
+          width: '49%',
+          height: 0,
+          paddingBottom: '120%',
+          backgroundColor: 'white',
+          marginTop: 5
+        }}>
+          {item.name}
+        </div>
+        {itemNext === null ? null :
+          <div style={{
+            width: '49%',
+            height: 0,
+            paddingBottom: '120%',
+            backgroundColor: 'white',
+            marginTop: 5
+          }}>
+            {itemNext.name}
+          </div>}
       </div>
     )
   }
@@ -197,6 +376,7 @@ class Home extends React.Component<Props, State> {
    */
   goShopCart = () => {
     this.props.updatePageTab('HistoryPageTabBar')
+    history().push('/')
   }
 
   /**
@@ -228,7 +408,9 @@ class Home extends React.Component<Props, State> {
           {this.renderHead()}
           <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
           {this.renderChoose()}
-          {this.renderContent()}
+          <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
+          {/*{this.renderContent()}*/}
+          {this.renderContentList()}
         </div>
         <OutSideShade/>
       </div>
