@@ -141,7 +141,7 @@ class Home extends React.Component<Props, State> {
           <div className='horizontal'
                style={{
                  flex: 1,
-                 justifyContent: 'center',
+                 justifyContent: 'center'
                }}>
             <span>筛选</span>
             <span>→</span>
