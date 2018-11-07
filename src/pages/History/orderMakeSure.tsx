@@ -8,7 +8,7 @@ import Head from '../../components/Head/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
-import { updataOrderMakeSure } from '@store/actions/oderMakeSure-data'
+import { needReload, updataOrderMakeSure } from '@store/actions/oderMakeSure-data'
 import { OrderMakeSureBean } from '@datasources/OrderMakeSureBean'
 
 const nowTimeStamp = Date.now()
@@ -17,7 +17,9 @@ const RadioItem = Radio.RadioItem
 
 export interface Props {
   updataOrderMakeSure: (orderMakeSure: OrderMakeSureBean) => void,
-  orderData: any
+  needReload: (reload: boolean) => void,
+  orderData: any,
+  needReloadData: boolean
 }
 
 interface State {
@@ -66,6 +68,9 @@ class History extends React.Component<Props, State> {
   }
 
   componentDidMount () {
+    console.log('componentDidMount')
+    if (this.props.needReloadData === false) return
+    // console.log(this.props.needReloadData)
     let orderData = {
       user: {},
       total: 0,
@@ -88,6 +93,8 @@ class History extends React.Component<Props, State> {
       ]
     }
     this.props.updataOrderMakeSure(orderData)
+    this.props.needReload(false)
+    console.log(this.props.needReloadData)
     this.setState({ orderData: this.props.orderData })
   }
 
@@ -264,12 +271,14 @@ class History extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-    orderData: state.orderMakeSure.OrderMakeSureData
+    orderData: state.orderMakeSure.OrderMakeSureData,
+    needReloadData: state.orderMakeSure.needReload
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updataOrderMakeSure
+  updataOrderMakeSure,
+  needReload
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)

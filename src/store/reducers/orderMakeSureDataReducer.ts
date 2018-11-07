@@ -24,6 +24,12 @@ export default (state = initialState, action: OrderMakeSureAction) => {
         ...state,
         OrderMakeSureData: action.OrderMakeSureData
       }
+    case Type.UPDATA_NEEDRELOAD:
+      console.log(111)
+      return {
+        ...state,
+        reload: action.reload
+      }
     default:
       return state
   }
