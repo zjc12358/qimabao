@@ -22,5 +22,5 @@ export const updataOrderMakeSure = (orderMakeSure: OrderMakeSureBean) =>
 export const needReload = (reload: boolean) =>
   (dispatch) => dispatch({
     type: Type.UPDATA_NEEDRELOAD,
-    reload: true
+    reload: reload
   })

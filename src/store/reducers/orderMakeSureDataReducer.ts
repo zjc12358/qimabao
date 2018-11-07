@@ -25,7 +25,7 @@ export default (state = initialState, action: OrderMakeSureAction) => {
         OrderMakeSureData: action.OrderMakeSureData
       }
     case Type.UPDATA_NEEDRELOAD:
-      console.log(111)
+      console.log('UPDATA_NEEDRELOAD')
       return {
         ...state,
         reload: action.reload
