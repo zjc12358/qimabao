@@ -460,6 +460,7 @@ class History extends React.Component<Props, State> {
         )) : this.renderEmptyCart()}
         {this.renderYourLike()}
         {this.state.data && this.state.data.length ? this.renderCartFooter() : <div></div>}
+        <div onClick={ () => { history().push('/cartTest') } }>点我测试</div>
         <div style={{ height: 100 }}></div>
       </div>
     )
