@@ -8,7 +8,8 @@ import Head from '../../components/Head/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
-import { updatePageTab } from '@store/actions/global-data'
+import supplierRevise from '.'
+import { updatePageTab } from '@store/actions/global_data'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem

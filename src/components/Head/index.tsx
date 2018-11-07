@@ -57,7 +57,7 @@ class Head extends React.Component<Props, State> {
    * 左边图标点击事件
    */
   leftIconOnClick = () => {
-    if (this.state.showLeftIcon) {
+    if (this.props.showLeftIcon) {
       history().goBack()
     }
   }
@@ -66,7 +66,7 @@ class Head extends React.Component<Props, State> {
    * 右边菜单点击事件
    */
   rightIconOnClick = () => {
-    if (this.state.showRightIcon) {
+    if (this.props.showRightIcon) {
       this.props.rightIconOnClick !== null && this.props.rightIconOnClick()
     }
   }
@@ -82,7 +82,7 @@ class Head extends React.Component<Props, State> {
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        backgroundColor: this.state.backgroundColor,
+        backgroundColor: this.props.backgroundColor,
         zIndex: 100
       }}>
         <div style={{
@@ -92,7 +92,7 @@ class Head extends React.Component<Props, State> {
           justifyContent: 'flex-start',
           alignItems: 'center'
         }} onClick={() => this.leftIconOnClick()}>
-          {this.state.showLeftIcon && <div style={{ paddingLeft: 10 }}>返回</div>}
+          {this.props.showLeftIcon && <div style={{ paddingLeft: 10 }}>返回</div>}
         </div>
         <div style={{
           flex: 5,
@@ -100,11 +100,11 @@ class Head extends React.Component<Props, State> {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          color: (this.checkColor(this.state.titleColor)),
+          color: (this.checkColor(this.props.titleColor)),
           fontSize: 18,
           width: '100%'
         }}>
-          {this.state.title}
+          {this.props.title}
         </div>
         <div style={{
           flex: 2, width: '100%',
@@ -113,7 +113,7 @@ class Head extends React.Component<Props, State> {
           justifyContent: 'flex-end',
           alignItems: 'center'
         }} onClick={() => this.rightIconOnClick()}>
-          {this.state.showRightIcon && <div style={{ paddingRight: 10 }}>{this.state.rightIconContent}</div>}
+          {this.props.showRightIcon && <div style={{ paddingRight: 10 }}>{this.props.rightIconContent}</div>}
         </div>
       </div>
     )

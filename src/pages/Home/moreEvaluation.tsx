@@ -21,6 +21,7 @@ function MyBody (props) {
 // 一次加载多少数据
 const NUM_SECTIONS = 1
 // 每页数据 内对象数
+// 所以这样设置  一次就加载了25条
 const NUM_ROWS_PER_SECTION = 5
 // 页码
 let pageIndex = 0
@@ -52,6 +53,7 @@ function genData (pIndex = 0) {
     sectionIDs.push(sectionName)
     // 标记第几页
     dataBlobs[sectionName] = sectionName
+    console.log(dataBlobs)
     rowIDs[ii] = []
     // 一页内 行数循环
     for (let jj = 0; jj < NUM_ROWS_PER_SECTION; jj++) {
@@ -246,8 +248,6 @@ class Home extends React.Component<Props, State> {
         onScroll={() => {
           console.log('scroll')
         }}
-        // 自定义 body 的包裹组件
-        renderBodyComponent={() => <MyBody/>}
         // 当一个行接近屏幕范围多少像素之内的时候，就开始渲染这一行
         scrollRenderAheadDistance={500}
         onEndReached={this.onEndReached}
