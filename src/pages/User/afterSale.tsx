@@ -15,7 +15,7 @@ export interface Props {
 }
 
 interface State {
-  jdl: boolean
+  getEmpty: boolean
   data: any
 }
 
@@ -24,7 +24,7 @@ class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      jdl: true,
+      getEmpty: true,
       data: [
         { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
         { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
@@ -53,7 +53,7 @@ class User extends React.Component<Props, State> {
           width: '100%',
           textAlign: 'center'
         }}>
-          <span>我的订单</span>
+          <span>售后服务</span>
         </div>
       </div>
     )
@@ -65,33 +65,6 @@ class User extends React.Component<Props, State> {
    * 内容
    */
   public renderContent = () => {
-    const tabs = [
-      { title: '全部' },
-      { title: '待付款' },
-      { title: '待配送' },
-      { title: '待收货' },
-      { title: '待评价' },
-      { title: '已完成' }
-    ]
-    return(
-      <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className={'Segment_line3'} />
-        <Tabs tabs={tabs} animated={false} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
-        >
-          {this.state.jdl ? this.renderAll : this.renderNone}
-          {this.state.jdl ? this.renderObligation : this.renderNone}
-          {this.state.jdl ? this.renderDispatching : this.renderNone}
-          {this.state.jdl ? this.renderReceived : this.renderNone}
-          {this.state.jdl ? this.renderEvaluated : this.renderNone}
-          {this.state.jdl ? this.renderCompleted : this.renderNone}
-        </Tabs>
-      </div>
-    )
-  }
-  /**
-   * 全部
-   */
-  public renderAll = () => {
     return(
       <div style={{
         paddingTop: 20
@@ -104,6 +77,7 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
+
   public renderItem = (i, index) => {
     return(
       <div style={{
@@ -118,19 +92,11 @@ class User extends React.Component<Props, State> {
         </div>
         <div className={'Segment_line2'} />
         <div className={'flex-row-space-between-p1510'}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='loading' style={{ marginTop: 3 }}></Icon>
+          <div className={'flex-row-center'}>
+            <Icon type='loading' style={{ marginTop: 3 }} />
             <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{i.business}</span>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
+          <div className={'flex-row-center'}>
             <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
@@ -207,56 +173,6 @@ class User extends React.Component<Props, State> {
     )
   }
   /**
-   * 待付款
-   */
-  public renderObligation = () => {
-    return(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
-        Content of second tab
-      </div>
-    )
-  }
-  /**
-   * 待配送
-   */
-  public renderDispatching = () => {
-    return(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
-        Content of second tab
-      </div>
-    )
-  }
-  /**
-   * 待收货
-   */
-  public renderReceived = () => {
-    return(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
-        Content of second tab
-      </div>
-    )
-  }
-  /**
-   * 待评价
-   */
-  public renderEvaluated = () => {
-    return(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
-        Content of second tab
-      </div>
-    )
-  }
-  /**
-   * 已完成
-   */
-  public renderCompleted = () => {
-    return(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
-        Content of second tab
-      </div>
-    )
-  }
-  /**
    * 空
    */
   public renderNone = () => {
@@ -276,7 +192,6 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {

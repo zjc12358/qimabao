@@ -26,8 +26,12 @@ import settingAddress from './pages/User/setting_address' /* 我的页面设置 
 import settingAbout from './pages/User/setting_about' /* 我的页面设置 --》关于我们 */
 import Message from './pages/User/message' /* 用户消息页面 */
 import Coupon from './pages/User/coupon' /* 用户优惠券页面 */
-import BankCard from './pages/User/setting_pay_bankCard' /* 用户优惠券页面 */
-import shoppingCart from './pages/User/shoppingCart' /* 用户优惠券页面 */
+import BankCard from './pages/User/setting_pay_bankCard' /* 添加银行卡页面 */
+import myOrder from './pages/User/myOrder' /* 我的订单页面 */
+import afterSale from './pages/User/afterSale' /* 售后页面 */
+import messageLogistics from './pages/User/message_logistics' /* 物流助手页面 */
+import messageSystemInfo from './pages/User/message_systemInfo' /* 系统消息页面 */
+import messageTradeInfo from './pages/User/message_tradeInfo' /* 交易信息页面 */
 
 // 菜篮子
 import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */
@@ -58,7 +62,11 @@ ReactDOM.render(
         <Route path='/setting-about' component={settingAbout} />
         <Route path='/setting-pay' component={settingPay} />
         <Route path='/setting-pay-bankCard' component={BankCard} />
-        <Route path='/shoppingCart' component={shoppingCart} />
+        <Route path='/myOrder' component={myOrder} />
+        <Route path='/afterSale' component={afterSale} />
+        <Route path='/message_logistics' component={messageLogistics} />
+        <Route path='/message_systemInfo' component={messageSystemInfo} />
+        <Route path='/message_tradeInfo' component={messageTradeInfo} />
         {/*菜篮*/}
         <Route path='/supplierRevise' component={supplierRevise} />
         <Route path='/index2' component={index2} />
