@@ -12,7 +12,7 @@ export interface ShopCartAction extends Action {
   reload: boolean
 }
 
-export const updataOrderMakeSure = (shopCart: Array<ShopCartSupplierBean>) =>
+export const updataShopCart = (shopCart?: Array<ShopCartSupplierBean>) =>
   (dispatch) => dispatch({
     type: Type.UPDATA_SHOPCART,
     ShopCartData: shopCart,
@@ -24,3 +24,7 @@ export const needReload = (reload: boolean) =>
     type: Type.UPDATA_NEEDRELOAD,
     reload: reload
   })
+// export const updataTotal = (total: number) =>
+//   (dispatch) => dispatch({
+//     type: Type.UPDATA_NEEDRELOAD
+//   })

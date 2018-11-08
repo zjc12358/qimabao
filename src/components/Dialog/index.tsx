@@ -12,7 +12,7 @@ export interface Props {
 }
 
 interface State {
-  isShow: boolean
+  // isShow: boolean
 }
 
 class Dialog extends React.Component<Props, State> {
@@ -28,9 +28,9 @@ class Dialog extends React.Component<Props, State> {
   }
   public render () {
     return (
-      <div>
-        { this.state.isShow ? <div>弹窗打开了</div> : <div>1</div>}
-      </div>
+      this.props.isShow ? <div style={{ position: 'fixed',width: '100vw',height: '100vh',backgroundColor: 'black',opacity: 0.6,zIndex: 9999 }}>
+        <div style={{ width: 200,height: '100%',backgroundColor: 'white',position: 'absolute' }}></div>
+      </div> : <div></div>
     )
   }
 }

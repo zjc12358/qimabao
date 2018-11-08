@@ -86,28 +86,27 @@ class Head extends React.Component<Props, State> {
         zIndex: 100
       }}>
         <div style={{
-          flex: 2, width: '100%',
+          width: 50,
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'flex-start',
           alignItems: 'center'
         }} onClick={() => this.leftIconOnClick()}>
-          {this.props.showLeftIcon && <div style={{ paddingLeft: 10 }}>返回</div>}
+          {this.props.showLeftIcon && <div>返回</div>}
         </div>
         <div style={{
-          flex: 5,
+          flex: 1,
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
           color: (this.checkColor(this.props.titleColor)),
-          fontSize: 18,
-          width: '100%'
+          fontSize: 18
         }}>
           {this.props.title}
         </div>
         <div style={{
-          flex: 2, width: '100%',
+          width: 50,
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'flex-end',

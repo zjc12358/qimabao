@@ -76,7 +76,7 @@ class History extends React.Component<Props, State> {
     if (this.props.needReloadData === false) return
     let orderData = {
       user: {},
-      total: 0,
+      total: 1,
       addressData: {},
       supplier: [
         {
@@ -269,7 +269,6 @@ class History extends React.Component<Props, State> {
         <button onClick={() => {
           let data = this.props.orderData
           data.total = 100
-          console.log(this.props.updataOrderMakeSure(data))
           this.props.updataOrderMakeSure(data)
           console.log(this.props.orderData.total)
           this.setState({ orderData: data })
@@ -277,7 +276,7 @@ class History extends React.Component<Props, State> {
         </button>
         <div>我是：{this.state.orderData.total}</div>
         <Dialog isShow = {this.state.dilogIsShow}></Dialog>
-        <button onClick={ () => { this.setState({ dilogIsShow: true }) } }>点我打开</button>
+        <button onClick={ () => { this.setState({ dilogIsShow: !this.state.dilogIsShow }) } }>点我打开</button>
       </div>
     )
   }
