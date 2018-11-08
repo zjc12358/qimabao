@@ -60,53 +60,42 @@ class Home extends React.Component<Props, State> {
    */
   renderHead = () => {
     return (
-      <div style={{
-        height: 40,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        width: '100%'
-      }}>
-        <div style={{
-          flex: 1,
-          height: '100%',
-          margin: 15,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center'
-        }} onClick={this.goBackOnClick}>
+      <div className='horizontal'
+           style={{
+             height: 40,
+             backgroundColor: 'white',
+             width: '100%'
+           }}>
+        <div className='horizontal'
+             style={{
+               flex: 1,
+               height: '100%',
+               margin: 15
+             }} onClick={this.goBackOnClick}>
           返回
         </div>
-        <div style={{
-          flex: 4,
-          height: 30,
-          borderStyle: 'solid',
-          borderWidth: 0,
-          borderRadius: 10,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          backgroundColor: '#f5f5f5'
-        }} onClick={this.goBackOnClick}>
+        <div className='horizontal'
+             style={{
+               flex: 4,
+               height: 30,
+               borderStyle: 'solid',
+               borderWidth: 0,
+               borderRadius: 10,
+               backgroundColor: '#f5f5f5'
+             }} onClick={this.goBackOnClick}>
           <span style={{ paddingLeft: 10 }}>搜索</span>
           <span style={{
             backgroundColor: '#f5f5f5', borderStyle: 'solid', paddingLeft: 10,
             borderWidth: 0
           }} className={'input'}>{this.props.searchData.searchText}</span>
         </div>
-        <div style={{
-          flex: 1,
-          height: '100%',
-          marginRight: 15,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          alignItems: 'center'
-        }} onClick={this.goShopCart}>
+        <div className='horizontal'
+             style={{
+               flex: 1,
+               height: '100%',
+               marginRight: 15,
+               justifyContent: 'flex-end'
+             }} onClick={this.goShopCart}>
           购物车
         </div>
       </div>
@@ -121,15 +110,12 @@ class Home extends React.Component<Props, State> {
       <div style={{
         width: '100%'
       }}>
-        <div style={{
-          height: 40,
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          backgroundColor: 'white'
-        }}>
+        <div className='horizontal'
+             style={{
+               height: 40,
+               width: '100%',
+               backgroundColor: 'white'
+             }}>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
           {/*<div style={{*/}
           {/*flex: 1,*/}
@@ -142,25 +128,21 @@ class Home extends React.Component<Props, State> {
           {/*<span>↓</span>*/}
           {/*</div>*/}
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-          <div style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'relative'
-          }} onClick={this.chooseOnClick}>
+          <div className='horizontal'
+               style={{
+                 flex: 1,
+                 justifyContent: 'center',
+                 position: 'relative'
+               }} onClick={this.chooseOnClick}>
             <span>默认排序</span>
             <span>↓</span>
           </div>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-          <div style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
+          <div className='horizontal'
+               style={{
+                 flex: 1,
+                 justifyContent: 'center'
+               }}>
             <span>筛选</span>
             <span>→</span>
           </div>
@@ -175,12 +157,9 @@ class Home extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      <div className='scroll'
+      <div className='scroll horizontal'
            style={{
-             display: 'flex',
-             flexDirection: 'row',
              justifyContent: 'space-between',
-             alignItems: 'center',
              flex: 1,
              flexWrap: 'wrap',
              width: '100%'
@@ -241,14 +220,11 @@ class Home extends React.Component<Props, State> {
   public render () {
     return (
       <div>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          backgroundColor: '#efeff5',
-          height: '100vh'
-        }}>
+        <div className='vertical'
+             style={{
+               backgroundColor: '#efeff5',
+               height: '100vh'
+             }}>
           {this.renderHead()}
           <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
           {this.renderChoose()}

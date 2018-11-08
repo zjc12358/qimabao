@@ -27,52 +27,41 @@ class Home extends React.Component<Props, State> {
 
   renderHead = () => {
     return (
-      <div style={{
-        height: 40,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: 'white'
-      }}>
-        <div style={{
-          flex: 1,
-          height: '100%',
-          margin: 15,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center'
-        }} onClick={this.searchOnClick}>
+      <div className='horizontal'
+           style={{
+             height: 40,
+             backgroundColor: 'white'
+           }}>
+        <div className='horizontal'
+             style={{
+               flex: 1,
+               height: '100%',
+               margin: 15
+             }} onClick={this.searchOnClick}>
           搜索
         </div>
-        <div style={{
-          flex: 4,
-          height: 30,
-          borderStyle: 'solid',
-          borderWidth: 0,
-          borderRadius: 10,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          backgroundColor: '#f5f5f5'
-        }}>
+        <div className='horizontal'
+             style={{
+               flex: 4,
+               height: 30,
+               borderStyle: 'solid',
+               borderWidth: 0,
+               borderRadius: 10,
+               backgroundColor: '#f5f5f5'
+             }}>
           <span style={{ paddingLeft: 10 }}>搜索</span>
           <input style={{
             backgroundColor: '#f5f5f5', borderStyle: 'solid', paddingLeft: 10,
             borderWidth: 0
           }} className={'input'} onChange={this.textChange} value={this.props.searchData.searchText}/>
         </div>
-        <div style={{
-          flex: 1,
-          height: '100%',
-          marginRight: 15,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          alignItems: 'center'
-        }} onClick={() => history().goBack()}>
+        <div className='horizontal'
+             style={{
+               flex: 1,
+               height: '100%',
+               marginRight: 15,
+               justifyContent: 'flex-end'
+             }} onClick={() => history().goBack()}>
           取消
         </div>
 
@@ -85,32 +74,23 @@ class Home extends React.Component<Props, State> {
    */
   renderSearchHistory = () => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-      }}>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 50,
-          width: '100%',
-          fontSize: 16
-        }}>
+      <div className='vertical'>
+        <div className='horizontal'
+             style={{
+               justifyContent: 'space-between',
+               height: 50,
+               width: '100%',
+               fontSize: 16
+             }}>
           <span style={{ marginLeft: 20 }}>搜索历史</span>
           <span style={{ marginRight: 20 }}>清空</span>
         </div>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          flexWrap: 'wrap',
-          width: '100%'
-        }}>
+        <div className='horizontal'
+             style={{
+               alignItems: 'flex-start',
+               flexWrap: 'wrap',
+               width: '100%'
+             }}>
           {his.map((item, index) => this.renderSearchHistoryItem(item, index))}
         </div>
       </div>

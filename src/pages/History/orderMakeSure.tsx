@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar,Icon,DatePicker,List,Modal,Button,Radio,Checkbox } from 'antd-mobile'
+import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
-import { updataOrderMakeSure } from '@store/actions/oderMakeSure-data'
+import { needReload, updataOrderMakeSure } from '@store/actions/oderMakeSure-data'
 import { OrderMakeSureBean } from '@datasources/OrderMakeSureBean'
 
 const nowTimeStamp = Date.now()
@@ -17,7 +17,9 @@ const RadioItem = Radio.RadioItem
 
 export interface Props {
   updataOrderMakeSure: (orderMakeSure: OrderMakeSureBean) => void,
-  orderData: any
+  needReload: (reload: boolean) => void,
+  orderData: any,
+  needReloadData: boolean
 }
 
 interface State {
@@ -50,7 +52,7 @@ class History extends React.Component<Props, State> {
     super(props)
     this.state = {
       dateChooseData: [
-        { text: '当天', checked: false,value: 0 },
+        { text: '当天', checked: false, value: 0 },
         { text: '隔天', checked: false, value: 1 }
       ],
       modal1: false,
@@ -61,42 +63,46 @@ class History extends React.Component<Props, State> {
       dpValue2: 0,
       dateValue1: '',
       dateValue2: '',
-      orderData: props.orderData
+      orderData: this.props.orderData
     }
   }
 
   componentDidMount () {
-    let orderData = {
-      user: {},
-      total: 0,
-      addressData: {},
-      supplier: [
-        {
-          allChecked: false,
-          name: '衢州炒菜软件有限公司',
-          foodList: [
-            {
-              isChecked: false,
-              name: '红烧肉',
-              img: '1231231321',
-              price: 12.1,
-              unit: '份',
-              count: 5
-            }
-          ]
-        }
-      ]
+    console.log('componentDidMount')
+    console.log(this.props.needReloadData + '1111111111111111')
+    if (this.props.needReloadData === false) {
+      return
+    } else {
+      let orderData = {
+        user: {},
+        total: 0,
+        addressData: {},
+        supplier: [
+          {
+            allChecked: false,
+            name: '衢州炒菜软件有限公司',
+            foodList: [
+              {
+                isChecked: false,
+                name: '红烧肉',
+                img: '1231231321',
+                price: 12.1,
+                unit: '份',
+                count: 5
+              }
+            ]
+          }
+        ]
+      }
+      this.props.updataOrderMakeSure(orderData)
+      this.props.needReload(false)
     }
-    this.props.updataOrderMakeSure(orderData)
-    this.setState({ orderData: this.props.orderData })
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(111)
-    console.log(nextProps)
+    console.log('componentWillReceiveProps')
     if (nextProps !== this.props) {
-      console.log(111111111111)
-      this.setState({ orderData: nextProps.orderData })
+      console.log(nextProps)
     }
   }
 
@@ -121,7 +127,7 @@ class History extends React.Component<Props, State> {
     }
   }
 
-  radioOnChange = (obj,index) => {
+  radioOnChange = (obj, index) => {
     console.log(11)
     for (let i = 0; i < this.state.dateChooseData.length; i++) {
       let dateChooseData = this.state.dateChooseData
@@ -148,18 +154,18 @@ class History extends React.Component<Props, State> {
       <div>
         {this.state.dateChooseData.map((i, index) => (
           <List.Item key={index}>
-            <div style={{ display: 'flex',fontSize: 13 }}>
+            <div style={{ display: 'flex', fontSize: 13 }}>
               <div>{i.text}</div>
-              <div style={{ flex: 1,textAlign: 'center' }}>
+              <div style={{ flex: 1, textAlign: 'center' }}>
                 <span onClick={() => this.setState({ visible1: true })}>{this.state.dpValue1}</span>
                 &nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;
                 <span onClick={() => this.setState({ visible2: true })}>{this.state.dpValue2}</span>
               </div>
-              <div><Checkbox checked={ i.checked } onChange={() => {
-                this.radioOnChange(i,index)
+              <div><Checkbox checked={i.checked} onChange={() => {
+                this.radioOnChange(i, index)
               }}></Checkbox></div>
             </div>
-           </List.Item>
+          </List.Item>
         ))}
       </div>
     )
@@ -167,7 +173,7 @@ class History extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{ display: 'flex',flexDirection: 'column',justifyContent: 'flex-start',alignItems: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
         <Head
           title='确认订单'
           titleColor='#333333'
@@ -178,13 +184,20 @@ class History extends React.Component<Props, State> {
         <div style={{ width: '100%' }}>
           <div>
             <div
-              style={{ marginTop: 40,borderTop: '1px solid #cccccc',display: 'flex',alignItems: 'center',padding: 20,color: '#8c8c8c' }}
-              onClick={ () => {
+              style={{
+                marginTop: 40,
+                borderTop: '1px solid #cccccc',
+                display: 'flex',
+                alignItems: 'center',
+                padding: 20,
+                color: '#8c8c8c'
+              }}
+              onClick={() => {
                 history().push('/setting-address')
               }}
             >
               <div>1</div>
-              <div style={{ flex: 1,paddingLeft: 12,paddingRight: 10 }}>
+              <div style={{ flex: 1, paddingLeft: 12, paddingRight: 10 }}>
                 <div style={{ display: 'flex' }}>
                   <div>收货人：何静</div>
                   <div style={{ flex: 1 }}></div>
@@ -192,9 +205,9 @@ class History extends React.Component<Props, State> {
                 </div>
                 <div style={{ marginTop: 3 }}>收货地址：阿里巴巴集团某某事业部123</div>
               </div>
-              <div><Icon type='right' /></div>
+              <div><Icon type='right'/></div>
             </div>
-            <div style={{ height: 5,backgroundColor: '#d69495',marginBottom: 15 }}></div>
+            <div style={{ height: 5, backgroundColor: '#d69495', marginBottom: 15 }}></div>
           </div>
           <div
             style={{ backgroundColor: 'white' }}
@@ -209,8 +222,13 @@ class History extends React.Component<Props, State> {
               <div style={{ width: 20 }}></div>
               <div style={{ color: '#8C8C8C' }}>送达时间</div>
               <div style={{ flex: 1 }}></div>
-              <div onClick={ (e) => { this.showModal(e) } } style={{ color: 'rgb(140, 140, 140)' }}>选择送达时间</div>
-              <div onClick={ (e) => { this.showModal(e) } } style={{ paddingRight: 15 }}><Icon type='right'/></div>
+              <div onClick={(e) => {
+                this.showModal(e)
+              }} style={{ color: 'rgb(140, 140, 140)' }}>选择送达时间
+              </div>
+              <div onClick={(e) => {
+                this.showModal(e)
+              }} style={{ paddingRight: 15 }}><Icon type='right'/></div>
             </div>
             <div style={{
               display: 'flex',
@@ -224,7 +242,7 @@ class History extends React.Component<Props, State> {
           visible={this.state.visible1}
           value={this.state.dateValue1}
           onChange={date => this.FormattedDate(date)}
-          onOk = { date => this.setState({ visible1: false,dateValue1: date }) }
+          onOk={date => this.setState({ visible1: false, dateValue1: date })}
           onDismiss={() => this.setState({ visible1: false })}
         ></DatePicker>
         <DatePicker
@@ -232,7 +250,7 @@ class History extends React.Component<Props, State> {
           visible={this.state.visible2}
           value={this.state.dateValue2}
           onChange={date => this.FormattedDate(date)}
-          onOk = { date => this.setState({ visible2: false,dateValue2: date }) }
+          onOk={date => this.setState({ visible2: false, dateValue2: date })}
           onDismiss={() => this.setState({ visible2: false })}
         ></DatePicker>
         <Modal
@@ -244,18 +262,19 @@ class History extends React.Component<Props, State> {
           <List renderHeader={() => '选择送达时间'} className='popup-list'>
             {this.renderSetTime()}
             <List.Item>
-            <Button type='primary' onClick={this.onClose('modal1')}>确定</Button>
+              <Button type='primary' onClick={this.onClose('modal1')}>确定</Button>
             </List.Item>
           </List>
         </Modal>
-        <button onClick={ () => {
+        <button onClick={() => {
           let data = this.props.orderData
           data.total = 100
           console.log(this.props.updataOrderMakeSure(data))
           this.props.updataOrderMakeSure(data)
           console.log(this.props.orderData.total)
           this.setState({ orderData: data })
-        } }>点我</button>
+        }}>点我
+        </button>
         <div>我是：{this.state.orderData.total}</div>
       </div>
     )
@@ -264,12 +283,14 @@ class History extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-    orderData: state.orderMakeSure.OrderMakeSureData
+    orderData: state.orderMakeSure.OrderMakeSureData,
+    needReloadData: state.orderMakeSure.reload
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updataOrderMakeSure
+  updataOrderMakeSure,
+  needReload
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)
