@@ -1,21 +1,21 @@
 import { Action } from 'redux'
-import { OrderMakeSureBean } from '../../datasources/OrderMakeSureBean'
+import { ShopCartSupplierBean } from '../../datasources/ShopCartSupplierBean'
 
 export enum Type {
-  UPDATE_ORDERMAKESURE = 'UPDATE_ORDERMAKESURE',
+  UPDATA_SHOPCART = 'UPDATA_SHOPCART',
   UPDATA_NEEDRELOAD = 'UPDATA_NEEDRELOAD'
 }
 
-export interface OrderMakeSureAction extends Action {
+export interface ShopCartAction extends Action {
   type: Type
-  OrderMakeSureData: OrderMakeSureBean,
+  ShopCartData: Array<ShopCartSupplierBean>,
   reload: boolean
 }
 
-export const updataOrderMakeSure = (orderMakeSure: OrderMakeSureBean) =>
+export const updataOrderMakeSure = (shopCart: Array<ShopCartSupplierBean>) =>
   (dispatch) => dispatch({
-    type: Type.UPDATE_ORDERMAKESURE,
-    OrderMakeSureData: orderMakeSure,
+    type: Type.UPDATA_SHOPCART,
+    ShopCartData: shopCart,
     reload: true
   })
 
