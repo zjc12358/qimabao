@@ -1,5 +1,5 @@
 export interface HomeCategoryItemBean {
   category_id: number,
-  category_name: String,
-  category_picture: String
+  category_name: string,
+  category_picture: string
 }

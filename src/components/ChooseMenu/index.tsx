@@ -3,16 +3,13 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { Toast } from 'antd-mobile'
 import axios from 'axios'
-import { GlobalData } from '@store/reducers/globalDataReducer'
-import history from 'history/createHashHistory'
-import { showShade } from '../../store/actions/outSideShade_data'
 
 export interface Props {
-  showShade?: (isShow: boolean) => void
   data: Array<string>
-  isShow?: boolean
+  isShow: boolean
   chooseHandClick: (index: number) => void
   chooseIndex: number
+  closeHandClick: () => void
 }
 
 interface State {
@@ -57,31 +54,45 @@ class ChooseMenu extends React.Component<Props, State> {
    * 点击回调
    */
   handClick = (index: number) => {
-    this.props.showShade(false)
+    this.props.closeHandClick()
     this.props.chooseHandClick(index)
+  }
+
+  allOnClick = () => {
+    this.props.closeHandClick()
   }
 
   public render () {
     return (
-      <div style={{
-        width: '100%',
-        zIndex: 100,
-        position: 'absolute'
-      }}>
-        {this.props.isShow && this.renderContent()}
+      <div>
+        <div style={{
+          width: '100%',
+          zIndex: 100,
+          position: 'absolute'
+        }}>
+          {this.props.isShow && this.renderContent()}
+        </div>
+        <div style={{
+          position: 'fixed',
+          top: '0',
+          width: '100vh',
+          height: '100vh',
+          zIndex: 50,
+          display: (this.props.isShow ? 'block' : 'none'),
+          backgroundColor: 'rgba(204,204,204,0.5)'
+        }} onClick={this.allOnClick}>
+        </div>
       </div>
+
     )
   }
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {
-    isShow: state.outSideShadeData.showShade
-  }
+  return {}
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  showShade
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseMenu)

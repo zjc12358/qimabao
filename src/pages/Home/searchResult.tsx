@@ -3,12 +3,9 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { Toast, ListView } from 'antd-mobile'
 import axios from 'axios'
-import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import { SearchData } from '@store/reducers/searchDataReducer'
 import { updatePageTab } from '@store/actions/global_data'
-import OutSideShade from '@components/OutSideShade'
-import { showShade } from '@store/actions/outSideShade_data'
 import ChooseMenu from '@components/ChooseMenu'
 import { SearchResultBean } from '@datasources/SearchResultBean'
 import './homeCss.css'
@@ -97,7 +94,6 @@ function genData (pIndex = 0) {
 export interface Props {
   searchData: SearchData
   updatePageTab: (pageIndex: string) => void,
-  showShade: (isShow: boolean) => void
 }
 
 interface State {
@@ -106,6 +102,7 @@ interface State {
   searchResult: Array<SearchResultBean>
   dataSource: any
   isLoading: boolean
+  showChoose: boolean
 }
 
 class Home extends React.Component<Props, State> {
@@ -127,7 +124,8 @@ class Home extends React.Component<Props, State> {
       sortIndex: null,
       searchResult: [],
       dataSource: dataSource,
-      isLoading: true
+      isLoading: true,
+      showChoose: false
     }
   }
 
@@ -273,7 +271,7 @@ class Home extends React.Component<Props, State> {
           </div>
         </div>
         <ChooseMenu chooseHandClick={this.chooseHandClick.bind(this)} data={this.state.sortData}
-                    chooseIndex={this.state.sortIndex}/>
+                    chooseIndex={this.state.sortIndex} isShow={this.state.showChoose} closeHandClick={this.closeHandClick.bind(this)}/>
       </div>
     )
   }
@@ -302,7 +300,6 @@ class Home extends React.Component<Props, State> {
     let index = Math.ceil(this.state.searchResult.length / 2)
     // 大于0时 只有一个数据(单数)
     let indexMore = this.state.searchResult.length % 2
-    console.log(index)
     const row = (rowData, sectionID, rowID) => {
       // if (index < 0) {
       //   index = data.length - 1
@@ -383,14 +380,24 @@ class Home extends React.Component<Props, State> {
    * 点击筛选栏
    */
   chooseOnClick = () => {
-    this.props.showShade(true)
+    this.setState({
+      showChoose: true
+    })
+  }
+
+  /**
+   * 关闭弹窗
+   */
+  closeHandClick = () => {
+    this.setState({
+      showChoose: false
+    })
   }
 
   /**
    * 筛选栏回调
    */
   chooseHandClick = (index: number) => {
-    console.log(index)
     this.setState({
       sortIndex: index
     })
@@ -412,7 +419,6 @@ class Home extends React.Component<Props, State> {
           {/*{this.renderContent()}*/}
           {this.renderContentList()}
         </div>
-        <OutSideShade/>
       </div>
 
     )
@@ -426,8 +432,7 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updatePageTab,
-  showShade
+  updatePageTab
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
