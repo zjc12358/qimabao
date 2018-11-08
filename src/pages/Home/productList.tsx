@@ -2,25 +2,31 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { Toast } from 'antd-mobile'
-import { GlobalData } from '@store/reducers/globalDataReducer'
 import { CategoryItemData } from '@store/reducers/categoryItemDataReducer'
 import history from 'history/createHashHistory'
 import axios from 'axios'
 import { SecondProductCategoryBean } from '@datasources/SecondProductCategoryBean'
 import { ProductBean } from '@datasources/ProductBean'
-import { updateCategoryItem } from '@store/actions/categoryItem_data'
 import { chooseProduct } from '@store/actions/productDetails_data'
 import { updatePageTab } from '@store/actions/global_data'
+import ChooseMenu from '@components/ChooseMenu'
+import { changeCategoryIndex } from '@store/actions/categoryItem_data'
 
 export interface Props {
   categoryItemData: CategoryItemData
   chooseProduct: (id: number) => void
   updatePageTab: (pageIndex: string) => void
+  changeCategoryIndex: (index: number) => void
 }
 
 interface State {
   secondCategoryList: Array<SecondProductCategoryBean>
   productList: Array<ProductBean>
+  chooseData: Array<string>
+  chooseIndex: number
+  showChoose: boolean
+  showCategory: boolean
+  categoryIndex: number
 }
 
 class Home extends React.Component<Props, State> {
@@ -29,7 +35,20 @@ class Home extends React.Component<Props, State> {
     super(props)
     this.state = {
       secondCategoryList: [],
-      productList: []
+      productList: [],
+      chooseData: ['1', '2', '3'],
+      chooseIndex: null,
+      showCategory: false,
+      categoryIndex: this.props.categoryItemData.index,
+      showChoose: false
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (this.props !== nextProps) {
+      this.setState({
+        categoryIndex: nextProps.categoryItemData.index
+      })
     }
   }
 
@@ -71,36 +90,41 @@ class Home extends React.Component<Props, State> {
    * 头部标题栏
    */
   renderHead = () => {
+    let categoryData: Array<string> = []
+    this.props.categoryItemData.categoryItemData.map((item) => categoryData.push(item.category_name))
     return (
-      <div className='horizontal'
-           style={{
-             justifyContent: 'center',
-             height: 40,
-             width: '100%',
-             backgroundColor: 'white'
-           }} onClick={this.headOnClick}>
-        <div style={{ fontSize: 18 }}>
-          {this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}↓
-        </div>
+      <div style={{
+        width: '100%'
+      }}>
         <div className='horizontal'
              style={{
-               position: 'fixed',
-               left: 0,
-               width: 60,
-               height: 40,
-               color: 'black',
-               paddingLeft: 10
-             }} onClick={() => history().goBack()}>
-          返回
-        </div>
-        {/*右边2个按钮*/}
-        <div className='horizontal'
-             style={{
-               position: 'fixed',
-               right: 0,
                justifyContent: 'center',
-               height: 40
-             }}>
+               height: 40,
+               width: '100%',
+               backgroundColor: 'white'
+             }} onClick={this.headOnClick}>
+          <div style={{ fontSize: 18 }}>
+            {this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}↓
+          </div>
+          <div className='horizontal'
+               style={{
+                 position: 'fixed',
+                 left: 0,
+                 width: 60,
+                 height: 40,
+                 color: 'black',
+                 paddingLeft: 10
+               }} onClick={() => history().goBack()}>
+            返回
+          </div>
+          {/*右边2个按钮*/}
+          <div className='horizontal'
+               style={{
+                 position: 'fixed',
+                 right: 0,
+                 justifyContent: 'center',
+                 height: 40
+               }}>
           <span style={{
             height: 40,
             width: 40,
@@ -111,17 +135,22 @@ class Home extends React.Component<Props, State> {
           }} onClick={this.searchOnClick}>
             搜索
           </span>
-          <span style={{
-            height: 40,
-            width: 40,
-            paddingLeft: 10,
-            paddingRight: 10,
-            paddingTop: 5,
-            paddingBottom: 5
-          }} onClick={this.goCartOnClick}>
+            <span style={{
+              height: 40,
+              width: 40,
+              paddingLeft: 10,
+              paddingRight: 10,
+              paddingTop: 5,
+              paddingBottom: 5
+            }} onClick={this.goCartOnClick}>
             购物车
           </span>
+          </div>
         </div>
+        <ChooseMenu data={categoryData} chooseHandClick={this.categoryHandClick.bind(this)}
+                    chooseIndex={this.state.categoryIndex} isShow={this.state.showCategory}
+                    closeHandClick={this.closePop.bind(this)}
+        />
       </div>
     )
   }
@@ -131,39 +160,47 @@ class Home extends React.Component<Props, State> {
    */
   renderChoose = () => {
     return (
-      <div className='horizontal'
-           style={{
-             height: 40,
-             width: '100%',
-             backgroundColor: 'white'
-           }}>
-        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+      <div style={{
+        width: '100%'
+      }}>
         <div className='horizontal'
              style={{
-               flex: 1,
-               justifyContent: 'center'
+               height: 40,
+               width: '100%',
+               backgroundColor: 'white'
              }}>
-          <span>全部分类</span>
-          <span>↓</span>
+          <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+          <div className='horizontal'
+               style={{
+                 flex: 1,
+                 justifyContent: 'center'
+               }} onClick={this.chooseOnClick}>
+            <span>全部分类</span>
+            <span>↓</span>
+          </div>
+          <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+          <div className='horizontal'
+               style={{
+                 flex: 1,
+                 justifyContent: 'center'
+               }}>
+            <span>默认排序</span>
+            <span>↓</span>
+          </div>
+          <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
+          <div className='horizontal'
+               style={{
+                 flex: 1,
+                 justifyContent: 'center'
+               }}>
+            <span>筛选</span>
+            <span>→</span>
+          </div>
         </div>
-        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div className='horizontal'
-             style={{
-               flex: 1,
-               justifyContent: 'center'
-             }}>
-          <span>默认排序</span>
-          <span>↓</span>
-        </div>
-        <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-        <div className='horizontal'
-             style={{
-               flex: 1,
-               justifyContent: 'center'
-             }}>
-          <span>筛选</span>
-          <span>→</span>
-        </div>
+        <ChooseMenu data={this.state.chooseData} chooseHandClick={this.chooseHandClick.bind(this)}
+                    chooseIndex={this.state.chooseIndex} isShow={this.state.showChoose}
+                    closeHandClick={this.closePop.bind(this)}
+        />
       </div>
     )
   }
@@ -309,6 +346,9 @@ class Home extends React.Component<Props, State> {
   headOnClick = () => {
     // TODO 2018/10/29 显示选择弹窗
     // TODO 2018/10/29 选择完请求数据
+    this.setState({
+      showCategory: true
+    })
   }
 
   /**
@@ -325,6 +365,46 @@ class Home extends React.Component<Props, State> {
     // TODO 2018/10/29 点击去购物车
     this.props.updatePageTab('HistoryPageTabBar')
     history().push('/')
+  }
+
+  /**
+   * 点击筛选
+   */
+  chooseOnClick = () => {
+    this.setState({
+      showChoose: true
+    })
+  }
+
+  /**
+   * 筛选弹窗回调
+   */
+  chooseHandClick = (index: number) => {
+    console.log(index)
+    this.setState({
+      chooseIndex: index
+    })
+    // TODO 2018/11/7 根据选择类别请求
+  }
+
+  /**
+   * 类别选择回调
+   * @param index
+   */
+  categoryHandClick = (index: number) => {
+    console.log(index)
+    this.props.changeCategoryIndex(index)
+    // TODO 2018/11/8 根据类别请求数据
+  }
+
+  /**
+   * 关闭弹窗
+   */
+  closePop = () => {
+    this.setState({
+      showChoose: false,
+      showCategory: false
+    })
   }
 
   /**
@@ -388,7 +468,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   chooseProduct,
-  updatePageTab
+  updatePageTab,
+  changeCategoryIndex
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

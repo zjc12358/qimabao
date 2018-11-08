@@ -1,0 +1,9 @@
+.cal .react-calendar__month-view__days__day--weekend{
+  color: #fc6700;
+}
+.cal .react-calendar__month-view__weekdays__weekday{
+  background: #fc6700;
+}
+.cal .react-calendar__navigation{
+  margin-bottom: 0;
+}

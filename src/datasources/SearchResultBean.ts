@@ -6,4 +6,5 @@ export interface SearchResultBean {
   buy: boolean
   store: string
   storeId: number
+  pic: string
 }
