@@ -10,6 +10,7 @@ import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
 import supplierRevise from '.'
 import { updatePageTab } from '@store/actions/global_data'
+import { needReload, updataShopCart } from '@store/actions/shopCart_data'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem
@@ -22,7 +23,11 @@ if (isIPhone) {
 }
 
 export interface Props {
-  updatePageTab: (pageTab: string) => void
+  updatePageTab: (pageTab: string) => void,
+  updataShopCart: (shopCart: Array<ShopCartSupplierBean>) => void,
+  needReload: (reload: boolean) => void,
+  shopCartData: any,
+  needReloadData: boolean
 }
 
 interface State {
@@ -31,7 +36,8 @@ interface State {
   total: number,
   allSupplierItemCheck: Boolean,
   isEmpty: boolean,
-  yourLink: any
+  yourLink: any,
+  shopCartData: any
 }
 
 class History extends React.Component<Props, State> {
@@ -43,8 +49,9 @@ class History extends React.Component<Props, State> {
       allSupplierItemCheck: false,
       total: 0,
       isEmpty: false,
-      yourLink: [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4],
-      data: []
+      yourLink: [1,2,3 ],
+      data: this.props.shopCartData,
+      shopCartData: this.props.shopCartData
     }
   }
 
@@ -63,7 +70,8 @@ class History extends React.Component<Props, State> {
         data2[j].isChecked = !this.state.allSupplierItemCheck
       }
       data[i].foodList = data2
-      this.setState({ data: data })
+      // this.setState({ data: data })
+      this.props.updataShopCart(data)
     }
     // 计算一遍总计
     this.count()
@@ -94,7 +102,8 @@ class History extends React.Component<Props, State> {
         this.setState({ allSupplierItemCheck: true })
       }
     }
-    this.setState({ data: data })
+    // this.setState({ data: data })
+    this.props.updataShopCart(data)
     // 计算一遍总计
     this.count()
   }
@@ -117,7 +126,8 @@ class History extends React.Component<Props, State> {
     if (data[index1].allChecked === false) {
       this.setState({ allSupplierItemCheck: false })
     }
-    this.setState({ data: data })
+    // this.setState({ data: data })
+    this.props.updataShopCart(data)
     // 计算一遍总计
     this.count()
   }
@@ -150,6 +160,7 @@ class History extends React.Component<Props, State> {
     data[index1].foodList.splice(index, 1)
     if (data[index1].foodList.length === 0) data.splice(index,1)
     this.setState({ data: data })
+    this.props.updataShopCart(data)
   }
 
   /**
@@ -167,6 +178,7 @@ class History extends React.Component<Props, State> {
         if (data[i].allChecked) {
           data.splice(i,1)
           this.setState({ data: data })
+          this.props.updataShopCart(data)
         } else {
           let foodList = data[i].foodList
           for (let j = 0; j < foodList.length; j++) {
@@ -177,11 +189,18 @@ class History extends React.Component<Props, State> {
               }
               data[i].foodList = foodList
               this.setState({ data: data })
+              this.props.updataShopCart(data)
             }
           }
         }
       }
     }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    console.log(nextProps)
+    if (nextProps === this.props) return
+    this.setState({ data: nextProps.shopCartData })
   }
 
   /**
@@ -191,7 +210,6 @@ class History extends React.Component<Props, State> {
     this.count()
     let data = [
       {
-        value: 1,
         name: '衢州炒菜软件有限公司',
         allChecked: false,
         foodList: [
@@ -214,7 +232,6 @@ class History extends React.Component<Props, State> {
         ]
       },
       {
-        value: 1,
         name: '衢州都是煎熬分开了软件有限公司',
         allChecked: false,
         foodList: [
@@ -229,7 +246,12 @@ class History extends React.Component<Props, State> {
         ]
       }
     ]
-    this.setState({ data: data })
+    // this.setState({ data: data })
+    console.log('willDidMount')
+    if (this.props.needReloadData === false) return
+    // this.setState({ data: data })
+    this.props.updataShopCart(data)
+    this.props.needReload(false)
   }
 
   /**
@@ -357,11 +379,12 @@ class History extends React.Component<Props, State> {
                     showNumber
                     max={10}
                     min={1}
-                    defaultValue={1}
+                    defaultValue={this.state.data[index1].foodList[index].count}
                     onChange={(v) => {
-                      let data = this.state.data
+                      let data = this.props.shopCartData
                       data[index1].foodList[index].count = v
-                      this.setState({ data: data })
+                      this.props.updataShopCart(data)
+                      // this.setState({ data: data })
                       // 计算一遍总计
                       this.count()
                     }}
@@ -468,11 +491,16 @@ class History extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    shopCartData: state.shopCartData.ShopCartData,
+    needReloadData: state.shopCartData.reload
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updatePageTab
+  updatePageTab,
+  updataShopCart,
+  needReload
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)
