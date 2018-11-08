@@ -25,6 +25,11 @@ export default (state = initialState, action: CategoryItemAction) => {
         categoryItemData: action.categoryItemData,
         index: action.index
       }
+    case Type.CHANGE_INDEX:
+      return{
+        ...state,
+        index: action.index
+      }
     default:
       return state
   }

@@ -206,7 +206,6 @@ class Home extends React.Component<Props, State> {
     axios.get(url)
       .then(data => {
         console.log('--- data =', data)
-
         if (data.data.status === '0') {
           this.setState({
             homeCategoryItemData: data.data.data
@@ -275,7 +274,8 @@ class Home extends React.Component<Props, State> {
   public render () {
     return (
       <div style={{
-        height: '100%'
+        height: '100%',
+        backgroundColor: '#efeff5'
       }}>
         <Statusbar/>
         {this.renderHead()}

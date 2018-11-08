@@ -7,6 +7,7 @@ import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
+import '../../assets/UserStyle.css'
 
 export interface Props {
   pageTab: PageTab
@@ -54,7 +55,8 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
+        <Link to={'/message_systemInfo'}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -64,12 +66,8 @@ class User extends React.Component<Props, State> {
           paddingBottom: 15,
           paddingRight: 10
         }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }}></Icon>
+          <div className={'flex-row-center'}>
+            <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }} />
             <div style={{
               display: 'flex',
               justifyContent: 'center',
@@ -80,15 +78,13 @@ class User extends React.Component<Props, State> {
               <span style={{ fontSize: '14px',paddingTop: 5 }}>连续签到3天获得150积分</span>
             </div>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+          <div className={'flex-row-center'}>
+            <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
-        <div className='Segment_line2'></div>
+        </Link>
+        <div className='Segment_line2' />
+        <Link to={'/message_tradeInfo'}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -98,12 +94,8 @@ class User extends React.Component<Props, State> {
           paddingBottom: 15,
           paddingRight: 10
         }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }}></Icon>
+          <div className={'flex-row-center'}>
+            <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }} />
             <div style={{
               display: 'flex',
               justifyContent: 'center',
@@ -114,15 +106,13 @@ class User extends React.Component<Props, State> {
               <span style={{ fontSize: '14px',paddingTop: 5 }}>收到退款金额100元</span>
             </div>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+          <div className={'flex-row-center'}>
+            <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
-        <div className='Segment_line2'></div>
+        </Link>
+        <div className='Segment_line2' />
+        <Link to={'/message_logistics'}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -132,12 +122,8 @@ class User extends React.Component<Props, State> {
           paddingBottom: 15,
           paddingRight: 10
         }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }}></Icon>
+          <div className={'flex-row-center'}>
+            <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }} />
             <div style={{
               display: 'flex',
               justifyContent: 'center',
@@ -148,14 +134,11 @@ class User extends React.Component<Props, State> {
               <span style={{ fontSize: '14px',paddingTop: 5 }}>最新物流订单信息</span>
             </div>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+          <div className={'flex-row-center'}>
+            <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
+        </Link>
       </div>
     )
   }

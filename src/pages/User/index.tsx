@@ -207,41 +207,57 @@ class User extends React.Component<Props, State> {
           display: 'flex',
           justifyContent: 'space-between',
           flexDirection: 'row',
-          padding: 20,
+          padding: 30,
           backgroundColor: '#ffffff'
         }}>
+          <Link to='/myOrder'>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: '#eee'
           }}>
             <Icon type='loading'></Icon>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
           </div>
+          </Link>
+          <Link to='/myOrder'>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: '#eee'
           }}>
             <Icon type='loading'></Icon>
-            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
+            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待配送</span>
           </div>
+          </Link>
+          <Link to='/myOrder'>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: '#eee'
           }}>
             <Icon type='loading'></Icon>
-            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
+            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待收货</span>
           </div>
+          </Link>
+          <Link to='/myOrder'>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: '#eee'
           }}>
             <Icon type='loading'></Icon>
-            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
+            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待评价</span>
           </div>
+          </Link>
         </div>
         <div className='Segment_line'></div>
         <div style={{
@@ -254,8 +270,9 @@ class User extends React.Component<Props, State> {
           marginRight: 20
         }}>
           <span style={{ fontSize: '16px',fontFamily: '黑体' }}>最新订单</span>
-          <div style={{ paddingLeft: 20 }}></div>
-          <Icon type='loading'></Icon>
+          <div style={{ paddingLeft: 20 }} />
+          <Icon type='loading' />
+          <Link to='/myOrder'>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -265,9 +282,10 @@ class User extends React.Component<Props, State> {
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
           </div>
+          </Link>
         </div>
-        <div className='Segment_line2'></div>
-        <Link to='/shoppingCart'>
+        <div className='Segment_line2' />
+        <Link to='/myOrder'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -278,10 +296,11 @@ class User extends React.Component<Props, State> {
           paddingRight: 10
         }}>
           <span style={{ fontSize: '16px' }}>我的购买</span>
-          <Icon type='right'></Icon>
+          <Icon type='right' />
         </div>
         </Link>
-        <div className='Segment_line2'></div>
+        <div className='Segment_line2' />
+        <Link to='/afterSale'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -292,8 +311,9 @@ class User extends React.Component<Props, State> {
           paddingRight: 10
         }}>
           <span style={{ fontSize: '16px' }}>售后退款</span>
-          <Icon type='right'></Icon>
+          <Icon type='right' />
         </div>
+        </Link>
         <div style={{
           height: 8,
           backgroundColor: '#efeff5'

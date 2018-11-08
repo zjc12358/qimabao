@@ -29,7 +29,7 @@ class Nav extends React.Component<Props, State> {
       }}
       >
         <div style={{ float: 'left', position: 'absolute' }}>
-          <Link to='/setting'><Icon type='left' color='#000000' size='lg'/></Link>
+          <Link to={this.props.url}><Icon type='left' color='#000000' size='lg'/></Link>
         </div>
         <div style={{
           fontSize: 20,
