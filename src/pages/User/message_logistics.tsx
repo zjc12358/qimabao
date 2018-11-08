@@ -62,6 +62,7 @@ class User extends React.Component<Props, State> {
         border: '1px solid #ddd',
         borderRadius: 5
       }}>
+        <Link to={'/tradeEvaluation'}>
         <div style={{
           display: 'flex',
           justifyContent: 'center',
@@ -101,6 +102,7 @@ class User extends React.Component<Props, State> {
             </div>
           </div>
         </div>
+        </Link>
       </div>
     )
   }

@@ -31,6 +31,7 @@ import afterSale from './pages/User/afterSale' /* 售后页面 */
 import messageLogistics from './pages/User/message_logistics' /* 物流助手页面 */
 import messageSystemInfo from './pages/User/message_systemInfo' /* 系统消息页面 */
 import messageTradeInfo from './pages/User/message_tradeInfo' /* 交易信息页面 */
+import tradeEvaluation from './pages/User/tradeEvaluation' /* 物流评价页面 */
 
 // 菜篮子
 import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */
@@ -66,6 +67,7 @@ ReactDOM.render(
         <Route path='/message_logistics' component={messageLogistics} />
         <Route path='/message_systemInfo' component={messageSystemInfo} />
         <Route path='/message_tradeInfo' component={messageTradeInfo} />
+        <Route path='/tradeEvaluation' component={tradeEvaluation} />
         {/*菜篮*/}
         <Route path='/supplierRevise' component={supplierRevise} />
         <Route path='/index2' component={index2} />
