@@ -16,6 +16,8 @@ import MoreEvaluation from './pages/Home/moreEvaluation' /*评价详情页*/
 import SearchResult from './pages/Home/searchResult' /*搜索结果页*/
 /*首页*/
 /*菜谱*/
+import MenuDetail from './pages/Order/menuDetail' /*菜谱详情页*/
+/*菜谱*/
 import setting from './pages/User/setting' /* 我的页面设置 */
 import index1 from './pages/User/index' /* 我的页面 */
 import NavBar from './pages/index'  /* 底部导航栏页面 */
@@ -52,6 +54,9 @@ ReactDOM.render(
         <Route path='/searchResult' component={SearchResult}/>
         <Route path='/test' component={Test} />
         {/*首页*/}
+        {/*菜谱*/}
+        <Route path='/menuDetail' component={MenuDetail}/>
+        {/*菜谱*/}
         {/*我的*/}
         <Route path='/setting' component={setting} />
         <Route path='/index1' component={index1} />

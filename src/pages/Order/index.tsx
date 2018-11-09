@@ -2,9 +2,11 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import Head from '@components/Head'
-import { changeMenuState } from '@store/actions/menu_data'
+import { changeMenuState, setReload, updateMenuList } from '@store/actions/menu_data'
 import MenuUpload from './menuUpload'
 import MenuSelect from './menuSelect'
+import { MenuBean } from '@datasources/MenuBean'
+import { ProductBean } from '@datasources/ProductBean'
 
 export interface Props {
   selectMenu: boolean
@@ -19,12 +21,6 @@ class Order extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {}
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (this.props !== nextProps) {
-      console.log('111')
-    }
   }
 
   /**
