@@ -77,16 +77,15 @@ class Head extends React.Component<Props, State> {
         position: 'fixed',
         top: '0',
         height: 40,
-        width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10,
+        width: '100vw',
         backgroundColor: this.props.backgroundColor,
         zIndex: 100
       }}>
         <div style={{
           width: 50,
+          paddingLeft: 20,
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'flex-start',
@@ -108,11 +107,12 @@ class Head extends React.Component<Props, State> {
         <div style={{
           width: 50,
           display: 'flex',
+          paddingRight: 20,
           flexDirection: 'row',
           justifyContent: 'flex-end',
           alignItems: 'center'
         }} onClick={() => this.rightIconOnClick()}>
-          {this.props.showRightIcon && <div style={{ paddingRight: 10 }}>{this.props.rightIconContent}</div>}
+          {this.props.showRightIcon && <div>{this.props.rightIconContent}</div>}
         </div>
       </div>
     )

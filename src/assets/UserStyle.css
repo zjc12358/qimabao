@@ -239,3 +239,27 @@
 html:not([data-scale]) .am-tabs-default-bar-top .am-tabs-default-bar-tab::after {
   height: 0px;
 }
+/** 动画向下移动40px**/
+.a{
+  animation: move 0.3s ease-out forwards;
+}
+@keyframes move{
+  0%{transform: translateY(0px);opacity: 1;}
+  100%{transform: translateY(40px);opacity: 1;}
+}
+/** 动画向上移动40px**/
+.a1{
+  animation: move1 0.3s ease-out forwards;
+}
+@keyframes move1{
+  0%{transform: translateY(0px);opacity: 1;}
+  100%{transform: translateY(-40px);opacity: 1;}
+}
+/** 动画向左移动40px**/
+.t{
+  animation: move2 0.5s ease-out forwards;
+}
+@keyframes move2{
+  0%{transform: translate(0px);opacity: 1;}
+  100%{transform: translate(-100%);opacity: 1;}
+}
