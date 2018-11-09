@@ -252,6 +252,7 @@ class Menu extends React.Component<Props, State> {
     }
     console.log('下单' + menu.id)
     // TODO 2018/11/9 请求数据
+    history().push('/menuOrderCheck')
   }
 
   /**

@@ -17,6 +17,7 @@ import SearchResult from './pages/Home/searchResult' /*搜索结果页*/
 /*首页*/
 /*菜谱*/
 import MenuDetail from './pages/Order/menuDetail' /*菜谱详情页*/
+import MenuOrderCheck from './pages/Order/menuOrderCheck' /*菜谱下单确认页*/
 /*菜谱*/
 import setting from './pages/User/setting' /* 我的页面设置 */
 import index1 from './pages/User/index' /* 我的页面 */
@@ -56,6 +57,7 @@ ReactDOM.render(
         {/*首页*/}
         {/*菜谱*/}
         <Route path='/menuDetail' component={MenuDetail}/>
+        <Route path='/menuOrderCheck' component={MenuOrderCheck}/>
         {/*菜谱*/}
         {/*我的*/}
         <Route path='/setting' component={setting} />
