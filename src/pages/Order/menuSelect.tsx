@@ -8,10 +8,18 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import './menuCss.css'
 import { MenuBean } from '@datasources/MenuBean'
+import { setMenuId } from '@store/actions/menuDetail_data'
+import { updatePageTab } from '@store/actions/global_data'
 import { ProductBean } from '@datasources/ProductBean'
+import { changeMenuState, setReload, updateMenuList } from '@store/actions/menu_data'
 
 export interface Props {
-
+  setMenuId?: (id: number) => void
+  updatePageTab?: (pageTab: string) => void
+  menuList?: Array<MenuBean>
+  setReload?: (reload: boolean) => void
+  updateMenuList?: (menuList: Array<MenuBean>) => void
+  reload?: boolean
 }
 
 interface State {
@@ -29,37 +37,23 @@ class Menu extends React.Component<Props, State> {
       data: new Date(),
       hadOrder: false,
       chooseData: null,
-      menuList: []
+      menuList: this.props.menuList
     }
   }
 
   componentWillMount () {
-    let menuList: Array<MenuBean> = []
-    for (let i = 0; i < 5; i++) {
-      let productList: Array<ProductBean> = []
-      for (let i = 0; i < 10; i++) {
-        let product: ProductBean = {
-          img: '',
-          id: i,
-          store: '蓝宇科技',
-          describe: '和大家看撒谎的空间撒活动撒U盾OS爱都殴打的萨达哈萨克的哈萨克的哈萨克的哈萨克',
-          price: '',
-          weight: '200g',
-          name: '商品' + i,
-          store_id: 0
-        }
-        productList.push(product)
-      }
-      let menuItem: MenuBean = {
-        productList: productList,
-        menuName: '' + i
-      }
-      menuList.push(menuItem)
+    this.getMenuList()
+  }
 
+  componentWillReceiveProps (nextProps: Props) {
+    if (nextProps !== this.props) {
+      this.setState({
+        menuList: nextProps.menuList
+      })
+      if (nextProps.reload) {
+        this.getMenuList()
+      }
     }
-    this.setState({
-      menuList: menuList
-    })
   }
 
   /**
@@ -67,7 +61,10 @@ class Menu extends React.Component<Props, State> {
    */
   renderCalendar = () => {
     return (
-      <div className='cal'>
+      <div className='cal'
+           style={{
+             width: '100%'
+           }}>
         <Cal
           // 当前日期
           value={this.state.data}
@@ -96,45 +93,76 @@ class Menu extends React.Component<Props, State> {
    */
   renderMenuList = () => {
     return (
-      <div className='vertical'>
-        {this.state.menuList.map((item) => this.renderMenuListItem(item))}
+      <div className='vertical'
+           style={{ width: '100%' }}>
+        <div className='vertical'
+             style={{ width: '100%' }}>
+          {this.state.menuList.map((item, index) => this.renderMenuListItem(item, index))}
+        </div>
+        <div onClick={this.downOrderOnClick}
+             className='horizontal'
+             style={{
+               marginTop: 20,
+               marginBottom: 40,
+               width: '90%',
+               height: 40,
+               borderStyle: 'solid',
+               borderWidth: 0,
+               borderRadius: 20,
+               backgroundColor: '#0084e7',
+               color: 'white',
+               fontSize: 20,
+               justifyContent: 'center'
+             }}>
+          下单
+        </div>
       </div>
+
     )
   }
 
   /**
    * 菜谱列表单项
    */
-  renderMenuListItem = (item: MenuBean) => {
+  renderMenuListItem = (item: MenuBean, index: number) => {
     return (
       <div className='vertical'
            style={{
-             marginBottom: 10
+             marginBottom: 10,
+             backgroundColor: 'white',
+             width: '100%'
            }}>
         <div className='horizontal'
              style={{
                justifyContent: 'space-between',
-               height: 40
+               height: 40,
+               width: '100%'
              }}>
-          <div>
-            <span>口</span>
+          <div onClick={() => this.menuChooseOnClick(index)}>
+            <span style={{ paddingLeft: 20 }}>{this.state.menuList[index].isCheck ? '√' : '口'}</span>
             <span>{item.menuName}</span>
           </div>
-          <span>↑</span>
+          <span style={{ paddingRight: 20 }} onClick={() => this.showMenuOnClick(index)}>↑</span>
         </div>
-        <div>
+        <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
+        {this.state.menuList[index].isShow &&
+        <div style={{ width: '100%' }}>
           <div className='horizontal'
                style={{
-                 flexWrap: 'wrap'
-               }}>
+                 flexWrap: 'wrap',
+                 marginTop: 10,
+                 marginBottom: 10,
+                 paddingRight: 10
+               }} onClick={() => this.updateMenuOnClick(index)}>
             {item.productList.map((item) =>
               <div style={{
-                marginLeft: 10,
+                marginLeft: 20,
                 height: 20
               }}>{item.name}</div>
             )}
           </div>
         </div>
+        }
       </div>
     )
   }
@@ -159,6 +187,113 @@ class Menu extends React.Component<Props, State> {
       chooseData: value
     })
     this.getDataHadOrderInfo()
+  }
+
+  /**
+   * 点击选择某个菜谱
+   * @param index
+   */
+  menuChooseOnClick = (index: number) => {
+    if (!this.state.menuList[index].isCheck) {
+      let list = this.state.menuList
+      for (let i = 0; i < this.state.menuList.length; i++) {
+        if (i === index) {
+          list[i].isCheck = true
+        } else {
+          list[i].isCheck = false
+        }
+      }
+      this.setState({
+        menuList: list
+      })
+    }
+  }
+
+  /**
+   * 点击展开菜谱明细
+   * @param index
+   */
+  showMenuOnClick = (index: number) => {
+    if (!this.state.menuList[index].isShow) {
+      let list = this.state.menuList
+      for (let i = 0; i < this.state.menuList.length; i++) {
+        if (i === index) {
+          list[i].isShow = true
+        } else {
+          list[i].isShow = false
+        }
+      }
+      this.setState({
+        menuList: list
+      })
+    }
+  }
+
+  /**
+   * 点击菜谱修改菜谱
+   * @param index
+   */
+  updateMenuOnClick = (index: number) => {
+    let id = this.state.menuList[index].id
+    this.props.setMenuId(id)
+    this.props.updatePageTab('OrderPageTabBar')
+    history().push('/menuDetail')
+  }
+
+  /**
+   * 下单点击
+   */
+  downOrderOnClick = () => {
+    let menu: MenuBean
+    for (let i = 0; i < this.state.menuList.length; i++) {
+      if (this.state.menuList[i].isCheck) {
+        menu = this.state.menuList[i]
+      }
+    }
+    console.log('下单' + menu.id)
+    // TODO 2018/11/9 请求数据
+  }
+
+  /**
+   * 获取菜谱列表
+   */
+  getMenuList () {
+    if (this.props.reload) {
+      // TODO 2018/11/9 请求获取菜谱数据
+      console.log('获取菜谱数据')
+      let menuList: Array<MenuBean> = []
+      for (let i = 0; i < 5; i++) {
+        let productList: Array<ProductBean> = []
+        let productNameList: Array<string> = []
+        for (let i = 0; i < Math.random() * 20; i++) {
+          let product: ProductBean = {
+            img: '',
+            id: i,
+            store: '蓝宇科技',
+            describe: '和大家看撒谎的空间撒活动撒U盾OS爱都殴打的萨达哈萨克的哈萨克的哈萨克的哈萨克',
+            price: '',
+            weight: '200g',
+            name: '商品' + (Math.random() * 10000).toFixed(0),
+            store_id: 0
+          }
+          let name = '商品' + i
+          productNameList.push(name)
+          productList.push(product)
+        }
+        let menuItem: MenuBean = {
+          productList: productList,
+          menuName: '菜谱' + i,
+          isShow: i === 0,
+          isCheck: i === 0,
+          id: i,
+          productNameList: productNameList
+        }
+        menuList.push(menuItem)
+
+      }
+      this.props.updateMenuList(menuList)
+      this.props.setReload(false)
+    }
   }
 
   /**
@@ -200,16 +335,25 @@ class Menu extends React.Component<Props, State> {
         width: '100%'
       }}>
         {this.renderCalendar()}
-        {/*{this.renderContent()}*/}
+        <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
+        {this.renderContent()}
       </div>
     )
   }
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    menuList: state.menuData.menuList,
+    reload: state.menuData.reload
+  }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  setMenuId,
+  updatePageTab,
+  setReload,
+  updateMenuList
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu)

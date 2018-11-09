@@ -7,3 +7,6 @@
 .cal .react-calendar__navigation{
   margin-bottom: 0;
 }
+.cal .react-calendar{
+  border: 0px;
+}
