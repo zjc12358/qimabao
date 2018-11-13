@@ -11,17 +11,10 @@ import { chooseProduct } from '@store/actions/productDetails_data'
 import { updatePageTab } from '@store/actions/global_data'
 import ChooseMenu from '@components/ChooseMenu'
 import { changeCategoryIndex } from '@store/actions/categoryItem_data'
+import LoadMore from '@components/LoadMore'
 
 const NUM_ROWS = 20
 let pageIndex = 0
-
-function genData (pIndex = 0) {
-  const dataArr = []
-  for (let i = 0; i < NUM_ROWS; i++) {
-    dataArr.push(`row - ${(pIndex * NUM_ROWS) + i}`)
-  }
-  return dataArr
-}
 
 export interface Props {
   categoryItemData: CategoryItemData
@@ -31,8 +24,6 @@ export interface Props {
 }
 
 interface State {
-  rData: any
-  dataSource: any
   secondCategoryList: Array<SecondProductCategoryBean>
   productList: Array<ProductBean>
   chooseData: Array<string>
@@ -40,7 +31,6 @@ interface State {
   showChoose: boolean
   showCategory: boolean
   categoryIndex: number
-  refreshing: boolean,
   isLoading: boolean
 }
 
@@ -48,13 +38,8 @@ class Home extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2
-    })
 
     this.state = {
-      rData: [],
-      dataSource,
       secondCategoryList: [],
       productList: [],
       chooseData: ['1', '2', '3'],
@@ -62,7 +47,6 @@ class Home extends React.Component<Props, State> {
       showCategory: false,
       categoryIndex: this.props.categoryItemData.index,
       showChoose: false,
-      refreshing: true,
       isLoading: true
     }
   }
@@ -77,29 +61,14 @@ class Home extends React.Component<Props, State> {
 
   componentWillMount () {
     setTimeout(() => {
-      this.getData()
+      this.getData(0)
       this.setState({
-        rData: genData(),
-        dataSource: this.state.dataSource.cloneWithRows(genData()),
-        refreshing: false,
         isLoading: false
       })
     }, 1500)
   }
 
-  onRefresh = () => {
-    this.setState({ refreshing: true, isLoading: true })
-    setTimeout(() => {
-      this.setState({
-        rData: genData(),
-        dataSource: this.state.dataSource.cloneWithRows(genData()),
-        refreshing: false,
-        isLoading: false
-      })
-    }, 600)
-  }
-
-  onEndReached = (event) => {
+  loadMore = () => {
     if (this.state.isLoading) {
       return
     }
@@ -107,8 +76,6 @@ class Home extends React.Component<Props, State> {
     setTimeout(() => {
       this.getData(pageIndex++)
       this.setState({
-        rData: genData(pageIndex++),
-        dataSource: this.state.dataSource.cloneWithRows(genData(pageIndex++)),
         isLoading: false
       })
     }, 1000)
@@ -117,7 +84,8 @@ class Home extends React.Component<Props, State> {
   /**
    * 模拟请求数据
    */
-  getData (pageIndex = 0) {
+  getData (page) {
+    console.log('加载数据' + page)
     let secondCategoryList: Array<SecondProductCategoryBean> = []
     let categoryId = this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_id
     for (let i = 0; i < 30; i++) {
@@ -131,7 +99,6 @@ class Home extends React.Component<Props, State> {
         secondCategoryList: secondCategoryList
       })
     }
-
     let productList: Array<ProductBean> = []
     for (let i = 0; i < 10; i++) {
       let product: ProductBean = {
@@ -145,16 +112,17 @@ class Home extends React.Component<Props, State> {
         store_id: 0
       }
       productList.push(product)
-      if (pageIndex > 1) {
-        this.setState({
-          productList: this.state.productList.concat(productList)
-        })
-      } else {
-        this.setState({
-          productList: productList
-        })
-      }
-
+    }
+    if (page > 0) {
+      this.setState({
+        productList: this.state.productList.concat(productList)
+      })
+      pageIndex++
+    } else {
+      this.setState({
+        productList: productList
+      })
+      pageIndex = 1
     }
   }
 
@@ -345,22 +313,11 @@ class Home extends React.Component<Props, State> {
    * 右边商品列表
    */
   renderRightProductList = () => {
-    let index = this.state.productList.length - 1
-    const row = (rowData, sectionID, rowID) => {
-      if (index < 0) {
-        index = this.state.productList.length - 1
-      }
-      const obj = this.state.productList[index--]
-      return (
-        this.renderRightProductListItem(obj)
-      )
-    }
+    let list = this.state.productList.map((item) => this.renderRightProductListItem(item))
     return (
-      <div className='scroll' style={{ flex: 1 }}>
-        <div className='vertical'>
-          {this.state.productList.map((item) => this.renderRightProductListItem(item))}
-        </div>
-        <ListView dataSource={this.state.dataSource} renderRow={row}/>
+      <div className='scroll product-list' style={{ flex: 1 }}>
+        <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
+                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}/>
         <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
       </div>
     )

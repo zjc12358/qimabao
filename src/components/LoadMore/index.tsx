@@ -10,6 +10,10 @@ export interface Props {
   list: any // 传入整个list布局
   listData: Array<string> // 传入获取的数据
   itemHeight: number  // 每个数据的高度
+  getData: any // 请求数据方法
+  isLoading: boolean // 是否正在加载
+  loadHeight: number // 自定义距离底部多少时concat数据
+  bodyName: string // 父级div className
 }
 
 /**
@@ -104,26 +108,15 @@ class LoadMore extends React.Component<Props, State> {
 
   // 向上滑动时 (这里真正判断是否到最底部)
   loadData () {
-    console.log('数据的高-------------------------', this.props.listData.length * 80)
-    console.log('滚动的高------------------------', document.documentElement.scrollTop)
-    console.log('滚动的高------------------------', document.body.scrollTop)
-    console.log('屏幕的高------------------------', document.documentElement.clientHeight)
-
-    let dataHeight = this.props.listData.length * 80
-    let scrollHeight = document.body.scrollTop || document.documentElement.scrollTop
-    let screenHeight = document.documentElement.clientHeight
-    const h = 10 // 自定义距离底部多少时concat数据
-    if (dataHeight - scrollHeight - h < screenHeight && this.state.isFoot) {
-      this.setState({
-        isFoot: false
-      })
-      console.log('显示一次')
-      setTimeout(() => {
-        // 数据加载完毕
-        this.setState({
-          isFoot: true
-        })
-      }, 1000)
+    // 数据高度
+    let dataHeight = this.props.listData.length * this.props.itemHeight
+    // 滚动高度
+    let scrollHeight = document.getElementsByClassName(this.props.bodyName)[0].scrollTop || document.getElementsByClassName(this.props.bodyName)[0].scrollTop
+    // 控件高度
+    let screenHeight = document.getElementsByClassName(this.props.bodyName)[0].clientHeight
+    // 达到指定位置后 请求数据
+    if (dataHeight - scrollHeight - this.props.loadHeight < screenHeight && !this.props.isLoading) {
+      this.props.getData()
     }
   }
 
@@ -137,7 +130,7 @@ class LoadMore extends React.Component<Props, State> {
           {
             this.props.listData !== null && this.props.listData !== undefined &&
             this.state.finished ? <span>我是有底线的</span> :
-              this.props.listData.length > 0 ? this.state.isFoot ? <span>上拉加载更多</span> :
+              this.props.listData.length > 0 ? !this.props.isLoading ? <span>上拉加载更多</span> :
                 <span>加载中...</span> : <span>暂无信息</span>
           }
         </div>
