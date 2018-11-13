@@ -10,7 +10,7 @@ import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
 import supplierRevise from '.'
 import { updatePageTab } from '@store/actions/global_data'
-import { needReload, updataShopCart } from '@store/actions/shopCart_data'
+import { needReload, updataAllSupplierItemCheck, updataShopCart } from '@store/actions/shopCart_data'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem
@@ -25,9 +25,11 @@ if (isIPhone) {
 export interface Props {
   updatePageTab: (pageTab: string) => void,
   updataShopCart: (shopCart: Array<ShopCartSupplierBean>) => void,
+  updataAllSupplierItemCheck: (allSupplierItemCheck: boolean) => void,
   needReload: (reload: boolean) => void,
   shopCartData: any,
-  needReloadData: boolean
+  needReloadData: boolean,
+  allSupplierItemCheck: boolean
 }
 
 interface State {
@@ -46,7 +48,7 @@ class History extends React.Component<Props, State> {
     super(props)
     this.state = {
       num: '',
-      allSupplierItemCheck: false,
+      allSupplierItemCheck: this.props.allSupplierItemCheck,
       total: 0,
       isEmpty: false,
       yourLink: [1,2,3 ],
@@ -56,31 +58,42 @@ class History extends React.Component<Props, State> {
   }
 
   /**
+   * 更新redux
+   * @param data
+   * @param allSupplierItemCheck
+   */
+  updata = (data,allSupplierItemCheck) => {
+    this.props.updataShopCart(data)
+    this.props.updataAllSupplierItemCheck(allSupplierItemCheck)
+  }
+
+  /**
    * 购物车尾部全选事件
    */
   allSupplierItemCheckOnChange = () => {
-    this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck })
-    for (let i = 0; i < this.state.data.length; i++) {
-      let data = this.state.data
-      data[i].allChecked = !this.state.allSupplierItemCheck
-      let data2 = data[i].foodList
-      console.log(data2.length)
-      for (let j = 0; j < data2.length; j++) {
-        console.log(data2[j].isChecked)
-        data2[j].isChecked = !this.state.allSupplierItemCheck
+    this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck },function () {
+      for (let i = 0; i < this.state.data.length; i++) {
+        let data = this.state.data
+        data[i].allChecked = this.state.allSupplierItemCheck
+        let data2 = data[i].foodList
+        // console.log(data2.length)
+        for (let j = 0; j < data2.length; j++) {
+          // console.log(data2[j].isChecked)
+          data2[j].isChecked = this.state.allSupplierItemCheck
+        }
+        data[i].foodList = data2
+        // this.setState({ data: data })
+        this.updata(data,this.state.allSupplierItemCheck)
       }
-      data[i].foodList = data2
-      // this.setState({ data: data })
-      this.props.updataShopCart(data)
-    }
-    // 计算一遍总计
-    this.count()
+      // 计算一遍总计
+      this.count()
+    })
   }
 
   /**
    * 单个菜品的选择事件
-   * @param index1
-   * @param index
+   * @param index1 供应商数组下标
+   * @param index  菜品数组下标
    */
   isCheckedOnChange = (index1,index) => {
     let data = this.state.data
@@ -92,14 +105,18 @@ class History extends React.Component<Props, State> {
       if (len === this.state.data[index1].foodList.length) data[index1].allChecked = true
     }
     if (data[index1].foodList[index].isChecked === false) {
-      this.setState({ allSupplierItemCheck: false })
+      // this.setState({ allSupplierItemCheck: false },() => {
+      this.props.updataAllSupplierItemCheck(false)
+      // })
       data[index1].allChecked = false
     }
     for (let i = 0; i < this.state.data.length; i++) {
       let data = this.state.data
       if (data[i].allChecked === true) len2 += 1
       if (len2 === this.state.data.length) {
-        this.setState({ allSupplierItemCheck: true })
+        // this.setState({ allSupplierItemCheck: true },() => {
+        this.props.updataAllSupplierItemCheck(true)
+        // })
       }
     }
     // this.setState({ data: data })
@@ -121,10 +138,15 @@ class History extends React.Component<Props, State> {
     }
     for (let i = 0; i < this.state.data.length; i++) {
       if (this.state.data[i].allChecked === true) len += 1
-      if (len === this.state.data.length) this.setState({ allSupplierItemCheck: true })
+      if (len === this.state.data.length) {
+        // 供应商全部选中时,修改redux,勾选底部checkbox
+        this.props.updataAllSupplierItemCheck(true)
+      }
     }
     if (data[index1].allChecked === false) {
-      this.setState({ allSupplierItemCheck: false })
+      // this.setState({ allSupplierItemCheck: false },() => {
+      this.props.updataAllSupplierItemCheck(false)
+      // })
     }
     // this.setState({ data: data })
     this.props.updataShopCart(data)
@@ -172,7 +194,7 @@ class History extends React.Component<Props, State> {
       // 全选状态下清空购物车,总计归0
       this.setState({ data: [],total: 0 })
     } else {
-      console.log('我被组织了')
+      // console.log('我被组织了')
       let data = this.state.data
       for (let i = 0; i < this.state.data.length; i++) {
         if (data[i].allChecked) {
@@ -200,7 +222,7 @@ class History extends React.Component<Props, State> {
   componentWillReceiveProps (nextProps) {
     console.log(nextProps)
     if (nextProps === this.props) return
-    this.setState({ data: nextProps.shopCartData })
+    this.setState({ data: nextProps.shopCartData,allSupplierItemCheck: nextProps.allSupplierItemCheck })
   }
 
   /**
@@ -248,6 +270,7 @@ class History extends React.Component<Props, State> {
     ]
     // this.setState({ data: data })
     console.log('willDidMount')
+    console.log(this.state.data)
     if (this.props.needReloadData === false) return
     // this.setState({ data: data })
     this.props.updataShopCart(data)
@@ -476,7 +499,7 @@ class History extends React.Component<Props, State> {
       <div>
         <Head title='菜篮子' backgroundColor='#0084e7' rightIconContent='删除' showRightIcon='true' rightIconOnClick={ this.HeadDeleteOnclick }></Head>
         <div style={{ height: 40 }}></div>
-        {this.state.data && this.state.data.length && this.state.data.length ? this.state.data.map((i, index1) => (
+        {this.state.data && this.state.data.length ? this.state.data.map((i, index1) => (
           <div style={{ backgroundColor: 'white' }}>
             {this.renderSupplierItem(i, index1)}
           </div>
@@ -493,13 +516,15 @@ class History extends React.Component<Props, State> {
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
     shopCartData: state.shopCartData.ShopCartData,
-    needReloadData: state.shopCartData.reload
+    needReloadData: state.shopCartData.reload,
+    allSupplierItemCheck: state.shopCartData.AllSupplierCheckBoolean
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
   updataShopCart,
+  updataAllSupplierItemCheck,
   needReload
 }
 

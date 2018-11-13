@@ -4,6 +4,7 @@ import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox, TextareaItem } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
+import './orderMakeSure.less'
 import Head from '../../components/Head/index'
 import Dialog from '../../components/Dialog/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
@@ -33,6 +34,7 @@ interface State {
   dateValue2: any,
   timeIsSet: any,
   modal1: boolean,
+  modal2: boolean,
   dateChooseData: any,
   dilogIsShow: boolean
 }
@@ -59,6 +61,7 @@ class History extends React.Component<Props, State> {
         { text: '隔天', checked: false, value: 1 }
       ],
       modal1: false,
+      modal2: false,
       timeIsSet: false,
       startVisible: false,
       endVisible: false,
@@ -106,14 +109,25 @@ class History extends React.Component<Props, State> {
     }
   }
 
-  showModal = (e) => {
+  /**
+   * 打开modal
+   * @param e
+   * @param n  1:选择时间,  2:确认付款
+   */
+  showModal = (e,n) => {
     e.preventDefault() // 修复 Android 上点击穿透
-    this.setState({
-      modal1: true
-    })
+    if (n === 1) {
+      this.setState({ modal1: true })
+    } else {
+      this.setState({ modal2: true })
+    }
   }
-  onClose = key => () => {
-    this.setState({ modal1: false })
+  onClose = (n) => {
+    if (n === 1) {
+      this.setState({ modal1: false })
+    } else {
+      this.setState({ modal2: false })
+    }
   }
 
   onWrapTouchStart = (e) => {
@@ -138,21 +152,27 @@ class History extends React.Component<Props, State> {
     }
   }
 
-  FormattedDate = (date,type) => {
+  /**
+   * 时间对象格式化
+   * @param date
+   * @constructor
+   */
+  FormattedDate = (date) => {
     date = date + ''
     date = date.replace(/ GMT.+$/, '')// Or str = str.substring(0, 24)
     let da = new Date(date)
     console.log(da)
     let a = [da.getFullYear(), da.getMonth() + 1, da.getDate(), da.getHours(), da.getMinutes(), da.getSeconds()]
     let dpValue = a[3] + ':' + a[4]
-    switch (type) {
-      case 1:
-        this.setState({ startdpValue: dpValue })
-        break
-      case 2:
-        this.setState({ enddpValue: dpValue })
-        break
-    }
+    // switch (type) {
+    //   case 1:
+    //     this.setState({ startdpValue: dpValue })
+    //     break
+    //   case 2:
+    //     this.setState({ enddpValue: dpValue })
+    //     break
+    // }
+    return dpValue
   }
 
   closeDialog = () => {
@@ -165,6 +185,10 @@ class History extends React.Component<Props, State> {
       <div>我是content</div>
     )
   }
+
+  /*
+  * 修改送达时间组件
+  * */
   renderSetTime = () => {
     return (
       <div>
@@ -187,9 +211,86 @@ class History extends React.Component<Props, State> {
     )
   }
 
+  /*
+  * 供应商选项
+  * */
+  renderSupplier = () => {
+    return (
+      <div>
+        <div className='supplierItem' style={{
+          display: 'flex',
+          alignItems: 'center',
+          borderTop: '1px solid #CCCCCC',
+          height: 40
+        }}>
+          <div className='checkBox'>
+          </div>
+          <div style={{ width: 20 }}></div>
+          <div className='fontGray'>衢州炒菜软件开发有限公司 </div>
+          <div style={{ flex: 1 }}></div>
+          <Icon style={{ paddingRight: 15 }} type='right'/>
+        </div>
+        <div style={{
+          paddingLeft: 20,
+          paddingRight: 20
+        }}>
+          <div className='foodDetail'>
+            <img className='' style={{ width: 95,height: 95,borderRadius: '50%',display: 'block' }} src='http://img0.imgtn.bdimg.com/it/u=508694851,709788791&fm=200&gp=0.jpg' />
+            <div style={{ width: 180,paddingLeft: 15 }}>
+              <p>精选有机红皮洋葱</p>
+              <p>单价：<span style={{ color: 'red' }}>￥15.5 </span><span style={{ color: '#8c8c8c' }}>/500g</span></p>
+              <p>重量: 1000g</p>
+              <p style={{ position: 'absolute',bottom: 0,right: 20 }}>小计：<span style={{ color: 'red' }}>￥15</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  /*
+  * 确认付款
+  * */
+  renderPayConfirm = () => {
+    return (
+      <Modal
+        popup
+        visible={this.state.modal2}
+        onClose={() => this.onClose(2)}
+        animationType='slide-up'
+        className='paySure'
+      >
+        <List renderHeader={() => '确认付款'} className='popup-list'>
+          <List.Item>
+            <div className='account'>
+              <div className='accountPice'>￥31.0</div>
+              <div className='accountDetail'>
+                <div>支付宝账号</div>
+                <div style={{ flex: 1 }}></div>
+                <div>156666666</div>
+              </div>
+            </div>
+          </List.Item>
+          <List.Item>
+            <div className='balance'>
+              <div>付款方式</div>
+              <div style={{ flex: 1 }}></div>
+              <div>账户余额</div>
+              <Icon type='right' />
+            </div>
+          </List.Item>
+          <div style={{ height: 210 }}></div>
+          <List.Item>
+            <Button type='primary' onClick={ () => this.onClose(2) }>立即付款</Button>
+          </List.Item>
+        </List>
+      </Modal>
+    )
+  }
+
   public render () {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+      <div className='orderContainer'>
         <Head
           title='确认订单'
           titleColor='#333333'
@@ -200,14 +301,7 @@ class History extends React.Component<Props, State> {
         <div style={{ width: '100%' }}>
           <div>
             <div
-              style={{
-                marginTop: 40,
-                borderTop: '1px solid #cccccc',
-                display: 'flex',
-                alignItems: 'center',
-                padding: 20,
-                color: '#8c8c8c'
-              }}
+              className='address'
               onClick={() => {
                 history().push('/setting-address')
               }}
@@ -225,62 +319,28 @@ class History extends React.Component<Props, State> {
             </div>
             <div style={{ height: 5, backgroundColor: '#d69495', marginBottom: 15 }}></div>
           </div>
-          <div
-            style={{ backgroundColor: 'white' }}
-          >
-            <div style={{
-              borderTop: '1px solid #CCCCCC'
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                height: 40
-              }}>
+          <div className='orderDetail'>
+            <div className='orderDetailCon'>
+              <div className='orderDetailTitle'>
                 <div style={{ width: 20 }}></div>
-                <div style={{ color: '#8C8C8C' }}>送达时间</div>
+                <div className='fontGray'>送达时间</div>
                 <div style={{ flex: 1 }}></div>
-                <div onClick={(e) => {
-                  this.showModal(e)
-                }} style={{ color: 'rgb(140, 140, 140)' }}>
+                <div
+                  onClick={(e) => {
+                    this.showModal(e,1)
+                  }}
+                  className=''>
                   选择送达时间
                 </div>
                 <div onClick={(e) => {
-                  this.showModal(e)
+                  this.showModal(e,1)
                 }} style={{ paddingRight: 15 }}><Icon type='right'/></div>
               </div>
-              <div style={{ color: '#0084e7',paddingLeft: 20,paddingBottom: 15 }}>
+              <div className='timeDescription'>
                 今日17：45 - 19：30 &nbsp;&nbsp;免运费
               </div>
             </div>
-            <div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                borderTop: '1px solid #CCCCCC',
-                height: 40
-              }}>
-                <div className='checkBox'>
-                </div>
-                <div style={{ width: 20 }}></div>
-                <div style={{ color: '#8C8C8C' }}>衢州炒菜软件开发有限公司 </div>
-                <div style={{ flex: 1 }}></div>
-                <Icon style={{ paddingRight: 15 }} type='right'/>
-              </div>
-              <div style={{
-                paddingLeft: 20,
-                paddingRight: 20
-              }}>
-                <div style={{ backgroundColor: '#f5f5f5',display: 'flex',padding: 15,marginBottom: 15,alignItems: 'center',borderRadius: 20,position: 'relative' }}>
-                  <img style={{ width: 95,height: 95,borderRadius: '50%',display: 'block' }} src='http://img0.imgtn.bdimg.com/it/u=508694851,709788791&fm=200&gp=0.jpg' />
-                  <div style={{ width: 180,paddingLeft: 15 }}>
-                    <p>精选有机红皮洋葱</p>
-                    <p>单价：<span style={{ color: 'red' }}>￥15.5 </span><span style={{ color: '#8c8c8c' }}>/500g</span></p>
-                    <p>重量: 1000g</p>
-                    <p style={{ position: 'absolute',bottom: 0,right: 20 }}>小计：<span style={{ color: 'red' }}>￥15</span></p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {this.renderSupplier()}
             <div style={{ margin: '0 20px',fontSize: 16,marginBottom: 3 }}>买家留言：</div>
             <div style={{ marginLeft: 20,marginRight: 20,border: '1px solid #cccccc' }}>
               <TextareaItem
@@ -297,37 +357,40 @@ class History extends React.Component<Props, State> {
         <div style={{ width: '100vw',display: 'flex',height: 50,alignItems: 'center',backgroundColor: 'white',position: 'fixed',bottom: 0 }}>
           <div style={{ flex: 1 }}></div>
           <div style={{ color: 'red',paddingRight: 20 }}>￥31</div>
-          <div style={{ color: 'white',height: 50,width: 120,display: 'flex',alignItems: 'center',justifyContent: 'center',backgroundColor: '#0385e7' }}>提交订单</div>
+          <div style={{ color: 'white',height: 50,width: 120,display: 'flex',alignItems: 'center',justifyContent: 'center',backgroundColor: '#0385e7' }}
+               onClick={ () => { this.setState({ modal2: true }) }}
+          >提交订单</div>
         </div>
         <DatePicker
-          mode='time'
+          mode='datetime'
           visible={this.state.startVisible}
           value={this.state.dateValue1}
-          onChange={date => this.FormattedDate(date,1)}
+          onChange={ (date) => this.setState({ startdpValue: this.FormattedDate(date) })}
           onOk={date => this.setState({ startVisible: false, dateValue1: date })}
           onDismiss={() => this.setState({ startVisible: false })}
         ></DatePicker>
         <DatePicker
-          mode='time'
+          mode='datetime'
           visible={this.state.endVisible}
           value={this.state.dateValue2}
-          onChange={date => this.FormattedDate(date,2)}
+          onChange={ (date) => this.setState({ enddpValue: this.FormattedDate(date) })}
           onOk={date => this.setState({ endVisible: false, dateValue2: date })}
           onDismiss={() => this.setState({ endVisible: false })}
         ></DatePicker>
         <Modal
           popup
           visible={this.state.modal1}
-          onClose={this.onClose('modal1')}
+          onClose={ () => this.onClose(1)}
           animationType='slide-up'
         >
           <List renderHeader={() => '选择送达时间'} className='popup-list'>
             {this.renderSetTime()}
             <List.Item>
-              <Button type='primary' onClick={this.onClose('modal1')}>确定</Button>
+              <Button type='primary' onClick={ () => this.onClose(1)}>确定</Button>
             </List.Item>
           </List>
         </Modal>
+        {this.renderPayConfirm()}
         {/*<button onClick={() => {*/}
           {/*let data = this.props.orderData*/}
           {/*data.total = 100*/}

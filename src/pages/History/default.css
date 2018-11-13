@@ -1,3 +1,5 @@
+/*修改ant-moblie 默认样式*/
+
 .checkBox .am-checkbox-agree .am-checkbox-inner{
   top: 0;
 }
@@ -27,4 +29,11 @@
   height: 100%;
   display: flex;
   align-items: center;
+}
+.paySure .am-list-header{
+  font-size: 20px;
+  color: black;
+}
+.am-list-item .am-list-line .am-list-content{
+  padding-bottom: 0;
 }
