@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { Toast } from 'antd-mobile'
+import { Stepper, Toast } from 'antd-mobile'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
@@ -18,6 +18,7 @@ export interface Props {
 
 interface State {
   menuDetailBean: MenuDetailBean
+  isChange: boolean
 }
 
 class Menu extends React.Component<Props, State> {
@@ -25,7 +26,8 @@ class Menu extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      menuDetailBean: null
+      menuDetailBean: null,
+      isChange: false
     }
   }
 
@@ -38,13 +40,15 @@ class Menu extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
+      this.state.menuDetailBean !== null &&
       <div className='scroll'
            style={{
              flex: 1,
              marginTop: 40,
-             marginBottom: 40
+             marginBottom: 40,
+             width: '100%'
            }}>
-        1
+        {this.state.menuDetailBean.storeList.map((item, index) => this.renderStoreItem(item, index))}
       </div>
     )
   }
@@ -52,24 +56,27 @@ class Menu extends React.Component<Props, State> {
   /**
    * 供应商列
    * @param item
+   * @param groupIndex
    */
-  renderStoreItem = (item: ShopCartSupplierBean) => {
+  renderStoreItem = (item: ShopCartSupplierBean, groupIndex: number) => {
     return (
       <div className='vertical'>
         <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
         <div className='horizontal'
              style={{
                width: '100%',
-               justifyContent: 'space-between'
+               justifyContent: 'space-between',
+               height: 30,
+               backgroundColor: 'white'
              }}>
           <div style={{ paddingLeft: 10, color: '#e5e5e5' }}>
-            <span>图标</span>
-            <span>{item.name}</span>
+            <span>图标 </span>
+            <span> {item.name}</span>
           </div>
           <span style={{ paddingRight: 10 }}>→</span>
         </div>
         <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
-        {}
+        {item.foodList.map((item, index) => this.renderProductItem(item, groupIndex, index))}
       </div>
     )
   }
@@ -77,11 +84,71 @@ class Menu extends React.Component<Props, State> {
   /**
    * 商品单列
    * @param item
+   * @param groupIndex
+   * @param childIndex
    */
-  renderProductItem = (item: ShopCartProductBean) => {
-    return(
-      <div>
-
+  renderProductItem = (item: ShopCartProductBean, groupIndex: number, childIndex: number) => {
+    return (
+      <div className='vertical'
+           style={{
+             backgroundColor: 'white',
+             width: '100%',
+             marginBottom: 10,
+             alignItems: 'flex-start'
+           }}>
+        <div className='horizontal' style={{ padding: 20 }}>
+          <img style={{ display: 'block', width: 90, height: 90 }} src={item.img}/>
+          <div style={{
+            height: 90,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            paddingLeft: 20
+          }}>
+            <div style={{ fontSize: '16px' }}>{item.name}</div>
+            <div style={{ fontSize: '16px' }}>
+              <span style={{ color: 'red' }}>￥{item.price}</span>
+              <span style={{ color: '#8c8c8c' }}>/{item.unit}</span>
+            </div>
+            <div style={{ display: 'flex', color: '#8c8c8c', fontSize: 14 }}>
+              <Stepper
+                ref='stepper'
+                // className='Stepper'
+                showNumber
+                max={10}
+                min={1}
+                defaultValue={this.state.menuDetailBean.storeList[groupIndex].foodList[childIndex].count}
+                onChange={(v) => {
+                  let data = this.state.menuDetailBean
+                  data.storeList[groupIndex].foodList[childIndex].count = v
+                  this.setState({
+                    menuDetailBean: data,
+                    isChange: true
+                  })
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
+        {/*小计和删除*/}
+        <div className='horizontal'
+             style={{
+               width: '100%',
+               justifyContent: 'space-between'
+             }}>
+          <div style={{ paddingLeft: 20 }}>
+            <span>小计: </span>
+            <span style={{ color: '#ff1717' }}>¥ {(item.price * item.count).toFixed(2)}</span>
+          </div>
+          <span className='horizontal' style={{
+            height: 30,
+            backgroundColor: '#ff1717',
+            paddingLeft: 20,
+            paddingRight: 20,
+            color: 'white'
+          }} onClick={() => this.deleteProductOnClick(groupIndex, childIndex)}>删除</span>
+        </div>
       </div>
     )
   }
@@ -91,29 +158,36 @@ class Menu extends React.Component<Props, State> {
    */
   renderFoot = () => {
     return (
-      <div className='horizontal'
+      <div className='vertical'
            style={{
              position: 'fixed',
              bottom: 0,
-             height: 40,
-             width: '100%',
-             justifyContent: 'space-between'
+             width: '100%'
            }}>
-        <div style={{ paddingLeft: 20 }}>
-          <span>合计: </span>
-          <span style={{ color: '#ff0000', fontSize: 16 }}> 总计</span>
-          <span> (免运费)</span>
-        </div>
+        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
         <div className='horizontal'
              style={{
-               height: '100%',
-               backgroundColor: '#0084e7',
-               justifyContent: 'center',
-               fontSize: 16,
-               width: 80,
-               color: 'white'
+               height: 40,
+               width: '100%',
+               justifyContent: 'space-between',
+               backgroundColor: 'white'
              }}>
-          确认
+          <div style={{ paddingLeft: 20 }}>
+            <span>合计: </span>
+            <span style={{ color: '#ff0000', fontSize: 16 }}> 总计</span>
+            <span> (免运费)</span>
+          </div>
+          <div className='horizontal'
+               style={{
+                 height: '100%',
+                 backgroundColor: '#0084e7',
+                 justifyContent: 'center',
+                 fontSize: 16,
+                 width: 80,
+                 color: 'white'
+               }} onClick={this.updateMenuOnClick}>
+            确认修改
+          </div>
         </div>
       </div>
     )
@@ -127,22 +201,44 @@ class Menu extends React.Component<Props, State> {
   }
 
   /**
+   * 删除商品
+   */
+  deleteProductOnClick = (groupIndex: number, childIndex: number) => {
+    let data = this.state.menuDetailBean
+    data.storeList[groupIndex].foodList.splice(childIndex, 1)
+    if (data.storeList[groupIndex].foodList === null || data.storeList[groupIndex].foodList.length < 1) {
+      data.storeList.splice(groupIndex, 1)
+    }
+    this.setState({
+      menuDetailBean: data,
+      isChange: true
+    })
+  }
+
+  /**
+   * 确认更新菜谱信息
+   */
+  updateMenuOnClick = () => {
+    this.updateMenu()
+  }
+
+  /**
    * 获取菜谱详情
    */
   getMenuDetail () {
     console.log(this.props.menuId)
     // TODO 2018/11/9 网络请求
     let storeList: Array<ShopCartSupplierBean> = []
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       let productList: Array<ShopCartProductBean> = []
-      for (let j = 0; j < 3; j++) {
+      for (let j = 0; j < 5; j++) {
         let productItem: ShopCartProductBean = {
           isChecked: false,
           name: '商品' + j,
           img: '',
-          price: j * Math.random() * 10,
-          unit: 'i' + 'g',
-          count: Math.random()
+          price: j + 1,
+          unit: j + 'g',
+          count: j + 1
         }
         productList.push(productItem)
       }
@@ -171,6 +267,22 @@ class Menu extends React.Component<Props, State> {
     // TODO 2018/11/9 网络请求
     this.props.setReload(true)
     history().goBack()
+  }
+
+  /**
+   * 更新菜谱信息请求
+   */
+  updateMenu () {
+    console.log('更新菜谱')
+    let id = this.props.menuId
+    // 修改数据才去上传 并重新请求
+    if (this.state.isChange) {
+      // TODO 2018/11/9 网络请求
+      this.props.setReload(true)
+      history().goBack()
+    } else {
+      history().goBack()
+    }
   }
 
   public render () {

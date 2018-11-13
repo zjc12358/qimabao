@@ -75,16 +75,16 @@ class Home extends React.Component<Props, State> {
              paddingLeft: 10,
              paddingRight: 10
            }}>
-        {/*<div style={{*/}
-        {/*flex: 1*/}
-        {/*}} onClick={this.locationOnclick}>*/}
-        {/*定位图标*/}
-        {/*</div>*/}
-        <Link style={{
+        <div style={{
           flex: 1
-        }} to='/test'>
-          测试
-        </Link>
+        }} onClick={this.locationOnclick}>
+          定位图标
+        </div>
+        {/*<Link style={{*/}
+        {/*flex: 1*/}
+        {/*}} to='/test'>*/}
+        {/*测试*/}
+        {/*</Link>*/}
         <div style={{
           flex: 5,
           borderStyle: 'solid',
@@ -233,6 +233,7 @@ class Home extends React.Component<Props, State> {
   locationOnclick = () => {
     // TODO 2018/10/24 点击头部定位按钮
     console.log('定位')
+    history().push('/selectAddress')
   }
 
   /**

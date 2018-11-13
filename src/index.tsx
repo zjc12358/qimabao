@@ -14,9 +14,11 @@ import ProductList from './pages/Home/productList' /*商品列表页面*/
 import ProductDetails from './pages/Home/productDetails' /*商品详情页*/
 import MoreEvaluation from './pages/Home/moreEvaluation' /*评价详情页*/
 import SearchResult from './pages/Home/searchResult' /*搜索结果页*/
+import SelectAddress from './pages/Home/selectAddress' /*选择收货地址*/
 /*首页*/
 /*菜谱*/
 import MenuDetail from './pages/Order/menuDetail' /*菜谱详情页*/
+import MenuOrderCheck from './pages/Order/menuOrderCheck' /*菜谱下单确认页*/
 /*菜谱*/
 import setting from './pages/User/setting' /* 我的页面设置 */
 import index1 from './pages/User/index' /* 我的页面 */
@@ -52,10 +54,12 @@ ReactDOM.render(
         <Route path='/moreEvaluation' component={MoreEvaluation}/>
         <Route path='/search' component={Search}/>
         <Route path='/searchResult' component={SearchResult}/>
+        <Route path='/selectAddress' component={SelectAddress}/>
         <Route path='/test' component={Test} />
         {/*首页*/}
         {/*菜谱*/}
         <Route path='/menuDetail' component={MenuDetail}/>
+        <Route path='/menuOrderCheck' component={MenuOrderCheck}/>
         {/*菜谱*/}
         {/*我的*/}
         <Route path='/setting' component={setting} />

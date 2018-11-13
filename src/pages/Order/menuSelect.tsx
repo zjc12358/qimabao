@@ -89,6 +89,18 @@ class Menu extends React.Component<Props, State> {
   }
 
   /**
+   * 推荐菜谱
+   */
+  renderFoot = () => {
+    return (
+      <div className='horizontal'
+           style={{ justifyContent: 'center',marginBottom: 40 }}>
+        推荐菜谱,暂未开放
+      </div>
+    )
+  }
+
+  /**
    * 菜谱列表
    */
   renderMenuList = () => {
@@ -251,7 +263,9 @@ class Menu extends React.Component<Props, State> {
       }
     }
     console.log('下单' + menu.id)
+    this.props.updatePageTab('OrderPageTabBar')
     // TODO 2018/11/9 请求数据
+    history().push('/menuOrderCheck')
   }
 
   /**
@@ -337,6 +351,7 @@ class Menu extends React.Component<Props, State> {
         {this.renderCalendar()}
         <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
         {this.renderContent()}
+        {this.renderFoot()}
       </div>
     )
   }
