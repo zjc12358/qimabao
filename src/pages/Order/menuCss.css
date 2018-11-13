@@ -1,3 +1,4 @@
+/*改变日历控件样式*/
 .cal .react-calendar__month-view__days__day--weekend{
   color: #fc6700;
 }

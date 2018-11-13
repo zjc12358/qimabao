@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { Toast } from 'antd-mobile'
+import { Toast, ListView, PullToRefresh } from 'antd-mobile'
 import { CategoryItemData } from '@store/reducers/categoryItemDataReducer'
 import history from 'history/createHashHistory'
 import axios from 'axios'
@@ -12,6 +12,17 @@ import { updatePageTab } from '@store/actions/global_data'
 import ChooseMenu from '@components/ChooseMenu'
 import { changeCategoryIndex } from '@store/actions/categoryItem_data'
 
+const NUM_ROWS = 20
+let pageIndex = 0
+
+function genData (pIndex = 0) {
+  const dataArr = []
+  for (let i = 0; i < NUM_ROWS; i++) {
+    dataArr.push(`row - ${(pIndex * NUM_ROWS) + i}`)
+  }
+  return dataArr
+}
+
 export interface Props {
   categoryItemData: CategoryItemData
   chooseProduct: (id: number) => void
@@ -20,6 +31,8 @@ export interface Props {
 }
 
 interface State {
+  rData: any
+  dataSource: any
   secondCategoryList: Array<SecondProductCategoryBean>
   productList: Array<ProductBean>
   chooseData: Array<string>
@@ -27,20 +40,30 @@ interface State {
   showChoose: boolean
   showCategory: boolean
   categoryIndex: number
+  refreshing: boolean,
+  isLoading: boolean
 }
 
 class Home extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2
+    })
+
     this.state = {
+      rData: [],
+      dataSource,
       secondCategoryList: [],
       productList: [],
       chooseData: ['1', '2', '3'],
       chooseIndex: null,
       showCategory: false,
       categoryIndex: this.props.categoryItemData.index,
-      showChoose: false
+      showChoose: false,
+      refreshing: true,
+      isLoading: true
     }
   }
 
@@ -53,6 +76,48 @@ class Home extends React.Component<Props, State> {
   }
 
   componentWillMount () {
+    setTimeout(() => {
+      this.getData()
+      this.setState({
+        rData: genData(),
+        dataSource: this.state.dataSource.cloneWithRows(genData()),
+        refreshing: false,
+        isLoading: false
+      })
+    }, 1500)
+  }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true, isLoading: true })
+    setTimeout(() => {
+      this.setState({
+        rData: genData(),
+        dataSource: this.state.dataSource.cloneWithRows(genData()),
+        refreshing: false,
+        isLoading: false
+      })
+    }, 600)
+  }
+
+  onEndReached = (event) => {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({ isLoading: true })
+    setTimeout(() => {
+      this.getData(pageIndex++)
+      this.setState({
+        rData: genData(pageIndex++),
+        dataSource: this.state.dataSource.cloneWithRows(genData(pageIndex++)),
+        isLoading: false
+      })
+    }, 1000)
+  }
+
+  /**
+   * 模拟请求数据
+   */
+  getData (pageIndex = 0) {
     let secondCategoryList: Array<SecondProductCategoryBean> = []
     let categoryId = this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_id
     for (let i = 0; i < 30; i++) {
@@ -80,9 +145,16 @@ class Home extends React.Component<Props, State> {
         store_id: 0
       }
       productList.push(product)
-      this.setState({
-        productList: productList
-      })
+      if (pageIndex > 1) {
+        this.setState({
+          productList: this.state.productList.concat(productList)
+        })
+      } else {
+        this.setState({
+          productList: productList
+        })
+      }
+
     }
   }
 
@@ -273,11 +345,22 @@ class Home extends React.Component<Props, State> {
    * 右边商品列表
    */
   renderRightProductList = () => {
+    let index = this.state.productList.length - 1
+    const row = (rowData, sectionID, rowID) => {
+      if (index < 0) {
+        index = this.state.productList.length - 1
+      }
+      const obj = this.state.productList[index--]
+      return (
+        this.renderRightProductListItem(obj)
+      )
+    }
     return (
       <div className='scroll' style={{ flex: 1 }}>
         <div className='vertical'>
           {this.state.productList.map((item) => this.renderRightProductListItem(item))}
         </div>
+        <ListView dataSource={this.state.dataSource} renderRow={row}/>
         <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
       </div>
     )
