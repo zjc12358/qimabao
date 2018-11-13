@@ -152,21 +152,27 @@ class History extends React.Component<Props, State> {
     }
   }
 
-  FormattedDate = (date,type) => {
+  /**
+   * 时间对象格式化
+   * @param date
+   * @constructor
+   */
+  FormattedDate = (date) => {
     date = date + ''
     date = date.replace(/ GMT.+$/, '')// Or str = str.substring(0, 24)
     let da = new Date(date)
     console.log(da)
     let a = [da.getFullYear(), da.getMonth() + 1, da.getDate(), da.getHours(), da.getMinutes(), da.getSeconds()]
     let dpValue = a[3] + ':' + a[4]
-    switch (type) {
-      case 1:
-        this.setState({ startdpValue: dpValue })
-        break
-      case 2:
-        this.setState({ enddpValue: dpValue })
-        break
-    }
+    // switch (type) {
+    //   case 1:
+    //     this.setState({ startdpValue: dpValue })
+    //     break
+    //   case 2:
+    //     this.setState({ enddpValue: dpValue })
+    //     break
+    // }
+    return dpValue
   }
 
   closeDialog = () => {
@@ -356,18 +362,18 @@ class History extends React.Component<Props, State> {
           >提交订单</div>
         </div>
         <DatePicker
-          mode='time'
+          mode='datetime'
           visible={this.state.startVisible}
           value={this.state.dateValue1}
-          onChange={date => this.FormattedDate(date,1)}
+          onChange={ (date) => this.setState({ startdpValue: this.FormattedDate(date) })}
           onOk={date => this.setState({ startVisible: false, dateValue1: date })}
           onDismiss={() => this.setState({ startVisible: false })}
         ></DatePicker>
         <DatePicker
-          mode='time'
+          mode='datetime'
           visible={this.state.endVisible}
           value={this.state.dateValue2}
-          onChange={date => this.FormattedDate(date,2)}
+          onChange={ (date) => this.setState({ enddpValue: this.FormattedDate(date) })}
           onOk={date => this.setState({ endVisible: false, dateValue2: date })}
           onDismiss={() => this.setState({ endVisible: false })}
         ></DatePicker>

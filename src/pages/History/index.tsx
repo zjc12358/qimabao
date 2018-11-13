@@ -270,6 +270,7 @@ class History extends React.Component<Props, State> {
     ]
     // this.setState({ data: data })
     console.log('willDidMount')
+    console.log(this.state.data)
     if (this.props.needReloadData === false) return
     // this.setState({ data: data })
     this.props.updataShopCart(data)
@@ -498,7 +499,7 @@ class History extends React.Component<Props, State> {
       <div>
         <Head title='菜篮子' backgroundColor='#0084e7' rightIconContent='删除' showRightIcon='true' rightIconOnClick={ this.HeadDeleteOnclick }></Head>
         <div style={{ height: 40 }}></div>
-        {this.state.data && this.state.data.length && this.state.data.length ? this.state.data.map((i, index1) => (
+        {this.state.data && this.state.data.length ? this.state.data.map((i, index1) => (
           <div style={{ backgroundColor: 'white' }}>
             {this.renderSupplierItem(i, index1)}
           </div>
