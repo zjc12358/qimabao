@@ -53,7 +53,7 @@ class Home extends React.Component<Props, State> {
           <input style={{
             backgroundColor: '#f5f5f5', borderStyle: 'solid', paddingLeft: 10,
             borderWidth: 0
-          }} className={'input'} onChange={this.textChange} value={this.props.searchData.searchText}/>
+          }} onChange={this.textChange} value={this.props.searchData.searchText}/>
         </div>
         <div className='horizontal'
              style={{
