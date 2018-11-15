@@ -7,7 +7,7 @@ import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import '../../assets/UserStyle.css'
+import './master.css'
 
 export interface Props {
   pageTab: PageTab
@@ -17,7 +17,8 @@ export interface Props {
 }
 
 interface State {
-
+  data: any
+  scroll: boolean
 }
 
 class User extends React.Component<Props, State> {
@@ -26,9 +27,14 @@ class User extends React.Component<Props, State> {
     super(props)
     this.state = {
       data: [
-        { date: '100', status: '超市' },
-        { date: '100', status: '适用于蔬菜鲜果' }
-      ]
+        { date: '',time: '',status: '',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
+        { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
+        { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
+        { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
+        { date: '10-24',time: '09:34',status: '',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
+        { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' }
+      ],
+      scroll: false
     }
   }
 
@@ -131,10 +137,30 @@ class User extends React.Component<Props, State> {
     )
   }
   public renderContent = () => {
+    if (this.state.data.length === 0) {
+      return(
+        <div style={{
+          backgroundColor: '#ffffff',
+          height: 90,
+          marginTop: 20,
+          marginLeft: 20,
+          marginRight: 20,
+          border: '1px solid #ddd',
+          borderRadius: 5,
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'row',
+          alignItems: 'center',
+          color: '#b6b6b6'
+        }}>
+          当前没有物流信息
+        </div>
+      )
+    }
     return(
       <div style={{
         backgroundColor: '#ffffff',
-        height: 150,
+        height: 20 + (this.state.scroll === true ? this.state.data.length * 60 : 140),
         marginTop: 20,
         marginLeft: 20,
         marginRight: 20,
@@ -143,101 +169,114 @@ class User extends React.Component<Props, State> {
         position: 'relative'
       }}>
         <div style={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          height: 75,
-          alignItems: 'center'
+          paddingTop: 20
         }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            alignItems: 'center',
-            paddingLeft: 20,
-            width: 50,
-            marginTop: -23
-          }}>
-
-          </div>
-          <div style={{
-            height: '100%',
-            position: 'relative',
-            width: 50
-          }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '100%',
-              height: '100%'
-            }}>
-              <div style={{ height: '50%', width: 2, backgroundColor: '#dbd8da',marginTop: 20 }} />
-            </div>
-            <div style={{ position: 'absolute', top: 10,left: 13,backgroundColor: '#eea543',width: 25,height: 25,borderRadius: '50%' }} >
-              <span style={{ color: '#ffffff', paddingLeft: 6 }}>收</span>
-            </div>
-          </div>
-          <div style={{ width: 200,backgroundColor: '#ffffff',marginTop: -20 }}>
-            [收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元
-          </div>
-        </div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          height: 75,
-          alignItems: 'center',
-          marginTop: -20
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            alignItems: 'center',
-            paddingLeft: 20,
-            width: 50,
-            marginTop: -23
-          }}>
-            <div style={{ fontSize: 13 }}>10-24</div>
-            <div>
-              <span style={{ color: '#dadada',fontSize: 10 }}>09:34</span>
-            </div>
-          </div>
-          <div style={{
-            height: '100%',
-            position: 'relative',
-            width: 50
-          }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '100%',
-              height: '100%'
-            }}>
-              <div style={{ height: '50%', width: 2, backgroundColor: '#dbd8da',marginTop: 9 }} />
-            </div>
-            <div style={{ position: 'absolute', top: 10,left: 13,backgroundColor: '#eea543',width: 25,height: 25,borderRadius: '50%' }} >
-              <span style={{ color: '#ffffff', paddingLeft: 6 }}>√</span>
-            </div>
-          </div>
-          <div style={{ width: 200,backgroundColor: '#ffffff' }}>
-            <span>已签收</span><br/>
-            [收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元
-          </div>
+          {this.state.data.map((i,index) => {
+            if (index > 1 && this.state.scroll !== true) { return }
+            return(
+              <div>
+                {this.renderTradeItem(i,index)}
+              </div>
+            )
+          })}
         </div>
         <div style={{
           display: 'flex',
           justifyContent: 'center',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          height: 20
         }}>
-          <span style={{ fontSize: 10, color: '#c3c3c3' }}>点击查看更多物流信息</span>
+          <span style={{ fontSize: 10, color: '#c3c3c3' }} onClick={this.scrollOnclick}>{!this.state.scroll ? '点击查看更多物流信息' : ''}</span>
         </div>
       </div>
     )
+  }
+
+  public renderTradeItem = (i,index) => {
+    return(
+      <div style={{
+        display: 'flex',
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        height: 80,
+        alignItems: 'center',
+        marginTop: -20
+      }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+          paddingLeft: 20,
+          width: 50,
+          marginTop: -23
+        }}>
+          {i.date != null && i.date !== '' ? this.renderTime(i) : ''}
+        </div>
+        <div style={{
+          height: '100%',
+          position: 'relative',
+          width: 50
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            height: '100%'
+          }}>
+            <div style={{ height: '50%', width: 2, backgroundColor: '#dbd8da',marginTop: 20 }} />
+          </div>
+          <div style={{ position: 'absolute', top: 10,left: 13,backgroundColor: '#eea543',width: 25,height: 25,borderRadius: '50%' }} >
+            <div style={{ color: '#ffffff', paddingLeft: 6,paddingTop: 4 }}>
+              <span>收</span>
+            </div>
+          </div>
+        </div>
+        {this.renderAddress(i,index)}
+      </div>
+    )
+  }
+
+  public renderTime = (i) => {
+    return(
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingLeft: 20,
+        width: 50
+      }}>
+        <div style={{ fontSize: 13 }}>{i.date}</div>
+        <div>
+          <span style={{ color: '#dadada',fontSize: 10 }}>{i.time}</span>
+        </div>
+      </div>
+    )
+  }
+
+  public renderAddress = (i,index) => {
+    if (i.status !== null && i.status !== '') {
+      return(
+        <div style={{ width: 200,backgroundColor: '#ffffff',marginTop: -20,fontSize: 12 }}>
+          <span>{i.status}</span><br/>
+          {i.address}
+        </div>
+      )
+    }
+    return(
+      <div style={{ width: 200,backgroundColor: '#ffffff',marginTop: -20 ,fontSize: 12 }}>
+        {i.address}
+      </div>
+    )
+  }
+
+  public scrollOnclick = () => {
+    this.setState({
+      scroll: !this.state.scroll
+    })
   }
 
   public render () {

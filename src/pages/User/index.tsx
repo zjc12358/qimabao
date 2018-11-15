@@ -3,7 +3,7 @@ import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { NavBar,Icon } from 'antd-mobile'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import '../../assets/UserStyle.css'
+import './master.css'
 import { UserInfo } from '@datasources/UserInfo'
 
 export interface Props {

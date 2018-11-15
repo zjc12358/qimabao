@@ -12,12 +12,17 @@ import { updatePageTab } from '@store/actions/global_data'
 import ChooseMenu from '@components/ChooseMenu'
 import { changeCategoryIndex } from '@store/actions/categoryItem_data'
 import LoadMore from '@components/LoadMore'
-import { number } from 'prop-types'
+import Drawer from '@material-ui/core/Drawer'
+import Input from '@material-ui/core/Input'
+import './homeCss.css'
+import './productListCss.css'
+import { TagBean } from '@datasources/TagBean'
 
 const NUM_ROWS = 20
 let pageIndex = 0
 
 let chooseData = ['价格高到低', '价格低到高', '销量高到低', '优惠优先']
+let sortTag = ['有机', '冷冻', '纯天然', '野生', '绿色', '深加工']
 
 export interface Props {
   categoryItemData: CategoryItemData
@@ -30,13 +35,17 @@ interface State {
   secondCategoryList: Array<SecondProductCategoryBean>
   productList: Array<ProductBean>
   chooseData: Array<string>
-  category1Index: number // 选择类别 和 标题一致
   showChoose: boolean
   showCategory: boolean
   categoryIndex: number
   isLoading: boolean
+  hasMore: boolean // 是否还有更多
   sortIndex: number // 排序选择
   showSort: boolean // 是否显示排序菜单
+  drawerOpen: boolean
+  tagList: Array<TagBean>
+  minPrice: number // 最低价
+  maxPrice: number // 最高价
 }
 
 class Home extends React.Component<Props, State> {
@@ -48,13 +57,17 @@ class Home extends React.Component<Props, State> {
       secondCategoryList: [],
       productList: [],
       chooseData: ['1', '2', '3'],
-      category1Index: null,
       showCategory: false,
       categoryIndex: this.props.categoryItemData.index,
       showChoose: false,
       isLoading: true,
+      hasMore: true,
       sortIndex: null,
-      showSort: false
+      showSort: false,
+      drawerOpen: false,
+      tagList: [],
+      minPrice: null,
+      maxPrice: null
     }
   }
 
@@ -69,6 +82,7 @@ class Home extends React.Component<Props, State> {
   componentWillMount () {
     setTimeout(() => {
       this.getData(0)
+      this.getTagList()
       this.setState({
         isLoading: false
       })
@@ -76,7 +90,7 @@ class Home extends React.Component<Props, State> {
   }
 
   loadMore = () => {
-    if (this.state.isLoading) {
+    if (this.state.isLoading && !this.state.hasMore) {
       return
     }
     this.setState({ isLoading: true })
@@ -133,6 +147,21 @@ class Home extends React.Component<Props, State> {
     }
   }
 
+  getTagList () {
+    let list: Array<TagBean> = []
+    for (let i = 0; i < 6; i++) {
+      let item: TagBean = {
+        name: sortTag[i],
+        id: i,
+        checked: false
+      }
+      list.push(item)
+    }
+    this.setState({
+      tagList: list
+    })
+  }
+
   getCategoryData (): Array<string> {
     let categoryData: Array<string> = []
     this.props.categoryItemData.categoryItemData.map((item) => categoryData.push(item.category_name))
@@ -147,15 +176,11 @@ class Home extends React.Component<Props, State> {
       <div style={{
         width: '100%'
       }}>
-        <div className='horizontal'
-             style={{
-               justifyContent: 'center',
-               height: 40,
-               width: '100%',
-               backgroundColor: 'white'
-             }} onClick={this.headOnClick}>
-          <div style={{ fontSize: 18 }}>
-            {this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}↓
+        <div className='horizontal-center'
+             style={{ height: 40, width: '100%', backgroundColor: 'white' }}>
+          <div onClick={this.headOnClick} style={{ fontSize: 18 }}>
+            <span>{this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}</span>
+            <span>↓</span>
           </div>
           <div className='horizontal'
                style={{
@@ -169,31 +194,16 @@ class Home extends React.Component<Props, State> {
             返回
           </div>
           {/*右边2个按钮*/}
-          <div className='horizontal'
+          <div className='horizontal-center right-menu'
                style={{
                  position: 'fixed',
                  right: 0,
-                 justifyContent: 'center',
                  height: 40
                }}>
-          <span style={{
-            height: 40,
-            width: 40,
-            paddingLeft: 10,
-            paddingRight: 10,
-            paddingTop: 5,
-            paddingBottom: 5
-          }} onClick={this.searchOnClick}>
+          <span className='center' style={{ height: 40, width: 60 }} onClick={this.searchOnClick}>
             搜索
           </span>
-            <span style={{
-              height: 40,
-              width: 40,
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingTop: 5,
-              paddingBottom: 5
-            }} onClick={this.goCartOnClick}>
+            <span className='center' style={{ height: 40, width: 60 }} onClick={this.goCartOnClick}>
             购物车
           </span>
           </div>
@@ -211,9 +221,7 @@ class Home extends React.Component<Props, State> {
    */
   renderChoose = () => {
     return (
-      <div style={{
-        width: '100%'
-      }}>
+      <div style={{ width: '100%' }}>
         <div className='horizontal'
              style={{
                height: 40,
@@ -221,29 +229,21 @@ class Home extends React.Component<Props, State> {
                backgroundColor: 'white'
              }}>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-          <div className='horizontal'
-               style={{
-                 flex: 1,
-                 justifyContent: 'center'
-               }} onClick={this.chooseOnClick}>
-            <span>全部分类</span>
+          <div className='horizontal-center'
+               style={{ flex: 1 }} onClick={this.chooseOnClick}>
+            <span style={{ whiteSpace: 'nowrap' }}>全部分类</span>
             <span>↓</span>
           </div>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-          <div className='horizontal'
-               style={{
-                 flex: 1,
-                 justifyContent: 'center'
-               }} onClick={this.sortOnClick}>
-            <span>默认排序</span>
+          <div className='horizontal-center'
+               style={{ flex: 1 }} onClick={this.sortOnClick}>
+            <span
+              style={{ whiteSpace: 'nowrap' }}>{this.state.sortIndex === null ? '默认排序' : chooseData[this.state.sortIndex]}</span>
             <span>↓</span>
           </div>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-          <div className='horizontal'
-               style={{
-                 flex: 1,
-                 justifyContent: 'center'
-               }}>
+          <div className='horizontal-center'
+               style={{ flex: 1 }} onClick={() => this.toggleDrawer(true)}>
             <span>筛选</span>
             <span>→</span>
           </div>
@@ -264,11 +264,7 @@ class Home extends React.Component<Props, State> {
   renderContent = () => {
     return (
       <div className='horizontal'
-           style={{
-             height: '100%',
-             width: '100%',
-             flex: 1
-           }}>
+           style={{ height: '100%', width: '100%', flex: 1 }}>
         {this.renderLeftChoose()}
         {this.renderRightProductList()}
       </div>
@@ -281,9 +277,7 @@ class Home extends React.Component<Props, State> {
   renderLeftChoose = () => {
     return (
       <div className='scroll vertical'>
-        <div style={{
-          width: 60
-        }}>
+        <div style={{ width: 60 }}>
           {this.state.secondCategoryList.map((item, index) => this.renderLeftChooseItem(item, index))}
         </div>
         <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
@@ -299,21 +293,13 @@ class Home extends React.Component<Props, State> {
   renderLeftChooseItem = (item: SecondProductCategoryBean, index: number) => {
     return (
       <div className='vertical'
-           style={{
-             width: '100%',
-             height: 41
-           }}>
-        <div className='horizontal'
-             style={{
-               height: 40,
-               width: '100%',
-               justifyContent: 'center',
-               fontSize: 10,
-               backgroundColor: 'white'
-             }} onClick={() =>
-          console.log('点击' + index)
-          // this.getProductList(item.category_id, item.second_category_id)
-        }>
+           style={{ width: '100%', height: 41 }}>
+        <div className='horizontal-center left-choose-item'
+             onClick={() =>
+               console.log('点击' + index)
+               // TODO 2018/11/15 请求数据
+               // this.getProductList(item.category_id, item.second_category_id)
+             }>
           {item.second_category_name}
         </div>
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
@@ -330,7 +316,8 @@ class Home extends React.Component<Props, State> {
     return (
       <div className='scroll product-list' style={{ flex: 1 }}>
         <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
-                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}/>
+                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}
+                  hasMore={this.state.hasMore}/>
         <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
       </div>
     )
@@ -343,53 +330,73 @@ class Home extends React.Component<Props, State> {
   renderRightProductListItem = (item: ProductBean) => {
     return (
       <div className='vertical'
-           style={{
-             height: 71,
-             width: '100%',
-             backgroundColor: 'white'
-           }} onClick={() => this.productOnClick(item.id)}>
+           style={{ height: 71, width: '100%', backgroundColor: 'white' }}
+           onClick={() => this.productOnClick(item.id)}>
         <div className='horizontal'
-             style={{
-               height: 70,
-               width: '100%'
-             }}>
+             style={{ height: 70, width: '100%' }}>
           <img style={{ margin: 5, width: 60, height: 60 }} src={item.img}/>
-          <div className='vertical'
-               style={{
-                 flex: 1,
-                 alignItems: 'flex-start',
-                 whiteSpace: 'nowrap',
-                 overflow: 'hidden',
-                 width: '100%',
-                 height: '100%',
-                 marginLeft: 5,
-                 marginRight: 5
-               }}>
+          <div className='vertical product-list-item-content'>
             <span style={{ marginTop: 5 }}>{item.name}</span>
-            <div style={{
-              fontSize: 12,
-              color: '#e5e5e5',
-              textOverflow: 'ellipsis'
-            }}>{item.describe}</div>
+            <div className='product-list-item-describe'>{item.describe}</div>
             <div className='horizontal'
-                 style={{
-                   justifyContent: 'space-between',
-                   width: '100%'
-                 }}>
+                 style={{ justifyContent: 'space-between', width: '100%' }}>
               <div className='horizontal'>
                 <span style={{ color: '#ff0000', fontSize: 12 }}>¥</span>
                 <span style={{ color: '#ff0000', fontSize: 12 }}>{item.price}</span>
                 <span style={{ color: '#e5e5e5', fontSize: 12 }}>/{item.weight}</span>
               </div>
-              <div style={{
-                padding: 10
-              }} onClick={(e) => this.addCartOnClick(e, item.id)}>添
-              </div>
+              <div style={{ padding: 10 }} onClick={(e) => this.addCartOnClick(e, item.id)}>添</div>
             </div>
           </div>
         </div>
         <span style={{ height: 1, backgroundColor: '#e5e5e5', width: '100%', position: 'fixed', bottom: 0 }}></span>
       </div>
+    )
+  }
+
+  /**
+   * 抽屉内部布局
+   */
+  renderDrawer = () => {
+    return (
+      <div className='vertical' style={{ height: '100%' }}>
+        <span style={{ height: 40, fontSize: 20, marginTop: 20 }}>价格筛选</span>
+        <div style={{ margin: 10 }}>
+          <div className='price-area-border'>
+            <div className='horizontal'>
+              <Input style={{ width: 80 }} onChange={this.priceMinChange} defaultValue={'最低价'}
+                     type={'number'} disableUnderline={true} className='center price-input-border'>
+                {this.state.minPrice === null ? '' : this.state.minPrice}
+              </Input>
+              <span style={{ width: 10, height: 1 }}></span>
+              <Input style={{ width: 80 }} onChange={this.priceMaxChange} defaultValue={'最高价'}
+                     type={'number'} disableUnderline={true} className='center price-input-border'>
+                {this.state.maxPrice === null ? '' : this.state.maxPrice}
+              </Input>
+            </div>
+          </div>
+        </div>
+        <span style={{ width: '100%', marginTop: 20 }}><span style={{ marginLeft: 20, fontSize: 14 }}>特色</span></span>
+        <div className='horizontal'
+             style={{ flexWrap: 'wrap', width: 200 }}>
+          {this.state.tagList.map((item, index) => this.renderDrawerTagItem(item.name, item.checked, index))}</div>
+      </div>
+    )
+  }
+
+  /**
+   * 标签样式
+   */
+  renderDrawerTagItem = (item: string, checked: boolean, index: number) => {
+    return (
+      checked ?
+        <div className='center drawer-tag-item-onClick' onClick={() => this.tagOnClick(index, checked)}>
+          <span>{item}</span>
+        </div>
+        :
+        <div className='center drawer-tag-item' onClick={() => this.tagOnClick(index, checked)}>
+          <span>{item}</span>
+        </div>
     )
   }
 
@@ -479,6 +486,70 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
+   * 抽屉显示控制
+   * @param open
+   */
+  toggleDrawer = (open) => {
+    this.setState({
+      drawerOpen: open
+    })
+  }
+
+  /**
+   * 跳转到商品详情
+   * @param id
+   */
+  productOnClick = (id: number) => {
+    this.props.chooseProduct(id)
+    history().push('/productDetails')
+  }
+
+  /**
+   * 添加到购物车
+   * @param e
+   * @param id
+   */
+  addCartOnClick = (e, id: number) => {
+    // TODO 2018/10/29 添加到购物车
+    // 阻止事件冒泡
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
+    console.log(id + '添加到购物车')
+  }
+
+  /**
+   * 改变最低价
+   * @param key
+   * @param event
+   */
+  priceMinChange = (event) => {
+    this.setState({
+      minPrice: event.target.value
+    })
+  }
+
+  /**
+   * 改变最高价
+   * @param event
+   */
+  priceMaxChange = (event) => {
+    this.setState({
+      maxPrice: event.target.value
+    })
+  }
+
+  /**
+   * 点击标签
+   */
+  tagOnClick = (index: number, checked: boolean) => {
+    let tagList = this.state.tagList
+    tagList[index].checked = !checked
+    this.setState({
+      tagList
+    })
+  }
+
+  /**
    * 获取商品列表
    * @param categoryId 一级分类id
    * @param secondCategoryId 二级分类id
@@ -493,39 +564,18 @@ class Home extends React.Component<Props, State> {
       })
   }
 
-  /**
-   * 跳转到商品详情
-   * @param id
-   */
-  productOnClick = (id: number) => {
-    this.props.chooseProduct(id)
-    history().push('/productDetails')
-  }
-
-  /**
-   * 添加到购物车
-   * @param id
-   */
-  addCartOnClick = (e, id: number) => {
-    // TODO 2018/10/29 添加到购物车
-    // 阻止事件冒泡
-    e.stopPropagation()
-    e.nativeEvent.stopImmediatePropagation()
-    console.log(id + '添加到购物车')
-  }
-
   public render () {
     return (
       <div className='vertical'
-           style={{
-             backgroundColor: '#efeff5',
-             height: '100vh'
-           }}>
+           style={{ backgroundColor: '#efeff5', height: '100vh' }}>
         {this.renderHead()}
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
         {this.renderChoose()}
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
         {this.renderContent()}
+        <Drawer anchor={'right'} open={this.state.drawerOpen} onClose={() => this.toggleDrawer(false)}>
+          {this.renderDrawer()}
+        </Drawer>
       </div>
     )
   }
