@@ -7,7 +7,7 @@ import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import '../../assets/UserStyle.css'
+import './master.css'
 
 export interface Props {
   pageTab: PageTab
@@ -31,10 +31,10 @@ class User extends React.Component<Props, State> {
         { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
         { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
         { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
-        { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
+        { date: '10-24',time: '09:34',status: '',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
         { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' }
       ],
-      scroll: true
+      scroll: false
     }
   }
 
@@ -150,7 +150,8 @@ class User extends React.Component<Props, State> {
           display: 'flex',
           justifyContent: 'center',
           flexDirection: 'row',
-          alignItems: 'center'
+          alignItems: 'center',
+          color: '#b6b6b6'
         }}>
           当前没有物流信息
         </div>
@@ -159,7 +160,7 @@ class User extends React.Component<Props, State> {
     return(
       <div style={{
         backgroundColor: '#ffffff',
-        height: 20 + (this.state.scroll === true ? this.state.data.length * 70 : 140),
+        height: 20 + (this.state.scroll === true ? this.state.data.length * 60 : 140),
         marginTop: 20,
         marginLeft: 20,
         marginRight: 20,
@@ -167,21 +168,25 @@ class User extends React.Component<Props, State> {
         borderRadius: 5,
         position: 'relative'
       }}>
-        {this.state.data.map((i,index) => {
-          if (index > 1 && this.state.scroll !== true) { return }
-          return(
-            <div>
-              {this.renderTradeItem(i,index)}
-            </div>
-          )
-        })}
+        <div style={{
+          paddingTop: 20
+        }}>
+          {this.state.data.map((i,index) => {
+            if (index > 1 && this.state.scroll !== true) { return }
+            return(
+              <div>
+                {this.renderTradeItem(i,index)}
+              </div>
+            )
+          })}
+        </div>
         <div style={{
           display: 'flex',
           justifyContent: 'center',
           flexDirection: 'row',
           height: 20
         }}>
-          <span style={{ fontSize: 10, color: '#c3c3c3' }} onClick={this.scrollOnclick}>点击查看更多物流信息</span>
+          <span style={{ fontSize: 10, color: '#c3c3c3' }} onClick={this.scrollOnclick}>{!this.state.scroll ? '点击查看更多物流信息' : ''}</span>
         </div>
       </div>
     )
@@ -193,9 +198,9 @@ class User extends React.Component<Props, State> {
         display: 'flex',
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        height: 70,
+        height: 80,
         alignItems: 'center',
-        marginTop: - index * 20
+        marginTop: -20
       }}>
         <div style={{
           display: 'flex',
@@ -242,8 +247,7 @@ class User extends React.Component<Props, State> {
         flexDirection: 'column',
         alignItems: 'center',
         paddingLeft: 20,
-        width: 50,
-        marginTop: -6
+        width: 50
       }}>
         <div style={{ fontSize: 13 }}>{i.date}</div>
         <div>
