@@ -3,12 +3,14 @@ import { ShopCartSupplierBean } from '../../datasources/ShopCartSupplierBean'
 
 export enum Type {
   UPDATA_SHOPCART = 'UPDATA_SHOPCART',
-  UPDATA_NEEDRELOAD = 'UPDATA_NEEDRELOAD'
+  UPDATA_NEEDRELOAD = 'UPDATA_NEEDRELOAD',
+  UPDATA_ALLSUPPLIERITEMCHECK = 'UPDATA_ALLSUPPLIERITEMCHECK'
 }
 
 export interface ShopCartAction extends Action {
   type: Type
   ShopCartData: Array<ShopCartSupplierBean>,
+  AllSupplierCheckBoolean: Boolean,
   reload: boolean
 }
 
@@ -24,7 +26,10 @@ export const needReload = (reload: boolean) =>
     type: Type.UPDATA_NEEDRELOAD,
     reload: reload
   })
-// export const updataTotal = (total: number) =>
-//   (dispatch) => dispatch({
-//     type: Type.UPDATA_NEEDRELOAD
-//   })
+
+export const updataAllSupplierItemCheck = (allSupplierItemCheck: boolean) =>
+  (dispatch) => dispatch({
+    type: Type.UPDATA_ALLSUPPLIERITEMCHECK,
+    AllSupplierCheckBoolean: allSupplierItemCheck,
+    reload: true
+  })

@@ -5,8 +5,7 @@ import { TabBar, List, Checkbox, Stepper, SwipeAction, Button } from 'antd-mobil
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
-import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
-import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
+import { ShopCartSupplierReviseBean } from '@datasources/ShopCartSupplierReviseBean'
 import history from 'history/createHashHistory'
 
 const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent)
@@ -22,7 +21,7 @@ export interface Props {
 }
 
 interface State {
-  foodList: any,
+  foodList: Array<ShopCartSupplierReviseBean>,
 }
 
 class History extends React.Component<Props, State> {
@@ -30,71 +29,74 @@ class History extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      foodList: [
-        {
-          id: 1,
-          name: '红烧猪蹄',
-          price: 15.5,
-          count: 2,
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043777320&di=9667081cc759ba5e2698c43ac19aac7c&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201501%2F18%2F20150118123414_Hk8yj.jpeg',
-          unit: '份',
-          nowSupplierMsg: {
-            id: 0,
-            name: '衢州炒菜软件有限公司'
-          },
-          otherSupplierList: [
-            {
-              id: 0,
-              name: '衢州炒菜软件有限公司',
-              foodMsg: {
-                id: 1,
-                name: '红烧猪蹄',
-                price: 15.5,
-                img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043777320&di=9667081cc759ba5e2698c43ac19aac7c&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201501%2F18%2F20150118123414_Hk8yj.jpeg',
-                unit: '份'
-              }
-            },
-            {
-              id: 1,
-              name: '杭州炒菜软件',
-              foodMsg: {
-                id: 2,
-                name: '红烧猪蹄',
-                price: 16.5,
-                img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043777320&di=5b277d426a6682329fcffbcd31b83265&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Ff603918fa0ec08fa89086b9d52ee3d6d55fbda84.jpg',
-                unit: '份'
-              }
-            },
-            {
-              id: 2,
-              name: '江山炒菜阿萨德发的撒',
-              foodMsg: {
-                id: 3,
-                name: '红烧猪蹄',
-                img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043777319&di=a6fa70d24b23fc1af9333649c39dd698&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F8694a4c27d1ed21b504071dfa66eddc451da3f7a.jpg',
-                price: 17.5,
-                unit: '份'
-              }
-            }
-          ]
-        },
-        {
-          id: 2,
-          name: '青椒肉丝',
-          price: 25.5,
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043891384&di=52fa13745adfe0a22da2e2cd48e0f0d9&imgtype=0&src=http%3A%2F%2Ffood.365jia.cn%2Fuploads%2Fnews%2Ffolder_1744197%2Fimages%2F1ee0c0040368bd20a9a980d639e2623b.jpg',
-          count: 3,
-          unit: '份',
-          nowSupplierMsg: {
-            id: 0,
-            name: '衢州炒菜软件有限公司'
-          },
-          otherSupplierList: null
-        }
-      ]
+      foodList: []
     }
   }
-
+  componentDidMount () {
+    let foodList = [
+      {
+        id: 1,
+        name: '红烧猪蹄',
+        price: 15.5,
+        count: 2,
+        img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043777320&di=9667081cc759ba5e2698c43ac19aac7c&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201501%2F18%2F20150118123414_Hk8yj.jpeg',
+        unit: '份',
+        nowSupplierMsg: {
+          id: 0,
+          name: '衢州炒菜软件有限公司'
+        },
+        otherSupplierList: [
+          {
+            id: 0,
+            name: '衢州炒菜软件有限公司',
+            foodMsg: {
+              id: 1,
+              name: '红烧猪蹄',
+              price: 15.5,
+              img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043777320&di=9667081cc759ba5e2698c43ac19aac7c&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201501%2F18%2F20150118123414_Hk8yj.jpeg',
+              unit: '份'
+            }
+          },
+          {
+            id: 1,
+            name: '杭州炒菜软件',
+            foodMsg: {
+              id: 2,
+              name: '红烧猪蹄',
+              price: 16.5,
+              img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043777320&di=5b277d426a6682329fcffbcd31b83265&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Ff603918fa0ec08fa89086b9d52ee3d6d55fbda84.jpg',
+              unit: '份'
+            }
+          },
+          {
+            id: 2,
+            name: '江山炒菜阿萨德发的撒',
+            foodMsg: {
+              id: 3,
+              name: '红烧猪蹄',
+              img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043777319&di=a6fa70d24b23fc1af9333649c39dd698&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F8694a4c27d1ed21b504071dfa66eddc451da3f7a.jpg',
+              price: 17.5,
+              unit: '份'
+            }
+          }
+        ]
+      },
+      {
+        id: 2,
+        name: '青椒肉丝',
+        price: 25.5,
+        img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043891384&di=52fa13745adfe0a22da2e2cd48e0f0d9&imgtype=0&src=http%3A%2F%2Ffood.365jia.cn%2Fuploads%2Fnews%2Ffolder_1744197%2Fimages%2F1ee0c0040368bd20a9a980d639e2623b.jpg',
+        count: 3,
+        unit: '份',
+        nowSupplierMsg: {
+          id: 0,
+          name: '衢州炒菜软件有限公司'
+        },
+        otherSupplierList: null
+      }
+    ]
+    this.setState({ foodList: foodList })
+  }
   /**
    * 食物增减事件
    * @param v

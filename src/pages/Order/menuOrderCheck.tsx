@@ -23,7 +23,7 @@ class Menu extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div>
+      <div onClick={history().goBack}>
         下单确认页,少页面
         此页面点击下单后,请求接口,跳转确认订单页
       </div>

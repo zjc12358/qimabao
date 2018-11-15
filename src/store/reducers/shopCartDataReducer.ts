@@ -3,11 +3,13 @@ import { ShopCartAction, Type } from '../actions/shopCart_data'
 
 export interface ShopCartData {
   ShopCartData: Array<ShopCartSupplierBean>,
+  AllSupplierCheckBoolean: Boolean,
   reload: boolean
 }
 
 const initialState: ShopCartData = {
   ShopCartData: [],
+  AllSupplierCheckBoolean: false,
   reload: true
 }
 
@@ -25,11 +27,11 @@ export default (state = initialState, action: ShopCartAction) => {
         ...state,
         reload: action.reload
       }
-    // case Type.UPDATA_TOTAL:
-    //   return {
-    //     ...state,
-    //     total: action.
-    //   }
+    case Type.UPDATA_ALLSUPPLIERITEMCHECK:
+      return {
+        ...state,
+        AllSupplierCheckBoolean: action.AllSupplierCheckBoolean
+      }
     default:
       return state
   }
