@@ -30,11 +30,11 @@ interface State {
   secondCategoryList: Array<SecondProductCategoryBean>
   productList: Array<ProductBean>
   chooseData: Array<string>
-  category1Index: number // 选择类别 和 标题一致
   showChoose: boolean
   showCategory: boolean
   categoryIndex: number
   isLoading: boolean
+  hasMore: boolean // 是否还有更多
   sortIndex: number // 排序选择
   showSort: boolean // 是否显示排序菜单
 }
@@ -48,11 +48,11 @@ class Home extends React.Component<Props, State> {
       secondCategoryList: [],
       productList: [],
       chooseData: ['1', '2', '3'],
-      category1Index: null,
       showCategory: false,
       categoryIndex: this.props.categoryItemData.index,
       showChoose: false,
       isLoading: true,
+      hasMore: true,
       sortIndex: null,
       showSort: false
     }
@@ -76,7 +76,7 @@ class Home extends React.Component<Props, State> {
   }
 
   loadMore = () => {
-    if (this.state.isLoading) {
+    if (this.state.isLoading && !this.state.hasMore) {
       return
     }
     this.setState({ isLoading: true })
@@ -330,7 +330,8 @@ class Home extends React.Component<Props, State> {
     return (
       <div className='scroll product-list' style={{ flex: 1 }}>
         <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
-                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}/>
+                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}
+                  hasMore={this.state.hasMore}/>
         <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
       </div>
     )

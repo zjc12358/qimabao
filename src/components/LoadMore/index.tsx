@@ -8,12 +8,13 @@ import history from 'history/createHashHistory'
 
 export interface Props {
   list: any // 传入整个list布局
-  listData: Array<string> // 传入获取的数据
+  listData: Array<any> // 显示的数据
   itemHeight: number  // 每个数据的高度
   getData: any // 请求数据方法
   isLoading: boolean // 是否正在加载
   loadHeight: number // 自定义距离底部多少时concat数据
-  bodyName: string // 父级div className
+  bodyName: string // 父级div className  传入以获取高度
+  hasMore: boolean // 是否有更多数据
 }
 
 /**
@@ -21,7 +22,6 @@ export interface Props {
  * 获取数据在原页面设置,这里只需要传入布局和list数据
  */
 interface State {
-  finished: boolean, // 是否全部加载完毕
   isFoot: boolean, // 阻止用户频繁上拉调接口
   startX: number, // 触摸起始点x轴坐标
   startY: number // 触摸起始点y轴坐标
@@ -32,7 +32,6 @@ class LoadMore extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      finished: false, // 是否全部加载完毕
       isFoot: true, // 阻止用户频繁上拉调接口
       startX: 0, // 触摸起始点x轴坐标
       startY: 0 // 触摸起始点y轴坐标
@@ -126,12 +125,16 @@ class LoadMore extends React.Component<Props, State> {
         <div style={{ width: '100%' }} onTouchStart={this.touchStart.bind(this)} onTouchEnd={this.touchEnd.bind(this)}>
           {this.props.list}
         </div>
-        <div>
+        <div className='vertical'
+             style={{
+               height: 40,
+               justifyContent: 'center'
+             }}>
           {
             this.props.listData !== null && this.props.listData !== undefined &&
-            this.state.finished ? <span>我是有底线的</span> :
+            !this.props.hasMore ? <span>到底了</span> :
               this.props.listData.length > 0 ? !this.props.isLoading ? <span>上拉加载更多</span> :
-                <span>加载中...</span> : <span>暂无信息</span>
+                <span>加载中...</span> : <span>暂无数据</span>
           }
         </div>
       </div>
