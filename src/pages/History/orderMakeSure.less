@@ -1,0 +1,93 @@
+/* 通用边框色 */
+@borderColor: #cccccc;
+/* 通用字体色 */
+@fontGray: #8c8c8c;
+@fontRed: red;
+@fontBlue: #0084e7;
+
+/*
+ dir,ali,jus
+ */
+.flex(@dir: row,@ali:stretch,@jus:	flex-start ){
+  display: flex;
+  flex-direction: @dir;
+  align-items: @ali;
+  justify-content: @jus;
+}
+
+.fontRed{
+  color: @fontRed;
+}
+.fontGray{
+  color: @fontGray;
+}
+.orderContainer{
+  .flex(column,center,flex-start);
+
+  /* 收货地址 */
+  .address{
+    .flex(row,center);
+    margin-top: 40px;
+    border-top: 1px solid @borderColor;
+    padding: 20px;
+    color: @fontGray;
+  }
+
+  /* 商品详情 */
+  .orderDetail{
+    background: white;
+    .orderDetailCon{
+      border-top: 1px solid @borderColor;
+      .orderDetailTitle{
+        .flex(row,center);
+        height: 40px;
+      }
+      .timeDescription{
+        color: @fontBlue;
+        padding-left: 20px;
+        padding-bottom: 15px;
+      }
+    }
+    .supplierItem{
+      .flex(row,center);
+      border-top: 1px solid @borderColor;
+      height: 40px
+    }
+    .foodDetail{
+      backgroundColor: '#f5f5f5';
+      .flex(row,center);
+      padding: 15px;
+      marginBottom: 15px;
+      borderRadius: 20px;
+      position: relative;
+    }
+  }
+
+}
+/**
+  确认付款
+   */
+.paySure{
+  .account{
+    .flex(column,center);
+    .accountPice{
+      font-size: 26px;
+      height: 80px;
+      .flex(row,center,center)
+    }
+    .accountDetail{
+      .flex(row,stretch,center);
+      width: 100%;
+      color: #666666;
+      font-size: 15px;
+      &:nth-child(2){
+        flex: 1;
+      }
+    }
+  }
+  .balance{
+    .flex(row,stretch,center);
+    color: #666666;
+    font-size: 15px;
+  }
+}
