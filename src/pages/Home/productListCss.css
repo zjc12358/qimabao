@@ -29,7 +29,7 @@
   background-color: white;
   height: 40px;
   font-size: 14px;
-  min-width: 100px;
+  min-width: 80px;
 }
 
 .left-choose-item {
@@ -54,4 +54,23 @@
   font-size: 12px;
   color: #e5e5e5;
   text-overflow: ellipsis;
+}
+
+.drawer-tag-item {
+  padding: 5px 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #f5f5f5;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+
+.drawer-tag-item-onClick {
+  padding: 5px 10px;
+  background-color: #fefefe;
+  border: 1px solid #d66b67;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-top: 20px;
+  color: #d66b67;
 }

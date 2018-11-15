@@ -13,13 +13,16 @@ import ChooseMenu from '@components/ChooseMenu'
 import { changeCategoryIndex } from '@store/actions/categoryItem_data'
 import LoadMore from '@components/LoadMore'
 import Drawer from '@material-ui/core/Drawer'
+import Input from '@material-ui/core/Input'
 import './homeCss.css'
 import './productListCss.css'
+import { TagBean } from '@datasources/TagBean'
 
 const NUM_ROWS = 20
 let pageIndex = 0
 
 let chooseData = ['价格高到低', '价格低到高', '销量高到低', '优惠优先']
+let sortTag = ['有机', '冷冻', '纯天然', '野生', '绿色', '深加工']
 
 export interface Props {
   categoryItemData: CategoryItemData
@@ -40,6 +43,9 @@ interface State {
   sortIndex: number // 排序选择
   showSort: boolean // 是否显示排序菜单
   drawerOpen: boolean
+  tagList: Array<TagBean>
+  minPrice: number // 最低价
+  maxPrice: number // 最高价
 }
 
 class Home extends React.Component<Props, State> {
@@ -58,7 +64,10 @@ class Home extends React.Component<Props, State> {
       hasMore: true,
       sortIndex: null,
       showSort: false,
-      drawerOpen: false
+      drawerOpen: false,
+      tagList: [],
+      minPrice: null,
+      maxPrice: null
     }
   }
 
@@ -73,6 +82,7 @@ class Home extends React.Component<Props, State> {
   componentWillMount () {
     setTimeout(() => {
       this.getData(0)
+      this.getTagList()
       this.setState({
         isLoading: false
       })
@@ -135,6 +145,21 @@ class Home extends React.Component<Props, State> {
       })
       pageIndex = 1
     }
+  }
+
+  getTagList () {
+    let list: Array<TagBean> = []
+    for (let i = 0; i < 6; i++) {
+      let item: TagBean = {
+        name: sortTag[i],
+        id: i,
+        checked: false
+      }
+      list.push(item)
+    }
+    this.setState({
+      tagList: list
+    })
   }
 
   getCategoryData (): Array<string> {
@@ -339,15 +364,39 @@ class Home extends React.Component<Props, State> {
         <div style={{ margin: 10 }}>
           <div className='price-area-border'>
             <div className='horizontal'>
-              <div className='center price-input-border'>最低价</div>
-              <div>-</div>
-              <div className='center price-input-border'>最高价</div>
+              <Input style={{ width: 80 }} onChange={this.priceMinChange} defaultValue={'最低价'}
+                     type={'number'} disableUnderline={true} className='center price-input-border'>
+                {this.state.minPrice === null ? '' : this.state.minPrice}
+              </Input>
+              <span style={{ width: 10, height: 1 }}></span>
+              <Input style={{ width: 80 }} onChange={this.priceMaxChange} defaultValue={'最高价'}
+                     type={'number'} disableUnderline={true} className='center price-input-border'>
+                {this.state.maxPrice === null ? '' : this.state.maxPrice}
+              </Input>
             </div>
           </div>
         </div>
         <span style={{ width: '100%', marginTop: 20 }}><span style={{ marginLeft: 20, fontSize: 14 }}>特色</span></span>
-        <div className='horizontal'></div>
+        <div className='horizontal'
+             style={{ flexWrap: 'wrap', width: 200 }}>
+          {this.state.tagList.map((item, index) => this.renderDrawerTagItem(item.name, item.checked, index))}</div>
       </div>
+    )
+  }
+
+  /**
+   * 标签样式
+   */
+  renderDrawerTagItem = (item: string, checked: boolean, index: number) => {
+    return (
+      checked ?
+        <div className='center drawer-tag-item-onClick' onClick={() => this.tagOnClick(index, checked)}>
+          <span>{item}</span>
+        </div>
+        :
+        <div className='center drawer-tag-item' onClick={() => this.tagOnClick(index, checked)}>
+          <span>{item}</span>
+        </div>
     )
   }
 
@@ -457,6 +506,7 @@ class Home extends React.Component<Props, State> {
 
   /**
    * 添加到购物车
+   * @param e
    * @param id
    */
   addCartOnClick = (e, id: number) => {
@@ -465,6 +515,38 @@ class Home extends React.Component<Props, State> {
     e.stopPropagation()
     e.nativeEvent.stopImmediatePropagation()
     console.log(id + '添加到购物车')
+  }
+
+  /**
+   * 改变最低价
+   * @param key
+   * @param event
+   */
+  priceMinChange = (event) => {
+    this.setState({
+      minPrice: event.target.value
+    })
+  }
+
+  /**
+   * 改变最高价
+   * @param event
+   */
+  priceMaxChange = (event) => {
+    this.setState({
+      maxPrice: event.target.value
+    })
+  }
+
+  /**
+   * 点击标签
+   */
+  tagOnClick = (index: number, checked: boolean) => {
+    let tagList = this.state.tagList
+    tagList[index].checked = !checked
+    this.setState({
+      tagList
+    })
   }
 
   /**
@@ -485,10 +567,7 @@ class Home extends React.Component<Props, State> {
   public render () {
     return (
       <div className='vertical'
-           style={{
-             backgroundColor: '#efeff5',
-             height: '100vh'
-           }}>
+           style={{ backgroundColor: '#efeff5', height: '100vh' }}>
         {this.renderHead()}
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
         {this.renderChoose()}
