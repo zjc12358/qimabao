@@ -229,6 +229,12 @@ class Home extends React.Component<Props, State> {
    * 模拟请求数据
    */
   getSearchList (page) {
+    if (this.state.isLoading || !this.state.hasMore) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
     console.log('加载数据')
     let list: Array<SearchResultBean> = []
     for (let i = 0; i < 5; i++) {
@@ -255,6 +261,9 @@ class Home extends React.Component<Props, State> {
       })
       pageIndex = 1
     }
+    this.setState({
+      isLoading: false
+    })
   }
 
   public render () {
