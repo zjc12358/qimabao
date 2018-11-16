@@ -13,7 +13,7 @@ export interface Props {
   showRightIcon: Boolean, // 是否显示右边
   backgroundColor: string, // 背景颜色
   rightIconOnClick: any, // 右边点击事件
-  rightIconContent: any // 右边组件
+  rightIconContent?: any // 右边组件
 }
 
 interface State {

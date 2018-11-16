@@ -39,6 +39,10 @@
   background-color: white;
 }
 
+.product-list{
+  flex: 1;
+}
+
 .product-list-item-content {
   flex: 1;
   align-items: flex-start;
