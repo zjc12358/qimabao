@@ -7,7 +7,7 @@ import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import '../../assets/UserStyle.css'
+import './master.css'
 
 export interface Props {
   pageTab: PageTab

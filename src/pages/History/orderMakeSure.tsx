@@ -2,13 +2,9 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox, TextareaItem } from 'antd-mobile'
-import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import './orderMakeSure.less'
 import Head from '../../components/Head/index'
-import Dialog from '../../components/Dialog/index'
-import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
-import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
 import { needReload, updataOrderMakeSure } from '@store/actions/oderMakeSure_data'
 import { OrderMakeSureBean } from '@datasources/OrderMakeSureBean'
@@ -36,7 +32,6 @@ interface State {
   modal1: boolean,
   modal2: boolean,
   dateChooseData: any,
-  dilogIsShow: boolean
 }
 
 function closest (el, selector) {
@@ -55,7 +50,6 @@ class History extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      dilogIsShow: false,
       dateChooseData: [
         { text: '当天', checked: false, value: 0 },
         { text: '隔天', checked: false, value: 1 }
@@ -173,17 +167,6 @@ class History extends React.Component<Props, State> {
     //     break
     // }
     return dpValue
-  }
-
-  closeDialog = () => {
-    this.setState({
-      dilogIsShow: false
-    })
-  }
-  renderDialogContent = () => {
-    return (
-      <div>我是content</div>
-    )
   }
 
   /*
@@ -400,8 +383,6 @@ class History extends React.Component<Props, State> {
         {/*}}>点我*/}
         {/*</button>*/}
         {/*<div>我是：{this.state.orderData.total}</div>*/}
-        <Dialog closeHandClick={this.closeDialog.bind(this)} direction='right' isShow = {this.state.dilogIsShow} content = { this.renderDialogContent() }></Dialog>
-        <button onClick={ () => { this.setState({ dilogIsShow: !this.state.dilogIsShow }) } }>点我打开</button>
       </div>
     )
   }

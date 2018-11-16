@@ -6,9 +6,9 @@ import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import Nav from '../../components/Head/nav'
-import Nav1 from '../../components/Head/nav1'
-import '../../assets/UserStyle.css'
+import Nav from '@components/Head/nav'
+import Nav1 from '@components/Head/nav1'
+import './master.css'
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
 // https://github.com/ant-design/ant-design-mobile/issues/307
@@ -637,7 +637,9 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-
+  /**
+   * 因每个页面代码量过少，整合9个页面到该文件内
+   */
   public render () {
     switch (this.state.step) {
       case 0 : return (
