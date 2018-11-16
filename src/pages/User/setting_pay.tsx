@@ -175,7 +175,7 @@ class User extends React.Component<Props, State> {
         layer = i
       }
     }
-    if (event.target.offsetParent.id === 'main') {
+    if (event.target.offsetParent.id === 'main') {  /* 拖拽*/
       event.target.offsetParent.style.top = (event.targetTouches['0'].clientY - offsetY + parseInt(event.target.offsetParent.style.top.substr(0,event.target.offsetParent.style.top.length - 2),0)) + 'px'
     }
     offsetY = event.targetTouches['0'].clientY
@@ -194,7 +194,6 @@ class User extends React.Component<Props, State> {
         layer = i
       }
     }
-    // d.target.style.height = '10px'
   }
   public touchEnd = (order,index,event) => {
     event.target.offsetParent.children[0].className = 'Segment_line4'
@@ -212,7 +211,6 @@ class User extends React.Component<Props, State> {
           refresh: 'refresh'
         })
       }
-      console.log(currentTop)
       if (currentTop <= top + 40) {
         event.target.offsetParent.style.top = (top + 40) + 'px'
         layer = 0
@@ -225,7 +223,6 @@ class User extends React.Component<Props, State> {
         offsetY = 0
         return
       }
-      console.log(layer)
       event.target.offsetParent.style.top = (layer) * 40 + top + 'px'
       layer = 0
       offsetY = 0

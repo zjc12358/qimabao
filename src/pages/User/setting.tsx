@@ -6,6 +6,7 @@ import { Icon, Toast } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
+import './master.css'
 
 export interface Props {
   pageTab: string
@@ -233,7 +234,9 @@ class User extends React.Component<Props, State> {
   }
   public render () {
     return (
-      <div>
+      <div style={{
+        height: '100%'
+      }}>
         {this.renderNav()}
         {this.renderContent()}
         <Button type='warning' style={{
