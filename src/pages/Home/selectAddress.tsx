@@ -134,7 +134,7 @@ class Home extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{ backgroundColor: '#efeff5' }}>
+      <div style={{ backgroundColor: '#efeff5', height: '100vh' }}>
         {this.state.showTitle &&
         <Head title={'选择收货地址'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'}
               rightIconOnClick={this.addAddressOnClick} showRightIcon={true}/>

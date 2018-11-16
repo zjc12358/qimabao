@@ -147,7 +147,7 @@ class Home extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{ backgroundColor: '#efeff5' }}>
+      <div style={{ height: '100vh', backgroundColor: '#efeff5' }}>
         {this.renderHead()}
         {this.renderSearchHistory()}
       </div>

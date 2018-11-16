@@ -293,7 +293,7 @@ class Menu extends React.Component<Props, State> {
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#efeff5',
-        height: '100%'
+        height: '100vh'
       }}>
         <Head title={this.state.menuDetailBean.name} titleColor={'white'} showLeftIcon={true}
               backgroundColor={'#0084e7'} rightIconOnClick={this.deleteMenuOnClick} showRightIcon={true}

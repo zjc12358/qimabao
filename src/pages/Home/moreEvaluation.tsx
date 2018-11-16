@@ -7,7 +7,9 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import Head from '../../components/Head'
 import { EvaluationDetailsBean } from '@datasources/EvaluationDetailsBean'
 import { EvaluationBean } from '@datasources/EvaluationBean'
-import { PicBean } from '@datasources/PicBean'
+import './homeCss.css'
+import './moreEvaluationCss.css'
+import LoadMore from '@components/LoadMore'
 
 // 页码
 let pageIndex = 0
@@ -39,6 +41,9 @@ class Home extends React.Component<Props, State> {
   }
 
   refresh () {
+    this.setState({
+      hasMore: true
+    })
     this.getEvaluationList(0)
   }
 
@@ -93,8 +98,12 @@ class Home extends React.Component<Props, State> {
    * 评论列表
    */
   renderList = () => {
+    let list = this.state.listData.map((item) => this.renderListItem(item))
     return (
-      <div>
+      <div className='scroll evaluation-list'>
+        <LoadMore loadHeight={10} getData={this.loadMore.bind(this)} list={list}
+                  bodyName={'evaluation-list'} itemHeight={200} listData={this.state.listData}
+                  hasMore={this.state.hasMore} isLoading={this.state.isLoading}/>
       </div>
     )
   }
@@ -104,48 +113,48 @@ class Home extends React.Component<Props, State> {
    */
   renderListItem = (item: EvaluationBean) => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-      }}>
+      <div className='evaluation-list-item'>
         {/*头部*/}
         <div style={{
           height: 50,
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
+          width: '100%'
         }}>
           <div style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'flex-start',
             alignItems: 'center',
             paddingLeft: 20,
             height: 40
           }}>
-            <span>{item.head}</span>
+            <span>{item.head + '1'}</span>
             <div style={{
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               marginLeft: 20
             }}>
               <span>{item.name}</span>
-              <span>总体评分{item.start}</span>
+              <span>总体评分{item.start.toFixed(1)}</span>
             </div>
           </div>
-          <div>
+          <div style={{ whiteSpace: 'nowrap' }}>
             {item.date}
           </div>
         </div>
-        <span style={{
+        <div className='horizontal' style={{
+          height: 60,
+          width: '100%',
+          alignItems: 'flex-start'
+        }}><span style={{
           padding: 20,
-          height: 60
+          overflow: 'hidden'
         }}>{item.evaluation}</span>
+        </div>
         {item !== null && item.pic_list !== null &&
         <div style={{
           display: 'flex',
@@ -178,7 +187,7 @@ class Home extends React.Component<Props, State> {
         let item: EvaluationBean = {
           head: '',
           name: '用户' + i,
-          evaluation: '' + i,
+          evaluation: '用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价用户评价' + i,
           start: 5 * Math.random(),
           date: '2018-1-1',
           pic_list: []
