@@ -60,7 +60,7 @@ class Home extends React.Component<Props, State> {
       showCategory: false,
       categoryIndex: this.props.categoryItemData.index,
       showChoose: false,
-      isLoading: true,
+      isLoading: false,
       hasMore: true,
       sortIndex: null,
       showSort: false,
@@ -80,13 +80,21 @@ class Home extends React.Component<Props, State> {
   }
 
   componentWillMount () {
+    this.refresh()
+    this.getTagList()
+  }
+
+  refresh () {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({ isLoading: true })
     setTimeout(() => {
       this.getData(0)
-      this.getTagList()
       this.setState({
         isLoading: false
       })
-    }, 1500)
+    }, 1000)
   }
 
   loadMore = () => {
@@ -264,7 +272,7 @@ class Home extends React.Component<Props, State> {
   renderContent = () => {
     return (
       <div className='horizontal'
-           style={{ height: '100%', width: '100%', flex: 1 }}>
+           style={{ width: '100%', flex: 1 }}>
         {this.renderLeftChoose()}
         {this.renderRightProductList()}
       </div>
@@ -314,7 +322,7 @@ class Home extends React.Component<Props, State> {
   renderRightProductList = () => {
     let list = this.state.productList.map((item) => this.renderRightProductListItem(item))
     return (
-      <div className='scroll product-list' style={{ flex: 1 }}>
+      <div className='scroll product-list'>
         <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}
                   hasMore={this.state.hasMore}/>
