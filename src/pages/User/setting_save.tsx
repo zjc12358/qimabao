@@ -694,7 +694,6 @@ class User extends React.Component<Props, State> {
         </div>)
     }
   }
-
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {

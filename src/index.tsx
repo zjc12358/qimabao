@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom'
 import { HashRouter, Route, Switch, hashHistory } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import getStore from './store'
+import AnimatedRouter from 'react-animated-router'
+import 'react-animated-router/animate.css'
 
 const { store } = getStore()
 
@@ -46,7 +48,7 @@ import cartTest from './pages/History/cartTest'
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter history={hashHistory}>
-      <Switch>
+      <AnimatedRouter>
         {/*首页*/}
         <Route exact path='/' component={Home} />
         <Route path='/productList' component={ProductList}/>
@@ -84,7 +86,7 @@ ReactDOM.render(
         <Route path='/orderMakeSure' component={orderMakeSure} />
         <Route path='/cartTest' component={cartTest}></Route>
         <Route path='/setting-address' component={settingAddress} />
-      </Switch>
+      </AnimatedRouter>
     </HashRouter>
   </Provider>,
   document.getElementById('root') as HTMLElement
