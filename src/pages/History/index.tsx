@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon } from 'antd-mobile'
+import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon ,Toast } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
@@ -193,6 +193,7 @@ class History extends React.Component<Props, State> {
     if (this.state.allSupplierItemCheck) {
       // 全选状态下清空购物车,总计归0
       this.setState({ data: [],total: 0 })
+      this.props.updataShopCart([])
     } else {
       // console.log('我被组织了')
       let data = this.state.data
@@ -221,14 +222,20 @@ class History extends React.Component<Props, State> {
 
   componentWillReceiveProps (nextProps) {
     console.log(nextProps)
-    if (nextProps === this.props) return
-    this.setState({ data: nextProps.shopCartData,allSupplierItemCheck: nextProps.allSupplierItemCheck })
+    // if (nextProps === this.props) {
+    //   Toast.hide()
+    //   return
+    // }
+    this.setState({ data: nextProps.shopCartData,allSupplierItemCheck: nextProps.allSupplierItemCheck },() => {
+      Toast.hide()
+    })
   }
 
   /**
    * 页面加载时判断选中项计算合计
    */
   componentDidMount () {
+    // Toast.loading('loading...', 0, null)
     this.count()
     let data = [
       {
@@ -271,7 +278,10 @@ class History extends React.Component<Props, State> {
     // this.setState({ data: data })
     console.log('willDidMount')
     console.log(this.state.data)
+    console.log(this.props.shopCartData)
+    console.log(this.props.needReloadData)
     if (this.props.needReloadData === false) return
+    console.log(2222)
     // this.setState({ data: data })
     this.props.updataShopCart(data)
     this.props.needReload(false)
@@ -287,6 +297,8 @@ class History extends React.Component<Props, State> {
           <div style={{ width: 135,height: 135,borderRadius: '50%',backgroundColor: '#cccccc' }}></div>
         </div>
         <div style={{ display: 'flex',justifyContent: 'center', fontSize: 18, marginTop: 12 }}>菜篮为空</div>
+        <button onClick={ () => { console.log(this.state.data) } }>state</button>
+        <button onClick={ () => { console.log(this.props.shopCartData) } }>props</button>
         <div style={{ display: 'flex',justifyContent: 'center', fontSize: 13, color: 'rgb(140, 140, 140)', marginTop: 12 }}>“赶紧去采购吧”</div>
       </div>
     )
@@ -356,7 +368,10 @@ class History extends React.Component<Props, State> {
           </div>
           <div
             style={{ display: 'flex', alignItems: 'center',justifyContent: 'center',backgroundColor: '#0084e7',height: 50,width: 90,color: 'white' }}
-            onClick={() => { history().push('/orderMakeSure') }}
+            onClick={() => {
+              history().push('/orderMakeSure')
+              this.props.updatePageTab('HistoryPageTabBar')
+            }}
           >去结算</div>
         </div>
       </div>
@@ -437,6 +452,12 @@ class History extends React.Component<Props, State> {
     )
   }
 
+  renderLoading = () => {
+    return (
+      <div></div>
+    )
+  }
+
   /**
    * 供应商
    */
@@ -506,7 +527,6 @@ class History extends React.Component<Props, State> {
         )) : this.renderEmptyCart()}
         {this.renderYourLike()}
         {this.state.data && this.state.data.length ? this.renderCartFooter() : <div></div>}
-        <div onClick={ () => { history().push('/cartTest') } }>点我测试</div>
         <div style={{ height: 100 }}></div>
       </div>
     )

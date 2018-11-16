@@ -44,7 +44,6 @@ import tradeEvaluation from './pages/User/tradeEvaluation' /* 物流评价页面
 import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */
 import index2 from './pages/History/index'
 import orderMakeSure from './pages/History/orderMakeSure'
-import cartTest from './pages/History/cartTest'
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter history={hashHistory}>
@@ -84,7 +83,6 @@ ReactDOM.render(
         <Route path='/supplierRevise' component={supplierRevise} />
         <Route path='/index2' component={index2} />
         <Route path='/orderMakeSure' component={orderMakeSure} />
-        <Route path='/cartTest' component={cartTest}></Route>
         <Route path='/setting-address' component={settingAddress} />
       </AnimatedRouter>
     </HashRouter>
