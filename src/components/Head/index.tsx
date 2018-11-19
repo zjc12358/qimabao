@@ -5,6 +5,7 @@ import { TabBar } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import { isWhiteSpace } from 'tslint'
 import history from 'history/createHashHistory'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   title: string, // 标题
@@ -91,7 +92,9 @@ class Head extends React.Component<Props, State> {
           justifyContent: 'flex-start',
           alignItems: 'center'
         }} onClick={() => this.leftIconOnClick()}>
-          {this.props.showLeftIcon && <div>返回</div>}
+          {this.props.showLeftIcon && <div>
+            <ReactSVG path='' svgStyle={{ width: 22, height: 22 }}/>
+          </div>}
         </div>
         <div style={{
           flex: 1,

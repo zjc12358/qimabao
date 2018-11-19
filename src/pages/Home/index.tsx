@@ -6,6 +6,7 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import { HomeCategoryItemBean } from '@datasources/HomeCategoryItemBean'
 import Statusbar from '@components/Statusbar'
 import axios from 'axios'
+import ReactSVG from 'react-svg'
 import history from 'history/createHashHistory'
 import { ProductListState } from '@datasources/ProductListState'
 import { updateCategoryItem } from '@store/actions/categoryItem_data'
@@ -71,14 +72,12 @@ class Home extends React.Component<Props, State> {
              width: '100%',
              height: '40px',
              background: '#0084E7',
-             zIndex: 100,
-             paddingLeft: 10,
-             paddingRight: 10
+             zIndex: 100
            }}>
-        <div style={{
+        <div className='horizontal-center' style={{
           flex: 1
         }} onClick={this.locationOnclick}>
-          定位图标
+          <ReactSVG path='./assets/images/location.svg' svgStyle={{ width: 20, height: 22 }}/>
         </div>
         {/*<Link style={{*/}
         {/*flex: 1*/}
@@ -95,15 +94,15 @@ class Home extends React.Component<Props, State> {
         }} onClick={this.searchOnclick}>
 
         </div>
-        <div style={{
-          flex: 1
+        <div className='horizontal-center' style={{
+          flex: 1, marginLeft: 5
         }} onClick={this.scanOnclick}>
-          扫一扫
+          <ReactSVG path='./assets/images/scan_one_scan.svg' svgStyle={{ width: 20, height: 20 }}/>
         </div>
-        <div style={{
-          flex: 1
+        <div className='horizontal-center' style={{
+          flex: 1, marginRight: 5
         }} onClick={this.messageOnclick}>
-          消息图标
+          <ReactSVG path='./assets/images/message.svg' svgStyle={{ width: 24, height: 24 }}/>
         </div>
       </div>
     )
