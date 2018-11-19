@@ -4,6 +4,8 @@ import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon ,Toast } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
+import '../../assets/images/icon/demo.css'
+import '../../assets/images/icon/iconfont.css'
 import Head from '../../components/Head/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
@@ -465,7 +467,9 @@ class History extends React.Component<Props, State> {
     return (
       <div>
         <div>
-          <div style={{ height: 15, background: '#f5f5f5' }}></div>
+          <div style={{ height: 15, background: '#f5f5f5' }}>
+            <i className='icon iconfont icon-31paishexuanzhong'></i>
+          </div>
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -526,6 +530,7 @@ class History extends React.Component<Props, State> {
           </div>
         )) : this.renderEmptyCart()}
         {this.renderYourLike()}
+        <div><i className='icon iconfont icon-31paishexuanzhong'></i></div>
         {this.state.data && this.state.data.length ? this.renderCartFooter() : <div></div>}
         <div style={{ height: 100 }}></div>
       </div>
