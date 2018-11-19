@@ -5,6 +5,7 @@ import { Toast, ListView, PullToRefresh } from 'antd-mobile'
 import { CategoryItemData } from '@store/reducers/categoryItemDataReducer'
 import history from 'history/createHashHistory'
 import axios from 'axios'
+import ReactSVG from 'react-svg'
 import { SecondProductCategoryBean } from '@datasources/SecondProductCategoryBean'
 import { ProductBean } from '@datasources/ProductBean'
 import { chooseProduct } from '@store/actions/productDetails_data'
@@ -60,7 +61,7 @@ class Home extends React.Component<Props, State> {
       showCategory: false,
       categoryIndex: this.props.categoryItemData.index,
       showChoose: false,
-      isLoading: true,
+      isLoading: false,
       hasMore: true,
       sortIndex: null,
       showSort: false,
@@ -80,13 +81,21 @@ class Home extends React.Component<Props, State> {
   }
 
   componentWillMount () {
+    this.refresh()
+    this.getTagList()
+  }
+
+  refresh () {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({ isLoading: true })
     setTimeout(() => {
       this.getData(0)
-      this.getTagList()
       this.setState({
         isLoading: false
       })
-    }, 1500)
+    }, 1000)
   }
 
   loadMore = () => {
@@ -113,7 +122,8 @@ class Home extends React.Component<Props, State> {
       let secondCategoryItem: SecondProductCategoryBean = {
         category_id: categoryId,
         second_category_id: i,
-        second_category_name: '子类别' + i
+        second_category_name: '子类别' + i,
+        check: i === 0
       }
       secondCategoryList.push(secondCategoryItem)
       this.setState({
@@ -178,9 +188,11 @@ class Home extends React.Component<Props, State> {
       }}>
         <div className='horizontal-center'
              style={{ height: 40, width: '100%', backgroundColor: 'white' }}>
-          <div onClick={this.headOnClick} style={{ fontSize: 18 }}>
+          <div className='horizontal-center' onClick={this.headOnClick} style={{ fontSize: 18 }}>
             <span>{this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}</span>
-            <span>↓</span>
+            <span className='horizontal-center' style={{ marginLeft: 8, marginBottom: 5 }}>
+              <ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>
+            </span>
           </div>
           <div className='horizontal'
                style={{
@@ -200,11 +212,11 @@ class Home extends React.Component<Props, State> {
                  right: 0,
                  height: 40
                }}>
-          <span className='center' style={{ height: 40, width: 60 }} onClick={this.searchOnClick}>
-            搜索
+          <span className='center' style={{ height: 40, width: 40 }} onClick={this.searchOnClick}>
+            <ReactSVG path='./assets/images/search.svg' svgStyle={{ width: 22, height: 22 }}/>
           </span>
-            <span className='center' style={{ height: 40, width: 60 }} onClick={this.goCartOnClick}>
-            购物车
+            <span className='center' style={{ height: 40, width: 50 }} onClick={this.goCartOnClick}>
+            <ReactSVG path='./assets/images/shop_cart.svg' svgStyle={{ width: 22, height: 22 }}/>
           </span>
           </div>
         </div>
@@ -232,20 +244,26 @@ class Home extends React.Component<Props, State> {
           <div className='horizontal-center'
                style={{ flex: 1 }} onClick={this.chooseOnClick}>
             <span style={{ whiteSpace: 'nowrap' }}>全部分类</span>
-            <span>↓</span>
+            <span style={{ marginLeft: 5 }}>
+              <ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>
+            </span>
           </div>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
           <div className='horizontal-center'
                style={{ flex: 1 }} onClick={this.sortOnClick}>
             <span
               style={{ whiteSpace: 'nowrap' }}>{this.state.sortIndex === null ? '默认排序' : chooseData[this.state.sortIndex]}</span>
-            <span>↓</span>
+            <span style={{ marginLeft: 5 }}>
+              <ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>
+            </span>
           </div>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
           <div className='horizontal-center'
                style={{ flex: 1 }} onClick={() => this.toggleDrawer(true)}>
             <span>筛选</span>
-            <span>→</span>
+            <span style={{ marginLeft: 5 }}>
+              <ReactSVG path='./assets/images/right.svg' svgStyle={{ width: 5, height: 5 }}/>
+            </span>
           </div>
         </div>
         <ChooseMenu data={this.getCategoryData()} chooseHandClick={this.chooseHandClick.bind(this)}
@@ -264,7 +282,7 @@ class Home extends React.Component<Props, State> {
   renderContent = () => {
     return (
       <div className='horizontal'
-           style={{ height: '100%', width: '100%', flex: 1 }}>
+           style={{ width: '100%', flex: 1 }}>
         {this.renderLeftChoose()}
         {this.renderRightProductList()}
       </div>
@@ -277,7 +295,7 @@ class Home extends React.Component<Props, State> {
   renderLeftChoose = () => {
     return (
       <div className='scroll vertical'>
-        <div style={{ width: 60 }}>
+        <div style={{ width: 60, backgroundColor: '#efeff5' }}>
           {this.state.secondCategoryList.map((item, index) => this.renderLeftChooseItem(item, index))}
         </div>
         <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
@@ -293,13 +311,9 @@ class Home extends React.Component<Props, State> {
   renderLeftChooseItem = (item: SecondProductCategoryBean, index: number) => {
     return (
       <div className='vertical'
-           style={{ width: '100%', height: 41 }}>
+           style={{ width: '100%', height: 41, backgroundColor: item.check ? 'white' : '#efeff5' }}>
         <div className='horizontal-center left-choose-item'
-             onClick={() =>
-               console.log('点击' + index)
-               // TODO 2018/11/15 请求数据
-               // this.getProductList(item.category_id, item.second_category_id)
-             }>
+             onClick={() => this.secondItemOnClick(index)}>
           {item.second_category_name}
         </div>
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
@@ -314,7 +328,7 @@ class Home extends React.Component<Props, State> {
   renderRightProductList = () => {
     let list = this.state.productList.map((item) => this.renderRightProductListItem(item))
     return (
-      <div className='scroll product-list' style={{ flex: 1 }}>
+      <div className='scroll product-list'>
         <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}
                   hasMore={this.state.hasMore}/>
@@ -345,7 +359,17 @@ class Home extends React.Component<Props, State> {
                 <span style={{ color: '#ff0000', fontSize: 12 }}>{item.price}</span>
                 <span style={{ color: '#e5e5e5', fontSize: 12 }}>/{item.weight}</span>
               </div>
-              <div style={{ padding: 10 }} onClick={(e) => this.addCartOnClick(e, item.id)}>添</div>
+              <div style={{ padding: 10 }} onClick={(e) => this.addCartOnClick(e, item.id)}>
+                <div className='horizontal-center' style={{
+                  borderStyle: 'solid',
+                  borderWidth: 0,
+                  borderRadius: '50%',
+                  backgroundColor: '#0084e7',
+                  width: 22,
+                  height: 22
+                }}><ReactSVG path='./assets/images/shop_cart_white.svg'
+                             svgStyle={{ marginTop: 2, marginRight: 2, width: 15, height: 15 }}/></div>
+              </div>
             </div>
           </div>
         </div>
@@ -492,6 +516,24 @@ class Home extends React.Component<Props, State> {
   toggleDrawer = (open) => {
     this.setState({
       drawerOpen: open
+    })
+  }
+
+  /**
+   * 左边子菜单点击
+   */
+  secondItemOnClick = (index: number) => {
+    let list = this.state.secondCategoryList
+    for (let i = 0; i < this.state.secondCategoryList.length; i++) {
+      if (index === i && !this.state.secondCategoryList[index].check) {
+        list[i].check = true
+        // TODO 2018/11/19 请求数据
+      } else {
+        list[i].check = false
+      }
+    }
+    this.setState({
+      secondCategoryList: list
     })
   }
 

@@ -118,7 +118,8 @@ class History extends React.Component<Props, State> {
   }
   onClose = (n) => {
     if (n === 1) {
-      this.setState({ modal1: false })
+      let timeIsSet = this.state.startdpValue && this.state.enddpValue ? true : false
+      this.setState({ modal1: false,timeIsSet: timeIsSet })
     } else {
       this.setState({ modal2: false })
     }
@@ -157,15 +158,7 @@ class History extends React.Component<Props, State> {
     let da = new Date(date)
     console.log(da)
     let a = [da.getFullYear(), da.getMonth() + 1, da.getDate(), da.getHours(), da.getMinutes(), da.getSeconds()]
-    let dpValue = a[3] + ':' + a[4]
-    // switch (type) {
-    //   case 1:
-    //     this.setState({ startdpValue: dpValue })
-    //     break
-    //   case 2:
-    //     this.setState({ enddpValue: dpValue })
-    //     break
-    // }
+    let dpValue = a[1] + '/' + a[2] + ' ' + a[3] + ':' + a[4]
     return dpValue
   }
 
@@ -175,21 +168,16 @@ class History extends React.Component<Props, State> {
   renderSetTime = () => {
     return (
       <div>
-        {this.state.dateChooseData.map((i, index) => (
-          <List.Item key={index}>
+          <List.Item>
             <div style={{ display: 'flex', fontSize: 13 }}>
-              <div>{i.text}</div>
+              <div></div>
               <div style={{ flex: 1, textAlign: 'center' }}>
-                <span onClick={() => this.setState({ startVisible: true })}>{this.state.startdpValue}</span>
+                <span onClick={() => this.setState({ startVisible: true })}>{this.state.startdpValue ? this.state.startdpValue : '起始时间'}</span>
                 &nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;
-                <span onClick={() => this.setState({ endVisible: true })}>{this.state.enddpValue}</span>
+                <span onClick={() => this.setState({ endVisible: true })}>{this.state.enddpValue ? this.state.enddpValue : '送达时间'}</span>
               </div>
-              <div><Checkbox checked={i.checked} onChange={() => {
-                this.radioOnChange(i, index)
-              }}></Checkbox></div>
             </div>
           </List.Item>
-        ))}
       </div>
     )
   }
@@ -313,15 +301,15 @@ class History extends React.Component<Props, State> {
                     this.showModal(e,1)
                   }}
                   className=''>
-                  选择送达时间
+                  {this.state.timeIsSet ? <span style={{ color: 'rgb(0, 132, 231)' }}>更改送达时间</span> : <span>选择送达时间</span>}
                 </div>
                 <div onClick={(e) => {
                   this.showModal(e,1)
                 }} style={{ paddingRight: 15 }}><Icon type='right'/></div>
               </div>
-              <div className='timeDescription'>
-                今日17：45 - 19：30 &nbsp;&nbsp;免运费
-              </div>
+              { this.state.timeIsSet ? <div className='timeDescription'>
+                  {this.state.startdpValue} - {this.state.enddpValue} &nbsp;&nbsp;免运费
+              </div> : <div></div> }
             </div>
             {this.renderSupplier()}
             <div style={{ margin: '0 20px',fontSize: 16,marginBottom: 3 }}>买家留言：</div>
@@ -340,9 +328,9 @@ class History extends React.Component<Props, State> {
         <div style={{ width: '100vw',display: 'flex',height: 50,alignItems: 'center',backgroundColor: 'white',position: 'fixed',bottom: 0 }}>
           <div style={{ flex: 1 }}></div>
           <div style={{ color: 'red',paddingRight: 20 }}>￥31</div>
-          <div style={{ color: 'white',height: 50,width: 120,display: 'flex',alignItems: 'center',justifyContent: 'center',backgroundColor: '#0385e7' }}
+          <Button type='primary' style={{ height: 50,width: 120,borderRadius: 0 }}
                onClick={ () => { this.setState({ modal2: true }) }}
-          >提交订单</div>
+          >提交订单</Button>
         </div>
         <DatePicker
           mode='datetime'

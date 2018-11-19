@@ -33,6 +33,7 @@ export default (state = initialState, action: ShopCartAction) => {
         AllSupplierCheckBoolean: action.AllSupplierCheckBoolean
       }
     default:
+      console.log(state)
       return state
   }
 }
