@@ -182,7 +182,9 @@ class User extends React.Component<Props, State> {
   }
   public render () {
     return (
-      <div>
+      <div style={{
+        height: '100vh'
+      }}>
         {this.renderNav()}
         {this.renderContent()}
       </div>

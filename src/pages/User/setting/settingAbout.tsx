@@ -7,6 +7,8 @@ import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
+import history from 'history/createHashHistory'
+import Nav from '@components/Head/nav'
 
 export interface Props {
   pageTab: PageTab
@@ -26,30 +28,6 @@ class User extends React.Component<Props, State> {
     this.state = {
 
     }
-  }
-
-  public renderNav = () => {
-    return (
-      <div style={{
-        backgroundColor: '#ffffff',
-        position: 'relative',
-        height: 40
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }}>
-          <Link to='/setting'><Icon type='left' color='#000000' size='lg' /></Link>
-        </div>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>关于我们</span>
-        </div>
-      </div>
-    )
   }
 
   public renderContent = () => {
@@ -141,8 +119,10 @@ class User extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div>
-        {this.renderNav()}
+      <div style={{
+        height: '100vh'
+      }}>
+        <Nav title={'关于我们'} color={'#ffffff'} />
         {this.renderContent()}
       </div>
     )

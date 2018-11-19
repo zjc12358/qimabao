@@ -7,7 +7,8 @@ import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import './master.css'
+import history from 'history/createHashHistory'
+import '../master.css'
 
 export interface Props {
   pageTab: PageTab
@@ -57,11 +58,9 @@ class User extends React.Component<Props, State> {
         position: 'fixed'
       }}
       >
-        <Link to={'/setting'}>
-          <div style={{ float: 'left', position: 'absolute' }}>
+          <div style={{ float: 'left', position: 'absolute' }} onClick={() => history().goBack()}>
             <Icon type='left' color='#000000' size='lg'/>
           </div>
-        </Link>
         <div style={{
           fontSize: 18,
           paddingTop: 8,
@@ -71,13 +70,15 @@ class User extends React.Component<Props, State> {
         }}>
           <span>支付设置</span>
         </div>
-        <Link to={'/setting-pay-bankCard'}>
-          <div style={{ position: 'absolute',right: 10, top: 10,fontSize: 16,color: '#3e38ee' }}>
-            <span>+</span>
-          </div>
-        </Link>
+        <div style={{ position: 'absolute',right: 10, top: 10,fontSize: 16,color: '#3e38ee' }} onClick={this.addOnclick}>
+          <span>+</span>
+        </div>
       </div>
     )
+  }
+
+  addOnclick = () => {
+    history().push('/settingPayBankCard')
   }
 
   public renderContent = () => {

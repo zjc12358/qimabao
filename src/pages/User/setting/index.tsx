@@ -1,12 +1,14 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { GlobalData } from '@store/reducers/globalDataReducer'
+import { GlobalData } from '../../../store/reducers/globalDataReducer'
 import { Icon, Toast } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
-import { UserInfo } from '@datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import './master.css'
+import { UserInfo } from '../../../datasources/UserInfo'
+import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
+import '../master.css'
+import Nav from '@components/Head/nav'
+import history from 'history/createHashHistory'
 
 export interface Props {
   pageTab: string
@@ -28,38 +30,16 @@ class User extends React.Component<Props, State> {
     }
   }
 
-  public renderNav = () => {
+  public renderNav = (title, color) => {
     return (
-      <div style={{
-        backgroundColor: '#ffffff',
-        position: 'relative',
-        height: 40
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }}>
-          <Link to='/NavBar'><Icon type='left' color='#000000' size='lg' onClick={this.backOnclick} /></Link>
-        </div>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>设置</span>
-        </div>
-      </div>
+      <Nav title={title} color={color} />
     )
-  }
-  backOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
   }
 
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
         <div className='Segment_line2' />
-        <Link to='/setting-save'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -68,7 +48,7 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.safeOnclick}>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -86,9 +66,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
-        </Link>
-        <div className='Segment_line2'></div>
-        <Link to='/setting-pay'>
+        <div className='Segment_line2' />
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -97,7 +75,7 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.payOnclick}>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -114,9 +92,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
-        </Link>
         <div className='Segment_line2' />
-        <Link to='/setting-address'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -125,7 +101,7 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.addressOnclick}>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -142,7 +118,6 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
-        </Link>
         <div className='Segment_line2' />
         <div style={{
           display: 'flex',
@@ -152,9 +127,7 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}
-             onClick={this.EliminateOnclick}
-        >
+        }} onClick={this.EliminateOnclick}>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -172,7 +145,6 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <Link to='/setting-about'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -181,7 +153,7 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.aboutOnclick}>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -198,7 +170,6 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }}></Icon>
           </div>
         </div>
-        </Link>
         <div className='Segment_line2' />
         <div style={{
           display: 'flex',
@@ -208,7 +179,7 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.noticeOnclick}>
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -229,15 +200,35 @@ class User extends React.Component<Props, State> {
     )
   }
 
+  public addressOnclick = () => {
+    history().push('/settingAddress')
+  }
+
+  public safeOnclick = () => {
+    history().push('/settingSafe')
+  }
+
+  public aboutOnclick = () => {
+    history().push('/settingAbout')
+  }
+
+  public payOnclick = () => {
+    history().push('/settingPay')
+  }
+
+  public noticeOnclick = () => {
+    Toast.info('开启通知成功！', 1)
+  }
+
   EliminateOnclick = () => {
     Toast.info('清除缓存成功！', 1)
   }
   public render () {
     return (
       <div style={{
-        height: '100%'
+        height: '100vh'
       }}>
-        {this.renderNav()}
+        <Nav title={'设置'} color={'#ffffff'} />
         {this.renderContent()}
         <Button type='warning' style={{
           marginTop: 35,

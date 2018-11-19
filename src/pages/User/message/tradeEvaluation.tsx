@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { GlobalData } from '@store/reducers/globalDataReducer'
+import { GlobalData } from '../../../store/reducers/globalDataReducer'
 import { Icon } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
-import { PageTab } from '@datasources/PageTab'
-import { UserInfo } from '@datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import './master.css'
+import { PageTab } from '../../../datasources/PageTab'
+import { UserInfo } from '../../../datasources/UserInfo'
+import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
+import '../master.css'
 
 export interface Props {
   pageTab: PageTab

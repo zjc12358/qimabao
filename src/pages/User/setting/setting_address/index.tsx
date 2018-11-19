@@ -2,12 +2,13 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { List,Icon } from 'antd-mobile'
-import Button from 'antd-mobile/lib/button'
+import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 'antd-mobile'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import './master.css'
+import Nav from '@components/Head/nav'
+import history from 'history/createHashHistory'
+import '../../master.css'
 
 export interface Props {
   pageTab: PageTab
@@ -18,8 +19,6 @@ export interface Props {
 
 interface State {
   data: any
-  step: number
-  currentIndex: number
 }
 
 class User extends React.Component<Props, State> {
@@ -31,9 +30,7 @@ class User extends React.Component<Props, State> {
         { name: '魏嘉豪', phone: '13548545685', address: '朝晖社区',houseNumber: '808室' },
         { name: '大当家', phone: '13548545685', address: '泰山路往左走120号do花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路路荷',houseNumber: '508室' },
         { name: '二当家', phone: '13548545685', address: '华山路往右走121号花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路路荷花路荷花路荷花',houseNumber: '1557室' }
-      ],
-      step: 0,
-      currentIndex: 0
+      ]
     }
   }
 
@@ -53,74 +50,13 @@ class User extends React.Component<Props, State> {
     this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
 
   }
-
-  public renderNav = (title) => {
-    return (
-      <div style={{
-        backgroundColor: '#ffffff',
-        width: '100%',
-        height: 40,
-        top: 0,
-        zIndex: 100,
-        position: 'fixed'
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }}>
-          <Link to='/setting'><Icon type='left' color='#000000' size='lg' /></Link>
-        </div>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>{title}</span>
-        </div>
-      </div>
-    )
-  }
-
-  public renderNav1 = (title) => {
-    return (
-      <div style={{
-        backgroundColor: '#ffffff',
-        width: '100%',
-        height: 40,
-        top: 0,
-        zIndex: 100,
-        position: 'fixed'
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }}>
-          <Icon type='left' color='#000000' size='lg' onClick={this.backOnclick}/>
-        </div>
-        <div style={{
-          fontSize: 18,
-          paddingTop: 8,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>{title}</span>
-        </div>
-        <div style={{ position: 'absolute',right: 10, top: 10,fontSize: 16,color: '#6361ee' }}>
-          <span>删除</span>
-        </div>
-      </div>
-    )
-  }
-
-  public backOnclick = () => {
-    this.setState({
-      step: 0
-    })
-  }
-
+  /**
+   * 收货地址详情
+   */
   public renderContent = () => {
     return(
       <div style={{
-        paddingTop: 40
+        paddingTop: 0
       }}>
         {this.state.data.map((i, index) => (
           <div style={{ backgroundColor: 'white' }}>
@@ -135,52 +71,6 @@ class User extends React.Component<Props, State> {
           color: '#ffffff',
           position: 'fixed'
         }}>添加新的收货地址</Button>
-      </div>
-    )
-  }
-
-  public renderContent1 = () => {
-    return(
-      <div style={{
-        paddingTop: 40
-      }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          backgroundColor: '#ffffff'
-        }}>
-          <div className='Segment_line2' />
-          <div style={{
-            backgroundColor: '#ffffff',
-            position: 'relative'
-          }}>
-            <span className={'addressText'}>收货地址</span>
-            <input type='text' className={'addressInput'} defaultValue={this.state.data[this.state.currentIndex].address} />
-            <Icon type={'loading'} style={{ top: 10, float: 'left',position: 'absolute', right: '10%' }}/>
-          </div>
-          <div className='Segment_line' />
-          <div>
-            <span className={'addressText'}>门牌号</span>
-            <input type='text' className={'addressInput'} defaultValue={this.state.data[this.state.currentIndex].houseNumber} />
-          </div>
-          <div className='Segment_line' />
-          <div>
-            <span className={'addressText'}>联系人</span>
-            <input type='text' className={'addressInput'} defaultValue={this.state.data[this.state.currentIndex].name} />
-          </div>
-          <div className='Segment_line' />
-          <div>
-            <span className={'addressText'}>手机号</span>
-            <input type='text' className={'addressInput'} defaultValue={this.state.data[this.state.currentIndex].phone} />
-          </div>
-        </div>
-        <div className='Segment_line2' />
-        <Button type='primary' style={{
-          marginTop: 50,
-          width: '80%',
-          marginLeft: '10%'
-        }}>保存</Button>
       </div>
     )
   }
@@ -226,26 +116,18 @@ class User extends React.Component<Props, State> {
   }
 
   public ItemOnclick = (index) => {
-    console.log(this.state.data[index])
-    this.setState({
-      step: 1,
-      currentIndex: index
-    })
+    history().push('/settingAddressEdit')
   }
 
   public render () {
-    switch (this.state.step) {
-      case 0 : return (
-        <div>
-          {this.renderNav('我的地址')}
-          {this.renderContent()}
-        </div>)
-      case 1 : return (
-        <div>
-          {this.renderNav1('编辑收货地址')}
-          {this.renderContent1()}
-        </div>)
-    }
+    return (
+      <div style={{
+        height: '100vh'
+      }}>
+        <Nav title={'我的地址'} color={'#ffffff'} />
+        {this.renderContent()}
+      </div>
+    )
   }
 }
 

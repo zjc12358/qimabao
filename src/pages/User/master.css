@@ -1,5 +1,3 @@
-
-
 /** 可以自适配屏幕宽度的分割线 **/
 .Segment_line{
   height: 1px;
@@ -263,20 +261,4 @@ html:not([data-scale]) .am-tabs-default-bar-top .am-tabs-default-bar-tab::after 
   100%{transform: translateY(40px);opacity: 1;}
 }
 
-.example-enter {
-  opacity: 0.01;
-}
 
-.example-enter.example-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
-}
-
-.example-leave {
-  opacity: 1;
-}
-
-.example-leave.example-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
-}

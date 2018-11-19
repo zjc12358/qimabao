@@ -18,7 +18,6 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Slide from '@material-ui/core/Slide'
 import Input from '@material-ui/core/Input'
-import { Pin,View } from 'react-desktop/macOs'
 
 // function Transition (props) {
 //   return <Slide direction='up' {...props} />

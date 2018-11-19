@@ -7,7 +7,9 @@ import Button from 'antd-mobile/lib/button'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import './master.css'
+import '../master.css'
+import history from 'history/createHashHistory'
+import Nav from '@components/Head/nav'
 
 export interface Props {
   pageTab: PageTab
@@ -29,34 +31,10 @@ class User extends React.Component<Props, State> {
     }
   }
 
-  public renderNav = () => {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        backgroundColor: '#0084E7'
-      }}
-      >
-        <Link to='/NavBar'><Icon type='left' color='#ffffff' size='lg' onClick={this.backOnclick} /></Link>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          paddingRight: '45%',
-          color: '#ffffff'
-        }}>消息</div>
-      </div>
-    )
-  }
-  backOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
-  }
-
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
         <div className='Segment_line2' />
-        <Link to={'/message_systemInfo'}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -65,7 +43,7 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.systemOnclick}>
           <div className={'flex-row-center'}>
             <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }} />
             <div style={{
@@ -82,9 +60,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
-        </Link>
         <div className='Segment_line2' />
-        <Link to={'/message_tradeInfo'}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -93,7 +69,7 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.tradeOnclick}>
           <div className={'flex-row-center'}>
             <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }} />
             <div style={{
@@ -110,9 +86,7 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
-        </Link>
         <div className='Segment_line2' />
-        <Link to={'/message_logistics'}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -121,7 +95,7 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.logisticsOnclick}>
           <div className={'flex-row-center'}>
             <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }} />
             <div style={{
@@ -138,15 +112,27 @@ class User extends React.Component<Props, State> {
             <Icon type='right' style={{ marginTop: 6 }} />
           </div>
         </div>
-        </Link>
       </div>
     )
+  }
+  public logisticsOnclick = () => {
+    history().push('/messageLogistics')
+  }
+
+  public systemOnclick = () => {
+    history().push('/messageSystemInfo')
+  }
+
+  public tradeOnclick = () => {
+    history().push('/messageTradeInfo')
   }
 
   public render () {
     return (
-      <div>
-        {this.renderNav()}
+      <div style={{
+        height: '100vh'
+      }}>
+        <Nav title={'系统消息'} color={'#0084E7'} textColor={'#ffffff'} />
         {this.renderContent()}
       </div>
     )

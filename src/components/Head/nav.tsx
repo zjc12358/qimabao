@@ -2,11 +2,12 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { Icon } from 'antd-mobile'
+import history from 'history/createHashHistory'
 
 export interface Props {
   color: string, // 背景颜色
   title: string // 标题
-  url: string // 返回的地址
+  textColor: string, // 字体颜色
 }
 
 interface State {
@@ -28,8 +29,8 @@ class Nav extends React.Component<Props, State> {
         height: 40
       }}
       >
-        <div style={{ float: 'left', position: 'absolute' }}>
-          <Link to={this.props.url}><Icon type='left' color='#000000' size='lg'/></Link>
+        <div style={{ float: 'left', position: 'absolute' }} onClick={() => history().goBack()}>
+          <Icon type='left' color='#000000' size='lg'/>
         </div>
         <div style={{
           fontSize: 20,
@@ -38,7 +39,9 @@ class Nav extends React.Component<Props, State> {
           width: '100%',
           textAlign: 'center'
         }}>
-          <span>{this.props.title}</span>
+          <span style={{
+            color: this.props.textColor
+          }}>{this.props.title}</span>
         </div>
       </div>
     )

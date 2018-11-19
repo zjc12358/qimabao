@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { GlobalData } from '@store/reducers/globalDataReducer'
+import { GlobalData } from '../../../store/reducers/globalDataReducer'
 import { Icon } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
-import { PageTab } from '@datasources/PageTab'
-import { UserInfo } from '@datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import './master.css'
-import Nav from '../../components/Head/nav'
+import { PageTab } from '../../../datasources/PageTab'
+import { UserInfo } from '../../../datasources/UserInfo'
+import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
+import '../master.css'
+import Nav from '@components/Head/nav'
 
 export interface Props {
   pageTab: PageTab
@@ -30,12 +30,6 @@ class User extends React.Component<Props, State> {
         { code: '系统提示', status: '福利领取提示', description: '连续签到1个月获得15元免单优惠券（仅限特定商品）！',img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541570509552&di=f4e63321f04e7cde3f8fb1a043318871&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fdbb44aed2e738bd4a55a771daa8b87d6277ff9a7.jpg' }
       ]
     }
-  }
-
-  public renderNav = (title,color,url) => {
-    return (
-      <Nav title={title} color={color} url={url} />
-    )
   }
 
   public renderContent = () => {
@@ -106,8 +100,10 @@ class User extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div>
-        {this.renderNav('物流助手','#ffffff','/message')}
+      <div style={{
+        height: '100vh'
+      }}>
+        <Nav title={'系统消息'} color={'#ffffff'} />
         {this.renderContent()}
       </div>
     )
