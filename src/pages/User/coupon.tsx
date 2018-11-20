@@ -6,6 +6,7 @@ import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import './master.css'
+import Nav from '@components/Head/nav'
 
 export interface Props {
   pageTab: PageTab
@@ -40,33 +41,6 @@ class User extends React.Component<Props, State> {
         { amount: '15', applicability: '适用于蔬菜鲜果', incentives: '优惠政策说明',date: '2018.10.30-2018-11.30' }
       ]
     }
-  }
-
-  public renderNav = () => {
-    return (
-      <div style={{
-        backgroundColor: '#ffffff',
-        position: 'relative',
-        height: 40
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }}>
-          <Link to='/NavBar'><Icon type='left' color='#000000' size='lg' onClick={this.backOnclick} /></Link>
-        </div>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>我的优惠券</span>
-        </div>
-      </div>
-    )
-  }
-  backOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
   }
 
   public renderContent = () => {
@@ -182,8 +156,10 @@ class User extends React.Component<Props, State> {
   }
   public render () {
     return (
-      <div>
-        {this.renderNav()}
+      <div style={{
+        height: '100vh'
+      }}>
+        <Nav title={'我的优惠券'} color={'#ffffff'} />
         {this.renderContent()}
       </div>
     )

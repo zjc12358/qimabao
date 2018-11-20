@@ -5,6 +5,8 @@ import { NavBar,Icon } from 'antd-mobile'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import './master.css'
 import { UserInfo } from '@datasources/UserInfo'
+import history from 'history/createHashHistory'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: string
@@ -46,22 +48,20 @@ class User extends React.Component<Props, State> {
           width: '96%',
           padding: '8px'
         }}>
-          <Link to='/setting'><Icon type='check' color='#ffffff' size='lg'/></Link>
-          <Link to='/message'><Icon type='check' color='#ffffff' size='lg'/></Link>
+          <ReactSVG path='./assets/images/User/setting.svg' svgStyle={{ width: 25, height: 25 }} onClick={this.settingOnclick}/>
+          <ReactSVG path='./assets/images/User/message.svg' svgStyle={{ width: 25, height: 25 }} onClick={this.messageOnclick}/>
         </div>
       </div>
     )
-  }
-
-  couponOnclick = () => {
-    this.props.updateUserInfo({ userName: 'dd',isLogin: true })
   }
   /**
    * 内容
    */
   public renderContent = () => {
     return (
-      <div>
+      <div style={{
+        height: '100vh'
+      }}>
         {this.renderHead()}
         {this.renderBody()}
         {this.renderFoot()}
@@ -109,8 +109,8 @@ class User extends React.Component<Props, State> {
               justifyContent: 'center',
               flexDirection: 'row'
             }}>
-              <span>扫码</span>&nbsp;&nbsp;&nbsp;
-              <span>二维</span>&nbsp;&nbsp;&nbsp;
+              <ReactSVG path='./assets/images/User/scan.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
+              <ReactSVG path='./assets/images/User/qr_code.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
             </div>
           </div>
           <div style={{
@@ -118,8 +118,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'row',
             padding: 15
-          }}>
-            <Link to='/coupon'>
+          }} onClick={this.couponOnclick}>
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -130,57 +129,43 @@ class User extends React.Component<Props, State> {
               <span style={{ fontSize: '18px' }}>6</span>
               <span style={{ fontSize: '14px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
             </div>
-            </Link>
-            <Link to='/coupon'>
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
               flexDirection: 'column',
               alignItems: 'center'
-            }}>
+            }} onClick={this.couponOnclick}>
               <span style={{ fontSize: '18px' }}>0.00</span>
               <span style={{ fontSize: '14px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
             </div>
-            </Link>
-            <Link to='/coupon'>
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
               flexDirection: 'column',
               alignItems: 'center',
               paddingRight: 20
-            }}>
+            }} onClick={this.couponOnclick}>
               <span style={{ fontSize: '18px' }}>0</span>
               <span style={{ fontSize: '14px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
             </div>
-            </Link>
           </div>
         </div>
-        <Link to='/UserInfoEdit'>
         <div style={{
           top: 50,
           left: 40,
           position: 'absolute',
           zIndex: 98,
           borderRadius: '50%'
-        }}>
-          <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden' }} onClick={this.userInfoOnclick}><img style={{
+        }} onClick={this.userInfoOnclick}>
+          <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden' }}><img style={{
             width: 'auto',
             height: 'auto',
             maxWidth: '100%',
             maxHeight: '100%'
           }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' /></div>
         </div>
-        </Link>
       </div>
     )
-  }
-  /**
-   * 点击头像
-   */
-  userInfoOnclick = () => {
-    // TODO 2018/10/26 点击头像
-    console.log('点击头像')
   }
   /**
    * 内容
@@ -198,8 +183,8 @@ class User extends React.Component<Props, State> {
           justifyContent: 'space-between',
           flexDirection: 'row',
           padding: 10
-        }}>
-          <span style={{ fontSize: '16px',fontWeight: 'bold',fontFamily: 'FZYaoti' }}>我的订单</span>
+        }} onClick={this.orderOnclick}>
+          <span style={{ fontSize: '16px',fontWeight: 'bold',color: '#4f4f55', fontFamily: '幼圆' }}>我的订单</span>
           <Icon type='right'></Icon>
         </div>
         <div className='Segment_line'></div>
@@ -207,85 +192,77 @@ class User extends React.Component<Props, State> {
           display: 'flex',
           justifyContent: 'space-between',
           flexDirection: 'row',
-          padding: 30,
+          paddingLeft: 30,
+          paddingRight: 30,
+          paddingTop: 20,
+          paddingBottom: 20,
           backgroundColor: '#ffffff'
         }}>
-          <Link to='/myOrder'>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#eee'
-          }}>
-            <Icon type='loading'></Icon>
-            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
+            alignItems: 'center'
+          }} onClick={this.orderOnclick}>
+            <ReactSVG path='./assets/images/User/pay.svg' svgStyle={{ width: 22, height: 22 }}/>
+            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体',paddingTop: 3 }}>待付款</span>
           </div>
-          </Link>
-          <Link to='/myOrder'>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#eee'
-          }}>
-            <Icon type='loading'></Icon>
+            alignItems: 'center'
+          }} onClick={this.orderOnclick}>
+            <ReactSVG path='./assets/images/User/delivery.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待配送</span>
           </div>
-          </Link>
-          <Link to='/myOrder'>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#eee'
-          }}>
-            <Icon type='loading'></Icon>
+            alignItems: 'center'
+          }} onClick={this.orderOnclick}>
+            <ReactSVG path='./assets/images/User/get.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待收货</span>
           </div>
-          </Link>
-          <Link to='/myOrder'>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#eee'
-          }}>
-            <Icon type='loading'></Icon>
+            alignItems: 'center'
+          }} onClick={this.orderOnclick}>
+            <ReactSVG path='./assets/images/User/evaluation.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待评价</span>
           </div>
-          </Link>
         </div>
-        <div className='Segment_line'></div>
+        <div className='Segment_line' />
         <div style={{
           display: 'flex',
           justifyContent: 'flex-start',
           flexDirection: 'row',
-          marginTop: 30,
-          marginBottom: 30,
-          marginLeft: 10,
-          marginRight: 20
+          alignItems: 'center',
+          height: 70,
+          paddingLeft: 28
         }}>
-          <span style={{ fontSize: '16px',fontFamily: '黑体' }}>最新订单</span>
+          <span style={{ fontSize: '16px',fontFamily: '黑体',color: '#404040' }}>最新订单</span>
           <div style={{ paddingLeft: 20 }} />
-          <Icon type='loading' />
-          <Link to='/myOrder'>
+          <div style={{ borderRadius: '50%',width: 35, height: 35,overflow: 'hidden' }}><img style={{
+            width: 'auto',
+            height: 'auto',
+            maxWidth: '100%',
+            maxHeight: '100%'
+          }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' /></div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
             paddingLeft: 10
-          }}>
+          }} onClick={this.orderOnclick}>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
           </div>
-          </Link>
         </div>
         <div className='Segment_line2' />
-        <Link to='/myOrder'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -294,13 +271,11 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.orderOnclick}>
           <span style={{ fontSize: '16px' }}>我的购买</span>
           <Icon type='right' />
         </div>
-        </Link>
         <div className='Segment_line2' />
-        <Link to='/afterSale'>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -309,15 +284,14 @@ class User extends React.Component<Props, State> {
           paddingLeft: 10,
           paddingBottom: 15,
           paddingRight: 10
-        }}>
+        }} onClick={this.afterSaleOnclick}>
           <span style={{ fontSize: '16px' }}>售后退款</span>
           <Icon type='right' />
         </div>
-        </Link>
         <div style={{
           height: 8,
           backgroundColor: '#efeff5'
-        }}></div>
+        }}/>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -342,7 +316,7 @@ class User extends React.Component<Props, State> {
         <div style={{
           height: 8,
           backgroundColor: '#efeff5'
-        }}></div>
+        }}/>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -350,7 +324,7 @@ class User extends React.Component<Props, State> {
           padding: 10,
           backgroundColor: '#ffffff'
         }}>
-          <span style={{ fontSize: '16px',fontFamily: 'FZYaoti' }}>常用工具</span>
+          <span style={{ fontSize: '16px',fontWeight: 'bold',color: '#4f4f55', fontFamily: '幼圆' }}>常用工具</span>
           <Icon type='right'></Icon>
         </div>
         <div className='Segment_line'></div>
@@ -397,14 +371,46 @@ class User extends React.Component<Props, State> {
         <div style={{
           height: 15,
           backgroundColor: '#f6f6f6'
-        }}></div>
+        }}/>
       </div>
     )
   }
 
+  public messageOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
+    history().push('/message')
+  }
+
+  public settingOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
+    history().push('/setting')
+  }
+
+  public userInfoOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
+    history().push('/userInfoEdit')
+  }
+
+  public couponOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
+    history().push('/coupon')
+  }
+
+  public orderOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
+    history().push('/myOrder')
+  }
+
+  public afterSaleOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
+    history().push('/afterSale')
+  }
+
   public render () {
     return (
-      <div style={{ backgroundColor: '#ffffff' }}>
+      <div className={'container'} style={{
+        backgroundColor: '#fff'
+      }}>
         {this.renderNav()}
         {this.renderContent()}
       </div>
