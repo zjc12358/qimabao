@@ -8,20 +8,20 @@ import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 
 export interface Props {
-  title: string, // 标题
+  title: string, // 标题文字
   titleColor: string // 标题文字颜色
-  showLeftIcon: Boolean, // 是否显示左边
-  showRightIcon: Boolean, // 是否显示右边
+  showLeftIcon: boolean, // 是否显示左边
+  showRightIcon: boolean, // 是否显示右边
   backgroundColor: string, // 背景颜色
   rightIconOnClick: any, // 右边点击事件
   rightIconContent?: any // 右边组件
 }
 
 interface State {
-  title: String,
+  title: string,
   titleColor: string,
-  showLeftIcon: Boolean,
-  showRightIcon: Boolean,
+  showLeftIcon: boolean,
+  showRightIcon: boolean,
   backgroundColor: string,
   rightIconOnClick: any,
   rightIconContent: any
@@ -93,7 +93,7 @@ class Head extends React.Component<Props, State> {
           alignItems: 'center'
         }} onClick={() => this.leftIconOnClick()}>
           {this.props.showLeftIcon && <div>
-            <ReactSVG path='' svgStyle={{ width: 22, height: 22 }}/>
+            <ReactSVG path='./components/Head/back.svg' svgStyle={{ width: 22, height: 22, marginTop: 2 }}/>
           </div>}
         </div>
         <div style={{

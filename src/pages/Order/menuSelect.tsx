@@ -12,6 +12,9 @@ import { setMenuId } from '@store/actions/menuDetail_data'
 import { updatePageTab } from '@store/actions/global_data'
 import { ProductBean } from '@datasources/ProductBean'
 import { changeMenuState, setReload, updateMenuList } from '@store/actions/menu_data'
+import ReactSVG from 'react-svg'
+import './orderCss.css'
+import './menuSelectCss.css'
 
 export interface Props {
   setMenuId?: (id: number) => void
@@ -61,10 +64,7 @@ class Menu extends React.Component<Props, State> {
    */
   renderCalendar = () => {
     return (
-      <div className='cal'
-           style={{
-             width: '100%'
-           }}>
+      <div className='cal' style={{ width: '100%' }}>
         <Cal
           // 当前日期
           value={this.state.data}
@@ -94,7 +94,7 @@ class Menu extends React.Component<Props, State> {
   renderFoot = () => {
     return (
       <div className='horizontal'
-           style={{ justifyContent: 'center',marginBottom: 40 }}>
+           style={{ justifyContent: 'center', marginBottom: 40 }}>
         推荐菜谱,暂未开放
       </div>
     )
@@ -112,20 +112,7 @@ class Menu extends React.Component<Props, State> {
           {this.state.menuList.map((item, index) => this.renderMenuListItem(item, index))}
         </div>
         <div onClick={this.downOrderOnClick}
-             className='horizontal'
-             style={{
-               marginTop: 20,
-               marginBottom: 40,
-               width: '90%',
-               height: 40,
-               borderStyle: 'solid',
-               borderWidth: 0,
-               borderRadius: 20,
-               backgroundColor: '#0084e7',
-               color: 'white',
-               fontSize: 20,
-               justifyContent: 'center'
-             }}>
+             className='horizontal-center place-order-border'>
           下单
         </div>
       </div>
@@ -150,11 +137,19 @@ class Menu extends React.Component<Props, State> {
                height: 40,
                width: '100%'
              }}>
-          <div onClick={() => this.menuChooseOnClick(index)}>
-            <span style={{ paddingLeft: 20 }}>{this.state.menuList[index].isCheck ? '√' : '口'}</span>
-            <span>{item.menuName}</span>
+          <div className='horizontal' onClick={() => this.menuChooseOnClick(index)}>
+            <span style={{ paddingLeft: 20 }}>
+              {this.state.menuList[index].isCheck ?
+                (<ReactSVG path='./assets/images/ic_check.svg' svgStyle={{ width: 18, height: 18 }}/>)
+                : (<ReactSVG path='./assets/images/ic_uncheck.svg' svgStyle={{ width: 18, height: 18 }}/>)}
+              </span>
+            <span style={{ marginLeft: 5 }}>{item.menuName}</span>
           </div>
-          <span style={{ paddingRight: 20 }} onClick={() => this.showMenuOnClick(index)}>↑</span>
+          <span style={{ paddingRight: 20 }} onClick={() => this.showMenuOnClick(index)}>
+            {this.state.menuList[index].isShow ?
+              (<ReactSVG path='./assets/images/ic_up_arrow.svg' svgStyle={{ width: 24, height: 24 }}/>) :
+              (<ReactSVG path='./assets/images/ic_down_arrow.svg' svgStyle={{ width: 24, height: 24 }}/>)}
+          </span>
         </div>
         <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
         {this.state.menuList[index].isShow &&
@@ -339,15 +334,7 @@ class Menu extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#efeff5',
-        height: '100%',
-        width: '100%'
-      }}>
+      <div className='vertical render-style'>
         {this.renderCalendar()}
         <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
         {this.renderContent()}

@@ -1,0 +1,22 @@
+
+.add-pic {
+  width: 60px;
+  height: 60px;
+  border: 0 solid;
+  border-radius: 50%;
+  background-color: #0084e7;
+}
+
+.add-pic-border {
+  background-color: white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 80%;
+  height: 150px;
+}
+
+.add-pic-text {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #0084e7;
+}
