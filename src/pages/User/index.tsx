@@ -17,7 +17,7 @@ export interface Props {
 interface State {
 
 }
-
+let OrderIconMaxSize: number = 26
 class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
@@ -88,7 +88,8 @@ class User extends React.Component<Props, State> {
         <div style={{
           height: '130px',
           width: '90%',
-          backgroundColor: '#efefef',
+          backgroundColor: '#f8f8f8',
+          borderRadius: 10,
           left: '5%',
           top: 70,
           position: 'absolute',
@@ -98,20 +99,13 @@ class User extends React.Component<Props, State> {
         }}>
           <div style={{
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
             flexDirection: 'row',
-            zIndex: 98,
-            paddingTop: 15
+            alignItems: 'center',
+            height: 50
           }}>
-            <span style={{ paddingLeft: 130 }}>用户名</span>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row'
-            }}>
-              <ReactSVG path='./assets/images/User/scan.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
-              <ReactSVG path='./assets/images/User/qr_code.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
-            </div>
+            <ReactSVG path='./assets/images/User/scan.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
+            <ReactSVG path='./assets/images/User/qr_code.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
           </div>
           <div style={{
             display: 'flex',
@@ -127,7 +121,7 @@ class User extends React.Component<Props, State> {
               paddingLeft: 20
             }}>
               <span style={{ fontSize: '18px' }}>6</span>
-              <span style={{ fontSize: '14px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
+              <span style={{ fontSize: '14px',color: '#8d8d8d',fontFamily: '黑体' }}>优惠券</span>
             </div>
             <div style={{
               display: 'flex',
@@ -136,7 +130,7 @@ class User extends React.Component<Props, State> {
               alignItems: 'center'
             }} onClick={this.couponOnclick}>
               <span style={{ fontSize: '18px' }}>0.00</span>
-              <span style={{ fontSize: '14px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
+              <span style={{ fontSize: '14px',color: '#8d8d8d',fontFamily: '黑体' }}>礼品卡</span>
             </div>
             <div style={{
               display: 'flex',
@@ -146,23 +140,29 @@ class User extends React.Component<Props, State> {
               paddingRight: 20
             }} onClick={this.couponOnclick}>
               <span style={{ fontSize: '18px' }}>0</span>
-              <span style={{ fontSize: '14px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
+              <span style={{ fontSize: '14px',color: '#8d8d8d',fontFamily: '黑体' }}>电子券</span>
             </div>
           </div>
         </div>
         <div style={{
           top: 50,
-          left: 40,
+          left: '8%',
           position: 'absolute',
           zIndex: 98,
-          borderRadius: '50%'
+          borderRadius: '50%',
+          width: 270,
+          display: 'flex',
+          justifyContent: 'flex-start',
+          flexDirection: 'row',
+          alignItems: 'center'
         }} onClick={this.userInfoOnclick}>
-          <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden' }}><img style={{
-            width: 'auto',
-            height: 'auto',
-            maxWidth: '100%',
-            maxHeight: '100%'
+          <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden', marginRight: 10 }}><img style={{
+            width: '100%',
+            height: '100%'
           }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' /></div>
+          <div style={{ width: 150 }}>
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis',whiteSpace: 'nowrap',width: '100%',display: 'block' }}>衢州炒菜软件技术有限公司</span>
+          </div>
         </div>
       </div>
     )
@@ -204,7 +204,7 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             alignItems: 'center'
           }} onClick={this.orderOnclick}>
-            <ReactSVG path='./assets/images/User/pay.svg' svgStyle={{ width: 22, height: 22 }}/>
+            <ReactSVG path='./assets/images/User/pay.svg' svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体',paddingTop: 3 }}>待付款</span>
           </div>
           <div style={{
@@ -213,7 +213,7 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             alignItems: 'center'
           }} onClick={this.orderOnclick}>
-            <ReactSVG path='./assets/images/User/delivery.svg' svgStyle={{ width: 22, height: 22 }}/>
+            <ReactSVG path='./assets/images/User/delivery.svg' svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待配送</span>
           </div>
           <div style={{
@@ -222,7 +222,7 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             alignItems: 'center'
           }} onClick={this.orderOnclick}>
-            <ReactSVG path='./assets/images/User/get.svg' svgStyle={{ width: 22, height: 22 }}/>
+            <ReactSVG path='./assets/images/User/get.svg' svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待收货</span>
           </div>
           <div style={{
@@ -231,8 +231,8 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             alignItems: 'center'
           }} onClick={this.orderOnclick}>
-            <ReactSVG path='./assets/images/User/evaluation.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待评价</span>
+            <ReactSVG path='./assets/images/User/evaluation.svg' svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
+            <span style={{ fontSize: '10px',color: '#8d8d8d',fontFamily: '黑体' }}>待评价</span>
           </div>
         </div>
         <div className='Segment_line' />
@@ -258,8 +258,8 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             paddingLeft: 10
           }} onClick={this.orderOnclick}>
-            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
-            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
+            <span style={{ fontSize: '13px',color: '#0285e7', fontFamily: '幼圆' }}>待付款</span>
+            <span style={{ fontSize: '10px',color: '#8d8d8d',fontFamily: '黑体', marginTop: 7 }}>9分钟后订单关闭</span>
           </div>
         </div>
         <div className='Segment_line2' />
