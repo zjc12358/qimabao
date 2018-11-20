@@ -156,7 +156,7 @@ class User extends React.Component<Props, State> {
           height: 19
         }}>
           <span style={{ fontSize: '16px', marginLeft: 10 }}>{i.name}</span>
-          <img src='../../assets/images/foot_home.svg' width='20' height='20' />
+          <img src='../../assets/images/User/drag.svg' width='20' height='20' />
         </div>
       </div>
     )
