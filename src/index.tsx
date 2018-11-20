@@ -25,7 +25,10 @@ import MenuOrderCheck from './pages/Order/menuOrderCheck' /*菜谱下单确认�
 /*我的*/
 import Setting from './pages/User/setting/index' /* 我的页面设置 */
 import Mine from './pages/User/index' /* 我的页面 */
-import UserInfoEdit from './pages/User/userinfo/index' /* 用户信息修改页面 */
+import UserInfoEdit from './pages/User/userinfo/index' /* 用户信息页面 */
+import UserInfoNameEdit from './pages/User/userinfo/nameEdit' /* 用户信息页面 --》昵称修改 */
+import UserInfoPhoneEdit from './pages/User/userinfo/phoneEdit' /* 用户信息页面 --》手机号修改 */
+import UserInfoPhoneEditConfirm from './pages/User/userinfo/phoneEditConfirm' /* 用户信息页面 --》手机号修改验证短信 */
 import SettingSafe from './pages/User/setting/setting_save/index' /* 我的页面设置 --》安全设置 */
 import Phone from './pages/User/setting/setting_save/phone' /* 安全设置 --》显示当前手机号 */
 import PhoneEdit from './pages/User/setting/setting_save/phoneEdit' /* 安全设置 --》修改手机号 */
@@ -48,7 +51,7 @@ import AfterSale from './pages/User/afterSale' /* 售后页面 */
 import MessageLogistics from './pages/User/message/messageLogistics' /* 物流助手页面 */
 import MessageSystemInfo from './pages/User/message/messageSystemInfo' /* 系统消息页面 */
 import MessageTradeInfo from './pages/User/message/messageTradeInfo' /* 交易信息页面 */
-import TradeEvaluation from './pages/User/message/tradeEvaluation' /* 物流评价页面 */
+import LogisticsEvaluation from './pages/User/message/logisticsEvaluation' /* 物流评价页面 */
 /*我的*/
 // 菜篮子
 import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */
@@ -80,6 +83,9 @@ ReactDOM.render(
         <Route path='/setting' component={Setting} />
         <Route path='/mine' component={Mine} />
         <Route path='/userInfoEdit' component={UserInfoEdit} />
+        <Route path='/userInfoNameEdit' component={UserInfoNameEdit} />
+        <Route path='/userInfoPhoneEdit' component={UserInfoPhoneEdit} />
+        <Route path='/userInfoPhoneEditConfirm' component={UserInfoPhoneEditConfirm} />
         <Route path='/message' component={Message} />
         <Route path='/coupon' component={Coupon} />
         <Route path='/settingSafe' component={SettingSafe} />
@@ -100,7 +106,7 @@ ReactDOM.render(
         <Route path='/messageLogistics' component={MessageLogistics} />
         <Route path='/messageSystemInfo' component={MessageSystemInfo} />
         <Route path='/messageTradeInfo' component={MessageTradeInfo} />
-        <Route path='/tradeEvaluation' component={TradeEvaluation} />
+        <Route path='/logisticsEvaluation' component={LogisticsEvaluation} />
         <Route path='/settingAddressEdit' component={SettingAddressEdit} />
         {/*我的*/}
 

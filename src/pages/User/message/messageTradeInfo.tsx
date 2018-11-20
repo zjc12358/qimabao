@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { GlobalData } from '../../../store/reducers/globalDataReducer'
+import { GlobalData } from '@store/reducers/globalDataReducer'
 import { Icon } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
-import { PageTab } from '../../../datasources/PageTab'
-import { UserInfo } from '../../../datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
+import { PageTab } from '@datasources/PageTab'
+import { UserInfo } from '@datasources/UserInfo'
+import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import '../master.css'
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
@@ -57,7 +57,7 @@ class User extends React.Component<Props, State> {
         marginRight: 20,
         border: '1px solid #ddd',
         borderRadius: 5
-      }} onClick={this.tradeOnclick}>
+      }}>
         <div style={{
           display: 'flex',
           justifyContent: 'center',
@@ -99,10 +99,6 @@ class User extends React.Component<Props, State> {
         </div>
       </div>
     )
-  }
-
-  public tradeOnclick = () => {
-    history().push('/tradeEvaluation')
   }
 
   public render () {

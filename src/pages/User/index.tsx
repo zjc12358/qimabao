@@ -6,6 +6,7 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import './master.css'
 import { UserInfo } from '@datasources/UserInfo'
 import history from 'history/createHashHistory'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: string
@@ -47,8 +48,8 @@ class User extends React.Component<Props, State> {
           width: '96%',
           padding: '8px'
         }}>
-          <div onClick={this.settingOnclick}><Icon type='check' color='#ffffff' size='lg'/></div>
-          <div onClick={this.messageOnclick}><Icon type='check' color='#ffffff' size='lg'/></div>
+          <ReactSVG path='./assets/images/User/setting.svg' svgStyle={{ width: 25, height: 25 }} onClick={this.settingOnclick}/>
+          <ReactSVG path='./assets/images/User/message.svg' svgStyle={{ width: 25, height: 25 }} onClick={this.messageOnclick}/>
         </div>
       </div>
     )
@@ -108,8 +109,8 @@ class User extends React.Component<Props, State> {
               justifyContent: 'center',
               flexDirection: 'row'
             }}>
-              <span>扫码</span>&nbsp;&nbsp;&nbsp;
-              <span>二维</span>&nbsp;&nbsp;&nbsp;
+              <ReactSVG path='./assets/images/User/scan.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
+              <ReactSVG path='./assets/images/User/qr_code.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
             </div>
           </div>
           <div style={{
@@ -183,7 +184,7 @@ class User extends React.Component<Props, State> {
           flexDirection: 'row',
           padding: 10
         }} onClick={this.orderOnclick}>
-          <span style={{ fontSize: '16px',fontWeight: 'bold',fontFamily: 'FZYaoti' }}>我的订单</span>
+          <span style={{ fontSize: '16px',fontWeight: 'bold',color: '#4f4f55', fontFamily: '幼圆' }}>我的订单</span>
           <Icon type='right'></Icon>
         </div>
         <div className='Segment_line'></div>
@@ -191,47 +192,46 @@ class User extends React.Component<Props, State> {
           display: 'flex',
           justifyContent: 'space-between',
           flexDirection: 'row',
-          padding: 30,
+          paddingLeft: 30,
+          paddingRight: 30,
+          paddingTop: 20,
+          paddingBottom: 20,
           backgroundColor: '#ffffff'
         }}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#eee'
+            alignItems: 'center'
           }} onClick={this.orderOnclick}>
-            <Icon type='loading'></Icon>
-            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待付款</span>
+            <ReactSVG path='./assets/images/User/pay.svg' svgStyle={{ width: 22, height: 22 }}/>
+            <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体',paddingTop: 3 }}>待付款</span>
           </div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#eee'
+            alignItems: 'center'
           }} onClick={this.orderOnclick}>
-            <Icon type='loading'></Icon>
+            <ReactSVG path='./assets/images/User/delivery.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待配送</span>
           </div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#eee'
+            alignItems: 'center'
           }} onClick={this.orderOnclick}>
-            <Icon type='loading'></Icon>
+            <ReactSVG path='./assets/images/User/get.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待收货</span>
           </div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#eee'
+            alignItems: 'center'
           }} onClick={this.orderOnclick}>
-            <Icon type='loading'></Icon>
+            <ReactSVG path='./assets/images/User/evaluation.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span style={{ fontSize: '10px',color: '#828282',fontFamily: '黑体' }}>待评价</span>
           </div>
         </div>
@@ -240,14 +240,18 @@ class User extends React.Component<Props, State> {
           display: 'flex',
           justifyContent: 'flex-start',
           flexDirection: 'row',
-          marginTop: 30,
-          marginBottom: 30,
-          marginLeft: 10,
-          marginRight: 20
+          alignItems: 'center',
+          height: 70,
+          paddingLeft: 28
         }}>
-          <span style={{ fontSize: '16px',fontFamily: '黑体' }}>最新订单</span>
+          <span style={{ fontSize: '16px',fontFamily: '黑体',color: '#404040' }}>最新订单</span>
           <div style={{ paddingLeft: 20 }} />
-          <Icon type='loading' />
+          <div style={{ borderRadius: '50%',width: 35, height: 35,overflow: 'hidden' }}><img style={{
+            width: 'auto',
+            height: 'auto',
+            maxWidth: '100%',
+            maxHeight: '100%'
+          }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' /></div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -320,7 +324,7 @@ class User extends React.Component<Props, State> {
           padding: 10,
           backgroundColor: '#ffffff'
         }}>
-          <span style={{ fontSize: '16px',fontFamily: 'FZYaoti' }}>常用工具</span>
+          <span style={{ fontSize: '16px',fontWeight: 'bold',color: '#4f4f55', fontFamily: '幼圆' }}>常用工具</span>
           <Icon type='right'></Icon>
         </div>
         <div className='Segment_line'></div>
@@ -373,27 +377,32 @@ class User extends React.Component<Props, State> {
   }
 
   public messageOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
     history().push('/message')
   }
 
   public settingOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
     history().push('/setting')
   }
 
   public userInfoOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
     history().push('/userInfoEdit')
   }
 
   public couponOnclick = () => {
-    this.props.updateUserInfo({ userName: 'dd',isLogin: true })
+    this.props.updatePageTab('UserPageTabBar')
     history().push('/coupon')
   }
 
   public orderOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
     history().push('/myOrder')
   }
 
   public afterSaleOnclick = () => {
+    this.props.updatePageTab('UserPageTabBar')
     history().push('/afterSale')
   }
 

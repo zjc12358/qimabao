@@ -8,6 +8,7 @@ import { PageTab } from '../../../datasources/PageTab'
 import { UserInfo } from '../../../datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
 import '../master.css'
+import history from 'history/createHashHistory'
 
 export interface Props {
   pageTab: PageTab
@@ -57,11 +58,9 @@ class User extends React.Component<Props, State> {
           alignItems: 'center',
           height: '100%'
         }}>
-          <Link to={'/message_logistics'}>
-          <div style={{ paddingLeft: 10 }}>
+          <div style={{ paddingLeft: 10 }} onClick={() => history().goBack()}>
             <Icon type={'left'} />
           </div>
-          </Link>
           <div style={{ paddingLeft: 24 }}>
             <Icon type={'loading'} />
           </div>

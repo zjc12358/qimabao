@@ -59,15 +59,6 @@ class User extends React.Component<Props, State> {
   }
 
   /**
-   * 页面导航栏返回上一个页面link to
-   */
-  public renderNav = (title, color) => {
-    return (
-      <Nav title={title} color={color} />
-    )
-  }
-
-  /**
    * 国家和地区
    */
   public renderContent = () => {

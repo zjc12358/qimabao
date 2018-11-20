@@ -93,7 +93,7 @@ class App extends React.Component<Props, State> {
       <TabBar
         unselectedTintColor='#949494'
         tintColor='#d91d37'
-        barTintColor='#262626'
+        barTintColor='#ffffff'
         hidden={this.state.hidden}
         prerenderingSiblingsNumber={0}
       >

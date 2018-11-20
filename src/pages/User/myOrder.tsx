@@ -6,6 +6,8 @@ import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import './master.css'
+import history from 'history/createHashHistory'
+import Nav from '@components/Head/nav'
 
 export interface Props {
   pageTab: PageTab
@@ -59,35 +61,7 @@ class User extends React.Component<Props, State> {
       ]
     }
   }
-  /**
-   * 导航栏
-   */
-  public renderNav = () => {
-    return (
-      <div style={{
-        backgroundColor: '#ffffff',
-        position: 'relative',
-        height: 40
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }}>
-          <Link to='/NavBar'><Icon type='left' color='#000000' size='lg' onClick={this.backOnclick} /></Link>
-        </div>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>我的订单</span>
-        </div>
-      </div>
-    )
-  }
-  backOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
-  }
+
   /**
    * 内容
    */
@@ -161,7 +135,7 @@ class User extends React.Component<Props, State> {
         }}>
           <div style={{
             borderRadius: '20px 20px',
-            backgroundColor: '#ebeaf3',
+            backgroundColor: '#f9f7f5',
             height: '100%',
             width: '100%',
             position: 'relative'
@@ -189,9 +163,9 @@ class User extends React.Component<Props, State> {
               top: 30,
               alignItems: 'flex-start'
             }}>
-              <div style={{ fontSize: 18, color: '#191919' }}>{i.Commodity}</div>
-              <div style={{ fontSize: 18, color: '#191919' }}>单价：<span style={{ fontSize: 18,color: '#ff0000' }}>￥{i.price}</span>/500g</div>
-              <div style={{ fontSize: 18, color: '#191919' }}>重量：{i.weight}</div>
+              <div style={{ fontSize: 16, color: '#191919' }}>{i.Commodity}</div>
+              <div style={{ fontSize: 16, color: '#191919' }}>单价：<span style={{ fontSize: 18,color: '#ff0000' }}>￥{i.price}</span>/500g</div>
+              <div style={{ fontSize: 16, color: '#191919' }}>重量：{i.weight}</div>
             </div>
           </div>
         </div>
@@ -210,17 +184,15 @@ class User extends React.Component<Props, State> {
         <br/>
         <div style={{
           height: 40,
-          backgroundColor: '#f2f2f2',
+          backgroundColor: '#fafafa',
           width: '100%',
           display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          position: 'relative'
+          justifyContent: 'flex-end',
+          flexDirection: 'row',
+          alignItems: 'center'
         }}>
-          <div style={{ right: 20, position: 'absolute' }}>
-            <button>去评价</button>
-            <button>删除订单</button>
-          </div>
+          <button style={{ height: 28, width: 70, borderRadius: 5,border: '1px solid #0084E7',backgroundColor: '#0084E7',color: '#ffffff',fontSize: 14,marginRight: 10 }}>去评价</button>
+          <button style={{ height: 28, width: 70, borderRadius: 5,border: '1px solid #404040',backgroundColor: 'transparent',color: '#404040',fontSize: 14,marginRight: 10 }}>删除订单</button>
         </div>
       </div>
     )
@@ -321,7 +293,7 @@ class User extends React.Component<Props, State> {
         backgroundColor: '#ffffff',
         height: '100vh'
       }}>
-        {this.renderNav()}
+        <Nav title={'我的订单'} color={'#ffffff'} />
         {this.renderContent()}
       </div>
     )

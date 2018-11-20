@@ -33,8 +33,8 @@ class Nav extends React.Component<Props, State> {
           <Icon type='left' color='#000000' size='lg'/>
         </div>
         <div style={{
-          fontSize: 20,
-          paddingTop: 5,
+          fontSize: 18,
+          paddingTop: 7,
           color: '#000000',
           width: '100%',
           textAlign: 'center'
