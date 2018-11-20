@@ -228,7 +228,7 @@ class History extends React.Component<Props, State> {
                 }}>
                   <div className='checkBox'>
                   </div>
-                  <img className='iconStyle' src='./assets/images/icon/merchant.svg' />
+                  <img className='iconStyle' src='./assets/images/Cart/merchant.svg' />
                   <div style={{ color: '#8C8C8C' }}>{this.state.foodList[foodListIndex].nowSupplierMsg.name}</div>
                 </div>
                 {this.renderFoodItem(foodListIndex)}
