@@ -198,7 +198,7 @@ class History extends React.Component<Props, State> {
         }}>
           <div className='checkBox'>
           </div>
-          <ReactSVG svgStyle={{ width: 16,height: 16,display: 'flex',alignItems: 'center',marginRight: 16 }} path='./assets/images/icon/merchant.svg' />
+          <ReactSVG svgStyle={{ width: 16,height: 16,display: 'flex',alignItems: 'center',marginRight: 16 }} path='./assets/images/Cart/merchant.svg' />
           <div className='fontGray'>衢州炒菜软件开发有限公司 </div>
           <div style={{ flex: 1 }}></div>
           <Icon style={{ paddingRight: 15 }} type='right'/>
@@ -280,7 +280,7 @@ class History extends React.Component<Props, State> {
               }}
             >
               <div>
-                <img style={{ width: 20 }} src='../../assets/images/icon/delete.svg' />
+                <img style={{ width: 20 }} src='../../assets/images/Cart/delete.svg' />
               </div>
               <div style={{ flex: 1, paddingLeft: 12, paddingRight: 10 }}>
                 <div style={{ display: 'flex' }}>
@@ -297,7 +297,7 @@ class History extends React.Component<Props, State> {
           <div className='orderDetail'>
             <div className='orderDetailCon'>
               <div className='orderDetailTitle'>
-                <ReactSVG path='./assets/images/icon/time.svg' svgStyle={ iconStyle } />
+                <ReactSVG path='./assets/images/Cart/time.svg' svgStyle={ iconStyle } />
                 <div className='fontGray'>送达时间</div>
                 <div style={{ flex: 1 }}></div>
                 <div
