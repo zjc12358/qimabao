@@ -472,7 +472,7 @@ class History extends React.Component<Props, State> {
                 this.allCheckedOnChange(index1)
               }} />
             </div>
-            <img style={{ width: 15 }} src='../../assets/images/icon/merchant.svg' alt=''/>
+            <img style={{ width: 15 }} src='../../assets/images/Cart/merchant.svg' alt=''/>
             <div style={{ color: '#8C8C8C',marginLeft: 15 }}>{i.name}</div>
             <div style={{ flex: 1 }}></div>
             <div style={{ paddingRight: 15 }}><Icon type='right' onClick={ () => {

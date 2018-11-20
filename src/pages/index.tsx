@@ -101,8 +101,8 @@ class App extends React.Component<Props, State> {
           style={{ verticalAlign: 'midden' }}
           title='首页'
           key='HomePage'
-          icon={<ReactSVG path='./assets/images/icon/home.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selectedIcon={<ReactSVG path='./assets/images/icon/home_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          icon={<ReactSVG path='./assets/images/Cart/home.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/Cart/home_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'HomePageTabBar'}
           onPress={() => this.onTabBarSelectChange('HomePageTabBar')}
         >
@@ -113,8 +113,8 @@ class App extends React.Component<Props, State> {
           style={{ verticalAlign: 'midden' }}
           title='菜谱'
           key='OrderPage'
-          icon={<ReactSVG path='./assets/images/icon/recipe.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selectedIcon={<ReactSVG path='./assets/images/icon/recipe_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          icon={<ReactSVG path='./assets/images/Cart/recipe.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/Cart/recipe_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'OrderPageTabBar'}
           onPress={() => this.onTabBarSelectChange('OrderPageTabBar')}
         >
@@ -125,8 +125,8 @@ class App extends React.Component<Props, State> {
           style={{ verticalAlign: 'midden' }}
           title='菜篮'
           key='HistoryPage'
-          icon={<ReactSVG path='./assets/images/icon/cart.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selectedIcon={<ReactSVG path='./assets/images/icon/cart_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          icon={<ReactSVG path='./assets/images/Cart/cart.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/Cart/cart_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'HistoryPageTabBar'}
           onPress={() => this.onTabBarSelectChange('HistoryPageTabBar')}
         >
