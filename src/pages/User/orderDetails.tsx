@@ -2,7 +2,9 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox, TextareaItem } from 'antd-mobile'
+import ReactSVG from 'react-svg'
 import Head from '../../components/Head/index'
+import './orderDetail.less'
 import history from 'history/createHashHistory'
 
 const nowTimeStamp = Date.now()
@@ -35,9 +37,28 @@ class User extends React.Component<Props, State> {
   }
 
   public render () {
+    let styles = {
+
+    }
     return (
       <div>
-        <div>时间段还是亏了就啊哈德生科技拉风的斯科拉飞机的开始垃圾费多少空间发的克里斯建安费考虑到撒酒疯考虑到撒反对隆盛科技</div>
+        <Head title='订单详情' backgroundColor='#0084e7' />
+        <div className='stateBox'>
+          <div>
+            <div style={{ fontSize: 20 }}>交易关闭</div>
+            <div>超市关闭</div>
+          </div>
+          <div>
+            <ReactSVG path='' />
+          </div>
+        </div>
+        <div className='addressBox'>
+          <ReactSVG path='' />
+          <div>
+            <div>何静建</div>
+            <div>浙江省 衢州市 柯城区 荷花街道 兴化苑 35幢2单元</div>
+          </div>
+        </div>
       </div>
     )
   }
