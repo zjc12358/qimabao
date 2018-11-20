@@ -152,11 +152,11 @@ class User extends React.Component<Props, State> {
           borderRadius: '50%',
           width: 270,
           display: 'flex',
-          justifyContent: 'space-around',
+          justifyContent: 'flex-start',
           flexDirection: 'row',
           alignItems: 'center'
         }} onClick={this.userInfoOnclick}>
-          <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden', marginRight: 0 }}><img style={{
+          <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden', marginRight: 10 }}><img style={{
             width: '100%',
             height: '100%'
           }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' /></div>
