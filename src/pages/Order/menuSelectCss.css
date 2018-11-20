@@ -1,0 +1,11 @@
+.place-order-border {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  width: 90%;
+  height: 40px;
+  border: 0 solid;
+  border-radius: 20px;
+  background-color: #0084e7;
+  color: white;
+  font-size: 20px;
+}
