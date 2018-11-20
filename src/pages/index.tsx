@@ -137,8 +137,8 @@ class App extends React.Component<Props, State> {
           style={{ verticalAlign: 'midden' }}
           title='我的'
           key='UserPage'
-          icon={<ReactSVG path='./assets/images/foot_my.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selectedIcon={<ReactSVG path='./assets/images/foot_my_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          icon={<ReactSVG path='./assets/images/foot_my.svg' svgStyle={{ width: 20, height: 20 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/foot_my_on.svg' svgStyle={{ width: 20, height: 20 }}/>}
           selected={this.state.selectedTabBar === 'UserPageTabBar'}
           onPress={() => this.onTabBarSelectChange('UserPageTabBar')}
         >
