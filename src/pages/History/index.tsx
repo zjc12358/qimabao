@@ -294,11 +294,11 @@ class History extends React.Component<Props, State> {
     return (
       <div>
         <div style={{ display: 'flex',justifyContent: 'center', paddingTop: 20 }}>
-          <div style={{ width: 135,height: 135,borderRadius: '50%',backgroundColor: '#cccccc' }}></div>
+          <div style={{ width: 135,height: 135,borderRadius: '50%',backgroundColor: '#cccccc',display: 'flex',alignItems: 'center',justifyContent: 'center' }}>
+            <img style={{ width: 80 }} src='./assets/images/icon/cartEmpty.svg' />
+          </div>
         </div>
         <div style={{ display: 'flex',justifyContent: 'center', fontSize: 18, marginTop: 12 }}>菜篮为空</div>
-        <button onClick={ () => { console.log(this.state.data) } }>state</button>
-        <button onClick={ () => { console.log(this.props.shopCartData) } }>props</button>
         <div style={{ display: 'flex',justifyContent: 'center', fontSize: 13, color: 'rgb(140, 140, 140)', marginTop: 12 }}>“赶紧去采购吧”</div>
       </div>
     )
@@ -452,12 +452,6 @@ class History extends React.Component<Props, State> {
     )
   }
 
-  renderLoading = () => {
-    return (
-      <div></div>
-    )
-  }
-
   /**
    * 供应商
    */
@@ -465,8 +459,7 @@ class History extends React.Component<Props, State> {
     return (
       <div>
         <div>
-          <div style={{ height: 15, background: '#f5f5f5' }}>
-          </div>
+          <div style={{ height: 15, background: '#f5f5f5' }}></div>
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -479,8 +472,8 @@ class History extends React.Component<Props, State> {
                 this.allCheckedOnChange(index1)
               }} />
             </div>
-            <div style={{ width: 20 }}></div>
-            <div style={{ color: '#8C8C8C' }}>{i.name}</div>
+            <img style={{ width: 15 }} src='../../assets/images/icon/merchant.svg' alt=''/>
+            <div style={{ color: '#8C8C8C',marginLeft: 15 }}>{i.name}</div>
             <div style={{ flex: 1 }}></div>
             <div style={{ paddingRight: 15 }}><Icon type='right' onClick={ () => {
               this.props.updatePageTab('HistoryPageTabBar')

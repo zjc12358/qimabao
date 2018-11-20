@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox, TextareaItem } from 'antd-mobile'
+import ReactSVG from 'react-svg'
 import './default.css'
 import './orderMakeSure.less'
 import Head from '../../components/Head/index'
@@ -192,19 +193,19 @@ class History extends React.Component<Props, State> {
           display: 'flex',
           alignItems: 'center',
           borderTop: '1px solid #CCCCCC',
-          height: 40
+          height: 40,
+          paddingLeft: 20
         }}>
           <div className='checkBox'>
           </div>
-          <div style={{ width: 20 }}></div>
+          <ReactSVG svgStyle={{ width: 16,height: 16,display: 'flex',alignItems: 'center',marginRight: 16 }} path='./assets/images/icon/merchant.svg' />
           <div className='fontGray'>衢州炒菜软件开发有限公司 </div>
           <div style={{ flex: 1 }}></div>
           <Icon style={{ paddingRight: 15 }} type='right'/>
         </div>
-        <div style={{
-          paddingLeft: 20,
-          paddingRight: 20
-        }}>
+        <div
+          className='foodWrap'
+        >
           <div className='foodDetail'>
             <img className='' style={{ width: 95,height: 95,borderRadius: '50%',display: 'block' }} src='http://img0.imgtn.bdimg.com/it/u=508694851,709788791&fm=200&gp=0.jpg' />
             <div style={{ width: 180,paddingLeft: 15 }}>
@@ -260,6 +261,7 @@ class History extends React.Component<Props, State> {
   }
 
   public render () {
+    let iconStyle = { width: 20,height: 20,display: 'flex',alignItems: 'center',marginRight: 16,marginLeft: 18 }
     return (
       <div className='orderContainer'>
         <Head
@@ -277,7 +279,9 @@ class History extends React.Component<Props, State> {
                 history().push('/setting-address')
               }}
             >
-              <div>1</div>
+              <div>
+                <img style={{ width: 20 }} src='../../assets/images/icon/delete.svg' />
+              </div>
               <div style={{ flex: 1, paddingLeft: 12, paddingRight: 10 }}>
                 <div style={{ display: 'flex' }}>
                   <div>收货人：何静</div>
@@ -293,7 +297,7 @@ class History extends React.Component<Props, State> {
           <div className='orderDetail'>
             <div className='orderDetailCon'>
               <div className='orderDetailTitle'>
-                <div style={{ width: 20 }}></div>
+                <ReactSVG path='./assets/images/icon/time.svg' svgStyle={ iconStyle } />
                 <div className='fontGray'>送达时间</div>
                 <div style={{ flex: 1 }}></div>
                 <div

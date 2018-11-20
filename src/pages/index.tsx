@@ -91,17 +91,18 @@ class App extends React.Component<Props, State> {
   renderTabBar () {
     return (
       <TabBar
-        unselectedTintColor='#949494'
-        tintColor='#d91d37'
-        barTintColor='#262626'
+        unselectedTintColor='#363636'
+        tintColor='#0385e7'
+        barTintColor='#FFFFFF'
         hidden={this.state.hidden}
         prerenderingSiblingsNumber={0}
       >
         <TabBar.Item
+          style={{ verticalAlign: 'midden' }}
           title='首页'
           key='HomePage'
-          icon={<ReactSVG path='./assets/images/foot_home.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selectedIcon={<ReactSVG path='./assets/images/foot_home_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          icon={<ReactSVG path='./assets/images/icon/home.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/icon/home_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'HomePageTabBar'}
           onPress={() => this.onTabBarSelectChange('HomePageTabBar')}
         >
@@ -109,10 +110,11 @@ class App extends React.Component<Props, State> {
         </TabBar.Item>
 
         <TabBar.Item
+          style={{ verticalAlign: 'midden' }}
           title='菜谱'
           key='OrderPage'
-          icon={<ReactSVG path='./assets/images/foot_jiaoyi.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selectedIcon={<ReactSVG path='./assets/images/foot_jiaoyi_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          icon={<ReactSVG path='./assets/images/icon/recipe.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/icon/recipe_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'OrderPageTabBar'}
           onPress={() => this.onTabBarSelectChange('OrderPageTabBar')}
         >
@@ -120,10 +122,11 @@ class App extends React.Component<Props, State> {
         </TabBar.Item>
 
         <TabBar.Item
+          style={{ verticalAlign: 'midden' }}
           title='菜篮'
           key='HistoryPage'
-          icon={<ReactSVG path='./assets/images/foot_history.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selectedIcon={<ReactSVG path='./assets/images/foot_history_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          icon={<ReactSVG path='./assets/images/icon/cart.svg' svgStyle={{ width: 22, height: 22 }}/>}
+          selectedIcon={<ReactSVG path='./assets/images/icon/cart_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selected={this.state.selectedTabBar === 'HistoryPageTabBar'}
           onPress={() => this.onTabBarSelectChange('HistoryPageTabBar')}
         >
@@ -131,6 +134,7 @@ class App extends React.Component<Props, State> {
         </TabBar.Item>
 
         <TabBar.Item
+          style={{ verticalAlign: 'midden' }}
           title='我的'
           key='UserPage'
           icon={<ReactSVG path='./assets/images/foot_my.svg' svgStyle={{ width: 22, height: 22 }}/>}
