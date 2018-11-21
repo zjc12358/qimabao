@@ -48,8 +48,9 @@ class User extends React.Component<Props, State> {
             <div style={{ fontSize: 18 }}>交易关闭</div>
             <div style={{ marginTop: 5 }}>超市关闭</div>
           </div>
+          <div style={{ flex: 1 }}></div>
           <div>
-            <ReactSVG path='' />
+            <img style={{ width: 151,display: 'block' }} src='./assets/images/box.png' />
           </div>
         </div>
         <div className='addressBox'>
@@ -57,6 +58,12 @@ class User extends React.Component<Props, State> {
           <div className='addressMsg' style={{ fontSize: 14 }}>
             <div>何静建</div>
             <div>浙江省 衢州市 柯城区 荷花街道 兴化苑 35幢2单元</div>
+          </div>
+        </div>
+        <div className='orderDetail'>
+          <div className='orderNum' style={{ fontSize: 12 }}>订单号: SP057899444221</div>
+          <div>
+            <ReactSVG svgClassName='icon' path='./assets/images/Cart/merchant.svg' />
           </div>
         </div>
       </div>
