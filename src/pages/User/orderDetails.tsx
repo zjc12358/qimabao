@@ -45,16 +45,16 @@ class User extends React.Component<Props, State> {
         <Head title='订单详情' backgroundColor='#0084e7' />
         <div className='stateBox'>
           <div>
-            <div style={{ fontSize: 20 }}>交易关闭</div>
-            <div>超市关闭</div>
+            <div style={{ fontSize: 18 }}>交易关闭</div>
+            <div style={{ marginTop: 5 }}>超市关闭</div>
           </div>
           <div>
             <ReactSVG path='' />
           </div>
         </div>
         <div className='addressBox'>
-          <ReactSVG path='' />
-          <div>
+          <ReactSVG svgClassName='location' path='./assets/images/location.svg' />
+          <div className='addressMsg' style={{ fontSize: 14 }}>
             <div>何静建</div>
             <div>浙江省 衢州市 柯城区 荷花街道 兴化苑 35幢2单元</div>
           </div>
