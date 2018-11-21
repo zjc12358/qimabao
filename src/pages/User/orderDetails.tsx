@@ -46,7 +46,9 @@ class User extends React.Component<Props, State> {
           justifyContent: 'flex-start',
           alignItems: 'center' }}>
           <Head
-            style={{ display: 'flex' }}
+            style={{ display: 'flex',flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignItems: 'center' }}
             showLeftIcon='true'
             title='订单详情'
             backgroundColor='#0084e7'
