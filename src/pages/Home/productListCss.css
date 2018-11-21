@@ -4,10 +4,25 @@
   background-color: white;
 }
 
+.title-back {
+  position: fixed;
+  left: 0;
+  width: 60px;
+  height: 40px;
+  color: black;
+  padding-left: 10px;
+}
+
 .right-menu {
   position: fixed;
   right: 0;
   height: 40px;
+}
+
+.choose-menu {
+  height: 40px;
+  width: 100%;
+  background-color: white;
 }
 
 .product-list-content {
@@ -38,7 +53,7 @@
   font-size: 10px;
 }
 
-.product-list{
+.product-list {
   flex: 1;
 }
 
@@ -76,4 +91,12 @@
   margin-left: 10px;
   margin-top: 20px;
   color: #d66b67;
+}
+
+.add-cart-btn-border {
+  border: 0 solid;
+  border-radius: 50%;
+  background-color: #0084e7;
+  width: 22px;
+  height: 22px;
 }

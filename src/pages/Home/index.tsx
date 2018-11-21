@@ -12,13 +12,26 @@ import { ProductListState } from '@datasources/ProductListState'
 import { updateCategoryItem } from '@store/actions/categoryItem_data'
 import { updatePageTab } from '@store/actions/global_data'
 
+let categoryData = ['时令蔬菜', '肉禽蛋类', '海鲜水产', '新鲜水果', '粮油副食', '酒水饮料', '乳品烘焙', '敬请期待', '敬请期待']
+let categoryPic = ['https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/B3E828810C7B4D13EB725B8A499D7702.png?Expires=1542781368&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=xbxut%2FGK9A6NCzKJ06eOYdRbOz4%3D',
+  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/7E26898C2E42538671F96FEE398B3354.png?Expires=1542781699&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=GMhnMx5niVw2aAQ8xdVoXeomNSM%3D',
+  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/84B94891EAF778767D8D3D12376F91BB.png?Expires=1542781733&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=qtaUe6EPRNce9gkAJN2%2FGbdG4V4%3D',
+  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/2857326667D902FC5B785A9F1EA83C7C.png?Expires=1542782014&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=uTCj5gYMwyF4k%2BxnhoYMA29x7%2FY%3D',
+  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/C1D2BD7B2E0941F157A418AC35ADF112.png?Expires=1542782032&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=QqzND8Roh1ss638uM8NM5AJFxrI%3D',
+  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/0CEA8AFE3A63CB361B6AD1DB1E58BB37.png?Expires=1542782047&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=cYcL9TqOFO5BhFnk4kitWuofTtE%3D',
+  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/6B6D4D77CF697A5AB1B962593B163DF0.png?Expires=1542782061&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=%2BPtrJi1Xq5aGn5qqf5H3xomujt8%3D',
+  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/6B6D4D77CF697A5AB1B962593B163DF0.png?Expires=1542782061&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=%2BPtrJi1Xq5aGn5qqf5H3xomujt8%3D',
+  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/6B6D4D77CF697A5AB1B962593B163DF0.png?Expires=1542782061&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=%2BPtrJi1Xq5aGn5qqf5H3xomujt8%3D']
+let carouselData = ['https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/FEA56E3460715231516D03ADE6AD6CA2.png?Expires=1542782923&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=QgxpnQMKXusIvntklGFpd2V4M08%3D',
+  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/B63BA27207F08B98C57D5C5E4772DBD9.png?Expires=1542782965&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=E4%2BgH06d4Jbe7O8mZ1iiMMfmU%2Fs%3D']
+
 export interface Props {
   updateCategoryItem: (categoryItemData: Array<HomeCategoryItemBean>, index: number) => void
   updatePageTab: (pageTab: string) => void
 }
 
 interface State {
-  imgData: any
+  imgData: Array<string>
   homeCategoryItemData: Array<HomeCategoryItemBean>
   // commodityListState: ProductListState
   imgHeight: any
@@ -29,7 +42,7 @@ class Home extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      imgData: [],
+      imgData: carouselData,
       homeCategoryItemData: [],
       imgHeight: 0
     }
@@ -37,11 +50,11 @@ class Home extends React.Component<Props, State> {
 
   componentWillMount () {
     let categoryList: Array<HomeCategoryItemBean> = []
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 9; i++) {
       let categoryItem: HomeCategoryItemBean = {
         category_id: i,
-        category_name: '类别' + i,
-        category_picture: '' + i
+        category_name: categoryData[i],
+        category_picture: categoryPic[i]
       }
       categoryList.push(categoryItem)
       this.setState({
@@ -65,44 +78,61 @@ class Home extends React.Component<Props, State> {
    */
   renderHead = () => {
     return (
-      <div className='horizontal'
+      <div className='vertical'
            style={{
              position: 'fixed',
              top: '0',
              width: '100%',
-             height: '40px',
-             background: '#0084E7',
              zIndex: 100
            }}>
-        <div className='horizontal-center' style={{
-          flex: 1
-        }} onClick={this.locationOnclick}>
-          <ReactSVG path='./assets/images/location.svg' svgStyle={{ width: 20, height: 22 }}/>
-        </div>
-        {/*<Link style={{*/}
-        {/*flex: 1*/}
-        {/*}} to='/test'>*/}
-        {/*测试*/}
-        {/*</Link>*/}
-        <div style={{
-          flex: 5,
-          borderStyle: 'solid',
-          borderWidth: 0,
-          borderRadius: 25,
-          backgroundColor: 'white',
-          height: 30
-        }} onClick={this.searchOnclick}>
+        <div className='horizontal'
+             style={{
+               width: '100%',
+               background: '#0084E7',
+               height: 40
+             }}>
+          <div className='horizontal-center' style={{
+            flex: 1
+          }} onClick={this.locationOnclick}>
+            <ReactSVG path='./assets/images/location.svg' svgStyle={{ width: 20, height: 22 }}/>
+          </div>
+          {/*<Link style={{*/}
+          {/*flex: 1*/}
+          {/*}} to='/test'>*/}
+          {/*测试*/}
+          {/*</Link>*/}
+          <div style={{
+            flex: 5,
+            borderStyle: 'solid',
+            borderWidth: 0,
+            borderRadius: 25,
+            backgroundColor: 'white',
+            height: 30
+          }} onClick={this.searchOnclick}>
 
+          </div>
+          <div className='horizontal-center' style={{
+            flex: 1, marginLeft: 5
+          }} onClick={this.scanOnclick}>
+            <ReactSVG path='./assets/images/scan_one_scan.svg' svgStyle={{ width: 20, height: 20 }}/>
+          </div>
+          <div className='horizontal-center' style={{
+            flex: 1, marginRight: 5
+          }} onClick={this.messageOnclick}>
+            <ReactSVG path='./assets/images/message.svg' svgStyle={{ width: 24, height: 24 }}/>
+          </div>
         </div>
-        <div className='horizontal-center' style={{
-          flex: 1, marginLeft: 5
-        }} onClick={this.scanOnclick}>
-          <ReactSVG path='./assets/images/scan_one_scan.svg' svgStyle={{ width: 20, height: 20 }}/>
-        </div>
-        <div className='horizontal-center' style={{
-          flex: 1, marginRight: 5
-        }} onClick={this.messageOnclick}>
-          <ReactSVG path='./assets/images/message.svg' svgStyle={{ width: 24, height: 24 }}/>
+        <div style={{ width: '100%' }} className='horizontal'>
+          <span style={{
+            borderStyle: 'solid',
+            borderWidth: 0,
+            borderRadius: 20,
+            backgroundColor: 'white',
+            padding: '5px 20px',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis'
+          }} onClick={this.locationOnclick}>送至朝晖社区111111111</span>
         </div>
       </div>
     )
@@ -115,23 +145,20 @@ class Home extends React.Component<Props, State> {
     return (
       <div style={{
         width: '100%',
-        height: 0,
-        paddingBottom: '50%',
-        marginTop: 40
+        marginTop: 50
       }}>
         <Carousel
           autoplay={true}
           infinite={true}
         >
-          {this.state.imgData.map(val => (
+          {carouselData.map((val, index) => (
             <a
               key={val}
               href='http://www.alipay.com'
               style={{ display: 'inline-block', width: '100%', paddingLeft: 10, paddingRight: 10 }}
             >
               <img
-                src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
-                alt=''
+                src={val}
                 style={{
                   width: '100%', verticalAlign: 'top', height: this.state.imgHeight,
                   borderStyle: 'solid',
@@ -162,13 +189,18 @@ class Home extends React.Component<Props, State> {
              alignItems: 'flex-start',
              width: '100%',
              flexWrap: 'wrap',
-             marginTop: 30
+             marginTop: 40
            }}>
         {this.state.homeCategoryItemData.map((item, index) => this.renderIconListItem(item, index))}
       </div>
     )
   }
 
+  /**
+   * 首页单个图标 样式
+   * @param item
+   * @param index
+   */
   renderIconListItem = (item, index) => {
     return (
       <div className='vertical'
@@ -186,10 +218,8 @@ class Home extends React.Component<Props, State> {
                justifyContent: 'center',
                paddingTop: 20
              }}>
-          <div>
-            {item.category_picture}
-          </div>
-          <div>
+          <img style={{ width: 70, height: 70 }} src={item.category_picture}/>
+          <div style={{ marginTop: 10 }}>
             {item.category_name}
           </div>
         </div>
@@ -273,16 +303,13 @@ class Home extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{
-        height: '100%',
-        backgroundColor: '#efeff5'
+      <div className='vertical scroll' style={{
+        height: '100vh',
+        backgroundColor: 'white'
       }}>
-        <Statusbar/>
         {this.renderHead()}
-        <div className='scroll vertical'>
-          {this.renderCarousel()}
-          {this.renderIconList()}
-        </div>
+        {this.renderCarousel()}
+        {this.renderIconList()}
       </div>
     )
   }

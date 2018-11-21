@@ -39,7 +39,6 @@ class User extends React.Component<Props, State> {
         <div className='Segment_line2' />
         <div className={'flex-row-space-between-p1510'} onClick={this.phoneOnclick}>
           <div className={'flex-row-center'}>
-            <Icon type='loading' style={{ marginTop: 3 }} />
             <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>手机号</span>
           </div>
           <div className={'flex-row-center'}>
@@ -50,7 +49,6 @@ class User extends React.Component<Props, State> {
         <div className='Segment_line2' />
         <div className={'flex-row-space-between-p1510'} onClick={this.payOnclick}>
           <div className={'flex-row-center'}>
-            <Icon type='loading' style={{ marginTop: 3 }} />
             <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>支付密码设置</span>
           </div>
           <div className={'flex-row-center'}>

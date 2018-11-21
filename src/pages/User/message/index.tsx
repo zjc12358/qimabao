@@ -10,6 +10,7 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import '../master.css'
 import history from 'history/createHashHistory'
 import Nav from '@components/Head/nav'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: PageTab
@@ -21,7 +22,7 @@ export interface Props {
 interface State {
 
 }
-
+let messageIconMaxSize: number = 35
 class User extends React.Component<Props, State> {
 
   constructor (props) {
@@ -35,22 +36,14 @@ class User extends React.Component<Props, State> {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }} onClick={this.systemOnclick}>
+        <div className={'flex-row-space-between-p1510'} onClick={this.systemOnclick}>
           <div className={'flex-row-center'}>
-            <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }} />
+            <ReactSVG path='./assets/images/User/messageSystemInfo.svg' svgStyle={{ width: messageIconMaxSize, height: messageIconMaxSize }}/>
             <div style={{
               display: 'flex',
               justifyContent: 'center',
               flexDirection: 'column',
-              paddingLeft: 30
+              paddingLeft: 20
             }}>
               <span style={{ fontSize: '16px',color: '#000000' }}>系统消息</span>
               <span style={{ fontSize: '14px',paddingTop: 5 }}>连续签到3天获得150积分</span>
@@ -61,22 +54,14 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }} onClick={this.tradeOnclick}>
+        <div className={'flex-row-space-between-p1510'} onClick={this.tradeOnclick}>
           <div className={'flex-row-center'}>
-            <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }} />
+            <ReactSVG path='./assets/images/User/messageTradeInfo.svg' svgStyle={{ width: messageIconMaxSize, height: messageIconMaxSize }}/>
             <div style={{
               display: 'flex',
               justifyContent: 'center',
               flexDirection: 'column',
-              paddingLeft: 30
+              paddingLeft: 20
             }}>
               <span style={{ fontSize: '16px',color: '#000000' }}>交易信息</span>
               <span style={{ fontSize: '14px',paddingTop: 5 }}>收到退款金额100元</span>
@@ -87,22 +72,14 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }} onClick={this.logisticsOnclick}>
+        <div className={'flex-row-space-between-p1510'} onClick={this.logisticsOnclick}>
           <div className={'flex-row-center'}>
-            <Icon type='loading' style={{ marginTop: 3,marginLeft: 10 }} />
+            <ReactSVG path='./assets/images/User/messageLogistics.svg' svgStyle={{ width: messageIconMaxSize, height: messageIconMaxSize }}/>
             <div style={{
               display: 'flex',
               justifyContent: 'center',
               flexDirection: 'column',
-              paddingLeft: 30
+              paddingLeft: 20
             }}>
               <span style={{ fontSize: '16px',color: '#000000' }}>物流助手</span>
               <span style={{ fontSize: '14px',paddingTop: 5 }}>最新物流订单信息</span>

@@ -85,7 +85,7 @@ class Menu extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      <div style={{ flex: 1, width: '100%' }}>
+      <div style={{ flex: 1, width: '100%', marginTop: 1 }}>
         {this.state.hadOrder ? this.renderOrderInfo() : this.renderMenuList()}
       </div>
 
@@ -340,7 +340,6 @@ class Menu extends React.Component<Props, State> {
     return (
       <div className='vertical render-style'>
           {this.renderCalendar()}
-          <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
           {this.renderContent()}
           {this.renderFoot()}
       </div>
