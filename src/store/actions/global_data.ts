@@ -5,11 +5,13 @@ export enum Type {
   UPDATE_USERINFO = 'UPDATE_USERINFO',
   UPDATE_PAGE = 'UPDATE_PAGE',
   ADD_PAGEINDEX = 'ADD_PAGEINDEX',
-  DELETE_PAGEINDEX = 'DELETE_PAGEINDEX'
+  DELETE_PAGEINDEX = 'DELETE_PAGEINDEX',
+  CHANGE_MODE = 'CHANGE_MODE'
 }
 
 export interface GlobalDataAction extends Action {
   type: Type
+  mode: 'supplier' | 'purchaser'
   userInfo: UserInfo
   pageIndex: number
   pageTab: string
@@ -28,3 +30,6 @@ export const deletePageIndex = (pageIndex: number) =>
 
 export const updatePageTab = (pageTab: string) =>
   (dispatch) => dispatch({ type: Type.UPDATE_PAGE, pageTab })
+
+export const changeMode = (mode: 'supplier' | 'purchaser') =>
+  (dispatch) => dispatch({ type: Type.CHANGE_MODE, mode })

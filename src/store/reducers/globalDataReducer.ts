@@ -6,6 +6,7 @@ export interface GlobalData {
   pageTab: string
   isFetching: boolean
   pageIndex: number
+  mode: 'supplier' | 'purchaser'
   errMsg?: string // update form date error message
 }
 
@@ -14,6 +15,7 @@ const initialState: GlobalData = {
     userName: '用户0',
     isLogin: true
   } as UserInfo,
+  mode: 'purchaser',
   pageTab: 'HomePageTabBar',
   isFetching: false,
   pageIndex: 0,
@@ -43,6 +45,11 @@ export default (state = initialState, action: GlobalDataAction) => {
       return {
         ...state,
         pageIndex: action.pageIndex - 1
+      }
+    case Type.CHANGE_MODE:
+      return {
+        ...state,
+        mode: action.mode
       }
     default:
       return state
