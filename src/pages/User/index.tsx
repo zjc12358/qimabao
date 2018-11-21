@@ -317,7 +317,7 @@ class User extends React.Component<Props, State> {
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div className={'flex-row-space-between-p1510'}>
+        <div className={'flex-row-space-between-p1510'} onClick={() => this.props.changeMode('supplier')}>
           <span style={{ fontSize: '16px' }}>我的店铺</span>
           <Icon type='right'></Icon>
         </div>
@@ -444,7 +444,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
-  updateUserInfo
+  updateUserInfo,
+  changeMode
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
