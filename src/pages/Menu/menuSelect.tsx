@@ -12,7 +12,7 @@ import { updatePageTab } from '@store/actions/global_data'
 import { ProductBean } from '@datasources/ProductBean'
 import { changeMenuState, setReload, updateMenuList } from '@store/actions/menu_data'
 import ReactSVG from 'react-svg'
-import './orderCss.css'
+import './menuCss.css'
 import './menuSelectCss.css'
 
 export interface Props {
