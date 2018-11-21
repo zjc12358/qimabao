@@ -8,6 +8,7 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import './master.css'
 import history from 'history/createHashHistory'
 import Nav from '@components/Head/nav'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: PageTab
@@ -118,14 +119,17 @@ class User extends React.Component<Props, State> {
           <div>{i.status}</div>
         </div>
         <div className={'Segment_line2'} />
-        <div className={'flex-row-space-between-p1510'}>
-          <div className={'flex-row-center'}>
-            <Icon type='loading' style={{ marginTop: 3 }} />
-            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{i.business}</span>
-          </div>
-          <div className={'flex-row-center'}>
-            <Icon type='right' style={{ marginTop: 6 }} />
-          </div>
+        <div className={'flex-center-row-space-between-p1510'}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            flexDirection: 'row',
+            alignItems: 'center',
+            height: '100%'
+          }}>
+            <ReactSVG path='./assets/images/User/business.svg' svgStyle={{ width: 22, height: 22 }}/>
+            <span style={{ fontSize: '14px',paddingLeft: 20 }}>{i.business}</span></div>
+          <Icon type='right' />
         </div>
         <div style={{
           paddingLeft: 20,
@@ -156,12 +160,13 @@ class User extends React.Component<Props, State> {
             </div>
             <div style={{
               display: 'flex',
-              justifyContent: 'space-around',
+              justifyContent: 'space-between',
               flexDirection: 'column',
               position: 'absolute',
               left: 130,
-              top: 30,
-              alignItems: 'flex-start'
+              top: 24,
+              alignItems: 'flex-start',
+              height: 70
             }}>
               <div style={{ fontSize: 16, color: '#191919' }}>{i.Commodity}</div>
               <div style={{ fontSize: 16, color: '#191919' }}>单价：<span style={{ fontSize: 18,color: '#ff0000' }}>￥{i.price}</span>/500g</div>
