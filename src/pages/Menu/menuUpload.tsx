@@ -8,7 +8,7 @@ import history from 'history/createHashHistory'
 import { ImagePickerBean } from '../../datasources/ImagePickerBean'
 import ReactSVG from 'react-svg'
 import './menuUploadCss.css'
-import './orderCss.css'
+import './menuCss.css'
 
 export interface Props {
 
