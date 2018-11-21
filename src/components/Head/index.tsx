@@ -3,25 +3,25 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { isWhiteSpace } from 'tslint'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 
 export interface Props {
-  title: string, // 标题
+  title: string, // 标题文字
   titleColor: string // 标题文字颜色
-  showLeftIcon: Boolean, // 是否显示左边
-  showRightIcon: Boolean, // 是否显示右边
+  showLeftIcon: boolean, // 是否显示左边
+  leftIconColor?: 'grey' | 'white' // 左边返回按钮颜色
+  showRightIcon: boolean, // 是否显示右边
   backgroundColor: string, // 背景颜色
   rightIconOnClick: any, // 右边点击事件
   rightIconContent?: any // 右边组件
 }
 
 interface State {
-  title: String,
+  title: string,
   titleColor: string,
-  showLeftIcon: Boolean,
-  showRightIcon: Boolean,
+  showLeftIcon: boolean,
+  showRightIcon: boolean,
   backgroundColor: string,
   rightIconOnClick: any,
   rightIconContent: any
@@ -51,6 +51,23 @@ class Head extends React.Component<Props, State> {
       return 'white'
     } else {
       return color
+    }
+  }
+
+  /**
+   * 左边图标颜色
+   * @param color
+   */
+  leftIcon = (color: string): any => {
+    switch (color) {
+      case 'white':
+        return (
+          <ReactSVG path='./components/Head/ic_back_white.svg' svgStyle={{ width: 22, height: 22, marginTop: 2 }}/>
+        )
+      default:
+        return (
+          <ReactSVG path='./components/Head/ic_back-grey.svg ' svgStyle={{ width: 22, height: 22, marginTop: 2 }}/>
+        )
     }
   }
 
@@ -92,8 +109,9 @@ class Head extends React.Component<Props, State> {
           justifyContent: 'flex-start',
           alignItems: 'center'
         }} onClick={() => this.leftIconOnClick()}>
-          {this.props.showLeftIcon && <div>
-            <ReactSVG path='' svgStyle={{ width: 22, height: 22 }}/>
+          {this.props.showLeftIcon &&
+          <div>
+            {this.leftIcon(this.props.leftIconColor)}
           </div>}
         </div>
         <div style={{

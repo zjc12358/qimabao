@@ -8,6 +8,8 @@ import history from 'history/createHashHistory'
 import { PicBean } from '@datasources/PicBean'
 import { chooseProduct } from '@store/actions/productDetails_data'
 import { updatePageTab } from '@store/actions/global_data'
+import ReactSVG from 'react-svg'
+import './productDetailCss.css'
 
 export interface Props {
   productDetailsData: {
@@ -77,9 +79,8 @@ class Home extends React.Component<Props, State> {
              opacity: (this.state.scrollY / this.state.width)
            }}>
         默认名{this.state.productDetails !== null && this.state.productDetails!!.product_name}
-        <div className='horizontal'
+        <div className='horizontal-center'
              style={{
-               justifyContent: 'center',
                paddingLeft: 10,
                paddingRight: 10,
                position: 'fixed',
@@ -87,7 +88,7 @@ class Home extends React.Component<Props, State> {
                left: 0,
                height: 30
              }} onClick={() => history().goBack()}>
-          返回
+          <ReactSVG path='./assets/images/circle_back.svg' svgStyle={{ width: 30, height: 30 }}/>
         </div>
         <div className='horizontal'
              style={{
@@ -99,7 +100,7 @@ class Home extends React.Component<Props, State> {
                right: 0,
                height: 30
              }} onClick={() => this.goHomeOnClick()}>
-          主页
+          <ReactSVG path='./assets/images/go_home.svg' svgStyle={{ width: 28, height: 28 }}/>
         </div>
       </div>
     )
@@ -291,39 +292,29 @@ class Home extends React.Component<Props, State> {
     return (
       <div className='horizontal'
            style={{
-             height: 60,
+             height: 50,
              width: '100%',
              position: 'fixed',
-             bottom: 0
+             bottom: 0,
+             backgroundColor: 'white'
            }}>
-        <div style={{
-          flex: 1,
-          height: '100%'
-        }} onClick={this.collectionOnClick}>
-          收藏
+        <div className='horizontal-center left-btn' onClick={this.collectionOnClick}>
+          {this.state.productDetails === null ?
+            <ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/> :
+            this.state.productDetails.product_collect ?
+              <ReactSVG path='./assets/images/collect.svg' svgStyle={{ width: 24, height: 24 }}/> :
+              <ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/>
+          }
         </div>
-        <div style={{
-          flex: 1,
-          height: '100%'
-        }} onClick={this.goCartOnClick}>
-          购物车
+        <div className='horizontal-center left-btn' onClick={this.goCartOnClick}>
+          <ReactSVG path='./assets/images/shop_cart_grey.svg' svgStyle={{ width: 24, height: 24 }}/>
         </div>
-        <div className='vertical'
-             style={{
-               flex: 2,
-               backgroundColor: '#ff6501',
-               justifyContent: 'center',
-               height: '100%'
-             }} onClick={this.addCartOnClick}>
+        <div className='vertical-center fill-btn'
+             onClick={this.addCartOnClick}>
           加入购物车
         </div>
-        <div className='horizontal'
-             style={{
-               flex: 2,
-               backgroundColor: '#ff0000',
-               justifyContent: 'center',
-               height: '100%'
-             }} onClick={this.buyOnClick}>
+        <div className='horizontal-center fill-btn-buy'
+             onClick={this.buyOnClick}>
           立即购买
         </div>
       </div>

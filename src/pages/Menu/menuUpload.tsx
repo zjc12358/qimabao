@@ -6,6 +6,9 @@ import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import { ImagePickerBean } from '../../datasources/ImagePickerBean'
+import ReactSVG from 'react-svg'
+import './menuUploadCss.css'
+import './menuCss.css'
 
 export interface Props {
 
@@ -33,13 +36,7 @@ class Menu extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        width: '100%'
-      }}>
+      <div className='vertical' style={{ width: '100%' }}>
         <span style={{ marginTop: 20, fontWeight: 'bold', marginBottom: 20 }}>拍摄/上传您的菜谱或采购清单</span>
       </div>
     )
@@ -51,27 +48,16 @@ class Menu extends React.Component<Props, State> {
   renderShowBigPicture = () => {
     if (this.state.pictures != null && this.state.pictures.length > 0) {
       return (
-        <img style={{
-          height: 150,
-          width: '80%'
-        }} src={this.state.bigPicture}
+        <img style={{ height: 150, width: '80%' }} src={this.state.bigPicture}
              onClick={this.bigPicOnClick}/>
       )
     } else {
       return (
-        <div style={{
-          backgroundColor: 'white',
-          marginTop: 20,
-          marginBottom: 20,
-          width: '80%',
-          height: 150,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }} onClick={this.uploadPicturesOnClick}>
-          <span>照相机图片</span>
-          <span style={{ fontSize: 15, color: '#0084e7' }}>点击拍摄/上传您的菜谱</span>
+        <div className='vertical-center add-pic-border' onClick={this.uploadPicturesOnClick}>
+          <span className='horizontal-center add-pic'>
+            <ReactSVG path='./assets/images/ic_add_pic.svg' svgStyle={{ width: 35, height: 35 }}/>
+          </span>
+          <span className='add-pic-text'>点击拍摄/上传您的菜谱</span>
         </div>
       )
 
@@ -183,15 +169,7 @@ class Menu extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#efeff5',
-        height: '100%',
-        width: '100%'
-      }}>
+      <div className='vertical render-style'>
         {this.renderContent()}
         {this.renderShowBigPicture()}
         {this.renderPicturesList()}

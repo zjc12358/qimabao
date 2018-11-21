@@ -6,10 +6,12 @@ import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import Head from '../../components/Head'
-import { MenuDetailBean } from '../../datasources/MenuDetailBean'
-import { ShopCartSupplierBean } from '../../datasources/ShopCartSupplierBean'
-import { ShopCartProductBean } from '../../datasources/ShopCartProductBean'
+import { MenuDetailBean } from '@datasources/MenuDetailBean'
+import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
+import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import { setReload } from '@store/actions/menu_data'
+import ReactSVG from 'react-svg'
+import './menuCss.css'
 
 export interface Props {
   menuId: number
@@ -287,17 +289,14 @@ class Menu extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+      <div className='vertical' style={{
         backgroundColor: '#efeff5',
         height: '100vh'
       }}>
         <Head title={this.state.menuDetailBean.name} titleColor={'white'} showLeftIcon={true}
               backgroundColor={'#0084e7'} rightIconOnClick={this.deleteMenuOnClick} showRightIcon={true}
-              rightIconContent={'删除菜谱'}/>
+              rightIconContent={(<ReactSVG path='./assets/images/ic_delete.svg' svgStyle={{ height: 24, width: 24 }}/>)}
+              leftIconColor={'white'}/>
         {this.renderContent()}
         {this.renderFoot()}
       </div>

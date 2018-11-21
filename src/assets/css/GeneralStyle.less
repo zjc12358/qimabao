@@ -1,0 +1,30 @@
+/* 通用边框色 */
+@borderColor: #cccccc;
+/* 通用字体色 */
+@fontGray: #8c8c8c;
+@fontRed: red;
+@fontBlue: #0084e7;
+@backgroundBlue: #0084e7;
+
+/*
+ dir,ali,jus
+ */
+.flex(@dir: row,@ali:stretch,@jus:	flex-start ){
+  display: flex;
+  flex-direction: @dir;
+  align-items: @ali;
+  justify-content: @jus;
+}
+
+.fontRed{
+  color: @fontRed;
+}
+.fontGray{
+  color: @fontGray;
+}
+.vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}

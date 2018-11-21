@@ -19,8 +19,8 @@ import SearchResult from './pages/Home/searchResult' /*搜索结果页*/
 import SelectAddress from './pages/Home/selectAddress' /*选择收货地址*/
 /*首页*/
 /*菜谱*/
-import MenuDetail from './pages/Order/menuDetail' /*菜谱详情页*/
-import MenuOrderCheck from './pages/Order/menuOrderCheck' /*菜谱下单确认页*/
+import MenuDetail from './pages/Menu/menuDetail' /*菜谱详情页*/
+import MenuOrderCheck from './pages/Menu/menuOrderCheck' /*菜谱下单确认页*/
 /*菜谱*/
 /*我的*/
 import Setting from './pages/User/setting/index' /* 我的页面设置 */
@@ -52,11 +52,12 @@ import MessageLogistics from './pages/User/message/messageLogistics' /* 物流�
 import MessageSystemInfo from './pages/User/message/messageSystemInfo' /* 系统消息页面 */
 import MessageTradeInfo from './pages/User/message/messageTradeInfo' /* 交易信息页面 */
 import LogisticsEvaluation from './pages/User/message/logisticsEvaluation' /* 物流评价页面 */
+import OrderDetail from './pages/User/orderDetails' /* 订单详情 */
 /*我的*/
 // 菜篮子
 import supplierRevise from './pages/History/supplierRevise' /* 修改供应商页面 */
-import index2 from './pages/History/index'
-import orderMakeSure from './pages/History/orderMakeSure'
+import index2 from './pages/History/index' /* 菜篮首页 */
+import orderMakeSure from './pages/History/orderMakeSure' /* 确认订单 */
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter history={hashHistory}>
@@ -108,6 +109,7 @@ ReactDOM.render(
         <Route path='/messageTradeInfo' component={MessageTradeInfo} />
         <Route path='/logisticsEvaluation' component={LogisticsEvaluation} />
         <Route path='/settingAddressEdit' component={SettingAddressEdit} />
+        <Route path='/orderDetail' component={OrderDetail} />
         {/*我的*/}
 
         {/*菜篮*/}

@@ -7,7 +7,7 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import ReactSVG from 'react-svg'
 
 import Home from '@pages/Home'
-import Order from '@pages/Order'
+import Menu from '@pages/Menu'
 import History from '@pages/History'
 import User from '@pages/User'
 import { PageTab } from '@datasources/PageTab'
@@ -72,7 +72,7 @@ class App extends React.Component<Props, State> {
 
   renderOrderPage = () => {
     return (
-      <Order/>
+      <Menu/>
     )
   }
 

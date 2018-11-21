@@ -7,6 +7,7 @@ import MenuUpload from './menuUpload'
 import MenuSelect from './menuSelect'
 import { MenuBean } from '@datasources/MenuBean'
 import { ProductBean } from '@datasources/ProductBean'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   selectMenu: boolean
@@ -50,6 +51,14 @@ class Order extends React.Component<Props, State> {
     }
   }
 
+  renderIcon = () => {
+    return (
+      this.props.selectMenu === true ?
+        <ReactSVG path='./assets/images/ic_go_take_pic.svg' svgStyle={{ width: 30, height: 30 }}/> :
+        <span>确定</span>
+    )
+  }
+
   public render () {
     return (
       <div style={{
@@ -62,7 +71,7 @@ class Order extends React.Component<Props, State> {
       }}>
         <Head showRightIcon={true} backgroundColor={'#0084e7'} title={'菜谱'} showLeftIcon={false}
               rightIconOnClick={this.okOnClick.bind(this)}
-              rightIconContent={this.props.selectMenu === true ? '拍照' : '确定'}/>
+              rightIconContent={this.renderIcon()}/>
         {this.renderContent()}
       </div>
     )

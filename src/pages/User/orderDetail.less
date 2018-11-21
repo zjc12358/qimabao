@@ -1,0 +1,41 @@
+@import '../../assets/css/GeneralStyle';
+.ordericon{
+  width: 17px;
+  height: 17px;
+  margin: 0 15px 0 20px;
+}
+.stateBox{
+  margin-top: 40px;
+  background: @backgroundBlue;
+  height: 100px;
+  color: white;
+  padding: 0 30px;
+  .flex(row,center)
+}
+.addressBox{
+  height: 100px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  .location{
+    width: 36px;
+    height: 36px;
+    margin: 0 15px;
+  }
+  .addressMsg{
+    margin-right: 35px;
+  }
+}
+
+.orderDetail{
+  background-color: white;
+  margin-top: 15px;
+  border-top: 1px solid @borderColor;
+  .orderNum{
+    color: @fontGray;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+  }
+}
