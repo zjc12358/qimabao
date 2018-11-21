@@ -230,7 +230,14 @@
   padding: 15px 10px;
   background-color: #ffffff;
 }
-
+.flex-center-row-space-between-p1510 {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  padding: 15px 10px;
+  background-color: #ffffff;
+}
 /** tab 样式调整 **/
 .am-tabs-default-bar-tab-active{
   background-color: #ffffff;

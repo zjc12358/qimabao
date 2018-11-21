@@ -9,6 +9,7 @@ import { UserInfo } from '../../../datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
 import '../master.css'
 import history from 'history/createHashHistory'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: PageTab
@@ -21,7 +22,7 @@ interface State {
   data: any
   scroll: boolean
 }
-
+let starIconMaxSize: number = 25
 class User extends React.Component<Props, State> {
 
   constructor (props) {
@@ -113,14 +114,34 @@ class User extends React.Component<Props, State> {
                   maxHeight: '100%'
                 }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' />
               </div>
-              <div style={{ fontSize: 20 }}>☆ ☆ ☆ ☆ ☆</div>
+              <div className={'flex-row-space-around'} style={{ width: window.innerWidth * 0.5,paddingLeft: 5 }}>
+                <ReactSVG path='./assets/images/User/star_on.svg' svgStyle={{ width: starIconMaxSize, height: starIconMaxSize }}/>
+                <ReactSVG path='./assets/images/User/star_on.svg' svgStyle={{ width: starIconMaxSize, height: starIconMaxSize }}/>
+                <ReactSVG path='./assets/images/User/star_off.svg' svgStyle={{ width: starIconMaxSize, height: starIconMaxSize }}/>
+                <ReactSVG path='./assets/images/User/star_off.svg' svgStyle={{ width: starIconMaxSize, height: starIconMaxSize }}/>
+                <ReactSVG path='./assets/images/User/star_off.svg' svgStyle={{ width: starIconMaxSize, height: starIconMaxSize }}/>
+              </div>
             </div>
-            <div style={{ paddingRight: 10 }}>
-              <span style={{ fontSize: 20 }}>|</span>
-              电话
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: 80
+            }}>
+              <div style={{ borderLeft: '2px solid #eee', height: 30 }}/>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+                <ReactSVG path='./assets/images/User/phone.svg' svgStyle={{ width: 40, height: 40 }}/>
+                <span style={{ fontSize: 14,color: '#151515' }}>电话</span>
+              </div>
             </div>
           </div>
-          <div style={{ backgroundColor: '#eee',width: '100%',paddingBottom: 2,borderRadius: 5 }}>
+          <div style={{ backgroundColor: '#f6f6f6',width: '100%',paddingBottom: 2,borderRadius: 5 }}>
             <div style={{
               verticalAlign: 'center',
               width: '100%',
@@ -128,7 +149,7 @@ class User extends React.Component<Props, State> {
               justifyContent: 'center',
               flexDirection: 'column'
             }}>
-              <span style={{ color: '#3e3e3e',paddingLeft: 10,paddingTop: 3 }}>运单号: 315645646</span>
+              <span style={{ color: '#3e3e3e',paddingLeft: 10,paddingTop: 3,fontSize: 12 }}>运单号: 315645646</span>
             </div>
           </div>
         </div>
@@ -192,6 +213,12 @@ class User extends React.Component<Props, State> {
   }
 
   public renderTradeItem = (i,index) => {
+    let path: string = ''
+    if (i.status !== null && i.status !== '') {
+      path = './assets/images/User/tick.svg'
+    } else {
+      path = './assets/images/User/collect.svg'
+    }
     return(
       <div style={{
         display: 'flex',
@@ -225,12 +252,10 @@ class User extends React.Component<Props, State> {
             width: '100%',
             height: '100%'
           }}>
-            <div style={{ height: '50%', width: 2, backgroundColor: '#dbd8da',marginTop: 20 }} />
+            <div style={{ height: '50%', width: 2, backgroundColor: '#dbd8da',marginTop: 25 }} />
           </div>
-          <div style={{ position: 'absolute', top: 10,left: 13,backgroundColor: '#eea543',width: 25,height: 25,borderRadius: '50%' }} >
-            <div style={{ color: '#ffffff', paddingLeft: 6,paddingTop: 4 }}>
-              <span>收</span>
-            </div>
+          <div style={{ position: 'absolute', top: 9,left: 10 ,width: 28,height: 28 }} >
+            <ReactSVG path = {path} svgStyle={{ width: 28, height: 28 }}/>
           </div>
         </div>
         {this.renderAddress(i,index)}

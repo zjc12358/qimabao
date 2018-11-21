@@ -17,13 +17,16 @@ export interface Props {
 interface State {
 
 }
-let OrderIconMaxSize: number = 26
+let OrderIconMaxSize: number = 30
 class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
 
     }
+  }
+  public componentDidMount () {
+    window.console.log(window.navigator)
   }
   /**
    * 标题
@@ -49,7 +52,23 @@ class User extends React.Component<Props, State> {
           padding: '8px'
         }}>
           <ReactSVG path='./assets/images/User/setting.svg' svgStyle={{ width: 25, height: 25 }} onClick={this.settingOnclick}/>
-          <ReactSVG path='./assets/images/User/message.svg' svgStyle={{ width: 25, height: 25 }} onClick={this.messageOnclick}/>
+          <div style={{ position: 'relative' }}>
+            <div style={{
+              position: 'absolute',
+              width: 15,
+              height: 15,
+              backgroundColor: '#ee0813',
+              borderRadius: '50%',
+              fontSize: 8,
+              color: '#fff',
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'row',
+              alignItems: 'center',
+              left: 15
+            }}>2</div>
+            <ReactSVG path='./assets/images/User/message.svg' svgStyle={{ width: 25, height: 25 }} onClick={this.messageOnclick}/>
+          </div>
         </div>
       </div>
     )
@@ -155,8 +174,8 @@ class User extends React.Component<Props, State> {
           justifyContent: 'flex-start',
           flexDirection: 'row',
           alignItems: 'center'
-        }} onClick={this.userInfoOnclick}>
-          <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden', marginRight: 10 }}><img style={{
+        }}>
+          <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden', marginRight: 10 }} onClick={this.userInfoOnclick}><img style={{
             width: '100%',
             height: '100%'
           }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' /></div>
@@ -246,7 +265,7 @@ class User extends React.Component<Props, State> {
         }}>
           <span style={{ fontSize: '16px',fontFamily: '黑体',color: '#404040' }}>最新订单</span>
           <div style={{ paddingLeft: 20 }} />
-          <div style={{ borderRadius: '50%',width: 35, height: 35,overflow: 'hidden' }}><img style={{
+          <div style={{ borderRadius: '50%',width: 35, height: 35,overflow: 'hidden',zIndex: 98 }} onClick={this.orderOnclick}><img style={{
             width: 'auto',
             height: 'auto',
             maxWidth: '100%',
@@ -263,28 +282,12 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }} onClick={this.orderOnclick}>
+        <div className={'flex-row-space-between-p1510'} onClick={this.orderOnclick}>
           <span style={{ fontSize: '16px' }}>我的购买</span>
           <Icon type='right' />
         </div>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }} onClick={this.afterSaleOnclick}>
+        <div className={'flex-row-space-between-p1510'} onClick={this.afterSaleOnclick}>
           <span style={{ fontSize: '16px' }}>售后退款</span>
           <Icon type='right' />
         </div>
@@ -292,15 +295,7 @@ class User extends React.Component<Props, State> {
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}>
+        <div className={'flex-row-space-between-p1510'}>
           <span style={{ fontSize: '16px' }}>我的店铺</span>
           <Icon type='right'></Icon>
         </div>
