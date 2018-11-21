@@ -295,7 +295,7 @@ class User extends React.Component<Props, State> {
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div className={'flex-row-space-between-p1510'}>
+        <div className={'flex-row-space-between-p1510'} onClick={this.myShopOnclick}>
           <span style={{ fontSize: '16px' }}>我的店铺</span>
           <Icon type='right'></Icon>
         </div>
@@ -399,6 +399,10 @@ class User extends React.Component<Props, State> {
   public afterSaleOnclick = () => {
     this.props.updatePageTab('UserPageTabBar')
     history().push('/afterSale')
+  }
+
+  public myShopOnclick = () => {
+    history().push('/supplier')
   }
 
   public render () {
