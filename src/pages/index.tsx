@@ -10,10 +10,12 @@ import Home from '@pages/Home'
 import Menu from '@pages/Menu'
 import History from '@pages/History'
 import User from '@pages/User'
+import Supplier from '@pages/Supplier'
 import { PageTab } from '@datasources/PageTab'
 
 export interface Props {
   pageTab: string
+  mode: 'supplier' | 'purchaser'
 }
 
 interface State {
@@ -36,6 +38,30 @@ class App extends React.Component<Props, State> {
   componentDidMount () {
     console.log(this.props.pageTab)
     this.onTabBarSelectChange(this.props.pageTab)
+  }
+
+  /**
+   * 商家版 买家版
+   */
+  renderManager = () => {
+    if (this.props.mode === 'purchaser') {
+      return (
+        <div style={{
+          position: 'fixed',
+          height: '100%',
+          width: '100%',
+          top: 0
+        }}>
+          {this.renderTabBar()}
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <Supplier/>
+        </div>
+      )
+    }
   }
 
   onTabBarSelectChange = (tabBarName) => {
@@ -149,22 +175,14 @@ class App extends React.Component<Props, State> {
   }
 
   public render () {
-    return (
-      <div style={{
-        position: 'fixed',
-        height: '100%',
-        width: '100%',
-        top: 0
-      }}>
-        {this.renderTabBar()}
-      </div>
-    )
+    return this.renderManager()
   }
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-    pageTab: state.globalData.pageTab
+    pageTab: state.globalData.pageTab,
+    mode: state.globalData.mode
   }
 }
 

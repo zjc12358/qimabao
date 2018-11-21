@@ -194,24 +194,11 @@ class Home extends React.Component<Props, State> {
               <ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>
             </span>
           </div>
-          <div className='horizontal'
-               style={{
-                 position: 'fixed',
-                 left: 0,
-                 width: 60,
-                 height: 40,
-                 color: 'black',
-                 paddingLeft: 10
-               }} onClick={() => history().goBack()}>
-            返回
+          <div className='horizontal title-back' onClick={() => history().goBack()}>
+            <ReactSVG path='./assets/images/ic_back-grey.svg' svgStyle={{ width: 22, height: 22, marginTop: 2 }}/>
           </div>
           {/*右边2个按钮*/}
-          <div className='horizontal-center right-menu'
-               style={{
-                 position: 'fixed',
-                 right: 0,
-                 height: 40
-               }}>
+          <div className='horizontal-center right-menu'>
           <span className='center' style={{ height: 40, width: 40 }} onClick={this.searchOnClick}>
             <ReactSVG path='./assets/images/search.svg' svgStyle={{ width: 22, height: 22 }}/>
           </span>
@@ -234,15 +221,9 @@ class Home extends React.Component<Props, State> {
   renderChoose = () => {
     return (
       <div style={{ width: '100%' }}>
-        <div className='horizontal'
-             style={{
-               height: 40,
-               width: '100%',
-               backgroundColor: 'white'
-             }}>
+        <div className='horizontal choose-menu'>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
-          <div className='horizontal-center'
-               style={{ flex: 1 }} onClick={this.chooseOnClick}>
+          <div className='horizontal-center' style={{ flex: 1 }} onClick={this.chooseOnClick}>
             <span style={{ whiteSpace: 'nowrap' }}>全部分类</span>
             <span style={{ marginLeft: 5 }}>
               <ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>
@@ -281,8 +262,7 @@ class Home extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      <div className='horizontal'
-           style={{ width: '100%', flex: 1 }}>
+      <div className='horizontal' style={{ width: '100%', flex: 1 }}>
         {this.renderLeftChoose()}
         {this.renderRightProductList()}
       </div>
@@ -360,15 +340,10 @@ class Home extends React.Component<Props, State> {
                 <span style={{ color: '#e5e5e5', fontSize: 12 }}>/{item.weight}</span>
               </div>
               <div style={{ padding: 10 }} onClick={(e) => this.addCartOnClick(e, item.id)}>
-                <div className='horizontal-center' style={{
-                  borderStyle: 'solid',
-                  borderWidth: 0,
-                  borderRadius: '50%',
-                  backgroundColor: '#0084e7',
-                  width: 22,
-                  height: 22
-                }}><ReactSVG path='./assets/images/shop_cart_white.svg'
-                             svgStyle={{ marginTop: 2, marginRight: 2, width: 15, height: 15 }}/></div>
+                <div className='horizontal-center'>
+                  <ReactSVG path='./assets/images/shop_cart_white.svg'
+                            svgStyle={{ marginTop: 2, marginRight: 2, width: 15, height: 15 }}/>
+                </div>
               </div>
             </div>
           </div>
