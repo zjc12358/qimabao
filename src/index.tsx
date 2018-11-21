@@ -19,8 +19,8 @@ import SearchResult from './pages/Home/searchResult' /*搜索结果页*/
 import SelectAddress from './pages/Home/selectAddress' /*选择收货地址*/
 /*首页*/
 /*菜谱*/
-import MenuDetail from './pages/Order/menuDetail' /*菜谱详情页*/
-import MenuOrderCheck from './pages/Order/menuOrderCheck' /*菜谱下单确认页*/
+import MenuDetail from './pages/Menu/menuDetail' /*菜谱详情页*/
+import MenuOrderCheck from './pages/Menu/menuOrderCheck' /*菜谱下单确认页*/
 /*菜谱*/
 /*我的*/
 import Setting from './pages/User/setting/index' /* 我的页面设置 */

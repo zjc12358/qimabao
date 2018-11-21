@@ -6,7 +6,6 @@ import Cal from 'react-calendar'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
-import './menuCss.css'
 import { MenuBean } from '@datasources/MenuBean'
 import { setMenuId } from '@store/actions/menuDetail_data'
 import { updatePageTab } from '@store/actions/global_data'
@@ -85,7 +84,12 @@ class Menu extends React.Component<Props, State> {
    * 日历下方内容
    */
   renderContent = () => {
-    return this.state.hadOrder ? this.renderOrderInfo() : this.renderMenuList()
+    return (
+      <div style={{ flex: 1, width: '100%' }}>
+        {this.state.hadOrder ? this.renderOrderInfo() : this.renderMenuList()}
+      </div>
+
+    )
   }
 
   /**
@@ -335,10 +339,10 @@ class Menu extends React.Component<Props, State> {
   public render () {
     return (
       <div className='vertical render-style'>
-        {this.renderCalendar()}
-        <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
-        {this.renderContent()}
-        {this.renderFoot()}
+          {this.renderCalendar()}
+          <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
+          {this.renderContent()}
+          {this.renderFoot()}
       </div>
     )
   }
