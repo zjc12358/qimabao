@@ -42,7 +42,17 @@ class User extends React.Component<Props, State> {
     }
     return (
       <div>
-        <Head title='订单详情' backgroundColor='#0084e7' />
+        <div style={{ display: 'flex',flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'center' }}>
+          <Head
+            style={{ display: 'flex' }}
+            showLeftIcon='true'
+            title='订单详情'
+            backgroundColor='#0084e7'
+            leftIconColor='white'
+          />
+        </div>
         <div className='stateBox'>
           <div>
             <div style={{ fontSize: 18 }}>交易关闭</div>
