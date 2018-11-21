@@ -1,3 +1,15 @@
+.place-order-border {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  width: 90%;
+  height: 50px;
+  border: 0 solid;
+  border-radius: 20px;
+  background-color: #0084e7;
+  color: white;
+  font-size: 20px;
+}
+
 /*改变日历控件样式*/
 .cal .react-calendar__month-view__days__day--weekend{
   color: #fc6700;

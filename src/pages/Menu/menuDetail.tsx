@@ -10,6 +10,7 @@ import { MenuDetailBean } from '../../datasources/MenuDetailBean'
 import { ShopCartSupplierBean } from '../../datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '../../datasources/ShopCartProductBean'
 import { setReload } from '@store/actions/menu_data'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   menuId: number
@@ -297,7 +298,8 @@ class Menu extends React.Component<Props, State> {
       }}>
         <Head title={this.state.menuDetailBean.name} titleColor={'white'} showLeftIcon={true}
               backgroundColor={'#0084e7'} rightIconOnClick={this.deleteMenuOnClick} showRightIcon={true}
-              rightIconContent={'删除菜谱'}/>
+              rightIconContent={(<ReactSVG path='./assets/images/ic_delete.svg' svgStyle={{ height: 24, width: 24 }}/>)}
+              leftIconColor={'white'}/>
         {this.renderContent()}
         {this.renderFoot()}
       </div>

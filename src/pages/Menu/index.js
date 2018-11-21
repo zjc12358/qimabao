@@ -21,7 +21,7 @@ var Order = /** @class */ (function (_super) {
         return _this;
     }
     Order.prototype.render = function () {
-        return (React.createElement("div", null, "Hello Order"));
+        return (React.createElement("div", null, "Hello Menu"));
     };
     return Order;
 }(React.Component));
