@@ -7,23 +7,27 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import './font.css'
+import { changeMode } from '@store/actions/global_data'
 
 export interface Props {
-
+  changeMode: (model: 'supplier' | 'purchaser') => void
 }
 
 interface State {
   data: any
 }
+
 let IconMaxSize: number = 30
+
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
     this.state = {
-      data: { payment: '1',delivery: '17',collect: '143',evaluate: '5',refund: '0' }
+      data: { payment: '1', delivery: '17', collect: '143', evaluate: '5', refund: '0' }
     }
   }
+
   /**
    * 标题
    */
@@ -43,10 +47,12 @@ class Supplier extends React.Component<Props, State> {
       }}
       >
         <div style={{ width: '20%' }}>图标</div>
-        <div style={{ width: '50%',textAlign: 'center' }}>
+        <div style={{ width: '50%', textAlign: 'center' }}>
           <span className={'navFontStyle'}>食堂采购商家平台</span>
         </div>
-        <div className={'navRightFontStyle'} style={{  width: '20%' }}>切换到买家版</div>
+        <div className={'navRightFontStyle'} style={{ width: '20%' }}
+             onClick={() => this.props.changeMode('purchaser')}>切换到买家版
+        </div>
       </div>
     )
   }
@@ -167,8 +173,9 @@ class Supplier extends React.Component<Props, State> {
               flexDirection: 'column',
               alignItems: 'center'
             }}>
-              <ReactSVG path='./assets/images/Supplier/shop.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>店铺</span>
+              <ReactSVG path='./assets/images/Supplier/shop.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>店铺</span>
             </div>
             <div style={{
               display: 'flex',
@@ -176,8 +183,9 @@ class Supplier extends React.Component<Props, State> {
               flexDirection: 'column',
               alignItems: 'center'
             }}>
-              <ReactSVG path='./assets/images/Supplier/commodity.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>商品</span>
+              <ReactSVG path='./assets/images/Supplier/commodity.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>商品</span>
             </div>
             <div style={{
               display: 'flex',
@@ -185,8 +193,9 @@ class Supplier extends React.Component<Props, State> {
               flexDirection: 'column',
               alignItems: 'center'
             }}>
-              <ReactSVG path='./assets/images/Supplier/release.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>发布</span>
+              <ReactSVG path='./assets/images/Supplier/release.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>发布</span>
             </div>
             <div style={{
               display: 'flex',
@@ -194,8 +203,9 @@ class Supplier extends React.Component<Props, State> {
               flexDirection: 'column',
               alignItems: 'center'
             }}>
-              <ReactSVG path='./assets/images/Supplier/order.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>订单</span>
+              <ReactSVG path='./assets/images/Supplier/order.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>订单</span>
             </div>
             <div style={{
               display: 'flex',
@@ -203,8 +213,9 @@ class Supplier extends React.Component<Props, State> {
               flexDirection: 'column',
               alignItems: 'center'
             }}>
-              <ReactSVG path='./assets/images/Supplier/draw_cash.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>提现</span>
+              <ReactSVG path='./assets/images/Supplier/draw_cash.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>提现</span>
             </div>
           </div>
         </div>
@@ -260,7 +271,7 @@ class Supplier extends React.Component<Props, State> {
    * 图表
    */
   public renderHighChart = () => {
-    return(
+    return (
       <div>图表</div>
     )
   }
@@ -268,7 +279,7 @@ class Supplier extends React.Component<Props, State> {
    * 店铺数据
    */
   public renderData = () => {
-    return(
+    return (
       <div>店铺数据</div>
     )
   }
@@ -276,10 +287,11 @@ class Supplier extends React.Component<Props, State> {
    * 工具
    */
   public renderUtils = () => {
-    return(
+    return (
       <div>工具</div>
     )
   }
+
   public render () {
     return (
       <div style={{
@@ -296,6 +308,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {}
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  changeMode
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)
