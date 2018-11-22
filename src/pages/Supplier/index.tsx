@@ -7,6 +7,8 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import './font.css'
+import './flex.css'
+import './master.css'
 
 export interface Props {
 
@@ -16,6 +18,8 @@ interface State {
   data: any
 }
 let IconMaxSize: number = 30
+let MenuMaxSize: number = 24
+let MenuBgMaxSize: number = 40
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
@@ -89,53 +93,23 @@ class Supplier extends React.Component<Props, State> {
             paddingRight: '9%',
             width: '82%'
           }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              flexDirection: 'column',
-              alignItems: 'center',
-              height: 50
-            }}>
+            <div className={'flex-space-around-column-center-height50'}>
               <span className={'headNumberStyle'}>{this.state.data.payment}</span>
               <label className={'headFontStyle'}>待付款</label>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              flexDirection: 'column',
-              alignItems: 'center',
-              height: 50
-            }}>
+            <div className={'flex-space-around-column-center-height50'}>
               <span className={'headNumberStyle'}>{this.state.data.delivery}</span>
               <label className={'headFontStyle'}>待收货</label>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              flexDirection: 'column',
-              alignItems: 'center',
-              height: 50
-            }}>
+            <div className={'flex-space-around-column-center-height50'}>
               <span className={'headNumberStyle'}>{this.state.data.collect}</span>
               <label className={'headFontStyle'}>待发货</label>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              flexDirection: 'column',
-              alignItems: 'center',
-              height: 50
-            }}>
+            <div className={'flex-space-around-column-center-height50'}>
               <span className={'headNumberStyle'}>{this.state.data.evaluate}</span>
               <label className={'headFontStyle'}>待评价</label>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              flexDirection: 'column',
-              alignItems: 'center',
-              height: 50
-            }}>
+            <div className={'flex-space-around-column-center-height50'}>
               <span className={'headNumberStyle'}>{this.state.data.refund}</span>
               <label className={'headFontStyle'}>退款/售后</label>
             </div>
@@ -161,48 +135,23 @@ class Supplier extends React.Component<Props, State> {
             height: 90,
             padding: 15
           }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}>
+            <div className={'flex-space-between-column-center'}>
               <ReactSVG path='./assets/images/Supplier/shop.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px',color: '#616670' }}>店铺</span>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}>
+            <div className={'flex-space-between-column-center'}>
               <ReactSVG path='./assets/images/Supplier/commodity.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px',color: '#616670' }}>商品</span>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}>
+            <div className={'flex-space-between-column-center'}>
               <ReactSVG path='./assets/images/Supplier/release.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px',color: '#616670' }}>发布</span>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}>
+            <div className={'flex-space-between-column-center'}>
               <ReactSVG path='./assets/images/Supplier/order.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px',color: '#616670' }}>订单</span>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}>
+            <div className={'flex-space-between-column-center'}>
               <ReactSVG path='./assets/images/Supplier/draw_cash.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px',color: '#616670' }}>提现</span>
             </div>
@@ -218,36 +167,34 @@ class Supplier extends React.Component<Props, State> {
     return (
       <div style={{
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         flexDirection: 'column',
         alignItems: 'center',
         paddingTop: 60,
-        height: 550,
         width: '100%'
       }}>
         <div style={{
-          padding: 10,
           borderRadius: 10,
-          width: '85%',
+          width: '90%',
           height: 250,
           backgroundColor: '#ffffff'
         }}>
           {this.renderHighChart()}
         </div>
         <div style={{
-          padding: 10,
+          marginTop: 10,
           borderRadius: 10,
-          width: '85%',
-          height: 100,
+          width: '90%',
+          height: 120,
           backgroundColor: '#ffffff'
         }}>
           {this.renderData()}
         </div>
         <div style={{
-          padding: 10,
+          marginTop: 10,
           borderRadius: 10,
-          width: '85%',
-          height: 100,
+          width: '90%',
+          height: 170,
           backgroundColor: '#ffffff',
           marginBottom: 20
         }}>
@@ -261,7 +208,7 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderHighChart = () => {
     return(
-      <div>图表</div>
+      <div className={'bodyTitleStyle'}>数据分析</div>
     )
   }
   /**
@@ -269,7 +216,67 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderData = () => {
     return(
-      <div>店铺数据</div>
+      <div style={{
+        paddingTop: 10,
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingBottom: 10,
+        display: 'flex',
+        justifyContent: 'space-around',
+        flexDirection: 'column',
+        height: 100
+      }}>
+        <div className={'bodyTitleStyle'}>店铺数据</div>
+        <div className={'Segment_line'}/>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          alignItems: 'center',
+          height: 40
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            alignItems: 'center',
+            height: 35
+          }}>
+            <span className={'dataNumberStyle'}>3</span>
+            <span className={'dataFontStyle'}>出售中</span>
+          </div>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            alignItems: 'center',
+            height: 35
+          }}>
+            <span className={'dataNumberStyle'}>10</span>
+            <span className={'dataFontStyle'}>已售完</span>
+          </div>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            alignItems: 'center',
+            height: 35
+          }}>
+            <span className={'dataNumberStyle'}>5</span>
+            <span className={'dataFontStyle'}>仓库中</span>
+          </div>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            alignItems: 'center',
+            height: 35
+          }}>
+            <span className={'dataNumberStyle'}>0</span>
+            <span className={'dataFontStyle'}>已下架</span>
+          </div>
+        </div>
+      </div>
     )
   }
   /**
@@ -277,7 +284,85 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderUtils = () => {
     return(
-      <div>工具</div>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        height: '100%',
+        width: '100%'
+      }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          alignItems: 'center',
+          height: '50%',
+          paddingLeft: 10,
+          paddingRight: 10,
+          paddingTop: 10
+        }}>
+          <div className={'flex-space-between-column-center-height60'}>
+            <div className={'flex-Menu'} style={{ backgroundColor: '#3333cc' }}>
+              <img src='./assets/images/SupplierTest/commodityManagement.png' width={MenuMaxSize} height={MenuMaxSize}/>
+            </div>
+            <div className={'footMenuStyle'}>商品管理</div>
+          </div>
+          <div className={'flex-space-between-column-center-height60'}>
+            <div className={'flex-Menu'} style={{ backgroundColor: '#6633ff' }}>
+              <img src='./assets/images/SupplierTest/classification.png' width={MenuMaxSize} height={MenuMaxSize}/>
+            </div>
+            <div className={'footMenuStyle'}>分类设置</div>
+          </div>
+          <div className={'flex-space-between-column-center-height60'}>
+            <div className={'flex-Menu'} style={{ backgroundColor: '#009966' }}>
+              <img src='./assets/images/SupplierTest/distribution.png' width={MenuMaxSize} height={MenuMaxSize}/>
+            </div>
+            <div className={'footMenuStyle'}>配送设置</div>
+          </div>
+          <div className={'flex-space-between-column-center-height60'}>
+            <div className={'flex-Menu'} style={{ backgroundColor: '#0066ff' }}>
+              <img src='./assets/images/SupplierTest/testing.png' width={MenuMaxSize} height={MenuMaxSize}/>
+            </div>
+            <div className={'footMenuStyle'}>检测申请</div>
+          </div>
+        </div>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          alignItems: 'center',
+          height: '50%',
+          paddingLeft: 10,
+          paddingRight: 10,
+          paddingBottom: 10
+        }}>
+          <div className={'flex-space-between-column-center-height60'}>
+            <div className={'flex-Menu'} style={{ backgroundColor: '#3399cc' }}>
+              <img src='./assets/images/SupplierTest/release.png' width={MenuMaxSize} height={MenuMaxSize}/>
+            </div>
+            <div className={'footMenuStyle'}>商品发布</div>
+          </div>
+          <div className={'flex-space-between-column-center-height60'}>
+            <div className={'flex-Menu'} style={{ backgroundColor: '#ff6600' }}>
+              <img src='./assets/images/SupplierTest/evaluate.png' width={MenuMaxSize} height={MenuMaxSize}/>
+            </div>
+            <div className={'footMenuStyle'}>评价管理</div>
+          </div>
+          <div className={'flex-space-between-column-center-height60'}>
+            <div className={'flex-Menu'} style={{ backgroundColor: '#0099ff' }}>
+              <img src='./assets/images/SupplierTest/afterSale.png' width={MenuMaxSize} height={MenuMaxSize}/>
+            </div>
+            <div className={'footMenuStyle'}>退款售后</div>
+          </div>
+          <div className={'flex-space-between-column-center-height60'}>
+            <div className={'flex-Menu'} style={{ backgroundColor: '#ff9900' }}>
+              <img src='./assets/images/SupplierTest/putfoward.png' width={MenuMaxSize} height={MenuMaxSize}/>
+            </div>
+            <div className={'footMenuStyle'}>提现申请</div>
+          </div>
+        </div>
+      </div>
     )
   }
   public render () {

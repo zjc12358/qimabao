@@ -1,0 +1,5 @@
+/** 可以自适配屏幕宽度的分割线 **/
+.Segment_line{
+  height: 1px;
+  border-top: 1px solid #e5e5e5;
+}
