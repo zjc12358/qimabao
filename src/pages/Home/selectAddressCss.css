@@ -38,18 +38,53 @@
 .search-result {
   position: fixed;
   top: 0;
-  width: 100vh;
-  height: 100vh;
+  width: 100%;
   z-index: 50;
+  flex: 1;
   background-color: white;
+}
+
+.address-item {
+  height: 60px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .address-title {
   color: #a6a6a6;
-  font-size: 18px;
+  font-size: 16px;
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .address-detail {
   color: #a6a6a6;
+  font-size: 14px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.my-address-item {
+  justify-content: space-between;
+  height: 60px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.my-address-item-info {
+  height: 60px;
+}
+
+.my-address-item-top {
+  margin-top: 10px;
   font-size: 16px;
+}
+
+.my-address-item-bottom {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #a6a6a6;
 }
