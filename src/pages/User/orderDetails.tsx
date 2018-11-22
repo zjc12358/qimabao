@@ -150,8 +150,8 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='contact'>
-          <div><ReactSVG svgClassName='ordericon' path='./assets/images/contactSeller.svg'/>联系卖家</div>
-          <div><ReactSVG svgClassName='ordericon' path='./assets/images/phone.svg'/>拨打电话</div>
+          <div><ReactSVG svgClassName='contactSeller' path='./assets/images/contactSeller.svg'/>联系卖家</div>
+          <div><ReactSVG svgClassName='phone' path='./assets/images/phone.svg'/>拨打电话</div>
         </div>
       </div>
     )

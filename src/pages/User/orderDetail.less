@@ -168,6 +168,7 @@
     width: 80px;
     display: flex;
     justify-content: flex-end;
+    margin-right: 20px;
   }
 }
 .contact{
@@ -176,9 +177,24 @@
   border-bottom: 1px solid @borderColor;
   display: flex;
   align-items: center;
+
   &>div{
     display: flex;
     flex: 1;
+    font-size: 16px;
     justify-content: center;
+    align-items: center;
+  }
+  &>div div{
+    display: flex;
+    align-items: center;
+  }
+  .phone,.contactSeller{
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  &>div:nth-child(1){
+    border-right: 1px solid @borderColor;
   }
 }
