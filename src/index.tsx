@@ -9,7 +9,7 @@ import 'react-animated-router/animate.css'
 const { store } = getStore()
 /* 供应商
  ============================================================================*/
-import Supplier from './pages/supplier/index' /*首页*/
+import Supplier from './pages/Supplier/index' /*首页*/
 /* 采购商
  ============================================================================*/
 import NavBar from './pages/index'  /* 底部导航栏页面 */
