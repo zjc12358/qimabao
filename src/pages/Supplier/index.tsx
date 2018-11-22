@@ -37,19 +37,7 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderNav = () => {
     return (
-      <div style={{
-        position: 'fixed',
-        top: '0',
-        width: '100%',
-        height: '40px',
-        background: '#0084E7',
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        alignItems: 'center',
-        zIndex: 100
-      }}
-      >
+      <div className={'navWrap'}>
         <div style={{ width: '20%' }}>图标</div>
         <div style={{ width: '50%', textAlign: 'center' }}>
           <span className={'navFontStyle'}>食堂采购商家平台</span>
@@ -78,27 +66,13 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderHead = () => {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexDirection: 'column',
-        position: 'relative'
-      }}>
+      <div className={'headWrap'}>
         <div style={{
           height: 180,
           backgroundColor: '#0084E7',
           position: 'relative'
         }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingTop: 60,
-            paddingLeft: '9%',
-            paddingRight: '9%',
-            width: '82%'
-          }}>
+          <div className={'headDataWrap'}>
             <div className={'flex-space-around-column-center-height50'}>
               <span className={'headNumberStyle'}>{this.state.data.payment}</span>
               <label className={'headFontStyle'}>待付款</label>
@@ -121,26 +95,8 @@ class Supplier extends React.Component<Props, State> {
             </div>
           </div>
         </div>
-        <div style={{
-          height: 100,
-          width: '90%',
-          backgroundColor: '#ffffff',
-          borderRadius: 10,
-          left: '5%',
-          top: 130,
-          position: 'absolute',
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'column'
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            height: 90,
-            padding: 15
-          }}>
+        <div className={'headMenuWrap'}>
+          <div className={'headMenuInnerWrap'}>
             <div className={'flex-space-between-column-center'}>
               <ReactSVG path='./assets/images/Supplier/shop.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px',color: '#616670' }}>店铺</span>
@@ -222,62 +178,23 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderData = () => {
     return(
-      <div style={{
-        paddingTop: 10,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingBottom: 10,
-        display: 'flex',
-        justifyContent: 'space-around',
-        flexDirection: 'column',
-        height: 100
-      }}>
+      <div className={'dataWrap'}>
         <div className={'bodyTitleStyle'}>店铺数据</div>
         <div className={'Segment_line'}/>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          alignItems: 'center',
-          height: 40
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            alignItems: 'center',
-            height: 35
-          }}>
+        <div className={'flex-space-between-row-center-height40'}>
+          <div className={'flex-space-between-column-center-height35'}>
             <span className={'dataNumberStyle'}>3</span>
             <span className={'dataFontStyle'}>出售中</span>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            alignItems: 'center',
-            height: 35
-          }}>
+          <div className={'flex-space-between-column-center-height35'}>
             <span className={'dataNumberStyle'}>10</span>
             <span className={'dataFontStyle'}>已售完</span>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            alignItems: 'center',
-            height: 35
-          }}>
+          <div className={'flex-space-between-column-center-height35'}>
             <span className={'dataNumberStyle'}>5</span>
             <span className={'dataFontStyle'}>仓库中</span>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            alignItems: 'center',
-            height: 35
-          }}>
+          <div className={'flex-space-between-column-center-height35'}>
             <span className={'dataNumberStyle'}>0</span>
             <span className={'dataFontStyle'}>已下架</span>
           </div>
@@ -290,24 +207,8 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderUtils = () => {
     return(
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        height: '100%',
-        width: '100%'
-      }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          alignItems: 'center',
-          height: '50%',
-          paddingLeft: 10,
-          paddingRight: 10,
-          paddingTop: 10
-        }}>
+      <div className={'UtilsWrap'}>
+        <div className={'UtilsContentTop'}>
           <div className={'flex-space-between-column-center-height60'}>
             <div className={'flex-Menu'} style={{ backgroundColor: '#3333cc' }}>
               <img src='./assets/images/SupplierTest/commodityManagement.png' width={MenuMaxSize} height={MenuMaxSize}/>
@@ -333,16 +234,7 @@ class Supplier extends React.Component<Props, State> {
             <div className={'footMenuStyle'}>检测申请</div>
           </div>
         </div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          alignItems: 'center',
-          height: '50%',
-          paddingLeft: 10,
-          paddingRight: 10,
-          paddingBottom: 10
-        }}>
+        <div className={'UtilsContentBottom'}>
           <div className={'flex-space-between-column-center-height60'}>
             <div className={'flex-Menu'} style={{ backgroundColor: '#3399cc' }}>
               <img src='./assets/images/SupplierTest/release.png' width={MenuMaxSize} height={MenuMaxSize}/>
