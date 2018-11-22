@@ -1,0 +1,55 @@
+.search {
+  width: 100%;
+  background-color: white;
+}
+
+.search-title {
+  z-index: 999;
+  height: 40px;
+  width: 100%;
+  background-color: white;
+}
+
+.search-border {
+  border: 0 solid;
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  flex: 1;
+  height: 30px;
+  margin-left: 10px;
+  padding-left: 10px;
+  margin-right: 10px;
+}
+
+.search-cancel-btn {
+  width: 50px;
+  height: 100%;
+}
+
+.search-background {
+  position: fixed;
+  top: 0;
+  width: 100vh;
+  height: 100vh;
+  z-index: 50;
+  background-color: rgba(204, 204, 204, 0.5);
+}
+
+.search-result {
+  position: fixed;
+  top: 0;
+  width: 100vh;
+  height: 100vh;
+  z-index: 50;
+  background-color: white;
+}
+
+.address-title {
+  color: #a6a6a6;
+  font-size: 18px;
+}
+
+.address-detail {
+  color: #a6a6a6;
+  font-size: 16px;
+}
