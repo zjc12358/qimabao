@@ -1,4 +1,7 @@
 @import '../../assets/css/GeneralStyle';
+.am-list-item .am-list-line .am-list-content{
+  white-space: normal;
+}
 .ordericon{
   width: 17px;
   height: 17px;
@@ -20,7 +23,14 @@
   .location{
     width: 36px;
     height: 36px;
+    border-radius: 50%;
     margin: 0 15px;
+    background-color: #ff6501;
+    .flex(row,center,center);
+    .location_icon{
+      width: 20px;
+      height: 20px;
+    }
   }
   .addressMsg{
     margin-right: 35px;
@@ -37,5 +47,154 @@
     display: flex;
     align-items: center;
     margin-left: 12px;
+  }
+  .supplier{
+    display: flex;
+    align-items: center;
+    height: 45px;
+    border-bottom: 1px solid @borderColor;
+    color: @fontGray;
+  }
+}
+
+.my-list .spe .am-list-extra {
+  flex-basis: initial;
+}
+.foodList{
+  width: 100%;
+}
+.foodItem{
+  display: flex;
+  font-size: 14px;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  .foodImg{
+    display: block;
+    width: 80px;
+    height: 80px;
+  }
+  .foodText{
+    margin-left: 18px;
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .foodName{
+      width: 170px;
+      font-size: 14px;
+    }
+  }
+}
+
+.priceList{
+  border-top: 1px solid @borderColor;
+  border-bottom: 1px solid @borderColor;
+  height: 125px;
+  background-color: white;
+  .priceListTop{
+    padding: 10px 0;
+    padding-right: 10px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    color: @fontGray;
+    font-size: 14px;
+  }
+  .foodTotal,.express,.orderTotal,.realPayment{
+    display: flex;
+    padding-left: 15px;
+  }
+  .orderTotal{
+    color: black;
+    font-size: 16px;
+  }
+  .realPayment{
+    height: 44px;
+    border-top: 1px solid @borderColor;
+    font-size: 16px;
+    color: black;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-right: 10px;
+  }
+  .realPayment:before{
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: -10px;
+    width:0;
+    height:0;
+    border-width:0 10px 10px;
+    border-style:solid;
+    border-color:transparent transparent @borderColor;/*透明 透明  灰*/
+  }
+  .realPayment:after{
+    content: '';
+    position: absolute;
+    right: 21px;
+    top: -9px;
+    width:0;
+    height:0;
+    border-width:0 9px 9px;
+    border-style:solid;
+    border-color:transparent transparent white;/*透明 透明  灰*/
+  }
+}
+
+.orderMsg{
+  margin-top: 20px;
+  padding-top: 15px;
+  padding-left: 16px;
+  border-top: 1px solid @borderColor;
+  background-color: white;
+  .orderMsgTitle{
+    border-left: 3px solid #0084e7;
+    font-size: 16px;
+    text-indent: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .orderMsgMore{
+    margin-top: 15px;
+  }
+  .orderMsgMore>div{
+    padding-bottom: 15px;
+    color: @fontGray;
+    display: flex;
+  }
+  .orderMsgMore>div>div:nth-child(1){
+    width: 80px;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+  }
+}
+.contact{
+  height: 48px;
+  border-top: 1px solid @borderColor;
+  border-bottom: 1px solid @borderColor;
+  display: flex;
+  align-items: center;
+
+  &>div{
+    display: flex;
+    flex: 1;
+    font-size: 16px;
+    justify-content: center;
+    align-items: center;
+  }
+  &>div div{
+    display: flex;
+    align-items: center;
+  }
+  .phone,.contactSeller{
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  &>div:nth-child(1){
+    border-right: 1px solid @borderColor;
   }
 }
