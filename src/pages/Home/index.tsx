@@ -13,15 +13,6 @@ import { updateCategoryItem } from '@store/actions/categoryItem_data'
 import { updatePageTab } from '@store/actions/global_data'
 
 let categoryData = ['时令蔬菜', '肉禽蛋类', '海鲜水产', '新鲜水果', '粮油副食', '酒水饮料', '乳品烘焙', '敬请期待', '敬请期待']
-let categoryPic = ['https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/B3E828810C7B4D13EB725B8A499D7702.png?Expires=1542781368&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=xbxut%2FGK9A6NCzKJ06eOYdRbOz4%3D',
-  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/7E26898C2E42538671F96FEE398B3354.png?Expires=1542781699&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=GMhnMx5niVw2aAQ8xdVoXeomNSM%3D',
-  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/84B94891EAF778767D8D3D12376F91BB.png?Expires=1542781733&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=qtaUe6EPRNce9gkAJN2%2FGbdG4V4%3D',
-  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/2857326667D902FC5B785A9F1EA83C7C.png?Expires=1542782014&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=uTCj5gYMwyF4k%2BxnhoYMA29x7%2FY%3D',
-  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/C1D2BD7B2E0941F157A418AC35ADF112.png?Expires=1542782032&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=QqzND8Roh1ss638uM8NM5AJFxrI%3D',
-  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/0CEA8AFE3A63CB361B6AD1DB1E58BB37.png?Expires=1542782047&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=cYcL9TqOFO5BhFnk4kitWuofTtE%3D',
-  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/6B6D4D77CF697A5AB1B962593B163DF0.png?Expires=1542782061&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=%2BPtrJi1Xq5aGn5qqf5H3xomujt8%3D',
-  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/6B6D4D77CF697A5AB1B962593B163DF0.png?Expires=1542782061&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=%2BPtrJi1Xq5aGn5qqf5H3xomujt8%3D',
-  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/6B6D4D77CF697A5AB1B962593B163DF0.png?Expires=1542782061&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=%2BPtrJi1Xq5aGn5qqf5H3xomujt8%3D']
 let carouselData = ['https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/FEA56E3460715231516D03ADE6AD6CA2.png?Expires=1542782923&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=QgxpnQMKXusIvntklGFpd2V4M08%3D',
   'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/B63BA27207F08B98C57D5C5E4772DBD9.png?Expires=1542782965&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=E4%2BgH06d4Jbe7O8mZ1iiMMfmU%2Fs%3D']
 
@@ -49,18 +40,6 @@ class Home extends React.Component<Props, State> {
   }
 
   componentWillMount () {
-    let categoryList: Array<HomeCategoryItemBean> = []
-    for (let i = 0; i < 9; i++) {
-      let categoryItem: HomeCategoryItemBean = {
-        category_id: i,
-        category_name: categoryData[i],
-        category_picture: categoryPic[i]
-      }
-      categoryList.push(categoryItem)
-      this.setState({
-        homeCategoryItemData: categoryList
-      })
-    }
     // this.getHomeCategory()
   }
 
@@ -71,6 +50,18 @@ class Home extends React.Component<Props, State> {
         imgData: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI']
       })
     }, 100)
+    let categoryList: Array<HomeCategoryItemBean> = []
+    for (let i = 0; i < 9; i++) {
+      let categoryItem: HomeCategoryItemBean = {
+        category_id: i,
+        category_name: categoryData[i],
+        category_picture: './assets/images/ic_home' + i + '.png'
+      }
+      categoryList.push(categoryItem)
+      this.setState({
+        homeCategoryItemData: categoryList
+      })
+    }
   }
 
   /**

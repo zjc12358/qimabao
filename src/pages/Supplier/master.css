@@ -1,0 +1,108 @@
+/** 可以自适配屏幕宽度的分割线 **/
+.Segment_line{
+  height: 1px;
+  border-top: 1px solid #e5e5e5;
+}
+/** 导航栏外套 **/
+.navWrap{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 40px;
+  background: #0084E7;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  z-index: 100;
+}
+/** 头部外套 **/
+.headWrap{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  position: relative;
+}
+/** 头部数据外套 **/
+.headDataWrap{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 60px;
+  padding-left: 9%;
+  padding-right: 9%;
+  width: 82%;
+}
+/** 头部菜单外套 **/
+.headMenuWrap{
+  height: 100px;
+  width: 90%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  left: 5%;
+  top: 130px;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+/** 头部菜单里层外套 **/
+.headMenuInnerWrap{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  height: 90px;
+  padding: 15px;
+}
+/** 靠近底部店铺数据外套 **/
+.dataWrap{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 10px 15px;
+  height: 100px;
+}
+/** 底部工具栏外套 **/
+.UtilsWrap{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+  width: 100%;
+}
+/** 底部工具栏第一行 **/
+.UtilsContentTop{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  height: 50%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+/** 底部工具栏第二行 **/
+.UtilsContentBottom{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  height: 50%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+/** 底部工具栏menu布局 **/
+.flex-Menu {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}

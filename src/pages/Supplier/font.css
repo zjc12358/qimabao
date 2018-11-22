@@ -1,3 +1,4 @@
+/** 食堂采购商家平台 **/
 .navFontStyle {
   white-space: nowrap;
   text-align: center;
@@ -8,7 +9,7 @@
   font-family: 微软雅黑;
   color: rgb(255, 255, 255);
 }
-
+/** 切换到买家版 **/
 .navRightFontStyle {
   font-size: 11px;
   font-weight: 400;
@@ -20,7 +21,7 @@
   margin: 0px;
   word-break: break-word;
 }
-
+/** 待付款，待发货，待收货，待评价，退款/售后 **/
 .headFontStyle {
   white-space: nowrap;
   text-align: left;
@@ -31,7 +32,7 @@
   font-family: 微软雅黑;
   color: rgb(255, 255, 255);
 }
-
+/** 待付款，待发货，待收货，待评价，退款/售后的数据显示 **/
 .headNumberStyle {
   white-space: nowrap;
   text-align: center;
@@ -42,4 +43,47 @@
   font-family: 微软雅黑;
   color: rgb(255, 255, 255);
 }
-
+/** 数据分析，店铺数据 **/
+.bodyTitleStyle {
+  white-space: nowrap;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 700;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(0, 0, 0);
+}
+/** 商品管理，分类设置，配送设置，检测申请，商品发布，评价管理，退款售后，提交申请 **/
+.footMenuStyle {
+  white-space: nowrap;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(51, 51, 51);
+}
+/** 出售中，已售完，仓库中，已下架数据显示 **/
+.dataNumberStyle {
+  white-space: nowrap;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(0, 132, 231);
+}
+/** 出售中，已售完，仓库中，已下架 **/
+.dataFontStyle {
+  white-space: nowrap;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(96, 101, 111);
+}
