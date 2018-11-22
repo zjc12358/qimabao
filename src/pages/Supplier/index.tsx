@@ -9,25 +9,29 @@ import ReactSVG from 'react-svg'
 import './font.css'
 import './flex.css'
 import './master.css'
+import { changeMode } from '@store/actions/global_data'
 
 export interface Props {
-
+  changeMode: (model: 'supplier' | 'purchaser') => void
 }
 
 interface State {
   data: any
 }
+
 let IconMaxSize: number = 30
 let MenuMaxSize: number = 24
 let MenuBgMaxSize: number = 40
+
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
     this.state = {
-      data: { payment: '1',delivery: '17',collect: '143',evaluate: '5',refund: '0' }
+      data: { payment: '1', delivery: '17', collect: '143', evaluate: '5', refund: '0' }
     }
   }
+
   /**
    * 标题
    */
@@ -47,10 +51,12 @@ class Supplier extends React.Component<Props, State> {
       }}
       >
         <div style={{ width: '20%' }}>图标</div>
-        <div style={{ width: '50%',textAlign: 'center' }}>
+        <div style={{ width: '50%', textAlign: 'center' }}>
           <span className={'navFontStyle'}>食堂采购商家平台</span>
         </div>
-        <div className={'navRightFontStyle'} style={{  width: '20%' }}>切换到买家版</div>
+        <div className={'navRightFontStyle'} style={{ width: '20%' }}
+             onClick={() => this.props.changeMode('purchaser')}>切换到买家版
+        </div>
       </div>
     )
   }
@@ -365,6 +371,7 @@ class Supplier extends React.Component<Props, State> {
       </div>
     )
   }
+
   public render () {
     return (
       <div style={{
@@ -381,6 +388,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {}
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  changeMode
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)
