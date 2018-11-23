@@ -1,0 +1,29 @@
+@import './font.css';
+@import './flex.css';
+/** tab 样式调整 **/
+.bar .am-tabs-default-bar-tab-active{
+  background-color: #ffffff;
+}
+
+.bar .am-tabs-default-bar-tab{
+  border-bottom: 1px solid #ffffff;
+  border-top: none;
+  border-left: 1px solid #ffffff;
+  border-right: 0;
+}
+
+.bar .am-tabs-default-bar-content{
+  color: #000;
+  background-color: #ffffff;
+  border-right: 1px solid #ffffff;
+}
+.bar .am-tabs-default-bar{
+  height: 44px;
+  border-bottom: 1px solid #eeeeee;
+}
+.bar .am-tabs-default-bar-underline{
+  border: 2px solid #0084e7;
+  width: 21% !important;
+  margin-left: 2%;
+}
+

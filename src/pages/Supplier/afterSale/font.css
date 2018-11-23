@@ -1,0 +1,22 @@
+/** 退单号：TQ12856987543 **/
+.number{
+  white-space: nowrap;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(51, 51, 51);
+}
+/** 全部退款，待处理，已处理，已关闭 **/
+.bar .am-tabs-default-bar-tab{
+  white-space: nowrap;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(0, 0, 0);
+}
