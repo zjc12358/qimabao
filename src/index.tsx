@@ -12,7 +12,6 @@ const { store } = getStore()
 import Supplier from './pages/Supplier/index' /*首页*/
 import Shop from './pages/Supplier/shop' /*店铺*/
 import Release from './pages/Supplier/release'/*发布*/
-import Supplier from './pages/Supplier/index' /*首页*/
 import SupplierAfterSale from './pages/Supplier/afterSale/index' /*售后退款*/
 /* 采购商
  ============================================================================*/
