@@ -39,3 +39,36 @@
     flex: 1;
   }
 }
+.paramContent .category .am-list-line{
+  border-top: none;
+}
+.releaseFooter{
+  display: flex;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  &>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    font-size: 16px;
+  }
+  &>div:nth-child(1){
+    border-sizing: border-box;
+    border-top: 1px solid @borderColor;
+    border-bottom: 1px solid @borderColor;
+  }
+  &>div:nth-child(2){
+    background-color: #1f62b6;
+    color: white;
+    height: 46px;
+  }
+}
+.releaseBottomDrawer{
+  background-color: transparent;
+  padding: 0 20px;
+}
+.drawer .MuiDrawer-paperAnchorBottom-7{
+  background-color: transparent!important
+}
