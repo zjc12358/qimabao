@@ -13,8 +13,7 @@ import { updateCategoryItem } from '@store/actions/categoryItem_data'
 import { updatePageTab } from '@store/actions/global_data'
 
 let categoryData = ['时令蔬菜', '肉禽蛋类', '海鲜水产', '新鲜水果', '粮油副食', '酒水饮料', '乳品烘焙', '敬请期待', '敬请期待']
-let carouselData = ['https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/FEA56E3460715231516D03ADE6AD6CA2.png?Expires=1542782923&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=QgxpnQMKXusIvntklGFpd2V4M08%3D',
-  'https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/B63BA27207F08B98C57D5C5E4772DBD9.png?Expires=1542782965&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=E4%2BgH06d4Jbe7O8mZ1iiMMfmU%2Fs%3D']
+let carouselData = ['./assets/images/ic_home_top0.png', './assets/images/ic_home_top1.png']
 
 export interface Props {
   updateCategoryItem: (categoryItemData: Array<HomeCategoryItemBean>, index: number) => void

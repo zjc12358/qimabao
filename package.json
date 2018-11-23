@@ -29,6 +29,7 @@
     "numeral": "^2.0.6",
     "react": "^16.4.1",
     "react-amap": "^1.2.7",
+    "react-amap-plugin-geolocation": "0.0.2",
     "react-animated-router": "^0.1.11",
     "react-calendar": "^2.17.5",
     "react-dom": "^16.4.1",
