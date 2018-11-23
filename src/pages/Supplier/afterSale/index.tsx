@@ -5,7 +5,6 @@ import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import { addPageIndex, deletePageIndex } from '@store/actions/global_data'
 import history from 'history/createHashHistory'
-import Nav from '@components/Head/nav'
 import ReactSVG from 'react-svg'
 import './master.css'
 import Head from '@components/Head'
@@ -72,9 +71,15 @@ class Supplier extends React.Component<Props, State> {
   public renderItem = (i, index) => {
     let font: any = null
     switch (i.status) {
-      case '已处理': font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' } ; break
-      case '待处理': font = { borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' } ; break
-      case '已关闭': font = { borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' } ; break
+      case '已处理':
+        font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
+        break
+      case '待处理':
+        font = { borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
+        break
+      case '已关闭':
+        font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
+        break
     }
     return(
       <div style={{
@@ -83,67 +88,104 @@ class Supplier extends React.Component<Props, State> {
         float: 'right'
       }}>
         <div className={'Segment_line2'} />
-        <div className={'flex-center-row-space-between-p1010'} style={{ height: 40 }}>
+        <div className={'flex-center-row-space-between-p516'} style={{ height: 40 }}>
           <div className={'number'}>退单号：{i.code}</div>
           <div className={'flex-center-row-center'} style={font}>{i.status}</div>
         </div>
         <div className={'Segment_line2'} />
-        <div style={{
-          padding: 10,
-          height: 100,
-          position: 'relative'
-        }}>
-          <div style={{
-            position: 'absolute',
-            zIndex: 98
-          }}>
-            <div style={{ width: 85, height: 85 }}><img style={{
-              width: 'auto',
-              height: 'auto',
-              maxWidth: '100%',
-              maxHeight: '100%'
-            }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            position: 'absolute',
-            left: 130,
-            top: 24,
-            alignItems: 'flex-start',
-            height: 70
-          }}>
-            <div style={{ fontSize: 16, color: '#191919' }}>{i.Commodity}</div>
-            <div style={{ fontSize: 16, color: '#191919' }}>单价：<span style={{ fontSize: 18,color: '#ff0000' }}>￥{i.price}</span>/500g</div>
-            <div style={{ fontSize: 16, color: '#191919' }}>重量：{i.weight}</div>
+        {this.renderItemDetail()}
+        <div className={'footFundWrap'}>
+          <span className={'orderNumber'}>订单号：SP057899444220</span>
+          <div>
+            <span className={'refund'}>退款金额</span>
+            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>45.00</span></span>
           </div>
         </div>
+        {this.renderItemStatus(i,index)}
+      </div>
+    )
+  }
+  /**
+   * 点击展开详细
+   */
+  public renderItemDetail = () => {
+    return(
+      <div style={{
+        padding: 16,
+        height: 100,
+        position: 'relative'
+      }}>
         <div style={{
-          width: '100%',
+          position: 'absolute',
+          zIndex: 98
+        }}>
+          <div style={{ width: 70, height: 70 }}><img style={{
+            width: 'auto',
+            height: 'auto',
+            maxWidth: '100%',
+            maxHeight: '100%'
+          }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
+        </div>
+        <div style={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
           flexDirection: 'column',
-          position: 'relative',
-          paddingTop: 3
+          position: 'absolute',
+          left: 112,
+          alignItems: 'flex-start',
+          height: 70
         }}>
-          <div style={{ right: 20, position: 'absolute' }}>
-            合计：<span style={{ fontSize: 18,color: '#ff0000' }}>￥{i.price}</span>
+          <div className={'refundNumber'}>现摘新鲜野生荠菜 蔬菜 1.5kg</div>
+          <div>
+            <span className={'refund'}>实收金额：</span>
+            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>22.50</span></span>
+          </div>
+          <div>
+            <span className={'orderNumber'}>申请时间：2018-10-10 15:11:08</span>
+          </div>
+          <div className={'flex-flex-start-row-center'}>
+            <span className={'viewItem'}>查看此退款单所有物品</span>
+            <ReactSVG path='../../../../assets/images/Supplier/down.svg' svgStyle={{ width: 15, height: 15,paddingLeft: 3,paddingTop: 3 }}/>
           </div>
         </div>
-        <br/>
-        <div style={{
-          height: 40,
-          backgroundColor: '#fafafa',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          flexDirection: 'row',
-          alignItems: 'center'
-        }}>
-          <button style={{ height: 28, width: 70, borderRadius: 5,border: '1px solid #0084E7',backgroundColor: '#0084E7',color: '#ffffff',fontSize: 14,marginRight: 10 }}>去评价</button>
-          <button style={{ height: 28, width: 70, borderRadius: 5,border: '1px solid #404040',backgroundColor: 'transparent',color: '#404040',fontSize: 14,marginRight: 10 }}>删除订单</button>
+      </div>
+    )
+  }
+  /**
+   * 退货退款分支：立即处理或者查看详情
+   */
+  public renderItemStatus = (i,index) => {
+    let button: any = null
+    let buttonTitle: any = null
+    let title: any = null
+    let onClick: any = null
+    switch (i.status) {
+      case '已处理':
+        button = 'buttonViewDetail'
+        buttonTitle = '查看详情'
+        title = '仅退款，退款成功'
+        onClick = this.viewResultOnclick
+        break
+      case '待处理':
+        button = 'buttonProcessing'
+        buttonTitle = '立即处理'
+        title = '退货退款，待处理'
+        onClick = this.viewDetailOnclick
+        break
+      case '已关闭':
+        button = 'buttonViewDetail'
+        buttonTitle = '查看详情'
+        title = '退货失败'
+        onClick = this.viewResultOnclick
+        break
+    }
+    return(
+      <div className={'buttonWrap'}>
+        <div className={'flex-flex-start-row-center'}>
+          <ReactSVG path='../../../../assets/images/Supplier/refund.svg' svgStyle={{ width: 30, height: 30 }}/>
+          <span className={'refundState'}>{title}</span>
         </div>
+        <button className={button} onClick={onClick}>{buttonTitle}</button>
       </div>
     )
   }
@@ -205,6 +247,15 @@ class Supplier extends React.Component<Props, State> {
       </div>
     )
   }
+
+  public viewDetailOnclick = () => {
+    history().push('/afterSaleDetail')
+  }
+
+  public viewResultOnclick = () => {
+    history().push('/afterSaleResult')
+  }
+
   public render () {
     return (
       <div style={{

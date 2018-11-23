@@ -9,6 +9,61 @@
   font-family: 微软雅黑;
   color: rgb(51, 51, 51);
 }
+/** 查看此退款单所有物品 **/
+.viewItem{
+  white-space: nowrap;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(51, 51, 51);
+}
+/** 订单号：SP057899444220 **/
+.orderNumber{
+  white-space: nowrap;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(153, 153, 153);
+}
+/** 退款金额 **/
+.refund{
+  white-space: nowrap;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(102, 102, 102);
+}
+/** ￥45.00 **/
+.refundNumber{
+  white-space: nowrap;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(0, 0, 0);
+}
+/** 仅退款，退款成功 **/
+.refundState{
+  white-space: nowrap;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(102, 102, 102);
+}
 /** 全部退款，待处理，已处理，已关闭 **/
 .bar .am-tabs-default-bar-tab{
   white-space: nowrap;
@@ -20,3 +75,4 @@
   font-family: 微软雅黑;
   color: rgb(0, 0, 0);
 }
+
