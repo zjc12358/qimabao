@@ -9,6 +9,8 @@ import 'react-animated-router/animate.css'
 const { store } = getStore()
 /* 供应商
  ============================================================================*/
+import Shop from './pages/Supplier/shop' /*店铺*/
+import Release from './pages/Supplier/release'/*发布*/
 import Supplier from './pages/Supplier/index' /*首页*/
 import SupplierAfterSale from './pages/Supplier/afterSale/index' /*售后退款*/
 /* 采购商
@@ -72,6 +74,8 @@ ReactDOM.render(
          ============================================================================*/
         <Route exact path='/supplier' component={Supplier} />
         <Route exact path='/supplierAfterSale' component={SupplierAfterSale} />
+        <Route path='/shop' component={Shop}/>
+        <Route path='/release' component={Release}/>
         /* 采购商
          ============================================================================*/
         <Route path='/NavBar' component={NavBar} />

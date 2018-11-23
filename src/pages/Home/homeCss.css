@@ -45,8 +45,14 @@
   padding: 0;
 }
 
-.render-style{
+.render-style {
   height: 100vh;
   width: 100%;
   background-color: #efeff5;
+}
+
+.text-nowrap {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

@@ -1,0 +1,126 @@
+@import '../../assets/css/GeneralStyle';
+
+.shopContainer{
+  margin-top: 40px;
+}
+.topBackground{
+  background-color: @backgroundBlue;
+  height: 110px;
+  position: relative;
+  .shopMsgBox{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    .shopMsg{
+      border-radius: 10px;
+      background-color: white;
+      height: 220px;
+      margin: 0 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .shopName{
+        font-size: 16px;
+        margin-top: 8px;
+      }
+      .starGroup{
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+      }
+      .start{
+        width: 14px;
+        height: 14px;
+      }
+      .evaluation{
+        width: 100%;
+        display: flex;
+        margin-top: 20px;
+        justify-content: space-around;
+        &>div{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-size: 12px;
+          .up{
+            width: 14px;
+            height: 14px;
+          }
+        }
+        &>div>div{
+          display: flex;
+          justify-content: center;
+        }
+        &>div>div:nth-child(2){
+          margin: 5px 0;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+        }
+        &>div>div:nth-child(3){
+          color: @fontGray;
+        }
+      }
+    }
+    .shopMsg>img{
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: block;
+      margin-top: 15px;
+    }
+  }
+}
+
+.shopState{
+  border-radius: 10px;
+  background-color: white;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: @fontGray;
+  padding: 0 15px;
+  margin-bottom: 5px;
+  &>div:nth-child(2){
+    display: flex;
+    justify-content: flex-end;
+    font-size: 14px;
+    padding-right: 15px;
+  }
+}
+
+.footerMenu{
+  margin-top: 15px;
+  padding: 10px 5px;
+  display: flex;
+  background-color: white;
+  font-size: 12px;
+  .menuIcon{
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+  }
+  &>div{
+    height: 90px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  &>div>div{
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+  }
+  &>div>div:nth-child(2){
+    border-top: 1px solid #ccc;
+  }
+  .menuLeft{
+    border-right: 1px solid #ccc;
+  }
+  .menuLeft>div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+  }
+}

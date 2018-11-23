@@ -193,7 +193,6 @@ class Home extends React.Component<Props, State> {
    * @param index
    */
   renderIconListItem = (item, index) => {
-    console.log('item' + item.category_picture)
     return (
       <div className='vertical'
            style={{
