@@ -10,6 +10,7 @@ const { store } = getStore()
 /* 供应商
  ============================================================================*/
 import Supplier from './pages/Supplier/index' /*首页*/
+import SupplierAfterSale from './pages/Supplier/afterSale/index' /*售后退款*/
 /* 采购商
  ============================================================================*/
 import NavBar from './pages/index'  /* 底部导航栏页面 */
@@ -70,6 +71,7 @@ ReactDOM.render(
         /* 供应商
          ============================================================================*/
         <Route exact path='/supplier' component={Supplier} />
+        <Route exact path='/supplierAfterSale' component={SupplierAfterSale} />
         /* 采购商
          ============================================================================*/
         <Route path='/NavBar' component={NavBar} />

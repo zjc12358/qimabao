@@ -21,7 +21,6 @@ interface State {
 
 let IconMaxSize: number = 30
 let MenuMaxSize: number = 24
-let MenuBgMaxSize: number = 40
 
 class Supplier extends React.Component<Props, State> {
 
@@ -247,7 +246,7 @@ class Supplier extends React.Component<Props, State> {
             </div>
             <div className={'footMenuStyle'}>评价管理</div>
           </div>
-          <div className={'flex-space-between-column-center-height60'}>
+          <div className={'flex-space-between-column-center-height60'} onClick={this.afterSaleOnclick}>
             <div className={'flex-Menu'} style={{ backgroundColor: '#0099ff' }}>
               <img src='./assets/images/SupplierTest/afterSale.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
@@ -262,6 +261,10 @@ class Supplier extends React.Component<Props, State> {
         </div>
       </div>
     )
+  }
+
+  public afterSaleOnclick = () => {
+    history().push('/supplierAfterSale')
   }
 
   public render () {
