@@ -72,6 +72,8 @@ ReactDOM.render(
         /* 供应商
          ============================================================================*/
         <Route exact path='/supplier' component={Supplier} />
+        <Route path='/shop' component={Shop}/>
+        <Route path='/release' component={Release}/>
         /* 采购商
          ============================================================================*/
         <Route path='/NavBar' component={NavBar} />
