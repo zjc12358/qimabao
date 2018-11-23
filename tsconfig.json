@@ -29,6 +29,9 @@
       "@datasources/*": [
         "src/datasources/*"
       ],
+      "@images/*": [
+        "src/assets/images/*"
+      ],
       "@components/*": [
         "src/components/*"
       ],
