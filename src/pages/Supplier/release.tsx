@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TextareaItem,List,InputItem,Button } from 'antd-mobile'
+import { TextareaItem,List,InputItem,Button,ImagePicker } from 'antd-mobile'
 import Drawer from '@material-ui/core/Drawer'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
@@ -16,7 +16,9 @@ export interface Props {
 
 interface State {
   data: any,
-  openDrawer: boolean
+  openDrawer: boolean,
+  files: any,
+  multiple: boolean
 }
 let IconMaxSize: number = 30
 class Release extends React.Component<Props, State> {
@@ -25,7 +27,9 @@ class Release extends React.Component<Props, State> {
     super(props)
     this.state = {
       data: {},
-      openDrawer: false
+      openDrawer: false,
+      files: [],
+      multiple: false
     }
   }
 
@@ -38,7 +42,7 @@ class Release extends React.Component<Props, State> {
    */
   renderImagePicker = () => {
     return (
-      <div className='img_picker' onClick={this.toggleDrawer('bottom', true)}>
+      <div className='img_picker' onClick={this.toggleDrawer('bottom',true)}>
         <div className='camera'>
           <ReactSVG svgClassName='cameraIcon' path='./assets/images/Supplier/camera.svg'/>
         </div>
@@ -102,18 +106,27 @@ class Release extends React.Component<Props, State> {
           >
             <List>
               <div className='drawerTop'>
-                <List.Item>
-                  从相册选取
+                <List.Item
+                  style={{ borderTopLeftRadius: 8,borderTopRightRadius: 8 }}
+                  onClick={() => { console.log(1) }}
+                >
+                  <div className='picker_tab'>从相册选取</div>
                 </List.Item>
-                <List.Item>
-                  拍照
+                <List.Item onClick={() => { console.log(1) }}>
+                  <div className='picker_tab'>拍照</div>
                 </List.Item>
-                <List.Item>
-                  扫码识别商品信息
+                <List.Item
+                  style={{ borderBottomLeftRadius: 8,borderBottomRightRadius: 8 }}
+                  onClick={() => { console.log(1) }}
+                >
+                  <div className='picker_tab'>扫码识别商品信息</div>
                 </List.Item>
               </div>
-              <List.Item>
-                取消
+              <List.Item
+                style={{ borderRadius: 8,marginTop: 10 }}
+                onClick={() => { console.log(1) }}
+              >
+                <div className='picker_tab'>取消</div>
               </List.Item>
             </List>
           </div>

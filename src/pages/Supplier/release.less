@@ -7,6 +7,7 @@
   height: 35px;
 }
 .img_picker{
+  position: relative;
   height: 136px;
   background-color: #eeeeee;
   .flex(row,center,center);
@@ -69,6 +70,47 @@
   background-color: transparent;
   padding: 0 20px;
 }
-.drawer .MuiDrawer-paperAnchorBottom-7{
+.MuiDrawer-paperAnchorBottom-7{
   background-color: transparent!important
+}
+.am-list-body{
+  background-color: transparent;
+}
+.drawerTop{
+  border-radius: 15px;
+
+}
+.picker_tab{
+  text-align: center;
+  color: @fontBlue;
+}
+html:not([data-scale]) .am-list-body:before {
+  background-color: transparent!important;
+}
+.camera .imagePicker{
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  .am-image-picker-list{
+    margin: 0;
+    padding: 0;
+  }
+  .am-flexbox .am-flexbox-item{
+    width: 100vw;
+    height: 136px;
+    flex: none;
+  }
+  .am-image-picker-list .am-image-picker-upload-btn{
+    background-color: transparent;
+    border: none;
+  }
+  .am-image-picker-list .am-image-picker-upload-btn input{
+    width: 100vw;
+  }
+  .am-image-picker-list .am-image-picker-upload-btn:before, .am-image-picker-list .am-image-picker-upload-btn:after{
+   content: none;
+  }
+  //.am-image-picker-list .am-image-picker-item{
+  //  display: none;
+  //}
 }
