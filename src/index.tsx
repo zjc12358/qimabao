@@ -15,6 +15,7 @@ import Release from './pages/Supplier/release'/*发布*/
 import SupplierAfterSale from './pages/Supplier/afterSale/index' /*售后退款*/
 import AfterSaleDetail from './pages/Supplier/afterSale/afterSaleDetail' /*售后退款处理页面*/
 import AfterSaleResult from './pages/Supplier/afterSale/afterSaleResult' /*售后退款查询结果页面*/
+import SProductList from './pages/Supplier/productList' /*供应商商品管理*/
 /* 采购商
  ============================================================================*/
 import NavBar from './pages/index'  /* 底部导航栏页面 */
@@ -80,6 +81,7 @@ ReactDOM.render(
         <Route exact path='/afterSaleResult' component={AfterSaleResult} />
         <Route path='/shop' component={Shop}/>
         <Route path='/release' component={Release}/>
+        <Route path='/sProductList' component={SProductList}/>
         /* 采购商
          ============================================================================*/
         <Route path='/NavBar' component={NavBar} />
