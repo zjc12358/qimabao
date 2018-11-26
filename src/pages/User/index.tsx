@@ -113,7 +113,20 @@ class User extends React.Component<Props, State> {
         <div style={{
           height: '130px',
           width: '90%',
-          backgroundColor: '#f8f8f8',
+          backgroundColor: '#0084E7',
+          borderRadius: 15,
+          left: '5%',
+          top: 78,
+          position: 'absolute',
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'column'
+        }}>
+        </div>
+        <div style={{
+          height: '130px',
+          width: '90%',
+          backgroundColor: '#ffffff',
           borderRadius: 10,
           left: '5%',
           top: 70,
@@ -146,7 +159,7 @@ class User extends React.Component<Props, State> {
               paddingLeft: 20
             }}>
               <span style={{ fontSize: '18px' }}>6</span>
-              <span style={{ fontSize: '14px', color: '#8d8d8d', fontFamily: '黑体' }}>优惠券</span>
+              <span style={{ fontSize: '14px', color: '#8d8d8d', fontFamily: '微软雅黑' }}>优惠券</span>
             </div>
             <div style={{
               display: 'flex',
@@ -155,7 +168,7 @@ class User extends React.Component<Props, State> {
               alignItems: 'center'
             }} onClick={this.couponOnclick}>
               <span style={{ fontSize: '18px' }}>0.00</span>
-              <span style={{ fontSize: '14px', color: '#8d8d8d', fontFamily: '黑体' }}>礼品卡</span>
+              <span style={{ fontSize: '14px', color: '#8d8d8d', fontFamily: '微软雅黑' }}>礼品卡</span>
             </div>
             <div style={{
               display: 'flex',
@@ -165,7 +178,7 @@ class User extends React.Component<Props, State> {
               paddingRight: 20
             }} onClick={this.couponOnclick}>
               <span style={{ fontSize: '18px' }}>0</span>
-              <span style={{ fontSize: '14px', color: '#8d8d8d', fontFamily: '黑体' }}>电子券</span>
+              <span style={{ fontSize: '14px', color: '#8d8d8d', fontFamily: '微软雅黑',paddingTop: 5 }}>电子券</span>
             </div>
           </div>
         </div>
@@ -218,7 +231,7 @@ class User extends React.Component<Props, State> {
           flexDirection: 'row',
           padding: 10
         }} onClick={this.orderOnclick}>
-          <span style={{ fontSize: '16px', fontWeight: 'bold', color: '#4f4f55', fontFamily: '幼圆' }}>我的订单</span>
+          <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>我的订单</span>
           <Icon type='right'></Icon>
         </div>
         <div className='Segment_line'></div>
@@ -282,7 +295,7 @@ class User extends React.Component<Props, State> {
           height: 70,
           paddingLeft: 28
         }}>
-          <span style={{ fontSize: '16px', fontFamily: '黑体', color: '#404040' }}>最新订单</span>
+          <span style={{ fontSize: '16px', fontFamily: '微软雅黑', color: '#404040' }}>最新订单</span>
           <div style={{ paddingLeft: 20 }}/>
           <div style={{ borderRadius: '50%', width: 35, height: 35, overflow: 'hidden', zIndex: 98 }}
                onClick={this.orderOnclick}>
@@ -298,8 +311,8 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             paddingLeft: 10
           }} onClick={this.orderOnclick}>
-            <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '幼圆' }}>待付款</span>
-            <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '黑体', marginTop: 7 }}>9分钟后订单关闭</span>
+            <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '微软雅黑' }}>待付款</span>
+            <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>9分钟后订单关闭</span>
           </div>
         </div>
         <div className='Segment_line2'/>
@@ -340,7 +353,7 @@ class User extends React.Component<Props, State> {
           padding: 10,
           backgroundColor: '#ffffff'
         }}>
-          <span style={{ fontSize: '16px', fontWeight: 'bold', color: '#4f4f55', fontFamily: '幼圆' }}>常用工具</span>
+          <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>常用工具</span>
           <Icon type='right'></Icon>
         </div>
         <div className='Segment_line'></div>

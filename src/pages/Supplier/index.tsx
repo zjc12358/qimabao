@@ -97,24 +97,30 @@ class Supplier extends React.Component<Props, State> {
         <div className={'headMenuWrap'}>
           <div className={'headMenuInnerWrap'}>
             <div className={'flex-space-between-column-center'}>
-              <ReactSVG path='./assets/images/Supplier/shop.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>店铺</span>
+              <ReactSVG path='./assets/images/Supplier/shop.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>店铺</span>
+            </div>
+            <div className={'flex-space-between-column-center'}
+                 onClick={() => history().push('sProductList')}>
+              <ReactSVG path='./assets/images/Supplier/commodity.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>商品</span>
             </div>
             <div className={'flex-space-between-column-center'}>
-              <ReactSVG path='./assets/images/Supplier/commodity.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>商品</span>
+              <ReactSVG path='./assets/images/Supplier/release.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>发布</span>
             </div>
             <div className={'flex-space-between-column-center'}>
-              <ReactSVG path='./assets/images/Supplier/release.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>发布</span>
+              <ReactSVG path='./assets/images/Supplier/order.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>订单</span>
             </div>
             <div className={'flex-space-between-column-center'}>
-              <ReactSVG path='./assets/images/Supplier/order.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>订单</span>
-            </div>
-            <div className={'flex-space-between-column-center'}>
-              <ReactSVG path='./assets/images/Supplier/draw_cash.svg' svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
-              <span style={{ fontSize: '16px',color: '#616670' }}>提现</span>
+              <ReactSVG path='./assets/images/Supplier/draw_cash.svg'
+                        svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
+              <span style={{ fontSize: '16px', color: '#616670' }}>提现</span>
             </div>
           </div>
         </div>
@@ -168,7 +174,7 @@ class Supplier extends React.Component<Props, State> {
    * 图表
    */
   public renderHighChart = () => {
-    return(
+    return (
       <div className={'bodyTitleStyle'}>数据分析</div>
     )
   }
@@ -176,7 +182,7 @@ class Supplier extends React.Component<Props, State> {
    * 店铺数据
    */
   public renderData = () => {
-    return(
+    return (
       <div className={'dataWrap'}>
         <div className={'bodyTitleStyle'}>店铺数据</div>
         <div className={'Segment_line'}/>
@@ -205,10 +211,11 @@ class Supplier extends React.Component<Props, State> {
    * 工具
    */
   public renderUtils = () => {
-    return(
+    return (
       <div className={'UtilsWrap'}>
         <div className={'UtilsContentTop'}>
-          <div className={'flex-space-between-column-center-height60'}>
+          <div className={'flex-space-between-column-center-height60'}
+               onClick={() => history().push('sProductList')}>
             <div className={'flex-Menu'} style={{ backgroundColor: '#3333cc' }}>
               <img src='./assets/images/SupplierTest/commodityManagement.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>

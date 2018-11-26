@@ -82,7 +82,7 @@ class Home extends React.Component<Props, State> {
           }
         </div>
         {
-          !this.state.showTitle &&
+          !this.state.showTitle && (
           this.state.searchText.length > 0 ?
             <div className='search-result'>
               {this.renderAddressList()}
@@ -90,7 +90,7 @@ class Home extends React.Component<Props, State> {
             :
             <div className='search-background'
                  onClick={this.allCancelOnClick}>
-            </div>
+            </div>)
         }
       </div>
     )

@@ -11,7 +11,8 @@ const initialState: CategoryItemData = {
     {
       category_id: 0,
       category_name: '类别0',
-      category_picture: '0'
+      category_picture: '0',
+      show: false
     }
   ],
   index: 0

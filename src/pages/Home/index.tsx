@@ -32,7 +32,7 @@ class Home extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      imgData: carouselData,
+      imgData: [],
       homeCategoryItemData: [],
       imgHeight: 0
     }
@@ -46,21 +46,22 @@ class Home extends React.Component<Props, State> {
     // simulate img loading
     setTimeout(() => {
       this.setState({
-        imgData: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI']
+        imgData: carouselData
       })
-    }, 100)
-    let categoryList: Array<HomeCategoryItemBean> = []
-    for (let i = 0; i < 9; i++) {
-      let categoryItem: HomeCategoryItemBean = {
-        category_id: i,
-        category_name: categoryData[i],
-        category_picture: './assets/images/ic_home' + i + '.png'
+      let categoryList: Array<HomeCategoryItemBean> = []
+      for (let i = 0; i < 9; i++) {
+        let categoryItem: HomeCategoryItemBean = {
+          category_id: i,
+          category_name: categoryData[i],
+          category_picture: './assets/images/ic_home' + i + '.png',
+          show: false
+        }
+        categoryList.push(categoryItem)
+        this.setState({
+          homeCategoryItemData: categoryList
+        })
       }
-      categoryList.push(categoryItem)
-      this.setState({
-        homeCategoryItemData: categoryList
-      })
-    }
+    }, 100)
   }
 
   /**
@@ -140,6 +141,9 @@ class Home extends React.Component<Props, State> {
         <Carousel
           autoplay={true}
           infinite={true}
+          style={{
+            height: 140
+          }}
         >
           {carouselData.map((val, index) => (
             <a
