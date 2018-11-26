@@ -13,6 +13,7 @@ import User from '@pages/User'
 import Supplier from '@pages/Supplier'
 import { PageTab } from '@datasources/PageTab'
 
+import '../assets/css/GeneralStyle.less'
 export interface Props {
   pageTab: string
   mode: 'supplier' | 'purchaser'
@@ -46,12 +47,15 @@ class App extends React.Component<Props, State> {
   renderManager = () => {
     if (this.props.mode === 'purchaser') {
       return (
-        <div style={{
-          position: 'fixed',
-          height: '100%',
-          width: '100%',
-          top: 0
-        }}>
+        <div
+          className='scroll'
+          style={{
+            position: 'fixed',
+            height: '100%',
+            width: '100%',
+            top: 0
+          }}
+        >
           {this.renderTabBar()}
         </div>
       )

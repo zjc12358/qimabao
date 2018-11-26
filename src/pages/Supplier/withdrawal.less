@@ -1,0 +1,34 @@
+@import '../../assets/css/GeneralStyle';
+.hahahah{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select:none;
+}
+.boxx{
+  color: red;
+}
+.withdrawal{
+  .am-list-item:not(:last-child) .am-list-line{
+    border-bottom: none;
+  }
+}
+html:not([data-scale]) .am-list-item:not(:last-child) .am-list-line::after{
+  content: none;
+}
+.brank{
+  border-top: 1px solid @borderColor;
+  border-bottom: 1px solid @borderColor;
+}
+.brankWrap{
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  .brankMsg{
+    margin-left: 15px;
+  }
+}
+.scroll{
+  -webkit-overflow-scrolling: touch;
+  //overflow: scroll;
+}
