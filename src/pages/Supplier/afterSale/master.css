@@ -2,6 +2,7 @@
 @import './flex.css';
 /** tab 样式调整 **/
 .bar .am-tabs-default-bar-tab-active{
+  color: #0084e7;
   background-color: #ffffff;
 }
 
