@@ -36,40 +36,16 @@ class Supplier extends React.Component<Props, State> {
     return(
       <div style={{
         backgroundColor: '#ffffff',
-        width: '100%'
+        width: '100%',
+        paddingTop: 40
       }}>
-        {this.state.data.map((i,index) => (
-          <div>
-            {this.renderItem(i,index)}
-          </div>
-        ))}
-        <div className={'FundWrap'}>
-          <div>
-            <span className={'refund'}>退款金额</span>
-            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>45.00</span></span>
-          </div>
+        <div className={'refundSuccessPage'}>
+          <ReactSVG path='../../../../assets/images/Supplier/success.svg' svgStyle={{ width: 100, height: 100 }}/>
+          <span className={'refundSuccess'}>退款成功</span>
+          <span className={'refundSuccessNumber'}>买家已收到退款：<span className={'refundSuccess'}>45.0元</span></span>
         </div>
-      </div>
-    )
-  }
-  public renderItem = (i,index) => {
-    return(
-      <div>
-        <div className={'Segment_line2'} />
-        <div className={'flex-flex-start-row-center-p516'} style={{ height: 40 }}>
-          <div className={'number'}>订单号：{i.code}</div>
-        </div>
-        <div className={'Segment_line2'} />
-        <div style={{
-          position: 'absolute',
-          zIndex: 98
-        }}>
-          <div style={{ width: 70, height: 70 }}><img style={{
-            width: 'auto',
-            height: 'auto',
-            maxWidth: '100%',
-            maxHeight: '100%'
-          }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
+        <div style={{ padding: 20 }}>
+          <button className={'completeBtn'} >完成</button>
         </div>
       </div>
     )
@@ -78,9 +54,10 @@ class Supplier extends React.Component<Props, State> {
   public render () {
     return (
       <div style={{
-        height: '100vh'
+        height: '100vh',
+        backgroundColor: '#ffffff'
       }}>
-        <Head title={'退款详情'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'} leftIconColor={'grey'}/>
+        <Head title={'退款结果'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'} leftIconColor={'grey'}/>
         {this.renderContent()}
       </div>
     )
