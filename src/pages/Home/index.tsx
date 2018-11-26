@@ -53,7 +53,8 @@ class Home extends React.Component<Props, State> {
         let categoryItem: HomeCategoryItemBean = {
           category_id: i,
           category_name: categoryData[i],
-          category_picture: './assets/images/ic_home' + i + '.png'
+          category_picture: './assets/images/ic_home' + i + '.png',
+          show: false
         }
         categoryList.push(categoryItem)
         this.setState({
@@ -140,6 +141,9 @@ class Home extends React.Component<Props, State> {
         <Carousel
           autoplay={true}
           infinite={true}
+          style={{
+            height: 140
+          }}
         >
           {carouselData.map((val, index) => (
             <a
