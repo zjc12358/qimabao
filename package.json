@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf dist && webpack --config webpack.prod.js --profile",
     "start": "webpack-dev-server --config webpack.dev.js --colors",
-    "serve": "nodemon ./server/server.js"
+    "prod": "webpack --config webpack.prod.js && pm2 restart ./server/server.js"
   },
   "author": "Jackyzm",
   "license": "MIT",

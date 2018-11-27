@@ -56,3 +56,6 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.am-carousel{
+  height: auto!important;
+}
