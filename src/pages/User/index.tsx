@@ -19,7 +19,7 @@ interface State {
 
 }
 
-let OrderIconMaxSize: number = 30
+let OrderIconMaxSize: number = 35
 
 class User extends React.Component<Props, State> {
   constructor (props) {
