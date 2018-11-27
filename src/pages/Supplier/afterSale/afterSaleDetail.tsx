@@ -26,7 +26,7 @@ class Supplier extends React.Component<Props, State> {
     this.state = {
       getEmpty: true,
       modal: false,
-      item: { code: 'TQ057899444220', status: '已签收',price: '45.5',reason: '未收到货' },
+      item: { code: 'TQ057899444220', status: '已签收',price: '45.5',reason: '未收到货',dateTime: '2018-10-10 15:11:08' },
       data: [
         { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',price: '15.5',dateTime: '2018-10-10 15:11:08' },
         { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',price: '22.5',dateTime: '2018-10-10 15:11:08' }
@@ -75,7 +75,7 @@ class Supplier extends React.Component<Props, State> {
           </div>
           <div className={'listItem'}>
             <span>退款金额：</span>
-            <span>{this.state.item.price}</span>
+            <span>{this.state.item.price}元</span>
           </div>
           <div className={'listItem'}>
             <span>退款原因：</span>
@@ -157,7 +157,7 @@ class Supplier extends React.Component<Props, State> {
         animationType='slide-up'
         className={'rejectModal'}
       >
-        <div className={'flex-flex-start-column-center'}>
+        <div className={'flex-center-column-flex-start-pl5'}>
           <span style={{ fontSize: 16,paddingTop: 8,paddingBottom: 8 }}>驳回原因：</span>
           <textarea cols={24} rows={6} style={{ width: '90%',border: '1px solid #ccc' }} />
         </div>

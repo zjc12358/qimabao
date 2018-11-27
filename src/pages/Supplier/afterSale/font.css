@@ -111,3 +111,45 @@
   color: rgb(0, 0, 0);
   padding-top: 10px;
 }
+
+/** 退款成功，退款失败 **/
+.refundResult {
+  white-space: nowrap;
+  font-size: 18px;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(0, 0, 0);
+  margin-left: 10px;
+}
+/** 协商详情 **/
+.consultationDetails {
+  white-space: nowrap;
+  font-size: 18px;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(0, 0, 0);
+}
+/** 商家同意退款，买家申请退款 **/
+.negotiationStateFont{
+  white-space: nowrap;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(0, 0, 0);
+  padding-left: 10px;
+}
+/** 买家卖家协商的留言内容字体样式 **/
+.negotiationContent{
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+  color: rgb(102, 102, 102);
+}
