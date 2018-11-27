@@ -134,9 +134,10 @@ class Home extends React.Component<Props, State> {
    */
   renderCarousel = () => {
     return (
-      <div style={{
+      <div className='vertical' style={{
         width: '100%',
-        marginTop: 50
+        marginTop: 50,
+        flex: 1
       }}>
         <Carousel
           autoplay={true}
@@ -154,7 +155,7 @@ class Home extends React.Component<Props, State> {
               <img
                 src={val}
                 style={{
-                  width: '100%', verticalAlign: 'top', height: this.state.imgHeight,
+                  width: '100%', verticalAlign: 'top', height: 140,
                   borderStyle: 'solid',
                   borderWidth: 0,
                   borderRadius: 10
@@ -168,6 +169,7 @@ class Home extends React.Component<Props, State> {
             </a>
           ))}
         </Carousel>
+        {this.renderIconList()}
       </div>
 
     )
@@ -182,8 +184,7 @@ class Home extends React.Component<Props, State> {
            style={{
              alignItems: 'flex-start',
              width: '100%',
-             flexWrap: 'wrap',
-             marginTop: 40
+             flexWrap: 'wrap'
            }}>
         {this.state.homeCategoryItemData.map((item, index) => this.renderIconListItem(item, index))}
       </div>
@@ -197,13 +198,9 @@ class Home extends React.Component<Props, State> {
    */
   renderIconListItem = (item, index) => {
     return (
-      <div className='vertical'
+      <div className='vertical-center'
            style={{
-             justifyContent: 'center',
-             paddingTop: 10,
-             height: 0,
-             width: '33%',
-             paddingBottom: '34%'
+             width: '33%'
            }} onClick={() => this.iconItemOnclick(index)}>
         <div className='vertical'
              style={{
@@ -303,7 +300,6 @@ class Home extends React.Component<Props, State> {
       }}>
         {this.renderHead()}
         {this.renderCarousel()}
-        {this.renderIconList()}
       </div>
     )
   }

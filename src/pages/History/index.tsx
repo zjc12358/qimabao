@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon ,Toast } from 'antd-mobile'
+import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon, Toast } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
@@ -51,7 +51,7 @@ class History extends React.Component<Props, State> {
       allSupplierItemCheck: this.props.allSupplierItemCheck,
       total: 0,
       isEmpty: false,
-      yourLink: [1,2,3 ],
+      yourLink: [1, 2, 3],
       data: this.props.shopCartData,
       shopCartData: this.props.shopCartData
     }
@@ -62,7 +62,7 @@ class History extends React.Component<Props, State> {
    * @param data
    * @param allSupplierItemCheck
    */
-  updata = (data,allSupplierItemCheck) => {
+  updata = (data, allSupplierItemCheck) => {
     this.props.updataShopCart(data)
     this.props.updataAllSupplierItemCheck(allSupplierItemCheck)
   }
@@ -71,7 +71,7 @@ class History extends React.Component<Props, State> {
    * 购物车尾部全选事件
    */
   allSupplierItemCheckOnChange = () => {
-    this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck },function () {
+    this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck }, function () {
       for (let i = 0; i < this.state.data.length; i++) {
         let data = this.state.data
         data[i].allChecked = this.state.allSupplierItemCheck
@@ -83,7 +83,7 @@ class History extends React.Component<Props, State> {
         }
         data[i].foodList = data2
         // this.setState({ data: data })
-        this.updata(data,this.state.allSupplierItemCheck)
+        this.updata(data, this.state.allSupplierItemCheck)
       }
       // 计算一遍总计
       this.count()
@@ -95,7 +95,7 @@ class History extends React.Component<Props, State> {
    * @param index1 供应商数组下标
    * @param index  菜品数组下标
    */
-  isCheckedOnChange = (index1,index) => {
+  isCheckedOnChange = (index1, index) => {
     let data = this.state.data
     let len = 0
     let len2 = 0
@@ -177,10 +177,10 @@ class History extends React.Component<Props, State> {
   /**
    * 右滑删除( index1:供应商下标,  index:该食物下标  )
    */
-  SlipRightDeleteOnClick = (index1,index) => {
+  SlipRightDeleteOnClick = (index1, index) => {
     let data = this.state.data
     data[index1].foodList.splice(index, 1)
-    if (data[index1].foodList.length === 0) data.splice(index,1)
+    if (data[index1].foodList.length === 0) data.splice(index, 1)
     this.setState({ data: data })
     this.props.updataShopCart(data)
   }
@@ -192,23 +192,23 @@ class History extends React.Component<Props, State> {
     console.log(1111)
     if (this.state.allSupplierItemCheck) {
       // 全选状态下清空购物车,总计归0
-      this.setState({ data: [],total: 0 })
+      this.setState({ data: [], total: 0 })
       this.props.updataShopCart([])
     } else {
       // console.log('我被组织了')
       let data = this.state.data
       for (let i = 0; i < this.state.data.length; i++) {
         if (data[i].allChecked) {
-          data.splice(i,1)
+          data.splice(i, 1)
           this.setState({ data: data })
           this.props.updataShopCart(data)
         } else {
           let foodList = data[i].foodList
           for (let j = 0; j < foodList.length; j++) {
             if (foodList[j].isChecked) {
-              foodList.splice(j,1)
+              foodList.splice(j, 1)
               if (foodList.length === 0) {
-                data.splice(i,1)
+                data.splice(i, 1)
               }
               data[i].foodList = foodList
               this.setState({ data: data })
@@ -226,7 +226,7 @@ class History extends React.Component<Props, State> {
     //   Toast.hide()
     //   return
     // }
-    this.setState({ data: nextProps.shopCartData,allSupplierItemCheck: nextProps.allSupplierItemCheck },() => {
+    this.setState({ data: nextProps.shopCartData, allSupplierItemCheck: nextProps.allSupplierItemCheck }, () => {
       Toast.hide()
     })
   }
@@ -293,13 +293,28 @@ class History extends React.Component<Props, State> {
   renderEmptyCart = () => {
     return (
       <div>
-        <div style={{ display: 'flex',justifyContent: 'center', paddingTop: 20 }}>
-          <div style={{ width: 135,height: 135,borderRadius: '50%',backgroundColor: '#cccccc',display: 'flex',alignItems: 'center',justifyContent: 'center' }}>
-            <img style={{ width: 80 }} src='./assets/images/icon/cartEmpty.svg' />
+        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 20 }}>
+          <div style={{
+            width: 135,
+            height: 135,
+            borderRadius: '50%',
+            backgroundColor: '#cccccc',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <img style={{ width: 80 }} src='./assets/images/icon/cartEmpty.svg'/>
           </div>
         </div>
-        <div style={{ display: 'flex',justifyContent: 'center', fontSize: 18, marginTop: 12 }}>菜篮为空</div>
-        <div style={{ display: 'flex',justifyContent: 'center', fontSize: 13, color: 'rgb(140, 140, 140)', marginTop: 12 }}>“赶紧去采购吧”</div>
+        <div style={{ display: 'flex', justifyContent: 'center', fontSize: 18, marginTop: 12 }}>菜篮为空</div>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          fontSize: 13,
+          color: 'rgb(140, 140, 140)',
+          marginTop: 12
+        }}>“赶紧去采购吧”
+        </div>
       </div>
     )
   }
@@ -310,16 +325,23 @@ class History extends React.Component<Props, State> {
   renderYourLike = () => {
     return (
       <div>
-        <div style={{ display: 'flex',justifyContent: 'center', alignItems: 'center',marginTop: 40 }}>
-          <div style={{ width: '20%',height: 2, backgroundColor: '#cccccc' }}></div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+          <div style={{ width: '20%', height: 2, backgroundColor: '#cccccc' }}></div>
           <div style={{ fontSize: 18, padding: '0 6px' }}>猜您喜欢</div>
-          <div style={{ width: '20%',height: 2, backgroundColor: '#cccccc' }}></div>
+          <div style={{ width: '20%', height: 2, backgroundColor: '#cccccc' }}></div>
         </div>
         <div style={{ paddingTop: 30 }}>
-          <div style={{ display: 'flex',flexFlow: 'row wrap',justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-between' }}>
             {this.state.yourLink.map((i, key) => (
-              <div key={ key } style={{ width: '50%',maxWidth: 200,display: 'flex',flexDirection: 'column',alignItems: 'center' }}>
-                <img style={{ display: 'block', width: '100%', maxWidth: 200, height: 157 }} src='http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg' />
+              <div key={key} style={{
+                width: '50%',
+                maxWidth: 200,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+                <img style={{ display: 'block', width: '100%', maxWidth: 200, height: 157 }}
+                     src='http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg'/>
                 <div>北海道原味吐司</div>
                 <div>
                   <span style={{ color: 'red' }}>￥4.5</span>
@@ -328,7 +350,8 @@ class History extends React.Component<Props, State> {
                 </div>
               </div>
             ))}
-            { this.state.yourLink.length % 2 !== 0 ? <div style={{ width: '50%',maxWidth: 200 }}></div> : console.log(1)}
+            {this.state.yourLink.length % 2 !== 0 ?
+              <div style={{ width: '50%', maxWidth: 200 }}></div> : console.log(1)}
           </div>
         </div>
       </div>
@@ -340,7 +363,7 @@ class History extends React.Component<Props, State> {
    */
   renderCartFooter = () => {
     return (
-      <div className= 'settlement' style={{
+      <div className='settlement' style={{
         position: 'fixed',
         bottom: 50,
         height: 50,
@@ -349,30 +372,45 @@ class History extends React.Component<Props, State> {
         width: '100%'
       }}>
         <AgreeItem
-          checked={ this.state.allSupplierItemCheck }
-          onChange={ () => {
+          checked={this.state.allSupplierItemCheck}
+          onChange={() => {
             this.allSupplierItemCheckOnChange()
           }}
         >
-          <div style={{ display: 'flex',alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <span>全选</span>
           </div>
         </AgreeItem>
-        <div style={{ flex: 1,display: 'flex' }}>
-          <div style={{ flex: 1,display: 'flex',alignItems: 'center',justifyContent: 'center',color: 'rgb(140, 140, 140)' }}>
+        <div style={{ flex: 1, display: 'flex' }}>
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'rgb(140, 140, 140)'
+          }}>
             合计：
-            <span style={{ color: 'red',fontSize: 18 }}>
+            <span style={{ color: 'red', fontSize: 18 }}>
                 ￥{this.state.total}
               </span>
             （免运费）
           </div>
           <div
-            style={{ display: 'flex', alignItems: 'center',justifyContent: 'center',backgroundColor: '#0084e7',height: 50,width: 90,color: 'white' }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#0084e7',
+              height: 50,
+              width: 90,
+              color: 'white'
+            }}
             onClick={() => {
               history().push('/orderMakeSure')
               this.props.updatePageTab('HistoryPageTabBar')
             }}
-          >去结算</div>
+          >去结算
+          </div>
         </div>
       </div>
     )
@@ -387,9 +425,9 @@ class History extends React.Component<Props, State> {
       <div key={item.value}>
         <div className='food' style={{ display: 'flex', alignItems: 'center' }}>
           <CheckboxItem
-            checked={ this.state.data[index1].foodList[index].isChecked }
+            checked={this.state.data[index1].foodList[index].isChecked}
             onChange={() => {
-              this.isCheckedOnChange(index1,index)
+              this.isCheckedOnChange(index1, index)
             }}
             style={{ width: '100%', background: 'transparent', height: 125 }}
           >
@@ -468,17 +506,18 @@ class History extends React.Component<Props, State> {
             height: 40
           }}>
             <div className='checkBox'>
-              <AgreeItem defaultChecked={this.state.data[index1].allChecked} checked={this.state.data[index1].allChecked} onChange={() => {
-                this.allCheckedOnChange(index1)
-              }} />
+              <AgreeItem defaultChecked={this.state.data[index1].allChecked}
+                         checked={this.state.data[index1].allChecked} onChange={() => {
+                           this.allCheckedOnChange(index1)
+                         }}/>
             </div>
             <img style={{ width: 15 }} src='../../assets/images/Cart/merchant.svg' alt=''/>
-            <div style={{ color: '#8C8C8C',marginLeft: 15 }}>{i.name}</div>
+            <div style={{ color: '#8C8C8C', marginLeft: 15 }}>{i.name}</div>
             <div style={{ flex: 1 }}></div>
-            <div style={{ paddingRight: 15 }}><Icon type='right' onClick={ () => {
+            <div style={{ paddingRight: 15 }}><Icon type='right' onClick={() => {
               this.props.updatePageTab('HistoryPageTabBar')
               history().push('/supplierRevise')
-            }} /></div>
+            }}/></div>
           </div>
           <div style={{
             display: 'flex',
@@ -493,7 +532,7 @@ class History extends React.Component<Props, State> {
                 {
                   text: '删除',
                   onPress: () => {
-                    this.SlipRightDeleteOnClick(index1,index)
+                    this.SlipRightDeleteOnClick(index1, index)
                   },
                   style: { backgroundColor: '#F4333C', color: 'white' }
                 }
@@ -512,7 +551,9 @@ class History extends React.Component<Props, State> {
   public render () {
     return (
       <div>
-        <Head title='菜篮子' backgroundColor='#0084e7' rightIconContent='删除' showRightIcon='true' rightIconOnClick={ this.HeadDeleteOnclick }></Head>
+        <Head title='菜篮子' backgroundColor='#0084e7' rightIconContent='删除' showRightIcon='true'
+              rightIconOnClick={this.HeadDeleteOnclick}
+              style={{ position: 'fixed', top: 0 }}/>
         <div style={{ height: 40 }}></div>
         {this.state.data && this.state.data.length ? this.state.data.map((i, index1) => (
           <div style={{ backgroundColor: 'white' }}>
