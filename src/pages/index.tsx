@@ -48,7 +48,6 @@ class App extends React.Component<Props, State> {
     if (this.props.mode === 'purchaser') {
       return (
         <div
-          className='scroll'
           style={{
             position: 'fixed',
             height: '100%',
