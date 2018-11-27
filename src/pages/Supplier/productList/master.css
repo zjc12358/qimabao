@@ -1,39 +1,39 @@
 @import './font.css';
 @import './flex.css';
 /** tab 样式调整 **/
-.bar .am-tabs-default-bar-tab-active{
+.gBar .am-tabs-default-bar-tab-active{
   color: #0084e7;
   background-color: #ffffff;
 }
 
-.bar .am-tabs-default-bar-tab{
+.gBar .am-tabs-default-bar-tab{
   border-bottom: 1px solid #ffffff;
   border-top: none;
   border-left: 1px solid #ffffff;
   border-right: 0;
 }
 
-.bar .am-tabs-default-bar-content{
+.gBar .am-tabs-default-bar-content{
   color: #000;
   background-color: #ffffff;
   border-right: 1px solid #ffffff;
 }
-.bar .am-tabs-default-bar{
+.gBar .am-tabs-default-bar{
   height: 44px;
   border-bottom: 1px solid #eeeeee;
 }
-.bar .am-tabs-default-bar-underline{
+.gBar .am-tabs-default-bar-underline{
   border: 2px solid #0084e7;
-  width: 21% !important;
+  width: 29.333333333% !important;
   margin-left: 2%;
 }
-/** 订单号：SP057899444220        退款金额 ￥45.00 **/
-.footFundWrap {
+/** 编辑 下架 删除 分类 外套 **/
+.footProductWrap {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
-  padding: 10px 16px;
+  padding: 5px 16px;
   border-top: 1px solid #e5e5e5;
   border-bottom: 1px solid #e5e5e5;
 }
@@ -61,7 +61,6 @@
 }
 /** 按钮：立即处理 **/
 .buttonProcessing {
-  white-space: nowrap;
   height: 28px;
   width: 70px;
   border-radius: 5px;
@@ -72,7 +71,6 @@
 }
 /** 按钮：查看详情 **/
 .buttonViewDetail {
-  white-space: nowrap;
   height: 28px;
   width: 70px;
   border-radius: 5px;

@@ -10,6 +10,7 @@ import './font.css'
 import './flex.css'
 import './master.css'
 import { changeMode } from '@store/actions/global_data'
+import ReactEcharts from 'echarts-for-react'
 
 export interface Props {
   changeMode: (model: 'supplier' | 'purchaser') => void
