@@ -184,7 +184,10 @@ class Home extends React.Component<Props, State> {
   renderHead = () => {
     return (
       <div style={{
-        width: '100%'
+        width: '100%',
+        position: 'fixed',
+        top: 0,
+        zIndex: 100
       }}>
         <div className='horizontal-center'
              style={{ height: 40, width: '100%', backgroundColor: 'white' }}>
@@ -220,7 +223,7 @@ class Home extends React.Component<Props, State> {
    */
   renderChoose = () => {
     return (
-      <div style={{ width: '100%' }}>
+      <div style={{ width: '100%', marginTop: 41, position: 'fixed', top: 0, zIndex: 100 }}>
         <div className='horizontal choose-menu'>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
           <div className='horizontal-center' style={{ flex: 1 }} onClick={this.chooseOnClick}>
@@ -262,7 +265,7 @@ class Home extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      <div className='horizontal' style={{ width: '100%', flex: 1 }}>
+      <div className='horizontal' style={{ position: 'fixed', top: 82, height: '100%', width: '100%' }}>
         {this.renderLeftChoose()}
         {this.renderRightProductList()}
       </div>
@@ -274,12 +277,16 @@ class Home extends React.Component<Props, State> {
    */
   renderLeftChoose = () => {
     return (
-      <div className='scroll vertical'>
-        <div style={{ width: 60, backgroundColor: '#efeff5' }}>
-          {this.state.secondCategoryList.map((item, index) => this.renderLeftChooseItem(item, index))}
+      <div style={{ height: '100%' }}>
+        <div className='scroll vertical'
+             style={{ paddingBottom: 100 }}>
+          <div style={{ width: 80, backgroundColor: '#efeff5' }}>
+            {this.state.secondCategoryList.map((item, index) => this.renderLeftChooseItem(item, index))}
+          </div>
+          <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
         </div>
-        <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
       </div>
+
     )
   }
 
@@ -308,11 +315,14 @@ class Home extends React.Component<Props, State> {
   renderRightProductList = () => {
     let list = this.state.productList.map((item) => this.renderRightProductListItem(item))
     return (
-      <div className='scroll product-list'>
-        <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
-                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}
-                  hasMore={this.state.hasMore}/>
-        <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
+      <div style={{ height: '100%' }}>
+        <div className='scroll product-list'
+             style={{ paddingBottom: 100 }}>
+          <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
+                    isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}
+                    hasMore={this.state.hasMore}/>
+          <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
+        </div>
       </div>
     )
   }
@@ -500,7 +510,7 @@ class Home extends React.Component<Props, State> {
   secondItemOnClick = (index: number) => {
     let list = this.state.secondCategoryList
     for (let i = 0; i < this.state.secondCategoryList.length; i++) {
-      if (index === i && !this.state.secondCategoryList[index].check) {
+      if (index === i) {
         list[i].check = true
         // TODO 2018/11/19 请求数据
       } else {
@@ -586,9 +596,9 @@ class Home extends React.Component<Props, State> {
       <div className='vertical'
            style={{ backgroundColor: '#efeff5', height: '100vh' }}>
         {this.renderHead()}
-        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
+        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5', position: 'fixed', top: 40 }}></span>
         {this.renderChoose()}
-        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
+        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5', position: 'fixed', top: 81 }}></span>
         {this.renderContent()}
         <Drawer anchor={'right'} open={this.state.drawerOpen} onClose={() => this.toggleDrawer(false)}>
           {this.renderDrawer()}

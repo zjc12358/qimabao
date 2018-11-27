@@ -1,6 +1,7 @@
 .scroll {
   height: 100%;
-  overflow: auto
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .scroll::-webkit-scrollbar {
@@ -45,7 +46,7 @@
   padding: 0;
 }
 
-.render-style{
+.render-style {
   min-height: 100vh;
   width: 100%;
   background-color: #efeff5;
