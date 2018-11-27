@@ -56,7 +56,10 @@ class Withdrawal extends React.Component<Props, State> {
           leftIconColor='white'
         />
         {this.renderChooseBank()}
-        <div style={{ height: 45 }} >请检查账号类别及账号,确保是提现您本人的账号</div>
+        <div className='prompt' style={{ height: 45 }} >
+          <div></div>
+          请检查账号类别及账号,确保是提现您本人的账号
+        </div>
       </div>
     )
   }

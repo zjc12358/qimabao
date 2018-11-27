@@ -23,10 +23,7 @@ class Supplier extends React.Component<Props, State> {
     super(props)
     this.state = {
       getEmpty: true,
-      data: [
-        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',price: '15.5',dateTime: '2018-10-10 15:11:08' },
-        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',price: '22.5',dateTime: '2018-10-10 15:11:08' }
-      ]
+      data: { code: 'TQ057899444220', status: '已签收',price: '45.5',reason: '未收到货',dateTime: '2018-10-10 15:11:08' }
     }
   }
   /**
@@ -36,40 +33,48 @@ class Supplier extends React.Component<Props, State> {
     return(
       <div style={{
         backgroundColor: '#ffffff',
-        width: '100%'
+        width: '100%',
+        paddingTop: 40
       }}>
-        {this.state.data.map((i,index) => (
-          <div>
-            {this.renderItem(i,index)}
+        <div className={'refundInfoWrap'}>
+          <div className={'flex-flex-start-row-center'}>
+            <ReactSVG path='../../../../assets/images/Supplier/success-wh.svg' svgStyle={{ width: 22, height: 22 }}/>
+            <span className={'refundResult'}>退款成功</span>
           </div>
-        ))}
-        <div className={'FundWrap'}>
           <div>
-            <span className={'refund'}>退款金额</span>
-            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>45.00</span></span>
+            <span className={'refundState'}>退款金额：</span>
+            <span className={'refundNumber'}>￥{this.state.data.price}</span>
+          </div>
+          <div>
+            <span className={'refundState'}>退款时间：</span>
+            <span className={'refundNumber'}>{this.state.data.dateTime}</span>
           </div>
         </div>
-      </div>
-    )
-  }
-  public renderItem = (i,index) => {
-    return(
-      <div>
-        <div className={'Segment_line2'} />
-        <div className={'flex-flex-start-row-center-p516'} style={{ height: 40 }}>
-          <div className={'number'}>订单号：{i.code}</div>
-        </div>
-        <div className={'Segment_line2'} />
-        <div style={{
-          position: 'absolute',
-          zIndex: 98
-        }}>
-          <div style={{ width: 70, height: 70 }}><img style={{
-            width: 'auto',
-            height: 'auto',
-            maxWidth: '100%',
-            maxHeight: '100%'
-          }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
+        <div className={'negotiationState'}>
+          <div className={'negotiationStateTitle'}>
+            <span className={'consultationDetails'}>协商详情</span>
+          </div>
+          <div className={'negotiationStateContentWrap'}>
+            <div className={'negotiationStateContent'}>
+              <ReactSVG path='../../../../assets/images/Supplier/saler.svg' svgStyle={{ width: 30, height: 30 }}/>
+              <span className={'negotiationStateFont'}>商家同意退款</span>
+            </div>
+            <div className={'messageWrap'}>
+              <span className={'number'} style={{ paddingBottom: 5 }}>留言：</span>
+              <span className={'negotiationContent'} style={{ width: '100%' }}>曾经的年少痴狂，曾经的波澜壮阔，曾经的肆无忌惮，曾经的飞扬跋扈，结果，在某年某月的某个黄昏，突然发现，那只不过是梦一场。
+蓦然回首，那场梦里，隐藏着多少辛酸和无奈，我们不愿再度思索。因为，梦醒了，留给我们的只是淡然一笑。</span>
+            </div>
+            <div className={'negotiationStateContent'}>
+              <ReactSVG path='../../../../assets/images/Supplier/buyer.svg' svgStyle={{ width: 30, height: 30 }}/>
+              <span className={'negotiationStateFont'}>买家申请退款</span>
+            </div>
+            <div className={'messageWrap'}>
+              <span className={'number'} style={{ paddingBottom: 5 }}>留言：</span>
+              <span className={'negotiationContent'} style={{ width: '100%' }}>人世三苦:1.你得不到;
+2.你付出了许多代价,得到了,却不过如此;
+3.你轻易地放弃了.后来却发现.原来它在你生命中是那么重要.</span>
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -80,7 +85,7 @@ class Supplier extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Head title={'退款详情'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'} leftIconColor={'grey'}/>
+        <Head title={'退款状态'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'} leftIconColor={'grey'}/>
         {this.renderContent()}
       </div>
     )

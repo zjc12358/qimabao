@@ -523,7 +523,6 @@ class History extends React.Component<Props, State> {
           {this.renderYourLike()}
         </div>
         {this.state.data && this.state.data.length ? this.renderCartFooter() : <div></div>}
-        <div style={{ height: 100 }}></div>
       </div>
     )
   }

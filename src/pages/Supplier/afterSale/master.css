@@ -186,5 +186,60 @@
 .rejectModal {
   height: 220px;
 }
+/** 退款状态外套 **/
+.refundInfoWrap {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100px;
+  padding: 20px 20px;
+  border-top: 1px solid #ccc;
+}
+   /** 协商状态外套 **/
+ .negotiationState {
+   display: flex;
+   justify-content: space-between;
+   flex-direction: column;
+   align-items: flex-start;
+   padding-left: 20px;
+   padding-bottom: 20px;
+   border-top: 1px solid #ccc;
+   border-bottom: 1px solid #ccc;
+ }
+  /** 协商详情 **/
+.negotiationStateTitle {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: flex-start;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+}
+/** 协商状态内容外套 **/
+.negotiationStateContentWrap {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+   /** 协商状态内容 **/
+ .negotiationStateContent {
+   display: flex;
+   justify-content: flex-start;
+   flex-direction: row;
+   align-items: center;
+   padding-bottom: 16px;
+ }
 
-
+  /** 留言外套 **/
+.messageWrap {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  height: auto;
+  padding-left: 40px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+}
