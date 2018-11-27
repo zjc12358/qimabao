@@ -17,6 +17,7 @@
     "axios": "^0.18.0",
     "bizcharts": "^3.2.1-beta.2",
     "bizcharts-plugin-slider": "^2.0.4",
+    "echarts-for-react": "^2.0.15-beta.0",
     "http-proxy-middleware": "^0.18.0",
     "koa": "^2.5.1",
     "koa-body": "^4.0.4",

@@ -61,6 +61,7 @@
 }
 /** 按钮：立即处理 **/
 .buttonProcessing {
+  white-space: nowrap;
   height: 28px;
   width: 70px;
   border-radius: 5px;
@@ -71,6 +72,7 @@
 }
 /** 按钮：查看详情 **/
 .buttonViewDetail {
+  white-space: nowrap;
   height: 28px;
   width: 70px;
   border-radius: 5px;

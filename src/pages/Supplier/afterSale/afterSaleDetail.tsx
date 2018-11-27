@@ -67,19 +67,19 @@ class Supplier extends React.Component<Props, State> {
           </div>
           <div className={'listItem'}>
             <span>退单号：</span>
-            <span>{this.state.item.code}</span>
+            <span style={{ fontFamily: '微软雅黑' }}>{this.state.item.code}</span>
           </div>
           <div className={'listItem'}>
             <span>发货状态：</span>
-            <span>{this.state.item.status}</span>
+            <span style={{ fontFamily: '微软雅黑' }}>{this.state.item.status}</span>
           </div>
           <div className={'listItem'}>
             <span>退款金额：</span>
-            <span>{this.state.item.price}元</span>
+            <span style={{ fontFamily: '微软雅黑' }}>{this.state.item.price}元</span>
           </div>
           <div className={'listItem'}>
             <span>退款原因：</span>
-            <span>{this.state.item.reason}</span>
+            <span style={{ fontFamily: '微软雅黑' }}>{this.state.item.reason}</span>
           </div>
         </div>
         <div className={'explainWrap'}>
@@ -157,13 +157,12 @@ class Supplier extends React.Component<Props, State> {
         animationType='slide-up'
         className={'rejectModal'}
       >
-        <div className={'flex-center-column-flex-start-pl5'}>
-          <span style={{ fontSize: 16,paddingTop: 8,paddingBottom: 8 }}>驳回原因：</span>
-          <textarea cols={24} rows={6} style={{ width: '90%',border: '1px solid #ccc' }} />
+        <div className={'flex-center-column-flex-start'}>
+          <span style={{ fontSize: 16,paddingTop: 8,paddingBottom: 8,color: '#000' }}>驳回原因：</span>
+          <textarea rows={6} style={{ width: '93%',border: '1px solid #ccc' }} placeholder={'在这里填写驳回原因...'}/>
         </div>
         <div className={'applyBtnWrap'}>
-          <button className={'agreeBtn'} >提交</button>
-          <button className={'rejectBtn'} onClick={this.onClose}>取消</button>
+          <button className={'agreeBtn'} style={{ width: '90%' }}>提交</button>
         </div>
       </Modal>
     )

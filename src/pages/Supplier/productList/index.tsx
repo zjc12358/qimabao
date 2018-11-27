@@ -14,8 +14,11 @@ export interface Props {
 }
 
 interface State {
-  data: any
+  inSale: any
+  soldOut: any
+  inStore: any
   getEmpty: boolean
+  refresh: string
 }
 
 class Supplier extends React.Component<Props, State> {
@@ -24,14 +27,25 @@ class Supplier extends React.Component<Props, State> {
     super(props)
     this.state = {
       getEmpty: true,
-      data: [
+      inSale: [
         { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
         { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' },
         { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
         { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' },
         { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
         { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
-      ]
+      ],
+      soldOut: [
+        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
+        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' },
+        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
+        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
+      ],
+      inStore: [
+        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
+        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
+      ],
+      refresh: 'refresh'
     }
   }
   /**
@@ -55,22 +69,67 @@ class Supplier extends React.Component<Props, State> {
     )
   }
   /**
-   * 全部
+   * 出售中
    */
   public renderInSale = () => {
     return(
       <div style={{
         paddingTop: 20
       }}>
-        {this.state.data.map((i, index) => (
+        {this.state.inSale.map((i, index) => (
           <div>
-            {this.renderItem(i, index)}
+            {this.renderItem(i, index,'inSale')}
           </div>
         ))}
       </div>
     )
   }
-  public renderItem = (i, index) => {
+  /**
+   * 已售完
+   */
+  public renderSoldOut = () => {
+    return(
+      <div style={{
+        paddingTop: 20
+      }}>
+        {this.state.soldOut.map((i, index) => (
+          <div>
+            {this.renderSoldItem(i, index,'')}
+          </div>
+        ))}
+      </div>
+    )
+  }
+  /**
+   * 仓库中
+   */
+  public renderInStore = () => {
+    return(
+      <div style={{
+        paddingTop: 20
+      }}>
+        {this.state.inStore.map((i, index) => (
+          <div>
+            {this.renderItem(i, index,'inStore')}
+          </div>
+        ))}
+      </div>
+    )
+  }
+  /**
+   * 空
+   */
+  public renderNone = () => {
+    return(
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
+        空空如也
+      </div>
+    )
+  }
+  /**
+   * 出售中，仓库中item
+   */
+  public renderItem = (i, index,type) => {
     return(
       <div style={{
         backgroundColor: '#ffffff',
@@ -86,9 +145,9 @@ class Supplier extends React.Component<Props, State> {
           </div>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='../../../../assets/images/Supplier/lowerShelf.svg' svgStyle={{ width: 20, height: 20 }}/>
-            <span style={{ paddingLeft: 5 }}>下架</span>
+            <span style={{ paddingLeft: 5 }}>{type === 'inSale' ? '下架' : '上架'}</span>
           </div>
-          <div className={'flex-center-row-center'}>
+          <div className={'flex-center-row-center'} onClick={type === 'inSale' ? () => this.inSaleDeleteOnclick(index) : () => this.inStoreDeleteOnclick(index)}>
             <ReactSVG path='../../../../assets/images/Supplier/delete.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }}>删除</span>
           </div>
@@ -102,7 +161,7 @@ class Supplier extends React.Component<Props, State> {
     )
   }
   /**
-   * 点击展开详细
+   * 出售中，仓库中详情
    */
   public renderItemDetail = (i,index) => {
     return(
@@ -146,58 +205,70 @@ class Supplier extends React.Component<Props, State> {
   /**
    * 已售完
    */
-  public renderSoldOut = () => {
+  public renderSoldItem = (i, index,type) => {
     return(
       <div style={{
-        paddingTop: 20
+        backgroundColor: '#ffffff',
+        width: '100%',
+        float: 'right'
       }}>
-        {this.state.data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
+        <div className={'Segment_line2'} />
+        <div style={{
+          padding: 16,
+          height: 100,
+          position: 'relative'
+        }}>
+          <div style={{
+            position: 'absolute',
+            zIndex: 98
+          }}>
+            <div style={{ width: 70, height: 70 }}><img style={{
+              width: 'auto',
+              height: 'auto',
+              maxWidth: '100%',
+              maxHeight: '100%'
+            }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
           </div>
-        ))}
-      </div>
-    )
-  }
-  /**
-   * 仓库中
-   */
-  public renderInStore = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            position: 'absolute',
+            left: 112,
+            alignItems: 'flex-start',
+            height: 70
+          }}>
+            <div className={'refundNumber'} style={{ height: 32,paddingRight: 10 }}>现摘新鲜野生荠菜 蔬菜 1.5kg 现摘新鲜野生荠菜 蔬菜 1.5kg现摘新鲜野生</div>
+            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>12568.50</span></span>
+            <div className={'flex-space-between-row-center'} style={{ width: '100%' }}>
+              <span className={'orderNumber'}>总量：{i.stock}kg&nbsp;&nbsp;&nbsp;&nbsp;单价：{i.value}元/kg</span>
+              <ReactSVG path='../../../../assets/images/Supplier/right.svg' svgStyle={{ width: 15, height: 15 }}/>
+            </div>
           </div>
-        ))}
+        </div>
+        <div className={'Segment_line2'} />
+        <div style={{ backgroundColor: '#f5f5f9' ,height: 20 }} />
       </div>
     )
-  }
-  /**
-   * 空
-   */
-  public renderNone = () => {
-    return(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
-        空空如也
-      </div>
-    )
-  }
-
-  public viewDetailOnclick = () => {
-    history().push('/afterSaleDetail')
-  }
-
-  public viewResultOnclick = () => {
-    history().push('/afterSaleResult')
   }
 
   public searchOnClick = () => {
     console.log(1)
   }
 
+  public inSaleDeleteOnclick = (index) => {
+    this.state.inSale.splice(index,1)
+    this.setState({
+      refresh: 'refresh'
+    })
+  }
+
+  public inStoreDeleteOnclick = (index) => {
+    this.state.inStore.splice(index,1)
+    this.setState({
+      refresh: 'refresh'
+    })
+  }
   public render () {
     return (
       <div style={{
