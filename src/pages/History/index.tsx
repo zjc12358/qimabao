@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon, Toast } from 'antd-mobile'
+import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon ,Toast } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.css'
 import Head from '../../components/Head/index'
@@ -51,7 +51,7 @@ class History extends React.Component<Props, State> {
       allSupplierItemCheck: this.props.allSupplierItemCheck,
       total: 0,
       isEmpty: false,
-      yourLink: [1, 2, 3],
+      yourLink: [1,2,3 ],
       data: this.props.shopCartData,
       shopCartData: this.props.shopCartData
     }
@@ -62,7 +62,7 @@ class History extends React.Component<Props, State> {
    * @param data
    * @param allSupplierItemCheck
    */
-  updata = (data, allSupplierItemCheck) => {
+  updata = (data,allSupplierItemCheck) => {
     this.props.updataShopCart(data)
     this.props.updataAllSupplierItemCheck(allSupplierItemCheck)
   }
@@ -71,7 +71,7 @@ class History extends React.Component<Props, State> {
    * 购物车尾部全选事件
    */
   allSupplierItemCheckOnChange = () => {
-    this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck }, function () {
+    this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck },function () {
       for (let i = 0; i < this.state.data.length; i++) {
         let data = this.state.data
         data[i].allChecked = this.state.allSupplierItemCheck
@@ -83,7 +83,7 @@ class History extends React.Component<Props, State> {
         }
         data[i].foodList = data2
         // this.setState({ data: data })
-        this.updata(data, this.state.allSupplierItemCheck)
+        this.updata(data,this.state.allSupplierItemCheck)
       }
       // 计算一遍总计
       this.count()
@@ -95,7 +95,7 @@ class History extends React.Component<Props, State> {
    * @param index1 供应商数组下标
    * @param index  菜品数组下标
    */
-  isCheckedOnChange = (index1, index) => {
+  isCheckedOnChange = (index1,index) => {
     let data = this.state.data
     let len = 0
     let len2 = 0
@@ -177,10 +177,10 @@ class History extends React.Component<Props, State> {
   /**
    * 右滑删除( index1:供应商下标,  index:该食物下标  )
    */
-  SlipRightDeleteOnClick = (index1, index) => {
+  SlipRightDeleteOnClick = (index1,index) => {
     let data = this.state.data
     data[index1].foodList.splice(index, 1)
-    if (data[index1].foodList.length === 0) data.splice(index, 1)
+    if (data[index1].foodList.length === 0) data.splice(index,1)
     this.setState({ data: data })
     this.props.updataShopCart(data)
   }
@@ -192,23 +192,23 @@ class History extends React.Component<Props, State> {
     console.log(1111)
     if (this.state.allSupplierItemCheck) {
       // 全选状态下清空购物车,总计归0
-      this.setState({ data: [], total: 0 })
+      this.setState({ data: [],total: 0 })
       this.props.updataShopCart([])
     } else {
       // console.log('我被组织了')
       let data = this.state.data
       for (let i = 0; i < this.state.data.length; i++) {
         if (data[i].allChecked) {
-          data.splice(i, 1)
+          data.splice(i,1)
           this.setState({ data: data })
           this.props.updataShopCart(data)
         } else {
           let foodList = data[i].foodList
           for (let j = 0; j < foodList.length; j++) {
             if (foodList[j].isChecked) {
-              foodList.splice(j, 1)
+              foodList.splice(j,1)
               if (foodList.length === 0) {
-                data.splice(i, 1)
+                data.splice(i,1)
               }
               data[i].foodList = foodList
               this.setState({ data: data })
@@ -226,7 +226,7 @@ class History extends React.Component<Props, State> {
     //   Toast.hide()
     //   return
     // }
-    this.setState({ data: nextProps.shopCartData, allSupplierItemCheck: nextProps.allSupplierItemCheck }, () => {
+    this.setState({ data: nextProps.shopCartData,allSupplierItemCheck: nextProps.allSupplierItemCheck },() => {
       Toast.hide()
     })
   }
@@ -513,13 +513,15 @@ class History extends React.Component<Props, State> {
     return (
       <div>
         <Head title='菜篮子' backgroundColor='#0084e7' rightIconContent='删除' showRightIcon='true' rightIconOnClick={ this.HeadDeleteOnclick }></Head>
-        <div style={{ height: 40 }}></div>
-        {this.state.data && this.state.data.length ? this.state.data.map((i, index1) => (
-          <div style={{ backgroundColor: 'white' }}>
-            {this.renderSupplierItem(i, index1)}
-          </div>
-        )) : this.renderEmptyCart()}
-        {this.renderYourLike()}
+        <div className='touch_scroll'>
+          <div style={{ height: 40 }}></div>
+          {this.state.data && this.state.data.length ? this.state.data.map((i, index1) => (
+            <div style={{ backgroundColor: 'white' }}>
+              {this.renderSupplierItem(i, index1)}
+            </div>
+          )) : this.renderEmptyCart()}
+          {this.renderYourLike()}
+        </div>
         {this.state.data && this.state.data.length ? this.renderCartFooter() : <div></div>}
         <div style={{ height: 100 }}></div>
       </div>
