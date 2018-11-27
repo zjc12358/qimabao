@@ -38,7 +38,7 @@ class Shop extends React.Component<Props, State> {
       <div className='topBackground'>
         <div className='shopMsgBox'>
           <div className='shopMsg'>
-            <img src='https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/B1E06F8A10337017E59CD1C04D248527.JPG?Expires=1542853769&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=2CgZV93SDnxSugMi%2BofsXFu3xJ8%3D' />
+            <img src='./assets/images/SupplierTest/user_logo.jpg' />
             <div className='shopName'>衢州超彩软件有限公司</div>
             <div className='starGroup'>
               {[1,2,3,4,5].map(i => (
