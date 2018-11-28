@@ -10,7 +10,11 @@ import './font.css'
 import './flex.css'
 import './master.css'
 import { changeMode } from '@store/actions/global_data'
-import ReactEcharts from 'echarts-for-react'
+import eCharts from 'echarts/lib/echarts'
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/component/grid'
+import 'echarts/lib/component/tooltip'
 
 export interface Props {
   changeMode: (model: 'supplier' | 'purchaser') => void
@@ -31,7 +35,85 @@ class Supplier extends React.Component<Props, State> {
       data: { payment: '1', delivery: '17', collect: '143', evaluate: '5', refund: '0' }
     }
   }
-
+  componentDidMount () {
+    // 基于准备好的dom，初始化echarts实例
+    let myChart = eCharts.init(document.getElementById('main'))
+    // 绘制图表
+    myChart.setOption({
+      tooltip: {
+        trigger: 'axis'
+      },
+      grid: {
+        x: 30,
+        y: 10,
+        x2: 15,
+        y2: 25
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['周一','周二','周三','周四','周五','周六','周日'],
+        axisLabel: {
+          show: true,
+          textStyle: {
+            color: '#999'
+          }
+        },
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#999'
+          }
+        }
+      },
+      yAxis: {
+        type: 'value',
+        splitNumber: 4,
+        axisLabel: {
+          show: true,
+          textStyle: {
+            color: '#999'
+          }
+        },
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          show: false
+        }
+      },
+      series: [
+        {
+          name: '总营业额',
+          type: 'line',
+          itemStyle : {
+            normal : {
+              color: '#c36045',
+              lineStyle: {
+                color: '#c36045'
+              }
+            }
+          },
+          data: [220, 182, 191, 234, 290, 330, 310]
+        },
+        {
+          name: '订单收入',
+          type: 'line',
+          itemStyle : {
+            normal : {
+              color: '#0084e7',
+              lineStyle: {
+                color: '#0084e7'
+              }
+            }
+          },
+          data: [120, 132, 101, 134, 90, 230, 210]
+        }
+      ]
+    })
+  }
   /**
    * 标题
    */
@@ -144,7 +226,7 @@ class Supplier extends React.Component<Props, State> {
         <div style={{
           borderRadius: 10,
           width: '90%',
-          height: 250,
+          height: 'auto',
           backgroundColor: '#ffffff'
         }}>
           {this.renderHighChart()}
@@ -176,7 +258,36 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderHighChart = () => {
     return (
-      <div className={'bodyTitleStyle'}>数据分析</div>
+      <div className={'dataAnalysisWrap'} style={{ paddingBottom: 10 }}>
+        <div className={'flex-space-between-row-center'} style={{ width: '90%',paddingTop: 10,paddingBottom: 10 }}>
+          <span className={'bodyTitleStyle'}>数据分析</span>
+          <div style={{ width: 7, height: 7, backgroundColor: '#0084e7',borderRadius: '50%' }} />
+          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>订单收入</span>
+          <div style={{ width: 7, height: 7, backgroundColor: '#c36045',borderRadius: '50%' }} />
+          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>总营业额</span>
+          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>单位：千元</span>
+          <select style={{ width: 50,backgroundColor: '#fff',textAlign: 'center' }}>
+            <option value='1天'>1天</option>
+            <option value='近7天'>近7天</option>
+            <option value='近30天'>近30天</option>
+            <option value='周'>周</option>
+            <option value='月'>月</option>
+          </select>
+        </div>
+        <div className={'chartWrap'}>
+          <div className={'chartValueWrap'}>
+            <div className={'flex-center-column-center'}>
+              <span className={'commonNumber'} style={{ fontSize: 24,color: '#0084e7' }}>6992.5</span>
+              <span className={'commonFont'} style={{ fontSize: 12,color: '#0084e7' }}>今日订单收入</span>
+            </div>
+            <div className={'flex-center-column-center'}>
+              <span className={'commonNumber'} style={{ fontSize: 24,color: '#c36045' }}>9592.5</span>
+              <span className={'commonFont'} style={{ fontSize: 12,color: '#c36045' }}>总营业额</span>
+            </div>
+          </div>
+          <div id='main' style={{ width: '100%', height: 200 }} />
+        </div>
+      </div>
     )
   }
   /**

@@ -59,26 +59,6 @@
   padding-left: 16px;
   padding-right: 16px;
 }
-/** 按钮：立即处理 **/
-.buttonProcessing {
-  height: 28px;
-  width: 70px;
-  border-radius: 5px;
-  border: 1px solid #0084E7;
-  background-color: #fff;
-  color: #0084E7;
-  font-size: 14px;
-}
-/** 按钮：查看详情 **/
-.buttonViewDetail {
-  height: 28px;
-  width: 70px;
-  border-radius: 5px;
-  border: 1px solid #0084E7;
-  background-color: #0084E7;
-  color: #ffffff;
-  font-size: 14px;
-}
   /** 退款外套 **/
 .listItemWrap {
   display: flex;
