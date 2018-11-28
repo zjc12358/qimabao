@@ -12,6 +12,34 @@
   .am-list-item:not(:last-child) .am-list-line{
     border-bottom: none;
   }
+  .prompt{
+    height: 45px;
+    display: flex;
+    align-items: center;
+    color: #666;
+    padding-left: 15px;
+    padding-right: 15px;
+    .point{
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #666;
+      margin-right: 10px;
+    }
+  }
+  .parameter{
+    padding-left: 15px;
+    font-size: 16px;
+    .am-list-item .am-input-control .fake-input-container .fake-input{
+      font-size: 14px;
+    }
+    .am-list-item .am-input-control .fake-input-container .fake-input-placeholder{
+      font-size: 14px;
+    }
+    .am-list-item .am-input-control .fake-input-container .fake-input.focus:after{
+      top: 0;
+    }
+  }
 }
 html:not([data-scale]) .am-list-item:not(:last-child) .am-list-line::after{
   content: none;

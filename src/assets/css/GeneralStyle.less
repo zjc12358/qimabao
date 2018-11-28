@@ -37,9 +37,21 @@ li{
 //页面内容惯性滑动
 .touch_scroll{
   -webkit-overflow-scrolling: touch;
-  position: fixed;
-  height: 100%;
+  //position: fixed;
+  //height: 100%;
   width: 100%;
-  padding-bottom: 100px;
+  //padding-bottom: 100px;
   overflow: auto;
+}
+
+.bigContainer{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+.bigContent{
+  flex: 1;
+}
+.animated-router-container{
+  height: 100vh;
 }

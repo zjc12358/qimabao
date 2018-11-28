@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const userRouter = require('./api');
+// const userRouter = require('./api');
 const path = require('path');
 const app = express();
 
@@ -11,7 +11,7 @@ app.use('index.html', function (req, res) {
 });
 
 app.use(bodyParser.json());
-app.use('/api', userRouter);
+// app.use('/api', userRouter);
 
 app.listen(8888, function () {
   console.log('Node app start at port 8888');
