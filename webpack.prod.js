@@ -18,7 +18,7 @@ const entryPath = path.join(__dirname, './src');
 
 const outputPath = path.join(__dirname, './dist');
 
-const customizeTheme = require('./src/theme');
+// const customizeTheme = require('./src/theme');
 
 const config = {
   mode: 'production',
@@ -83,7 +83,7 @@ const config = {
                   options: {
                     sourceMap: true,
                     javascriptEnabled: true,
-                    modifyVars: customizeTheme
+                    // modifyVars: customizeTheme
                   },
                 },
               ]
@@ -175,8 +175,8 @@ const config = {
     new CopyWebpackPlugin(
       [
         {
-          from: path.join(__dirname, './public/fonts'),
-          to: path.join(outputPath, './fonts/'),
+          from: path.join(__dirname, './public/img'),
+          to: path.join(outputPath, './img/'),
           // context: 'public'
         },
         {
