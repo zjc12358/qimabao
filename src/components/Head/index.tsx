@@ -138,7 +138,7 @@ class Head extends React.Component<Props, State> {
           </div>
         </div>
         {this.props.showLine ?
-          <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
+          <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}/>
           : null}
       </div>
     )
