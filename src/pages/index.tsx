@@ -49,10 +49,11 @@ class App extends React.Component<Props, State> {
       return (
         <div
           style={{
-            position: 'fixed',
+            // position: 'fixed',
+            // flex: 1,
             height: '100%',
-            width: '100%',
-            top: 0
+            width: '100%'
+            // top: 0
           }}
         >
           {this.renderTabBar()}
