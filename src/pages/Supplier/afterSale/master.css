@@ -63,7 +63,6 @@
 .buttonProcessing {
   white-space: nowrap;
   height: 28px;
-  width: 70px;
   border-radius: 5px;
   border: 1px solid #0084E7;
   background-color: #fff;
@@ -74,7 +73,6 @@
 .buttonViewDetail {
   white-space: nowrap;
   height: 28px;
-  width: 70px;
   border-radius: 5px;
   border: 1px solid #0084E7;
   background-color: #0084E7;

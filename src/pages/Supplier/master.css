@@ -106,3 +106,25 @@
   height: 40px;
   border-radius: 10px;
 }
+
+  /** 数据分析 **/
+.dataAnalysisWrap {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+  /** 今日订单收入，总营业额 **/
+.chartValueWrap {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+}
+/** 图表外套 **/
+.chartWrap {
+  width: 90%;
+  height: 250px;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
