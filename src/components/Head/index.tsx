@@ -92,8 +92,7 @@ class Head extends React.Component<Props, State> {
   public render () {
     return (
       <div style={{
-        position: 'fixed',
-        top: '0',
+        // top: '0',
         height: 40,
         display: 'flex',
         flexDirection: 'row',
