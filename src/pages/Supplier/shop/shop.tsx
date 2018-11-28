@@ -6,7 +6,7 @@ import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
-import Head from '../../components/Head/index'
+import Head from '../../../components/Head/index'
 import './shop.less'
 
 export interface Props {
