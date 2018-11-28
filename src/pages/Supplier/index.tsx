@@ -10,7 +10,7 @@ import './font.css'
 import './flex.css'
 import './master.css'
 import { changeMode } from '@store/actions/global_data'
-import echarts from 'echarts/lib/echarts'
+import eCharts from 'echarts/lib/echarts'
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/grid'
@@ -37,7 +37,7 @@ class Supplier extends React.Component<Props, State> {
   }
   componentDidMount () {
     // 基于准备好的dom，初始化echarts实例
-    let myChart = echarts.init(document.getElementById('main'))
+    let myChart = eCharts.init(document.getElementById('main'))
     // 绘制图表
     myChart.setOption({
       tooltip: {
@@ -86,23 +86,8 @@ class Supplier extends React.Component<Props, State> {
       },
       series: [
         {
-          name: '订单收入',
-          type: 'line',
-          stack: '总量',
-          itemStyle : {
-            normal : {
-              color: '#0084e7',
-              lineStyle: {
-                color: '#0084e7'
-              }
-            }
-          },
-          data: [120, 132, 101, 134, 90, 230, 210]
-        },
-        {
           name: '总营业额',
           type: 'line',
-          stack: '总量',
           itemStyle : {
             normal : {
               color: '#c36045',
@@ -112,6 +97,19 @@ class Supplier extends React.Component<Props, State> {
             }
           },
           data: [220, 182, 191, 234, 290, 330, 310]
+        },
+        {
+          name: '订单收入',
+          type: 'line',
+          itemStyle : {
+            normal : {
+              color: '#0084e7',
+              lineStyle: {
+                color: '#0084e7'
+              }
+            }
+          },
+          data: [120, 132, 101, 134, 90, 230, 210]
         }
       ]
     })
