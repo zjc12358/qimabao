@@ -60,12 +60,32 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
+   * 所有内容
+   */
+  renderContent = () => {
+    return (
+      <div className='vertical' style={{ flex: 1, width: '100%' }}>
+        {this.renderSearch()}
+        {!this.state.showTitle &&
+        this.state.searchText.length > 0 ?
+          null :
+          <div style={{ width: '100%' }}>
+            {this.renderMyAddress()}
+            {this.renderNearbyAddress()}
+            {this.renderMoreAddress()}
+          </div>}
+      </div>
+    )
+  }
+
+  /**
    * 搜索栏
    */
   renderSearch = () => {
     return (
-      <div className='vertical search'
-           style={{ marginTop: (this.state.showTitle ? 40 : 0) }}>
+      <div className='vertical search' style={{
+        height: !this.state.showTitle && this.state.searchText.length > 0 ? '100%' : 'auto'
+      }}>
         <div className='horizontal search-title'>
           <div className='search-border horizontal-center'>
             <ReactSVG path='./assets/images/ic_location_6d.svg' svgStyle={{ width: 15, height: 20 }}/>
@@ -78,30 +98,55 @@ class Home extends React.Component<Props, State> {
             />
           </div>
           {!this.state.showTitle &&
-          <span className='horizontal-center search-cancel-btn' onClick={this.allCancelOnClick}>取消</span>
-          }
+          <span className='horizontal-center search-cancel-btn' onClick={this.allCancelOnClick}>取消</span>}
         </div>
-        {
-          !this.state.showTitle && (
+        {!this.state.showTitle && (
           this.state.searchText.length > 0 ?
-            <div className='search-result'>
-              {this.renderAddressList()}
-            </div>
-            :
-            <div className='search-background'
-                 onClick={this.allCancelOnClick}>
-            </div>)
+            this.renderAddressList() :
+            <div className='search-background' onClick={this.allCancelOnClick}/>)
         }
       </div>
     )
   }
 
   /**
-   * 地址
+   * 地址列表
+   */
+  renderAddressList = () => {
+    return (
+      <div className='touch_scroll' style={{ maxWidth: '100%', flex: 1 }}>
+        <div className='vertical'>
+          {this.state.mapAddressList.map((item, index) => this.renderAddressListItem(item, index))}
+        </div>
+      </div>
+    )
+  }
+
+  /**
+   * 地址单条样式
+   */
+  renderAddressListItem = (item: AddressDetailBean, index: number) => {
+    return (
+      <div className='vertical' style={{ height: 61, width: '100%', backgroundColor: 'white' }}
+           onClick={() => this.addressOnClick(index)}>
+        <div className='vertical address-item'>
+          <span className='address-title text-nowrap' style={{
+            color: index === 0 ? '#000000' : '#a6a6a6',
+            maxWidth: '90%'
+          }}>{item.name}</span>
+          <span className='address-detail text-nowrap' style={{ maxWidth: '90%' }}>{item.address}</span>
+        </div>
+        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}/>
+      </div>
+    )
+  }
+
+  /**
+   * 我的收货地址
    */
   renderMyAddress = () => {
     return (
-      <div className='vertical' style={{ justifyContent: 'space-between' }}>
+      <div className='vertical' style={{ justifyContent: 'space-between', width: '100%' }}>
         <div className='horizontal' style={{ height: 40, width: '100%' }}>
           <div style={{ paddingLeft: 20 }}>我的收货地址</div>
         </div>
@@ -138,7 +183,7 @@ class Home extends React.Component<Props, State> {
    */
   renderNearbyAddress = () => {
     return (
-      <div className='vertical' style={{ justifyContent: 'space-between' }}>
+      <div className='vertical' style={{ justifyContent: 'space-between', width: '100%' }}>
         <div className='horizontal' style={{ height: 40, width: '100%' }}>
           <div style={{ paddingLeft: 20 }}>附近地址</div>
         </div>
@@ -167,7 +212,6 @@ class Home extends React.Component<Props, State> {
               <span className='vertical-center' style={{ color: '#0084e7' }}>重新定位</span>
             </div>
           </div>
-
           }
         </div>
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
@@ -176,28 +220,15 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
-   * 地址列表
+   * 更多地址
    */
-  renderAddressList = () => {
+  renderMoreAddress = () => {
     return (
-      <div className='vertical' style={{ marginTop: 40, width: '100%', flex: 1 }}>
-        {this.state.mapAddressList.map((item, index) => this.renderAddressListItem(item, index))}
-      </div>
-    )
-  }
-
-  /**
-   * 地址单条样式
-   */
-  renderAddressListItem = (item: AddressDetailBean, index: number) => {
-    return (
-      <div className='vertical' style={{ height: 61, width: '100%' }}
-           onClick={() => this.addressOnClick(index)}>
-        <div className='vertical address-item'>
-          <span className='address-title text-nowrap'>{item.name}</span>
-          <span className='address-detail text-nowrap'>{item.address}</span>
+      <div style={{ width: '100%' }}>
+        <div className='horizontal more-address'>
+          <span>更多地址</span>
+          <ReactSVG path=''/>
         </div>
-        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
       </div>
     )
   }
@@ -250,6 +281,11 @@ class Home extends React.Component<Props, State> {
    */
   addressOnClick = (index: number) => {
     console.log('点击地址' + index)
+    if (index > 0) {
+      Toast.info('该地址不在配送范围内', 2, null, false)
+    } else {
+      Toast.info('选择该收货地址', 2, null, false)
+    }
   }
 
   /**
@@ -291,14 +327,12 @@ class Home extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{ backgroundColor: '#efeff5', height: '100vh', width: '100%' }}>
+      <div className='vertical' style={{ backgroundColor: '#efeff5', height: '100%', width: '100%' }}>
         {this.state.showTitle &&
         <Head title={'选择收货地址'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'}
               rightIconOnClick={this.addAddressOnClick} showRightIcon={true}/>
         }
-        {this.renderSearch()}
-        {this.renderMyAddress()}
-        {this.renderNearbyAddress()}
+        {this.renderContent()}
       </div>
     )
   }

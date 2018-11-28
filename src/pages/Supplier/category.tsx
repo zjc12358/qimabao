@@ -29,7 +29,7 @@ class Supplier extends React.Component<Props, State> {
    */
   renderList = () => {
     return (
-      <div className='vertical' style={{ marginTop: 40 }}>
+      <div className='vertical' style={{ marginTop: 40, flex: 1 }}>
         {this.props.categoryItemData.map((item, index) => this.renderListItem(item, index))}
       </div>
     )
@@ -72,15 +72,19 @@ class Supplier extends React.Component<Props, State> {
   /**
    * 二级列表单列
    */
-  renderChildListItem = () => {
+  renderChildListItem = (index: number) => {
     return (
-      <div></div>
+      <div>
+        <div>
+          {}
+        </div>
+      </div>
     )
   }
 
   public render () {
     return (
-      <div>
+      <div className='vertical'>
         <Head titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'} title={'分类设置'}
               rightIconOnClick={null} showRightIcon={false}/>
         {this.renderList()}
