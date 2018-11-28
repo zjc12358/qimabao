@@ -8,6 +8,7 @@ import MenuSelect from './menuSelect'
 import { MenuBean } from '@datasources/MenuBean'
 import { ProductBean } from '@datasources/ProductBean'
 import ReactSVG from 'react-svg'
+import '../../assets/css/GeneralStyle.less'
 
 export interface Props {
   selectMenu: boolean
@@ -29,9 +30,9 @@ class Order extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      <div style={{
-        marginTop: 40,
-        width: '100%'
+      <div className='bigContent' style={{
+        width: '100%',
+        flex: 1
       }}>
         {this.props.selectMenu === true ? <MenuSelect/> : <MenuUpload/>}
       </div>
@@ -61,11 +62,7 @@ class Order extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+      <div className='bigContainer' style={{
         backgroundColor: '#efeff5',
         height: '100%'
       }}>
