@@ -42,7 +42,7 @@ class Withdrawal extends React.Component<Props, State> {
       <List.Item
         arrow='horizontal'
         className='brank'
-        style={{ marginTop: 55 }}
+        style={{ marginTop: 15 }}
         onClick={this.toggleDrawer(true)}
       >
         <div className={'brankWrap'}>
@@ -117,12 +117,42 @@ class Withdrawal extends React.Component<Props, State> {
     return (
       <div>
         <Drawer
-          style={{ backgroundColor: 'black' }}
           anchor='bottom'
           open={this.state.openDrawer}
           onClose={this.toggleDrawer(false)}
         >
-          122212112
+          <div
+            style={{ backgroundColor: 'white' }}
+            tabIndex={0}
+            role='button'
+            // onClick={this.toggleDrawer(false)}
+            onKeyDown={this.toggleDrawer(false)}
+          >
+            <div className='brankDrawer'>
+              <div style={{ height: '44px' }}>
+                <ReactSVG
+                  onClick={this.toggleDrawer(false)}
+                  style={{ position: 'absolute',left: 15 }}
+                  svgClassName='drawerDeleteIcon'
+                  path='./assets/images/Supplier/drawerDelete.svg'
+                />
+                选择银行卡
+              </div>
+              <List.Item
+                className='drawerItem'
+              >
+                <img src='./assets/images/SupplierTest/bank.png' alt=''/>
+                中国工商银行(0587)快捷
+              </List.Item>
+              <List.Item
+                arrow='horizontal'
+                className='drawerItem'
+              >
+                <img src='./assets/images/Supplier/brankCard.svg' alt=''/>
+                添加银行卡
+              </List.Item>
+            </div>
+          </div>
         </Drawer>
       </div>
     )
@@ -142,6 +172,7 @@ class Withdrawal extends React.Component<Props, State> {
         {this.renderWidthdwral()}
         {this.renderPrompt(90,'提现须向第三方交纳一定金额的手续费，提现到账时间3-7个工作日，请耐心等待。如超过7个工作日仍未到账请联系客服。')}
         {this.renderMakeSure()}
+        {this.renderBottomDrawer()}
       </div>
     )
   }
