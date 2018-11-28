@@ -341,8 +341,8 @@ class History extends React.Component<Props, State> {
   renderCartFooter = () => {
     return (
       <div className= 'settlement' style={{
-        position: 'fixed',
-        bottom: 50,
+        // position: 'absolute',
+        // bottom: 50,
         height: 50,
         display: 'flex',
         backgroundColor: 'white',
