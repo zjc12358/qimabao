@@ -15,6 +15,7 @@ export interface Props {
   backgroundColor: string, // 背景颜色
   rightIconOnClick: any, // 右边点击事件
   rightIconContent?: any // 右边组件
+  showLine?: boolean // 是否显示分割线
 }
 
 interface State {
@@ -91,49 +92,54 @@ class Head extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{
-        // top: '0',
-        height: 40,
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100vw',
-        backgroundColor: this.props.backgroundColor,
-        zIndex: 100
-      }}>
+      <div className='vertical'>
         <div style={{
-          width: 50,
-          paddingLeft: 20,
+          // top: '0',
+          height: 40,
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center'
-        }} onClick={() => this.leftIconOnClick()}>
-          {this.props.showLeftIcon &&
-          <div>
-            {this.leftIcon(this.props.leftIconColor)}
-          </div>}
-        </div>
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          color: (this.checkColor(this.props.titleColor)),
-          fontSize: 18
+          width: '100vw',
+          backgroundColor: this.props.backgroundColor,
+          zIndex: 100
         }}>
-          {this.props.title}
+          <div style={{
+            width: 50,
+            paddingLeft: 20,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }} onClick={() => this.leftIconOnClick()}>
+            {this.props.showLeftIcon &&
+            <div>
+              {this.leftIcon(this.props.leftIconColor)}
+            </div>}
+          </div>
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: (this.checkColor(this.props.titleColor)),
+            fontSize: 18
+          }}>
+            {this.props.title}
+          </div>
+          <div style={{
+            width: 50,
+            display: 'flex',
+            paddingRight: 20,
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center'
+          }} onClick={() => this.rightIconOnClick()}>
+            {this.props.showRightIcon && <div>{this.props.rightIconContent}</div>}
+          </div>
         </div>
-        <div style={{
-          width: 50,
-          display: 'flex',
-          paddingRight: 20,
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          alignItems: 'center'
-        }} onClick={() => this.rightIconOnClick()}>
-          {this.props.showRightIcon && <div>{this.props.rightIconContent}</div>}
-        </div>
+        {this.props.showLine ?
+          <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
+          : null}
       </div>
     )
   }
