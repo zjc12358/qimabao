@@ -204,7 +204,7 @@ class History extends React.Component<Props, State> {
   }
   public render () {
     return (
-      <div>
+      <div className='bigContainer'>
         <Head
           title='修改供应商'
           backgroundColor='#0084e7'
@@ -214,7 +214,7 @@ class History extends React.Component<Props, State> {
           rightIconOnClick={ () => { console.log('确认修改') } }
         >
         </Head>
-        <div style={{ paddingTop: 40 }}>
+        <div className='touch_scroll bigContent'>
           {this.state.foodList.map((i, foodListIndex) => (
             <div>
               <div style={{ height: 15, background: '#f5f5f5' }}></div>
