@@ -295,14 +295,13 @@ class Home extends React.Component<Props, State> {
     let userAgent = window.navigator.userAgent
     return (
       <div className='vertical' style={{
-        height: '100vh',
+        height: '100%',
         backgroundColor: 'white'
       }}>
         {this.renderHead()}
         <div className='touch_scroll'
              style={{ paddingTop: 50 }}>
           {this.renderCarousel()}
-          {userAgent}
         </div>
       </div>
     )
