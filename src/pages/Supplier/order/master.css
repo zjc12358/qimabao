@@ -1,0 +1,49 @@
+@import '../../../assets/css/font.css';
+@import '../../../assets/css/flex.css';
+/** tab 样式调整 **/
+.oBar .am-tabs-default-bar-tab-active{
+  color: #0084e7;
+  background-color: #ffffff;
+}
+
+.oBar .am-tabs-default-bar-tab{
+  border-bottom: 1px solid #ffffff;
+  border-top: none;
+  border-left: 1px solid #ffffff;
+  border-right: 0;
+}
+
+.oBar .am-tabs-default-bar-content{
+  color: #000;
+  background-color: #ffffff;
+  border-right: 1px solid #ffffff;
+}
+.oBar .am-tabs-default-bar{
+  height: 44px;
+  border-bottom: 1px solid #eeeeee;
+}
+.oBar .am-tabs-default-bar-underline{
+  border: 2px solid #0084e7;
+  width: 17% !important;
+  margin-left: 1.5%;
+}
+/** 按钮：立即发货 **/
+.buttonDelivery {
+  white-space: nowrap;
+  height: 28px;
+  border-radius: 5px;
+  border: 1px solid #0084E7;
+  background-color: #fff;
+  color: #0084E7;
+  font-size: 14px;
+}
+/** 按钮：查看详情 **/
+.buttonViewDetail {
+  white-space: nowrap;
+  height: 28px;
+  border-radius: 5px;
+  border: 1px solid #0084E7;
+  background-color: #0084E7;
+  color: #ffffff;
+  font-size: 14px;
+}

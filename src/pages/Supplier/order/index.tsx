@@ -24,9 +24,9 @@ class Supplier extends React.Component<Props, State> {
     this.state = {
       getEmpty: true,
       data: [
-        { code: 'TQ12856987543', status: '已处理', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: 'TQ12856987543', status: '待处理', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: 'TQ12856987543', status: '已关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
+        { code: 'SP5685698754382', status: '待付款', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
+        { code: 'SP4556856987543', status: '待发货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
+        { code: 'SP2899898754356', status: '待收货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
       ]
     }
   }
@@ -35,19 +35,21 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderContent = () => {
     const tabs = [
-      { title: '全部退款' },
-      { title: '待处理' },
-      { title: '已处理' },
-      { title: '已关闭' }
+      { title: '全部' },
+      { title: '待付款' },
+      { title: '待发货' },
+      { title: '待收货' },
+      { title: '待评价' }
     ]
     return(
-      <div className={'bar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
+      <div className={'oBar'} style={{ color: '#858585' }}>
+        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={5} />}
         >
           {this.state.getEmpty ? this.renderAll : this.renderNone}
           {this.state.getEmpty ? this.renderObligation : this.renderNone}
           {this.state.getEmpty ? this.renderDispatching : this.renderNone}
           {this.state.getEmpty ? this.renderReceived : this.renderNone}
+          {this.state.getEmpty ? this.renderEvaluate : this.renderNone}
         </Tabs>
       </div>
     )
@@ -89,16 +91,16 @@ class Supplier extends React.Component<Props, State> {
       }}>
         <div className={'Segment_line2'} />
         <div className={'flex-space-between-row-center'} style={{ height: 40,padding: '5px' }}>
-          <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>退单号：{i.code}</div>
-          <div className={'flex-center-row-center'} style={font}>{i.status}</div>
+          <div className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：{i.code}</div>
+          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{i.status}</div>
         </div>
         <div className={'Segment_line2'} />
         {this.renderItemDetail()}
-        <div className={'flex-space-between-row-center'}
-             style={{ padding: '10px 16px',borderTop: '1px solid #e5e5e5',borderBottom: '1px solid #e5e5e5' }}>
-          <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：SP057899444220</span>
+        {this.renderItemDetail()}
+        <div className={'flex-flex-end-row-center'}
+             style={{ padding: '20px 16px',borderTop: '1px solid #e5e5e5' ,borderBottom: '1px solid #e5e5e5' }}>
           <div>
-            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>退款金额</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>共4件商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合计</span>
             <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>45.00</span></span>
           </div>
         </div>
@@ -120,59 +122,55 @@ class Supplier extends React.Component<Props, State> {
             maxHeight: '100%'
           }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
         </div>
-        <div className={'flex-space-between-column-flex-start'} style={{ position: 'absolute', left: 112, height: 70 }}>
-          <div className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>现摘新鲜野生荠菜 蔬菜 1.5kg</div>
-          <div>
-            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>实收金额：</span>
-            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>22.50</span></span>
+        <div className={'flex-space-between-column-flex-start'} style={{ width: window.innerWidth - 116,position: 'absolute', left: 100, height: 70 }}>
+          <div className={'flex-space-between-row-flex-start'} style={{ width: '100%' }}>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#000',width: '70%',whiteSpace: 'normal' }}>现摘新鲜野生荠菜 蔬菜 1.5kg现</div>
+            <div className={'flex-space-between-column-flex-end'} style={{ width: '20%' }}>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>22.50</span></span>
+              <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>x2</span>
+            </div>
           </div>
           <div>
-            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>申请时间：2018-10-10 15:11:08</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>下单时间：2018-10-10 15:11:08</span>
           </div>
-          <div className={'flex-flex-start-row-center'}>
-            <span className={'commonFont'} style={{ fontSize: 12, color: '#333' }}>查看此退款单所有物品</span>
-            <ReactSVG path='../../../../assets/images/Supplier/down.svg' svgStyle={{ width: 15, height: 15,paddingLeft: 3,paddingTop: 3 }}/>
+          <div className={'flex-center-row-center'}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 'auto', height: 'auto', padding: '3px 5px',backgroundColor: '#fff4f6',borderRadius: 10,marginRight: 5 }}>
+              <span className={'commonFont'} style={{ fontSize: 10, color: '#ff9900' }}>满100减15</span>
+            </div>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 'auto', height: 'auto', padding: '3px 5px',backgroundColor: '#fff4f6',borderRadius: 10,marginRight: 5 }}>
+              <span className={'commonFont'} style={{ fontSize: 10, color: '#ff9900' }}>满50减3</span>
+            </div>
           </div>
         </div>
       </div>
     )
   }
   /**
-   * 退货退款分支：立即处理或者查看详情
+   * 订单分支：立即处理 ，查看详情
    */
   public renderItemStatus = (i,index) => {
-    let button: any = null
-    let buttonTitle: any = null
-    let title: any = null
-    let onClick: any = null
+    let showDeal: boolean = false
     switch (i.status) {
-      case '已处理':
-        button = 'buttonViewDetail'
-        buttonTitle = '查看详情'
-        title = '仅退款，退款成功'
-        onClick = this.viewResultOnclick
+      case '待付款':
+        showDeal = false
         break
-      case '待处理':
-        button = 'buttonProcessing'
-        buttonTitle = '立即处理'
-        title = '退货退款，待处理'
-        onClick = this.viewDetailOnclick
+      case '待发货':
+        showDeal = true
         break
-      case '已关闭':
-        button = 'buttonViewDetail'
-        buttonTitle = '查看详情'
-        title = '退货失败'
-        onClick = this.viewResultOnclick
+      case '待收货':
+        showDeal = false
+        break
+      case '待评价':
+        showDeal = false
         break
     }
     return(
-      <div className={'flex-space-between-row-center'}
-           style={{ height: 40,backgroundColor: '#fafafa', paddingLeft: 5, paddingRight: 5 }}>
-        <div className={'flex-flex-start-row-center'}>
-          <ReactSVG path='../../../../assets/images/Supplier/refund.svg' svgStyle={{ width: 30, height: 30 }}/>
-          <span className={'commonFont'} style={{ fontSize: 14, color: '#666' }}>{title}</span>
-        </div>
-        <button className={button} onClick={onClick}>{buttonTitle}</button>
+      <div className={'flex-flex-end-row-center'}
+           style={{ height: 40,backgroundColor: '#fafafa',padding: '0 5px' }}>
+        <button className={'buttonViewDetail'} onClick={this.viewResultOnclick}>查看详情</button>
+        {showDeal === true ? <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.viewDetailOnclick}>立即发货</button> : ''}
       </div>
     )
   }
@@ -225,6 +223,22 @@ class Supplier extends React.Component<Props, State> {
     )
   }
   /**
+   * 待评价
+   */
+  public renderEvaluate = () => {
+    return(
+      <div style={{
+        paddingTop: 20
+      }}>
+        {this.state.data.map((i, index) => (
+          <div>
+            {this.renderItem(i, index)}
+          </div>
+        ))}
+      </div>
+    )
+  }
+  /**
    * 空
    */
   public renderNone = () => {
@@ -248,7 +262,7 @@ class Supplier extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Head title={'退款售后'} titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'} leftIconColor={'white'}/>
+        <Head title={'订单管理'} titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'} leftIconColor={'white'}/>
         {this.renderContent()}
       </div>
     )

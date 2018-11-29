@@ -43,7 +43,7 @@
       ],
       "@assets/*": [
         "src/assets/*"
-      ],
+      ]
     }
   },
   "include": [

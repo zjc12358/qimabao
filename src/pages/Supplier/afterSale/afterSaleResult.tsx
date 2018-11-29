@@ -33,44 +33,44 @@ class Supplier extends React.Component<Props, State> {
     return(
       <div style={{
         backgroundColor: '#ffffff',
-        width: '100%',
-        paddingTop: 40
+        width: '100%'
       }}>
-        <div className={'refundInfoWrap'}>
+        <div className={'flex-space-between-column-flex-start'} style={{ height: 100,padding: 20 }}>
           <div className={'flex-flex-start-row-center'}>
             <ReactSVG path='../../../../assets/images/Supplier/success-wh.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span className={'refundResult'}>退款成功</span>
+            <span className={'commonFont'} style={{ fontSize: 18, color: '#000',marginLeft: 10 }}>退款成功</span>
           </div>
           <div>
-            <span className={'refundState'}>退款金额：</span>
-            <span className={'refundNumber'}>￥{this.state.data.price}</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#666' }}>退款金额：</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥{this.state.data.price}</span>
           </div>
           <div>
-            <span className={'refundState'}>退款时间：</span>
-            <span className={'refundNumber'}>{this.state.data.dateTime}</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#666' }}>退款时间：</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>{this.state.data.dateTime}</span>
           </div>
         </div>
-        <div className={'negotiationState'}>
-          <div className={'negotiationStateTitle'}>
-            <span className={'consultationDetails'}>协商详情</span>
+        <div className={'flex-space-between-column-flex-start'}
+             style={{ paddingLeft: 20,paddingBottom: 20,borderTop: '1px solid #ccc',borderBottom: '1px solid #ccc' }}>
+          <div className={'flex-flex-start-row-flex-start'} style={{ padding: '16px 0px',borderBottom: '1px solid #ccc',width: '100%' }}>
+            <span className={'commonFont'} style={{ fontSize: 18, color: '#000' }}>协商详情</span>
           </div>
-          <div className={'negotiationStateContentWrap'}>
-            <div className={'negotiationStateContent'}>
+          <div style={{ padding: '16px 0px' }}>
+            <div className={'flex-flex-start-row-center'}>
               <ReactSVG path='../../../../assets/images/Supplier/saler.svg' svgStyle={{ width: 30, height: 30 }}/>
-              <span className={'negotiationStateFont'}>商家同意退款</span>
+              <span className={'commonFont'} style={{ fontSize: 16, color: '#000',paddingLeft: 10 }}>商家同意退款</span>
             </div>
-            <div className={'messageWrap'}>
-              <span className={'number'} style={{ paddingBottom: 5 }}>留言：</span>
-              <span className={'negotiationContent'} style={{ width: '100%' }}>曾经的年少痴狂，曾经的波澜壮阔，曾经的肆无忌惮，曾经的飞扬跋扈，结果，在某年某月的某个黄昏，突然发现，那只不过是梦一场。
+            <div className={'flex-center-column-flex-start'} style={{ padding: '0px 16px 16px 40px',height: 'auto' }}>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#333',paddingBottom: 5 }} >留言：</span>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#666',width: '100%',whiteSpace: 'normal' }}>曾经的年少痴狂，曾经的波澜壮阔，曾经的肆无忌惮，曾经的飞扬跋扈，结果，在某年某月的某个黄昏，突然发现，那只不过是梦一场。
 蓦然回首，那场梦里，隐藏着多少辛酸和无奈，我们不愿再度思索。因为，梦醒了，留给我们的只是淡然一笑。</span>
             </div>
-            <div className={'negotiationStateContent'}>
+            <div className={'flex-flex-start-row-center'}>
               <ReactSVG path='../../../../assets/images/Supplier/buyer.svg' svgStyle={{ width: 30, height: 30 }}/>
-              <span className={'negotiationStateFont'}>买家申请退款</span>
+              <span className={'commonFont'} style={{ fontSize: 16, color: '#000',paddingLeft: 10 }}>买家申请退款</span>
             </div>
-            <div className={'messageWrap'}>
-              <span className={'number'} style={{ paddingBottom: 5 }}>留言：</span>
-              <span className={'negotiationContent'} style={{ width: '100%' }}>人世三苦:1.你得不到;
+            <div className={'flex-center-column-flex-start'} style={{ padding: '0px 16px 16px 40px',height: 'auto' }}>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#333',paddingBottom: 5 }} >留言：</span>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#666',width: '100%',whiteSpace: 'normal' }}>人世三苦:1.你得不到;
 2.你付出了许多代价,得到了,却不过如此;
 3.你轻易地放弃了.后来却发现.原来它在你生命中是那么重要.</span>
             </div>
@@ -85,7 +85,7 @@ class Supplier extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Head title={'退款状态'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'} leftIconColor={'grey'}/>
+        <Head title={'退款状态'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )

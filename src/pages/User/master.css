@@ -1,31 +1,35 @@
 /** 可以自适配屏幕宽度的分割线 **/
-.Segment_line{
+.Segment_line {
   height: 1px;
   border-top: 1px solid #e5e5e5;
   text-align: center;
-  margin-left:12px;
+  margin-left: 12px;
   margin-right: 11px;
 }
-.Segment_line2{
+
+.Segment_line2 {
   height: 1px;
   border-top: 1px solid #e5e5e5;
   text-align: center;
 }
-.Segment_line3{
+
+.Segment_line3 {
   height: 2px;
   border-top: 2px solid #e5e5e5;
   text-align: center;
 }
-.Segment_line4{
+
+.Segment_line4 {
   height: 1px;
   text-align: center;
-  margin-left:12px;
+  margin-left: 12px;
   margin-right: 11px;
   z-index: 100;
   background-color: #e5e5e5;
 }
+
 /** 短信验证码输入框样式 **/
-.Verification{
+.Verification {
   background-color: transparent !important;
   width: 35px;
   border-bottom: 1px solid #7b7b7b;
@@ -33,10 +37,12 @@
   border-left: 0;
   border-right: 0;
 }
-.Verification .fake-input{
+
+.Verification .fake-input {
   font-size: 25px !important;
   text-align: center !important;
 }
+
 /** 验证码输入框样式 **/
 .passContainer {
   border: 1px solid #ccc;
@@ -48,6 +54,7 @@
   position: relative;
   background-color: #ffffff;
 }
+
 .passItem {
   width: 16.66666%;
   height: 100%;
@@ -55,9 +62,11 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 .passItem:not(:last-child) {
   border-right: inherit;
 }
+
 .passWordInput {
   width: 100%;
   height: 100%;
@@ -81,15 +90,21 @@
   margin-right: 10px;
   border: 1px solid;
 }
-.passWordInput{}
-.am-list-item .am-input-control input{
+
+.passWordInput {
+}
+
+.am-list-item .am-input-control input {
 
 }
-.passWordInput input{
+
+.passWordInput input {
 
 }
+
 .passItem1:not(:last-child) {
 }
+
 .passContainer1 {
   width: 100%;
   height: 50px;
@@ -98,12 +113,13 @@
   position: relative;
   background-color: transparent;
 }
+
 .passWordInput1 {
   width: 100%;
   height: 100%;
   background-color: transparent;
-  color:transparent;
-  text-shadow:0 0 0 #181818;
+  color: transparent;
+  text-shadow: 0 0 0 #181818;
   position: absolute;
   border: none;
   outline: none;
@@ -114,6 +130,7 @@
   text-align: left;
   text-overflow: initial;
 }
+
 .editpasswordinput {
   width: 80%;
   height: 40px;
@@ -125,6 +142,7 @@
   font-family: "courier new", sans-serif;
   text-align: left;
 }
+
 .editpasswordinput::-webkit-input-placeholder {
   color: #b6b4bf;
   opacity: 1;
@@ -154,10 +172,21 @@
 }
 
 /** 字体样式 **/
-.p1{font:26px Pingfang SC}
-.p2{font:300 26px Pingfang SC}
-.p3{font:bold 26px Pingfang SC}
-.p4{font:900 26px Pingfang SC}
+.p1 {
+  font: 26px Pingfang SC
+}
+
+.p2 {
+  font: 300 26px Pingfang SC
+}
+
+.p3 {
+  font: bold 26px Pingfang SC
+}
+
+.p4 {
+  font: 900 26px Pingfang SC
+}
 
 /** 添加银行卡样式 **/
 
@@ -169,24 +198,28 @@
   float: left;
 }
 
-.addressInput::-webkit-input-placeholder{
-  color: #b6b6b6;
-}
-.addressInput::-moz-placeholder{   /* Mozilla Firefox 19+ */
-  color: #b6b6b6;
-}
-.addressInput:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
-  color: #b6b6b6;
-}
-.addressInput:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+.addressInput::-webkit-input-placeholder {
   color: #b6b6b6;
 }
 
-.BankCode{
+.addressInput::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #b6b6b6;
+}
+
+.addressInput:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color: #b6b6b6;
+}
+
+.addressInput:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #b6b6b6;
+}
+
+.BankCode {
   background-color: transparent !important;
   padding: 0
 }
-.BankCode input{
+
+.BankCode input {
   font-size: 17px !important;
 }
 
@@ -196,33 +229,39 @@
   justify-content: center;
   flex-direction: row;
 }
+
 .flex-column-center {
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
+
 .flex-column-center-p1510 {
   display: flex;
   justify-content: center;
   flex-direction: column;
   padding: 15px 10px;
 }
+
 .flex-row-space-between {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
 }
+
 .flex-center-row-center {
   display: flex;
   justify-content: center;
   flex-direction: row;
   align-items: center;
 }
+
 .flex-row-space-around {
   display: flex;
   justify-content: space-around;
   flex-direction: row;
 }
+
 .flex-row-space-between-p1510 {
   display: flex;
   justify-content: space-between;
@@ -230,6 +269,7 @@
   padding: 15px 10px;
   background-color: #ffffff;
 }
+
 .flex-center-row-space-between-p1510 {
   display: flex;
   justify-content: space-between;
@@ -240,39 +280,49 @@
 }
 
 /** tab 样式调整 **/
-.am-tabs-default-bar-tab-active{
+.am-tabs-default-bar-tab-active {
   background-color: #ffffff;
 }
 
-.am-tabs-default-bar-tab{
+.am-tabs-default-bar-tab {
   border-bottom: 1px solid #ffffff;
   border-top: 2px solid #ffffff;
   border-left: 1px solid #ffffff;
   border-right: 0;
 }
 
-.am-tabs-default-bar-content{
+.am-tabs-default-bar-content {
   color: #000;
   background-color: #f2f2f2;
   border-right: 1px solid #ffffff;
 }
-.am-tabs-default-bar{
+
+.am-tabs-default-bar {
   height: 40px;
 }
-.am-tabs-default-bar-underline{
+
+.am-tabs-default-bar-underline {
   border: none;
 }
 
 html:not([data-scale]) .am-tabs-default-bar-top .am-tabs-default-bar-tab::after {
   height: 0px;
 }
+
 /** 动画移动40px**/
-.a{
+.a {
   animation: move 0.3s ease-out forwards;
 }
-@keyframes move{
-  0%{transform: translateY(0px);opacity: 1;}
-  100%{transform: translateY(40px);opacity: 1;}
+
+@keyframes move {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(40px);
+    opacity: 1;
+  }
 }
 
 

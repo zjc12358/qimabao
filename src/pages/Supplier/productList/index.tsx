@@ -17,6 +17,7 @@ interface State {
   inSale: any
   soldOut: any
   inStore: any
+  lowerShelf: any
   getEmpty: boolean
   refresh: string
 }
@@ -45,6 +46,12 @@ class Supplier extends React.Component<Props, State> {
         { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
         { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
       ],
+      lowerShelf: [
+        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
+        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' },
+        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
+        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
+      ],
       refresh: 'refresh'
     }
   }
@@ -55,15 +62,17 @@ class Supplier extends React.Component<Props, State> {
     const tabs = [
       { title: '出售中' },
       { title: '已售完' },
-      { title: '仓库中' }
+      { title: '仓库中' },
+      { title: '已下架' }
     ]
     return(
-      <div className={'gBar'} style={{ color: '#858585',paddingTop: 40 }}>
-        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={3} />}
+      <div className={'gBar'} style={{ color: '#858585' }}>
+        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
           {this.state.getEmpty ? this.renderInSale : this.renderNone}
           {this.state.getEmpty ? this.renderSoldOut : this.renderNone}
           {this.state.getEmpty ? this.renderInStore : this.renderNone}
+          {this.state.getEmpty ? this.renderLowerShelf : this.renderNone}
         </Tabs>
       </div>
     )
@@ -117,6 +126,22 @@ class Supplier extends React.Component<Props, State> {
     )
   }
   /**
+   * 仓库中
+   */
+  public renderLowerShelf = () => {
+    return(
+      <div style={{
+        paddingTop: 20
+      }}>
+        {this.state.lowerShelf.map((i, index) => (
+          <div>
+            {this.renderItem(i, index,'lowerShelf')}
+          </div>
+        ))}
+      </div>
+    )
+  }
+  /**
    * 空
    */
   public renderNone = () => {
@@ -131,14 +156,11 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderItem = (i, index,type) => {
     return(
-      <div style={{
-        backgroundColor: '#ffffff',
-        width: '100%',
-        float: 'right'
-      }}>
+      <div style={{ backgroundColor: '#ffffff', width: '100%', float: 'right' }}>
         <div className={'Segment_line2'} />
         {this.renderItemDetail(i,index)}
-        <div className={'footProductWrap'}>
+        <div className={'flex-space-between-row-center'}
+             style={{ padding: '5px 16px', borderTop: '1px solid #e5e5e5',borderBottom: '1px solid #e5e5e5' }}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='../../../../assets/images/Supplier/edit.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }}>编辑</span>
@@ -147,7 +169,10 @@ class Supplier extends React.Component<Props, State> {
             <ReactSVG path='../../../../assets/images/Supplier/lowerShelf.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }}>{type === 'inSale' ? '下架' : '上架'}</span>
           </div>
-          <div className={'flex-center-row-center'} onClick={type === 'inSale' ? () => this.inSaleDeleteOnclick(index) : () => this.inStoreDeleteOnclick(index)}>
+          <div className={'flex-center-row-center'}
+               onClick={
+                 type === 'inSale' ? () => this.inSaleDeleteOnclick(index) :
+                 type === 'lowerShelf' ? () => this.lowerShelfDeleteOnclick(index) : () => this.inStoreDeleteOnclick(index)}>
             <ReactSVG path='../../../../assets/images/Supplier/delete.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }}>删除</span>
           </div>
@@ -165,15 +190,8 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderItemDetail = (i,index) => {
     return(
-      <div style={{
-        padding: 16,
-        height: 100,
-        position: 'relative'
-      }}>
-        <div style={{
-          position: 'absolute',
-          zIndex: 98
-        }}>
+      <div style={{ padding: 16, height: 100, position: 'relative' }}>
+        <div style={{ position: 'absolute', zIndex: 98 }}>
           <div style={{ width: 70, height: 70 }}><img style={{
             width: 'auto',
             height: 'auto',
@@ -181,22 +199,16 @@ class Supplier extends React.Component<Props, State> {
             maxHeight: '100%'
           }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
         </div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          position: 'absolute',
-          left: 112,
-          alignItems: 'flex-start',
-          height: 70
-        }}>
-          <div className={'refundNumber'} style={{ height: 32,paddingRight: 10 }}>现摘新鲜野生荠菜 蔬菜 1.5kg 现摘新鲜野生荠菜 蔬菜 1.5kg现摘新鲜野生</div>
-          <div>
-            <span className={'refund'}>售价：</span>
-            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>22.50</span></span>
+        <div className={'flex-space-between-column-flex-start'} style={{ position: 'absolute', left: 112, height: 70 }}>
+          <div className={'commonFont'} style={{ fontSize: 14, color: '#000',height: 32,paddingRight: 10,whiteSpace: 'normal' }} >
+            现摘新鲜野生荠菜 蔬菜 1.5kg 现摘新鲜野生荠菜 蔬菜 1.5kg现摘新鲜野生
           </div>
           <div>
-            <span className={'orderNumber'}>库存：{i.stock}kg&nbsp;&nbsp;&nbsp;&nbsp;销量：{i.value}kg</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }} >售价：</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }} >￥<span style={{ color: 'red' }}>22.50</span></span>
+          </div>
+          <div>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }} >库存：{i.stock}kg&nbsp;&nbsp;&nbsp;&nbsp;销量：{i.value}kg</span>
           </div>
         </div>
       </div>
@@ -207,21 +219,10 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderSoldItem = (i, index,type) => {
     return(
-      <div style={{
-        backgroundColor: '#ffffff',
-        width: '100%',
-        float: 'right'
-      }}>
+      <div style={{ backgroundColor: '#ffffff', width: '100%', float: 'right' }}>
         <div className={'Segment_line2'} />
-        <div style={{
-          padding: 16,
-          height: 100,
-          position: 'relative'
-        }}>
-          <div style={{
-            position: 'absolute',
-            zIndex: 98
-          }}>
+        <div style={{ padding: 16, height: 100, position: 'relative' }}>
+          <div style={{ position: 'absolute', zIndex: 98 }}>
             <div style={{ width: 70, height: 70 }}><img style={{
               width: 'auto',
               height: 'auto',
@@ -229,19 +230,15 @@ class Supplier extends React.Component<Props, State> {
               maxHeight: '100%'
             }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            position: 'absolute',
-            left: 112,
-            alignItems: 'flex-start',
-            height: 70
-          }}>
-            <div className={'refundNumber'} style={{ height: 32,paddingRight: 10 }}>现摘新鲜野生荠菜 蔬菜 1.5kg 现摘新鲜野生荠菜 蔬菜 1.5kg现摘新鲜野生</div>
-            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>12568.50</span></span>
+          <div className={'flex-space-between-column-flex-start'} style={{ position: 'absolute', left: 112, height: 70 }}>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#000',height: 32,paddingRight: 10,whiteSpace: 'normal' }} >
+              现摘新鲜野生荠菜 蔬菜 1.5kg 现摘新鲜野生荠菜 蔬菜 1.5kg现摘新鲜野生
+            </div>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }} >￥<span style={{ color: 'red' }}>12568.50</span></span>
             <div className={'flex-space-between-row-center'} style={{ width: '100%' }}>
-              <span className={'orderNumber'}>总量：{i.stock}kg&nbsp;&nbsp;&nbsp;&nbsp;单价：{i.value}元/kg</span>
+              <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }} >
+                总量：{i.stock}kg&nbsp;&nbsp;&nbsp;&nbsp;单价：{i.value}元/kg
+              </span>
               <ReactSVG path='../../../../assets/images/Supplier/right.svg' svgStyle={{ width: 15, height: 15 }}/>
             </div>
           </div>
@@ -258,6 +255,13 @@ class Supplier extends React.Component<Props, State> {
 
   public inSaleDeleteOnclick = (index) => {
     this.state.inSale.splice(index,1)
+    this.setState({
+      refresh: 'refresh'
+    })
+  }
+
+  public lowerShelfDeleteOnclick = (index) => {
+    this.state.lowerShelf.splice(index,1)
     this.setState({
       refresh: 'refresh'
     })
