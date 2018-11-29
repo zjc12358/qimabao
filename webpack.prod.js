@@ -175,8 +175,8 @@ const config = {
     new CopyWebpackPlugin(
       [
         {
-          from: path.join(__dirname, './public/img'),
-          to: path.join(outputPath, './img/'),
+          from: path.join(__dirname, './src/assets/images'),
+          to: path.join(outputPath, './assets/images'),
           // context: 'public'
         },
         {
