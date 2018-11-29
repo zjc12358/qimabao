@@ -17,6 +17,7 @@ interface State {
   inSale: any
   soldOut: any
   inStore: any
+  lowerShelf: any
   getEmpty: boolean
   refresh: string
 }
@@ -45,6 +46,12 @@ class Supplier extends React.Component<Props, State> {
         { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
         { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
       ],
+      lowerShelf: [
+        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
+        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' },
+        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
+        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
+      ],
       refresh: 'refresh'
     }
   }
@@ -55,15 +62,17 @@ class Supplier extends React.Component<Props, State> {
     const tabs = [
       { title: '出售中' },
       { title: '已售完' },
-      { title: '仓库中' }
+      { title: '仓库中' },
+      { title: '已下架' }
     ]
     return(
       <div className={'gBar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={3} />}
+        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
           {this.state.getEmpty ? this.renderInSale : this.renderNone}
           {this.state.getEmpty ? this.renderSoldOut : this.renderNone}
           {this.state.getEmpty ? this.renderInStore : this.renderNone}
+          {this.state.getEmpty ? this.renderLowerShelf : this.renderNone}
         </Tabs>
       </div>
     )
@@ -117,6 +126,22 @@ class Supplier extends React.Component<Props, State> {
     )
   }
   /**
+   * 仓库中
+   */
+  public renderLowerShelf = () => {
+    return(
+      <div style={{
+        paddingTop: 20
+      }}>
+        {this.state.lowerShelf.map((i, index) => (
+          <div>
+            {this.renderItem(i, index,'lowerShelf')}
+          </div>
+        ))}
+      </div>
+    )
+  }
+  /**
    * 空
    */
   public renderNone = () => {
@@ -145,7 +170,7 @@ class Supplier extends React.Component<Props, State> {
             <span style={{ paddingLeft: 5 }}>{type === 'inSale' ? '下架' : '上架'}</span>
           </div>
           <div className={'flex-center-row-center'}
-               onClick={type === 'inSale' ? () => this.inSaleDeleteOnclick(index) : () => this.inStoreDeleteOnclick(index)}>
+               onClick={type === 'inSale' ? () => this.inSaleDeleteOnclick(index) : type === 'lowerShelf' ? () => this.lowerShelfDeleteOnclick(index) : () => this.inStoreDeleteOnclick(index)}>
             <ReactSVG path='../../../../assets/images/Supplier/delete.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }}>删除</span>
           </div>
@@ -228,6 +253,13 @@ class Supplier extends React.Component<Props, State> {
 
   public inSaleDeleteOnclick = (index) => {
     this.state.inSale.splice(index,1)
+    this.setState({
+      refresh: 'refresh'
+    })
+  }
+
+  public lowerShelfDeleteOnclick = (index) => {
+    this.state.lowerShelf.splice(index,1)
     this.setState({
       refresh: 'refresh'
     })
