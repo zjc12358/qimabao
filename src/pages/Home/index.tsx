@@ -294,7 +294,7 @@ class Home extends React.Component<Props, State> {
   public render () {
     let userAgent = window.navigator.userAgent
     return (
-      <div className='vertical scroll' style={{
+      <div className='vertical' style={{
         height: '100vh',
         backgroundColor: 'white'
       }}>

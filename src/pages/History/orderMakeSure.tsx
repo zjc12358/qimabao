@@ -271,7 +271,7 @@ class History extends React.Component<Props, State> {
           showLeftIcon='true'
         >
         </Head>
-        <div style={{ width: '100%' }}>
+        <div className='touch_scroll bigContent' style={{ width: '100%' }}>
           <div>
             <div
               className='address'

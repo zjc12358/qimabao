@@ -179,18 +179,20 @@ class Supplier extends React.Component<Props, State> {
         </div>
         <div className={'headMenuWrap'}>
           <div className={'headMenuInnerWrap'}>
-            <div className={'flex-space-between-column-center'}>
+            <div className={'flex-space-between-column-center'}
+                 onClick={() => history().push('shop')}>
               <ReactSVG path='./assets/images/Supplier/shop.svg'
                         svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px', color: '#616670' }}>店铺</span>
             </div>
-            <div className={'flex-space-between-column-center'}
+            <div className={'flex-space-between-column-center' }
                  onClick={() => history().push('sProductList')}>
               <ReactSVG path='./assets/images/Supplier/commodity.svg'
                         svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px', color: '#616670' }}>商品</span>
             </div>
-            <div className={'flex-space-between-column-center'}>
+            <div className={'flex-space-between-column-center'}
+                 onClick={() => history().push('release')}>
               <ReactSVG path='./assets/images/Supplier/release.svg'
                         svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px', color: '#616670' }}>发布</span>
@@ -200,7 +202,8 @@ class Supplier extends React.Component<Props, State> {
                         svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px', color: '#616670' }}>订单</span>
             </div>
-            <div className={'flex-space-between-column-center'}>
+            <div className={'flex-space-between-column-center'}
+                 onClick={() => history().push('withdrawal')}>
               <ReactSVG path='./assets/images/Supplier/draw_cash.svg'
                         svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px', color: '#616670' }}>提现</span>

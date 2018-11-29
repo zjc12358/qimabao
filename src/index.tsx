@@ -10,9 +10,10 @@ const { store } = getStore()
 /* 供应商
  ============================================================================*/
 import Supplier from './pages/Supplier/index' /*首页*/
-import Shop from './pages/Supplier/shop' /*店铺*/
-import Release from './pages/Supplier/release'/*发布*/
-import Withdrawal from './pages/Supplier/withdrawal'/*提现*/
+import Shop from './pages/Supplier/shop/shop' /*店铺*/
+import Release from './pages/Supplier/release/release'/*发布*/
+import Withdrawal from './pages/Supplier/withdrawal/withdrawal'/*提现*/
+import Detection from './pages/Supplier/detection/index'/*检测申请*/
 import SupplierAfterSale from './pages/Supplier/afterSale/index' /*售后退款*/
 import AfterSaleDetail from './pages/Supplier/afterSale/afterSaleDetail' /*售后退款处理页面*/
 import AfterSaleResult from './pages/Supplier/afterSale/afterSaleResult' /*售后退款查询结果页面*/
@@ -86,6 +87,7 @@ ReactDOM.render(
         <Route path='/release' component={Release}/>
         <Route path='/withdrawal' component={Withdrawal} />
         <Route path='/sProductList' component={SProductList}/>
+        <Route path='/detection' component={Detection}/>
         /* 采购商
          ============================================================================*/
         <Route path='/NavBar' component={NavBar} />
