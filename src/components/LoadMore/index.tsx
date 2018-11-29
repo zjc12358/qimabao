@@ -125,17 +125,16 @@ class LoadMore extends React.Component<Props, State> {
         <div style={{ width: '100%' }} onTouchStart={this.touchStart.bind(this)} onTouchEnd={this.touchEnd.bind(this)}>
           {this.props.list}
         </div>
-        <div className='vertical'
-             style={{
-               height: 40,
-               justifyContent: 'center'
-             }}>
+        <div className='vertical-center'
+             style={{ height: 40, width: '100%' }}>
+          <span className='horizontal-center' style={{ width: '100%', height: '100%' }}>
           {
             this.props.listData !== null && this.props.listData !== undefined &&
-            !this.props.hasMore ? <span>到底了</span> :
-              this.props.listData.length > 0 ? !this.props.isLoading ? <span>上拉加载更多</span> :
-                <span>加载中...</span> : <span>暂无数据</span>
+            !this.props.hasMore ? '到底了' :
+              this.props.listData.length > 0 ? !this.props.isLoading ? '上拉加载更多' :
+                '加载中...' : '暂无数据'
           }
+          </span>
         </div>
       </div>
     )

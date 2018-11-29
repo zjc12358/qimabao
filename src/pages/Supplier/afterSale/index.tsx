@@ -15,6 +15,7 @@ export interface Props {
 interface State {
   data: any
   getEmpty: boolean
+  loading: boolean
 }
 
 class Supplier extends React.Component<Props, State> {
@@ -23,6 +24,7 @@ class Supplier extends React.Component<Props, State> {
     super(props)
     this.state = {
       getEmpty: true,
+      loading: true,
       data: [
         { code: 'TQ12856987543', status: '已处理', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
         { code: 'TQ12856987543', status: '待处理', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
@@ -56,6 +58,7 @@ class Supplier extends React.Component<Props, State> {
    * 全部
    */
   public renderAll = () => {
+    if (this.state.loading) return
     return(
       <div style={{
         paddingTop: 20
@@ -180,6 +183,7 @@ class Supplier extends React.Component<Props, State> {
    * 待付款
    */
   public renderObligation = () => {
+    if (this.state.loading) return
     return(
       <div style={{
         paddingTop: 20
@@ -196,6 +200,7 @@ class Supplier extends React.Component<Props, State> {
    * 待配送
    */
   public renderDispatching = () => {
+    if (this.state.loading) return
     return(
       <div style={{
         paddingTop: 20
@@ -212,6 +217,7 @@ class Supplier extends React.Component<Props, State> {
    * 待收货
    */
   public renderReceived = () => {
+    if (this.state.loading) return
     return(
       <div style={{
         paddingTop: 20
@@ -242,7 +248,14 @@ class Supplier extends React.Component<Props, State> {
   public viewResultOnclick = () => {
     history().push('/afterSaleResult')
   }
-
+  public componentDidMount () {
+    setInterval(
+      () => this.setState({
+        loading: false
+      }),
+      300
+    )
+  }
   public render () {
     return (
       <div style={{
