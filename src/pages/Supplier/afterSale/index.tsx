@@ -41,7 +41,7 @@ class Supplier extends React.Component<Props, State> {
       { title: '已关闭' }
     ]
     return(
-      <div className={'bar'} style={{ color: '#858585',paddingTop: 40 }}>
+      <div className={'bar'} style={{ color: '#858585' }}>
         <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
           {this.state.getEmpty ? this.renderAll : this.renderNone}
@@ -88,17 +88,18 @@ class Supplier extends React.Component<Props, State> {
         float: 'right'
       }}>
         <div className={'Segment_line2'} />
-        <div className={'flex-center-row-space-between-p516'} style={{ height: 40 }}>
-          <div className={'number'}>退单号：{i.code}</div>
+        <div className={'flex-space-between-row-center'} style={{ height: 40,padding: '5px' }}>
+          <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>退单号：{i.code}</div>
           <div className={'flex-center-row-center'} style={font}>{i.status}</div>
         </div>
         <div className={'Segment_line2'} />
         {this.renderItemDetail()}
-        <div className={'footFundWrap'}>
-          <span className={'orderNumber'}>订单号：SP057899444220</span>
+        <div className={'flex-space-between-row-center'}
+             style={{ padding: '10px 16px',borderTop: '1px solid #e5e5e5',borderBottom: '1px solid #e5e5e5' }}>
+          <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：SP057899444220</span>
           <div>
-            <span className={'refund'}>退款金额</span>
-            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>45.00</span></span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>退款金额</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>45.00</span></span>
           </div>
         </div>
         {this.renderItemStatus(i,index)}
@@ -110,15 +111,8 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderItemDetail = () => {
     return(
-      <div style={{
-        padding: 16,
-        height: 100,
-        position: 'relative'
-      }}>
-        <div style={{
-          position: 'absolute',
-          zIndex: 98
-        }}>
+      <div style={{ padding: 16, height: 100, position: 'relative' }}>
+        <div style={{ position: 'absolute', zIndex: 98 }}>
           <div style={{ width: 70, height: 70 }}><img style={{
             width: 'auto',
             height: 'auto',
@@ -126,25 +120,17 @@ class Supplier extends React.Component<Props, State> {
             maxHeight: '100%'
           }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
         </div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          position: 'absolute',
-          left: 112,
-          alignItems: 'flex-start',
-          height: 70
-        }}>
-          <div className={'refundNumber'}>现摘新鲜野生荠菜 蔬菜 1.5kg</div>
+        <div className={'flex-space-between-column-flex-start'} style={{ position: 'absolute', left: 112, height: 70 }}>
+          <div className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>现摘新鲜野生荠菜 蔬菜 1.5kg</div>
           <div>
-            <span className={'refund'}>实收金额：</span>
-            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>22.50</span></span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>实收金额：</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>22.50</span></span>
           </div>
           <div>
-            <span className={'orderNumber'}>申请时间：2018-10-10 15:11:08</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>申请时间：2018-10-10 15:11:08</span>
           </div>
           <div className={'flex-flex-start-row-center'}>
-            <span className={'viewItem'}>查看此退款单所有物品</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#333' }}>查看此退款单所有物品</span>
             <ReactSVG path='../../../../assets/images/Supplier/down.svg' svgStyle={{ width: 15, height: 15,paddingLeft: 3,paddingTop: 3 }}/>
           </div>
         </div>
@@ -180,10 +166,11 @@ class Supplier extends React.Component<Props, State> {
         break
     }
     return(
-      <div className={'buttonWrap'}>
+      <div className={'flex-space-between-row-center'}
+           style={{ height: 40,backgroundColor: '#fafafa', paddingLeft: 5, paddingRight: 5 }}>
         <div className={'flex-flex-start-row-center'}>
           <ReactSVG path='../../../../assets/images/Supplier/refund.svg' svgStyle={{ width: 30, height: 30 }}/>
-          <span className={'refundState'}>{title}</span>
+          <span className={'commonFont'} style={{ fontSize: 14, color: '#666' }}>{title}</span>
         </div>
         <button className={button} onClick={onClick}>{buttonTitle}</button>
       </div>
@@ -242,7 +229,7 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderNone = () => {
     return(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
+      <div className={'flex-center-row-center'} style={{ height: '250px', backgroundColor: '#fff' }}>
         空空如也
       </div>
     )

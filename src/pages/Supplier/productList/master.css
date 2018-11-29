@@ -1,5 +1,5 @@
-@import './font.css';
-@import './flex.css';
+@import '../../../assets/css/font.css';
+@import '../../../assets/css/flex.css';
 /** tab 样式调整 **/
 .gBar .am-tabs-default-bar-tab-active{
   color: #0084e7;

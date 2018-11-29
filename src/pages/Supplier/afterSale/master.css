@@ -1,5 +1,5 @@
-@import './font.css';
-@import './flex.css';
+@import '../../../assets/css/font.css';
+@import '../../../assets/css/flex.css';
 /** tab 样式调整 **/
 .bar .am-tabs-default-bar-tab-active{
   color: #0084e7;
@@ -47,17 +47,6 @@
   padding: 10px 16px;
   border-top: 1px solid #e5e5e5;
   border-bottom: 1px solid #e5e5e5;
-}
-/** 按钮外套 **/
-.buttonWrap {
-  height: 40px;
-  background-color: #fafafa;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 16px;
-  padding-right: 16px;
 }
 /** 按钮：立即处理 **/
 .buttonProcessing {

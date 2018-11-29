@@ -265,7 +265,7 @@ class Supplier extends React.Component<Props, State> {
           <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>订单收入</span>
           <div style={{ width: 7, height: 7, backgroundColor: '#c36045',borderRadius: '50%' }} />
           <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>总营业额</span>
-          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>单位：千元</span>
+          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>单位：元</span>
           <select style={{ width: 50,backgroundColor: '#fff',textAlign: 'center' }}>
             <option value='1天'>1天</option>
             <option value='近7天'>近7天</option>
