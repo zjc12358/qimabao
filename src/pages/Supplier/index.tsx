@@ -153,7 +153,7 @@ class Supplier extends React.Component<Props, State> {
         <div style={{ height: 180, backgroundColor: '#0084E7', position: 'relative' }}>
           <div className={'flex-space-around-row-center'} style={{ padding: '60px 9% 0',width: '82%' }}>
             {this.state.data.map((i, index) => (
-              <div className={'flex-space-around-column-center'} style={{ height: 50 }}>
+              <div className={'flex-space-around-column-center'} style={{ height: 50 }} onClick={() => this.orderOnclick(dataViewTitle[index])}>
                 <span className={'commonFont'} style={{ fontSize: 20, color: '#fff' }}>{this.state.data[index]}</span>
                 <label className={'commonFont'} style={{ fontSize: 12, color: '#fff' }}>{dataViewTitle[index]}</label>
               </div>
@@ -358,7 +358,10 @@ class Supplier extends React.Component<Props, State> {
       </div>
     )
   }
-
+  public orderOnclick = (name) => {
+    console.log(name)
+    history().push('supplierOrder')
+  }
   public render () {
     return (
       <div style={{
