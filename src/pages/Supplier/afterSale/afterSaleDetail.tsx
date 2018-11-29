@@ -41,7 +41,6 @@ class Supplier extends React.Component<Props, State> {
       <div style={{
         width: '100%'
       }}>
-        <div className={'Segment_line2'} />
         <div style={{ height: 10, backgroundColor: '#f5f5f9' }} />
         <div className={'Segment_line2'} />
         <div className={'flex-flex-start-row-center'} style={{ padding: '5px 16px',height: 25,backgroundColor: '#fff' }}>
@@ -110,16 +109,8 @@ class Supplier extends React.Component<Props, State> {
   }
   public renderItem = (i,index) => {
     return(
-      <div style={{
-        padding: 16,
-        height: 75,
-        position: 'relative',
-        backgroundColor: '#fff'
-      }}>
-        <div style={{
-          position: 'absolute',
-          zIndex: 98
-        }}>
+      <div style={{ padding: 16, height: 75, position: 'relative', backgroundColor: '#fff' }}>
+        <div style={{ position: 'absolute', zIndex: 98 }}>
           <div style={{ width: 70, height: 70 }}><img style={{
             width: 'auto',
             height: 'auto',
@@ -127,15 +118,7 @@ class Supplier extends React.Component<Props, State> {
             maxHeight: '100%'
           }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
         </div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          position: 'absolute',
-          left: 112,
-          alignItems: 'flex-start',
-          height: 70
-        }}>
+        <div className={'flex-space-between-column-flex-start'} style={{ position: 'absolute', left: 112, height: 70 }}>
           <div className={'commonFont'} style={{ height: 43,fontSize: 14, color: '#000' }}>{i.Commodity}</div>
           <div>
             <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>实收金额：</span>
@@ -156,7 +139,7 @@ class Supplier extends React.Component<Props, State> {
         visible={this.state.modal}
         onClose={() => this.onClose()}
         animationType='slide-up'
-        className={'rejectModal'}
+        style={{ height: 220 }}
       >
         <div className={'flex-center-column-flex-start'} style={{ paddingLeft: '5%' }}>
           <span style={{ fontSize: 16,paddingTop: 8,paddingBottom: 8,color: '#000' }}>驳回原因：</span>
@@ -189,7 +172,7 @@ class Supplier extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Head title={'退款详情'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'}/>
+        <Head title={'退款详情'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )

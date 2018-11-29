@@ -7,6 +7,14 @@
   text-decoration: none;
   font-family: 微软雅黑;
 }
+.commonBoldFont {
+  white-space: nowrap;
+  text-align: left;
+  font-weight: bold;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 微软雅黑;
+}
 .commonNumber {
   white-space: nowrap;
   text-align: left;
