@@ -348,7 +348,8 @@ class Supplier extends React.Component<Props, State> {
             </div>
             <div className={'footMenuStyle'}>配送设置</div>
           </div>
-          <div className={'flex-space-between-column-center-height60'}>
+          <div className={'flex-space-between-column-center-height60'}
+               onClick={() => history().push('detection')}>
             <div className={'flex-Menu'} style={{ backgroundColor: '#0066ff' }}>
               <img src='./assets/images/SupplierTest/testing.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
