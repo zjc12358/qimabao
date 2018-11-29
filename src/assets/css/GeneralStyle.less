@@ -9,33 +9,35 @@
 /*
  dir,ali,jus
  */
-.flex(@dir: row,@ali:stretch,@jus:	flex-start ){
+.flex(@dir: row,@ali:stretch,@jus:	flex-start ) {
   display: flex;
   flex-direction: @dir;
   align-items: @ali;
   justify-content: @jus;
 }
 
-li{
+li {
   list-style: none;
 }
 
-.fontRed{
+.fontRed {
   color: @fontRed;
 }
-.fontGray{
+
+.fontGray {
   color: @fontGray;
 }
-.fontBlue{
+
+.fontBlue {
   color: @fontBlue;
 }
 
-.div-active{
+.div-active {
   background-color: #ccc;
 }
 
 //页面内容惯性滑动
-.touch_scroll{
+.touch_scroll {
   -webkit-overflow-scrolling: touch;
   //position: fixed;
   //height: 100%;
@@ -44,14 +46,16 @@ li{
   overflow: auto;
 }
 
-.bigContainer{
+.bigContainer {
   display: flex;
   height: 100%;
   flex-direction: column;
 }
-.bigContent{
+
+.bigContent {
   flex: 1;
 }
-.animated-router-container{
+
+.animated-router-container {
   height: 100vh;
 }
