@@ -136,7 +136,7 @@ class Home extends React.Component<Props, State> {
         img: '',
         id: i,
         store: '蓝宇科技',
-        describe: '和大家看撒谎的空间撒活动撒U盾OS爱都殴打的萨达哈萨克的哈萨克的哈萨克的哈萨克',
+        describe: '和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克',
         price: '',
         weight: '200g',
         name: '商品' + i,
@@ -183,25 +183,21 @@ class Home extends React.Component<Props, State> {
    */
   renderHead = () => {
     return (
-      <div style={{
-        width: '100%',
-        position: 'fixed',
-        top: 0,
-        zIndex: 100
-      }}>
+      <div style={{ width: '100%', zIndex: 100 }}>
         <div className='horizontal-center'
              style={{ height: 40, width: '100%', backgroundColor: 'white' }}>
+          <div className='horizontal title-back' onClick={() => history().goBack()}>
+            <ReactSVG path='./assets/images/ic_back-grey.svg' svgStyle={{ width: 22, height: 22, marginTop: 2 }}/>
+          </div>
+          {/*标题*/}
           <div className='horizontal-center' onClick={this.headOnClick} style={{ fontSize: 18 }}>
             <span>{this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}</span>
             <span className='horizontal-center' style={{ marginLeft: 8, marginBottom: 5 }}>
               <ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>
             </span>
           </div>
-          <div className='horizontal title-back' onClick={() => history().goBack()}>
-            <ReactSVG path='./assets/images/ic_back-grey.svg' svgStyle={{ width: 22, height: 22, marginTop: 2 }}/>
-          </div>
           {/*右边2个按钮*/}
-          <div className='horizontal-center right-menu'>
+          <div className='horizontal-center right-menu' style={{ justifyContent: 'flex-end' }}>
           <span className='center' style={{ height: 40, width: 40 }} onClick={this.searchOnClick}>
             <ReactSVG path='./assets/images/search.svg' svgStyle={{ width: 22, height: 22 }}/>
           </span>
@@ -223,7 +219,7 @@ class Home extends React.Component<Props, State> {
    */
   renderChoose = () => {
     return (
-      <div style={{ width: '100%', marginTop: 41, position: 'fixed', top: 0, zIndex: 100 }}>
+      <div style={{ width: '100%', zIndex: 100 }}>
         <div className='horizontal choose-menu'>
           <span style={{ height: 30, width: 1, marginTop: 5, backgroundColor: '#e5e5e5' }}></span>
           <div className='horizontal-center' style={{ flex: 1 }} onClick={this.chooseOnClick}>
@@ -265,7 +261,7 @@ class Home extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      <div className='horizontal' style={{ position: 'fixed', top: 82, height: '100%', width: '100%' }}>
+      <div className='horizontal' style={{ flex: 1, width: '100%' }}>
         {this.renderLeftChoose()}
         {this.renderRightProductList()}
       </div>
@@ -277,16 +273,13 @@ class Home extends React.Component<Props, State> {
    */
   renderLeftChoose = () => {
     return (
-      <div style={{ height: '100%' }}>
-        <div className='scroll vertical'
-             style={{ paddingBottom: 100 }}>
-          <div style={{ width: 80, backgroundColor: '#efeff5' }}>
+      <div className='vertical' style={{ height: '100%' }}>
+        <div className='touch_scroll scroll' style={{ width: 80, backgroundColor: '#efeff5', height: '100%' }}>
+          <div className='vertical' style={{ paddingBottom: 100 }}>
             {this.state.secondCategoryList.map((item, index) => this.renderLeftChooseItem(item, index))}
           </div>
-          <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
         </div>
       </div>
-
     )
   }
 
@@ -303,7 +296,7 @@ class Home extends React.Component<Props, State> {
              onClick={() => this.secondItemOnClick(index)}>
           {item.second_category_name}
         </div>
-        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
+        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}/>
       </div>
 
     )
@@ -315,14 +308,10 @@ class Home extends React.Component<Props, State> {
   renderRightProductList = () => {
     let list = this.state.productList.map((item) => this.renderRightProductListItem(item))
     return (
-      <div style={{ height: '100%' }}>
-        <div className='scroll product-list'
-             style={{ paddingBottom: 100 }}>
-          <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
-                    isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}
-                    hasMore={this.state.hasMore}/>
-          <span style={{ width: 1, height: '100%', backgroundColor: '#e5e5e5', position: 'fixed', right: 0 }}></span>
-        </div>
+      <div className='touch_scroll scroll product-list'>
+        <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
+                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}
+                  hasMore={this.state.hasMore}/>
       </div>
     )
   }
@@ -341,7 +330,7 @@ class Home extends React.Component<Props, State> {
           <img style={{ margin: 5, width: 60, height: 60 }} src={item.img}/>
           <div className='vertical product-list-item-content'>
             <span style={{ marginTop: 5 }}>{item.name}</span>
-            <div className='product-list-item-describe'>{item.describe}</div>
+            <div className='product-list-item-describe text-nowrap'>{item.describe}</div>
             <div className='horizontal'
                  style={{ justifyContent: 'space-between', width: '100%' }}>
               <div className='horizontal'>
@@ -349,10 +338,10 @@ class Home extends React.Component<Props, State> {
                 <span style={{ color: '#ff0000', fontSize: 12 }}>{item.price}</span>
                 <span style={{ color: '#e5e5e5', fontSize: 12 }}>/{item.weight}</span>
               </div>
-              <div style={{ padding: 10 }} onClick={(e) => this.addCartOnClick(e, item.id)}>
-                <div className='horizontal-center'>
+              <div className='cart-circle' onClick={(e) => this.addCartOnClick(e, item.id)}>
+                <div className='center'>
                   <ReactSVG path='./assets/images/shop_cart_white.svg'
-                            svgStyle={{ marginTop: 2, marginRight: 2, width: 15, height: 15 }}/>
+                            svgStyle={{ marginTop: 4, width: 12, height: 12 }}/>
                 </div>
               </div>
             </div>
@@ -594,15 +583,18 @@ class Home extends React.Component<Props, State> {
   public render () {
     return (
       <div className='vertical'
-           style={{ backgroundColor: '#efeff5', height: '100vh' }}>
+           style={{ backgroundColor: '#efeff5', height: '100vh', overflow: 'hidden' }}>
         {this.renderHead()}
-        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5', position: 'fixed', top: 40 }}></span>
+        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}/>
         {this.renderChoose()}
-        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5', position: 'fixed', top: 81 }}></span>
+        <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}/>
         {this.renderContent()}
         <Drawer anchor={'right'} open={this.state.drawerOpen} onClose={() => this.toggleDrawer(false)}>
           {this.renderDrawer()}
         </Drawer>
+        {window.addEventListener('touchmove', function (event) {
+          event.preventDefault()
+        }, { passive: false })}
       </div>
     )
   }
