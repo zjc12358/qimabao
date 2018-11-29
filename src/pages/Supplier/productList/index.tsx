@@ -170,7 +170,9 @@ class Supplier extends React.Component<Props, State> {
             <span style={{ paddingLeft: 5 }}>{type === 'inSale' ? '下架' : '上架'}</span>
           </div>
           <div className={'flex-center-row-center'}
-               onClick={type === 'inSale' ? () => this.inSaleDeleteOnclick(index) : type === 'lowerShelf' ? () => this.lowerShelfDeleteOnclick(index) : () => this.inStoreDeleteOnclick(index)}>
+               onClick={
+                 type === 'inSale' ? () => this.inSaleDeleteOnclick(index) :
+                 type === 'lowerShelf' ? () => this.lowerShelfDeleteOnclick(index) : () => this.inStoreDeleteOnclick(index)}>
             <ReactSVG path='../../../../assets/images/Supplier/delete.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }}>删除</span>
           </div>

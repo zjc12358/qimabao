@@ -180,7 +180,8 @@ class Supplier extends React.Component<Props, State> {
                         svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px', color: '#616670' }}>发布</span>
             </div>
-            <div className={'flex-space-between-column-center'}>
+            <div className={'flex-space-between-column-center'}
+                 onClick={() => history().push('supplierOrder')}>
               <ReactSVG path='./assets/images/Supplier/order.svg'
                         svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px', color: '#616670' }}>订单</span>

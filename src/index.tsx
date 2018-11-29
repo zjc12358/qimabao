@@ -17,6 +17,7 @@ import Detection from './pages/Supplier/detection/index'/*检测申请*/
 import SupplierAfterSale from './pages/Supplier/afterSale/index' /*售后退款*/
 import AfterSaleDetail from './pages/Supplier/afterSale/afterSaleDetail' /*售后退款处理页面*/
 import AfterSaleResult from './pages/Supplier/afterSale/afterSaleResult' /*售后退款查询结果页面*/
+import SupplierOrder from './pages/Supplier/order/index' /*供应商商品管理*/
 import SProductList from './pages/Supplier/productList/index' /*供应商商品管理*/
 import AfterSaleSuccess from './pages/Supplier/afterSale/afterSaleSuccess' /*售后退款查询结果页面*/
 /* 采购商
@@ -87,6 +88,7 @@ ReactDOM.render(
         <Route path='/release' component={Release}/>
         <Route path='/withdrawal' component={Withdrawal} />
         <Route path='/sProductList' component={SProductList}/>
+        <Route path='/supplierOrder' component={SupplierOrder}/>
         <Route path='/detection' component={Detection}/>
         /* 采购商
          ============================================================================*/
