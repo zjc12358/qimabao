@@ -38,10 +38,12 @@ class Supplier extends React.Component<Props, State> {
         backgroundColor: '#ffffff',
         width: '100%'
       }}>
-        <div className={'refundSuccessPage'}>
+        <div className={'flex-space-between-column-center'} style={{ padding: '50px 0px' }}>
           <ReactSVG path='../../../../assets/images/Supplier/success.svg' svgStyle={{ width: 100, height: 100 }}/>
-          <span className={'refundSuccess'}>退款成功</span>
-          <span className={'refundSuccessNumber'}>买家已收到退款：<span className={'refundSuccess'}>45.0元</span></span>
+          <span className={'commonBoldFont'} style={{ fontSize: 20, color: '#000',paddingTop: 10 }} >退款成功</span>
+          <span className={'commonBoldFont'} style={{ fontSize: 18, color: '#000',paddingTop: 10 }} >买家已收到退款：
+            <span className={'commonBoldFont'} style={{ fontSize: 20, color: '#000' }} >45.0元</span>
+          </span>
         </div>
         <div style={{ padding: 20 }}>
           <button className={'completeBtn'} >完成</button>
@@ -56,7 +58,7 @@ class Supplier extends React.Component<Props, State> {
         height: '100vh',
         backgroundColor: '#ffffff'
       }}>
-        <Head title={'退款结果'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'} leftIconColor={'grey'}/>
+        <Head title={'退款结果'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )

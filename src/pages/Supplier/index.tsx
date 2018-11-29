@@ -6,8 +6,6 @@ import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
-import './font.css'
-import './flex.css'
 import './master.css'
 import { changeMode } from '@store/actions/global_data'
 import eCharts from 'echarts/lib/echarts'
@@ -22,17 +20,20 @@ export interface Props {
 
 interface State {
   data: any
+  dataShop: any
 }
 
 let IconMaxSize: number = 30
 let MenuMaxSize: number = 24
-
+const dataViewTitle: any = ['待付款','待收货','待发货','待评价','退款/售后']
+const dataShopTitle: any = ['出售中','已售完','仓库中','已下架']
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
     this.state = {
-      data: { payment: '1', delivery: '17', collect: '143', evaluate: '5', refund: '0' }
+      data: [1,17,143,5,0],
+      dataShop: [3,10,5,0]
     }
   }
   componentDidMount () {
@@ -122,9 +123,9 @@ class Supplier extends React.Component<Props, State> {
       <div className={'navWrap'}>
         <div style={{ width: '20%' }}>图标</div>
         <div style={{ width: '50%', textAlign: 'center' }}>
-          <span className={'navFontStyle'}>食堂采购商家平台</span>
+          <span className={'commonFont'} style={{ fontSize: 18, color: '#fff' }}>食堂采购商家平台</span>
         </div>
-        <div className={'navRightFontStyle'} style={{ width: '20%' }}
+        <div className={'commonFont'} style={{ fontSize: 11, color: '#E4EAEA',width: '23%' }}
              onClick={() => this.props.changeMode('purchaser')}>切换到买家版
         </div>
       </div>
@@ -148,37 +149,19 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderHead = () => {
     return (
-      <div className={'headWrap'}>
-        <div style={{
-          height: 180,
-          backgroundColor: '#0084E7',
-          position: 'relative'
-        }}>
-          <div className={'headDataWrap'}>
-            <div className={'flex-space-around-column-center-height50'}>
-              <span className={'headNumberStyle'}>{this.state.data.payment}</span>
-              <label className={'headFontStyle'}>待付款</label>
-            </div>
-            <div className={'flex-space-around-column-center-height50'}>
-              <span className={'headNumberStyle'}>{this.state.data.delivery}</span>
-              <label className={'headFontStyle'}>待收货</label>
-            </div>
-            <div className={'flex-space-around-column-center-height50'}>
-              <span className={'headNumberStyle'}>{this.state.data.collect}</span>
-              <label className={'headFontStyle'}>待发货</label>
-            </div>
-            <div className={'flex-space-around-column-center-height50'}>
-              <span className={'headNumberStyle'}>{this.state.data.evaluate}</span>
-              <label className={'headFontStyle'}>待评价</label>
-            </div>
-            <div className={'flex-space-around-column-center-height50'}>
-              <span className={'headNumberStyle'}>{this.state.data.refund}</span>
-              <label className={'headFontStyle'}>退款/售后</label>
-            </div>
+      <div className={'flex-space-between-column-stretch'} >
+        <div style={{ height: 180, backgroundColor: '#0084E7', position: 'relative' }}>
+          <div className={'flex-space-around-row-center'} style={{ padding: '60px 9% 0',width: '82%' }}>
+            {this.state.data.map((i, index) => (
+              <div className={'flex-space-around-column-center'} style={{ height: 50 }}>
+                <span className={'commonFont'} style={{ fontSize: 20, color: '#fff' }}>{this.state.data[index]}</span>
+                <label className={'commonFont'} style={{ fontSize: 12, color: '#fff' }}>{dataViewTitle[index]}</label>
+              </div>
+            ))}
           </div>
         </div>
         <div className={'headMenuWrap'}>
-          <div className={'headMenuInnerWrap'}>
+          <div className={'flex-space-around-row-center'} style={{ height: 90,padding: 15 }}>
             <div className={'flex-space-between-column-center'}
                  onClick={() => history().push('shop')}>
               <ReactSVG path='./assets/images/Supplier/shop.svg'
@@ -218,14 +201,7 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderBody = () => {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'flex-start',
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingTop: 60,
-        width: '100%'
-      }}>
+      <div className={'flex-flex-start-column-center'} style={{ paddingTop: 60, width: '100%' }}>
         <div style={{
           borderRadius: 10,
           width: '90%',
@@ -261,14 +237,14 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderHighChart = () => {
     return (
-      <div className={'dataAnalysisWrap'} style={{ paddingBottom: 10 }}>
+      <div className={'flex-center-column-center'} style={{ paddingBottom: 10 }}>
         <div className={'flex-space-between-row-center'} style={{ width: '90%',paddingTop: 10,paddingBottom: 10 }}>
-          <span className={'bodyTitleStyle'}>数据分析</span>
+          <span className={'commonBoldFont'} style={{ fontSize: 16,color: '#000' }}>数据分析</span>
           <div style={{ width: 7, height: 7, backgroundColor: '#0084e7',borderRadius: '50%' }} />
-          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>订单收入</span>
+          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999' }}>订单收入</span>
           <div style={{ width: 7, height: 7, backgroundColor: '#c36045',borderRadius: '50%' }} />
-          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>总营业额</span>
-          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999999' }}>单位：元</span>
+          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999' }}>总营业额</span>
+          <span className={'commonSFont'} style={{ fontSize: 10,color: '#999' }}>单位：元</span>
           <select style={{ width: 50,backgroundColor: '#fff',textAlign: 'center' }}>
             <option value='1天'>1天</option>
             <option value='近7天'>近7天</option>
@@ -278,7 +254,7 @@ class Supplier extends React.Component<Props, State> {
           </select>
         </div>
         <div className={'chartWrap'}>
-          <div className={'chartValueWrap'}>
+          <div className={'flex-space-around-row-center'} >
             <div className={'flex-center-column-center'}>
               <span className={'commonNumber'} style={{ fontSize: 24,color: '#0084e7' }}>6992.5</span>
               <span className={'commonFont'} style={{ fontSize: 12,color: '#0084e7' }}>今日订单收入</span>
@@ -298,26 +274,16 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderData = () => {
     return (
-      <div className={'dataWrap'}>
-        <div className={'bodyTitleStyle'}>店铺数据</div>
+      <div className={'flex-space-around-column-stretch'} style={{ height: 100,padding: '10px 15px' }}>
+        <div className={'commonBoldFont'} style={{ fontSize: 16,color: '#000' }}>店铺数据</div>
         <div className={'Segment_line'}/>
-        <div className={'flex-space-between-row-center-height40'}>
-          <div className={'flex-space-between-column-center-height35'}>
-            <span className={'dataNumberStyle'}>3</span>
-            <span className={'dataFontStyle'}>出售中</span>
-          </div>
-          <div className={'flex-space-between-column-center-height35'}>
-            <span className={'dataNumberStyle'}>10</span>
-            <span className={'dataFontStyle'}>已售完</span>
-          </div>
-          <div className={'flex-space-between-column-center-height35'}>
-            <span className={'dataNumberStyle'}>5</span>
-            <span className={'dataFontStyle'}>仓库中</span>
-          </div>
-          <div className={'flex-space-between-column-center-height35'}>
-            <span className={'dataNumberStyle'}>0</span>
-            <span className={'dataFontStyle'}>已下架</span>
-          </div>
+        <div className={'flex-space-between-row-center'} style={{ height: 40 }}>
+          {this.state.dataShop.map((i, index) => (
+            <div className={'flex-space-between-column-center'} style={{ height: 35 }}>
+              <span className={'commonFont'} style={{ fontSize: 14,color: '#0084E7' }}>{this.state.dataShop[index]}</span>
+              <span className={'commonFont'} style={{ fontSize: 14,color: '#60656F' }}>{dataShopTitle[index]}</span>
+            </div>
+          ))}
         </div>
       </div>
     )
@@ -327,66 +293,69 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderUtils = () => {
     return (
-      <div className={'UtilsWrap'}>
-        <div className={'UtilsContentTop'}>
-          <div className={'flex-space-between-column-center-height60'}
+      <div className={'flex-space-between-column-stretch'} style={{ width: '100%', height: '100%' }}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 10px 0',height: '44%' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
                onClick={() => history().push('sProductList')}>
-            <div className={'flex-Menu'} style={{ backgroundColor: '#3333cc' }}>
+            <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#3333cc' }}>
               <img src='./assets/images/SupplierTest/commodityManagement.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
-            <div className={'footMenuStyle'}>商品管理</div>
+            <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>商品管理</div>
           </div>
-          <div className={'flex-space-between-column-center-height60'}>
-            <div className={'flex-Menu'} style={{ backgroundColor: '#6633ff' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#6633ff' }}>
               <img src='./assets/images/SupplierTest/classification.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
-            <div className={'footMenuStyle'}>分类设置</div>
+            <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>分类设置</div>
           </div>
-          <div className={'flex-space-between-column-center-height60'}>
-            <div className={'flex-Menu'} style={{ backgroundColor: '#009966' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#009966' }}>
               <img src='./assets/images/SupplierTest/distribution.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
-            <div className={'footMenuStyle'}>配送设置</div>
+            <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>配送设置</div>
           </div>
-          <div className={'flex-space-between-column-center-height60'}>
-            <div className={'flex-Menu'} style={{ backgroundColor: '#0066ff' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#0066ff' }}>
               <img src='./assets/images/SupplierTest/testing.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
-            <div className={'footMenuStyle'}>检测申请</div>
+            <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>检测申请</div>
           </div>
         </div>
-        <div className={'UtilsContentBottom'}>
-          <div className={'flex-space-between-column-center-height60'}>
-            <div className={'flex-Menu'} style={{ backgroundColor: '#3399cc' }}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '0 10px 10px 10px',height: '44%' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#3399cc' }}>
               <img src='./assets/images/SupplierTest/release.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
-            <div className={'footMenuStyle'}>商品发布</div>
+            <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>商品发布</div>
           </div>
-          <div className={'flex-space-between-column-center-height60'}>
-            <div className={'flex-Menu'} style={{ backgroundColor: '#ff6600' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#ff6600' }}>
               <img src='./assets/images/SupplierTest/evaluate.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
-            <div className={'footMenuStyle'}>评价管理</div>
+            <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>评价管理</div>
           </div>
-          <div className={'flex-space-between-column-center-height60'} onClick={this.afterSaleOnclick}>
-            <div className={'flex-Menu'} style={{ backgroundColor: '#0099ff' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('/supplierAfterSale')}>
+            <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#0099ff' }}>
               <img src='./assets/images/SupplierTest/afterSale.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
-            <div className={'footMenuStyle'}>退款售后</div>
+            <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>退款售后</div>
           </div>
-          <div className={'flex-space-between-column-center-height60'}>
-            <div className={'flex-Menu'} style={{ backgroundColor: '#ff9900' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('/supplierAfterSale')}>
+            <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#ff9900' }}>
               <img src='./assets/images/SupplierTest/putfoward.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
-            <div className={'footMenuStyle'}>提现申请</div>
+            <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>提现申请</div>
           </div>
         </div>
       </div>
     )
-  }
-
-  public afterSaleOnclick = () => {
-    history().push('/supplierAfterSale')
   }
 
   public render () {
