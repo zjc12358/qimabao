@@ -58,7 +58,7 @@ class Supplier extends React.Component<Props, State> {
       { title: '仓库中' }
     ]
     return(
-      <div className={'gBar'} style={{ color: '#858585',paddingTop: 40 }}>
+      <div className={'gBar'} style={{ color: '#858585' }}>
         <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={3} />}
         >
           {this.state.getEmpty ? this.renderInSale : this.renderNone}

@@ -33,10 +33,9 @@ class Supplier extends React.Component<Props, State> {
     return(
       <div style={{
         backgroundColor: '#ffffff',
-        width: '100%',
-        paddingTop: 40
+        width: '100%'
       }}>
-        <div className={'refundInfoWrap'}>
+        <div className={'flex-space-between-column-flex-start'} style={{ height: 100,padding: 20 }}>
           <div className={'flex-flex-start-row-center'}>
             <ReactSVG path='../../../../assets/images/Supplier/success-wh.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span className={'refundResult'}>退款成功</span>

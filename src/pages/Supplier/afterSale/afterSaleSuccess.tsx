@@ -36,8 +36,7 @@ class Supplier extends React.Component<Props, State> {
     return(
       <div style={{
         backgroundColor: '#ffffff',
-        width: '100%',
-        paddingTop: 40
+        width: '100%'
       }}>
         <div className={'refundSuccessPage'}>
           <ReactSVG path='../../../../assets/images/Supplier/success.svg' svgStyle={{ width: 100, height: 100 }}/>

@@ -39,14 +39,13 @@ class Supplier extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{
-        width: '100%',
-        paddingTop: 40
+        width: '100%'
       }}>
         <div className={'Segment_line2'} />
         <div style={{ height: 10, backgroundColor: '#f5f5f9' }} />
         <div className={'Segment_line2'} />
-        <div className={'flex-flex-start-row-center-p516'} style={{ height: 25 }}>
-          <div className={'number'}>订单号：{this.state.item.code}</div>
+        <div className={'flex-flex-start-row-center'} style={{ padding: '5px 16px',height: 25,backgroundColor: '#fff' }}>
+          <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>订单号：{this.state.item.code}</div>
         </div>
         <div className={'Segment_line2'} />
         {this.state.data.map((i,index) => (
@@ -55,48 +54,50 @@ class Supplier extends React.Component<Props, State> {
             {(index < (this.state.data.length - 1)) ? <div className={'Segment_line2'} /> : ''}
           </div>
         ))}
-        <div className={'FundWrap'}>
+        <div className={'flex-flex-end-row-center'}
+             style={{ padding: '10px 16px',borderTop: '1px solid #e5e5e5',borderBottom: '1px solid #e5e5e5',backgroundColor: '#fff' }}>
           <div>
-            <span className={'refund'}>退款金额</span>
-            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>45.00</span></span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>退款金额</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>45.00</span></span>
           </div>
         </div>
-        <div className={'listItemWrap'}>
-          <div className={'listItemTitle'}>
-            <span className={'refundApply'}>退款申请单</span>
+        <div className={'flex-flex-start-column-stretch'}
+             style={{ paddingLeft: 16,paddingRight: 16,borderBottom: '1px solid #e5e5e5',backgroundColor: '#fff' }}>
+          <div className={'flex-flex-start-row-center'} style={{ paddingTop: 10,paddingBottom: 10 }}>
+            <span className={'commonFont'} style={{ fontSize: 16, color: '#000' }}>退款申请单</span>
           </div>
-          <div className={'listItem'}>
+          <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px', borderTop: '1px solid #e5e5e5' }}>
             <span>退单号：</span>
             <span style={{ fontFamily: '微软雅黑' }}>{this.state.item.code}</span>
           </div>
-          <div className={'listItem'}>
+          <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px', borderTop: '1px solid #e5e5e5' }}>
             <span>发货状态：</span>
             <span style={{ fontFamily: '微软雅黑' }}>{this.state.item.status}</span>
           </div>
-          <div className={'listItem'}>
+          <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px', borderTop: '1px solid #e5e5e5' }}>
             <span>退款金额：</span>
             <span style={{ fontFamily: '微软雅黑' }}>{this.state.item.price}元</span>
           </div>
-          <div className={'listItem'}>
+          <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px', borderTop: '1px solid #e5e5e5' }}>
             <span>退款原因：</span>
             <span style={{ fontFamily: '微软雅黑' }}>{this.state.item.reason}</span>
           </div>
         </div>
-        <div className={'explainWrap'}>
-          <div className={'explainTitle'}>
-            <span className={'refundApply'}>售后状态</span>
+        <div className={'flex-flex-start-column-stretch'} style={{ backgroundColor: '#fff',padding: '10px 16px 60px' }}>
+          <div className={'flex-flex-start-row-center'} style={{ paddingTop: 10 }}>
+            <span className={'commonFont'} style={{ fontSize: 16, color: '#000' }}>售后状态</span>
           </div>
-          <div className={'explain'}>
-            <span className={'number'}>同意退款：</span>
-            <span className={'refund'}>申请达成并退款至买家的余额或支付宝账号</span>
+          <div className={'flex-flex-start-row-center'} style={{ paddingTop: 10 }}>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>同意退款：</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666',whiteSpace: 'normal' }}>申请达成并退款至买家的余额或支付宝账号</span>
           </div>
-          <div className={'explain'}>
-            <span className={'number'}>驳回退款：</span>
-            <span className={'refund'}>驳回后买家有7天的时间选择修改或申请平台介入</span>
+          <div className={'flex-flex-start-row-center'} style={{ paddingTop: 10 }}>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>驳回退款：</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666',whiteSpace: 'normal' }}>驳回后买家有7天的时间选择修改或申请平台介入</span>
           </div>
-          <div className={'explain'}>
-            <span className={'number'}>如果商家未处理：</span>
-            <span className={'refund'}>超过1天则申请达成并自动为买家退款</span>
+          <div className={'flex-flex-start-row-center'} style={{ paddingTop: 10 }}>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>如果商家未处理：</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666',whiteSpace: 'normal' }}>超过1天则申请达成并自动为买家退款</span>
           </div>
         </div>
         <div className={'applyBtnWrap'}>
@@ -135,13 +136,13 @@ class Supplier extends React.Component<Props, State> {
           alignItems: 'flex-start',
           height: 70
         }}>
-          <div className={'refundNumber'} style={{ height: 43 }}>{i.Commodity}</div>
+          <div className={'commonFont'} style={{ height: 43,fontSize: 14, color: '#000' }}>{i.Commodity}</div>
           <div>
-            <span className={'refund'}>实收金额：</span>
-            <span className={'refundNumber'}>￥<span style={{ color: 'red' }}>{i.price}</span></span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>实收金额：</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>{i.price}</span></span>
           </div>
           <div>
-            <span className={'orderNumber'}>申请时间：{i.dateTime}</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>申请时间：{i.dateTime}</span>
           </div>
         </div>
       </div>
@@ -157,7 +158,7 @@ class Supplier extends React.Component<Props, State> {
         animationType='slide-up'
         className={'rejectModal'}
       >
-        <div className={'flex-center-column-flex-start'}>
+        <div className={'flex-center-column-flex-start'} style={{ paddingLeft: '5%' }}>
           <span style={{ fontSize: 16,paddingTop: 8,paddingBottom: 8,color: '#000' }}>驳回原因：</span>
           <textarea rows={6} style={{ width: '93%',border: '1px solid #ccc' }} placeholder={'在这里填写驳回原因...'}/>
         </div>
