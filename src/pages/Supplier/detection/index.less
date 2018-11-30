@@ -8,6 +8,18 @@
     appearance:none;
     -moz-appearance:none;
     -webkit-appearance:none;
+    position: relative;
+    padding-right: 15px;
+  }
+  .triangle{
+    position: absolute;
+    border-style: solid;
+    border-width: 4px 4px 0px;
+    border-color: black transparent transparent;
+    width: 0px;
+    height: 0px;
+    top: 6px;
+    right: 3px;
   }
 }
 .detection{
@@ -30,6 +42,10 @@
     width: 60px;
     height: 60px;
   }
+  .am-image-picker-list .am-flexbox .am-flexbox-item:after{
+    background-color: #e6e6e6;
+    border-radius: 5px;
+  }
 }
 
 .picker_wrap{
@@ -42,4 +58,54 @@
   opacity: 0;
   width: 60px;
   height: 60px;
+}
+.detection .topContent .testDescription{
+  flex-direction: column;
+  align-items: normal;
+  padding-top: 10px;
+  border-top: 1px solid @borderColor;
+  &>div:nth-child(1){
+    margin-bottom: 5px;
+  }
+  .am-list-item{
+    padding-left: 0;
+  }
+}
+.bottomContent{
+  background-color: white;
+  margin-top: 20px;
+  font-size: 16px;
+  &>div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    border-bottom: 1px solid @borderColor;
+  }
+  .pressTime{
+    height: 48px;
+  }
+  .linkman{
+    height: 48px;
+  }
+  .linkNumber{
+    //height: 40px;
+    border-bottom: none;
+  }
+  .area{
+    //height: 40px;
+  }
+}
+.areaDetail{
+  background-color: white;
+  margin-top: 20px;
+  padding-left: 25px;
+  font-size: 16px;
+  &>div:nth-child(1){
+    padding: 10px 0 5px 0;
+    align-items: center;
+  }
+  .am-list-item{
+    padding-left: 0;
+  }
 }
