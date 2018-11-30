@@ -21,6 +21,7 @@ export interface Props {
 interface State {
   data: any
   dataShop: any
+  loading: boolean
 }
 
 let IconMaxSize: number = 30
@@ -28,10 +29,12 @@ let MenuMaxSize: number = 24
 const dataViewTitle: any = ['待付款','待收货','待发货','待评价','退款/售后']
 const dataShopTitle: any = ['出售中','已售完','仓库中','已下架']
 class Supplier extends React.Component<Props, State> {
+  private timer: NodeJS.Timeout
 
   constructor (props) {
     super(props)
     this.state = {
+      loading: true,
       data: [1,17,143,5,0],
       dataShop: [3,10,5,0]
     }
@@ -114,6 +117,9 @@ class Supplier extends React.Component<Props, State> {
         }
       ]
     })
+  }
+  componentWillUnmount () {
+    clearInterval(this.timer)
   }
   /**
    * 标题
@@ -318,7 +324,7 @@ class Supplier extends React.Component<Props, State> {
             <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>配送设置</div>
           </div>
           <div className={'flex-space-between-column-center'} style={{ height: 60 }}
-               onClick={() => history().push('sProductList')}>
+               onClick={() => history().push('detection')}>
             <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#0066ff' }}>
               <img src='./assets/images/SupplierTest/testing.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>
