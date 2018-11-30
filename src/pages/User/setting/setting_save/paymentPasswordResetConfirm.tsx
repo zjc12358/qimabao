@@ -10,17 +10,6 @@ import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import '../../master.css'
 
-// 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
-// https://github.com/ant-design/ant-design-mobile/issues/307
-// https://github.com/ant-design/ant-design-mobile/issues/163
-const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent)
-let moneyKeyboardWrapProps
-if (isIPhone) {
-  moneyKeyboardWrapProps = {
-    onTouchStart: e => e.preventDefault()
-  }
-}
-
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
@@ -40,7 +29,9 @@ class User extends React.Component<Props, State> {
       phone: ''     /*要换绑的手机号  */
     }
   }
-
+  public componentDidMount () {
+    document.getElementById('input').focus()
+  }
   /**
    * 重置密码验证码界面
    */
@@ -66,35 +57,7 @@ class User extends React.Component<Props, State> {
             flexDirection: 'row',
             paddingTop: 50
           }}>
-            <InputItem
-              maxLength={1}
-              className='Verification'
-              autoFocus={true}
-              type={'money'}
-              moneyKeyboardAlign='left'
-              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-            />
-            <InputItem
-              maxLength={1}
-              className='Verification'
-              type={'money'}
-              moneyKeyboardAlign='left'
-              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-            />
-            <InputItem
-              maxLength={1}
-              className='Verification'
-              type={'money'}
-              moneyKeyboardAlign='left'
-              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-            />
-            <InputItem
-              maxLength={1}
-              className='Verification'
-              type={'money'}
-              moneyKeyboardAlign='left'
-              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-            />
+            <input id='input' type='number' pattern='\d*' style={{ border: 'none',backgroundColor: 'transparent', fontSize: 20}} />
           </div>
           <div style={{
             paddingTop: 20
@@ -113,6 +76,7 @@ class User extends React.Component<Props, State> {
             }}>&nbsp;&nbsp;&nbsp;收不到验证码？</span>
           </div>
         </div>
+
       </div>
     )
   }
