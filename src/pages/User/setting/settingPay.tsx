@@ -141,19 +141,20 @@ class User extends React.Component<Props, State> {
   **/
   public renderItem = (i,index) => {
     return(
-      <div id={'main'} title={i.order} style={{ position: 'absolute', top: top + i.order * 40,width: '100%',height: 40,backgroundColor: '#fff' }}
+      <div id={'main' + index} style={{ position: 'absolute', top: top + i.order * 40,width: '100%',height: 40 }}
            onTouchMove={this.touch.bind(this,i.order,index)}
            onTouchStart={this.touchStart.bind(this,i.order,index)}
            onTouchEnd={this.touchEnd.bind(this,i.order,index)}
       >
-        <div className={'Segment_line4'}/>
+        <div className={'Segment_line4'} />
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           flexDirection: 'row',
           padding: 10,
           backgroundColor: '#ffffff',
-          height: 19
+          height: 19,
+          background: '-webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#fafafa))'
         }}>
           <span style={{ fontSize: '16px', marginLeft: 10 }}>{i.name}</span>
           <img src='../../assets/images/User/drag.svg' width='20' height='20' />
@@ -170,26 +171,22 @@ class User extends React.Component<Props, State> {
   4.通过索引将当前项的原本所在层赋值给目标层的order
   **/
   public touch = (order,index,event) => { // 根据当前项的区间判断目标层
-    let currentTop: number = parseInt(event.target.offsetParent.style.top.substr(0,event.target.offsetParent.style.top.length - 2),0)
+    let currentTop: number = parseInt(document.getElementById('main' + index).style.top.substr(0,document.getElementById('main' + index).style.top.length - 2),0)
     for (let i = 1;i <= this.state.data.length;i++) {  /* 遍历n次*/
       if (currentTop < ((i + 1) * 40 + top - 20) && currentTop >= ((i) * 40 + top - 20)) {
         layer = i
       }
     }
-    if (event.target.offsetParent.id === 'main') {  /* 拖拽*/
-      event.target.offsetParent.style.top = (event.targetTouches['0'].clientY - offsetY + parseInt(event.target.offsetParent.style.top.substr(0,event.target.offsetParent.style.top.length - 2),0)) + 'px'
-    }
-    offsetY = event.targetTouches['0'].clientY
-
+    document.getElementById('main' + index).style.top = (event.touches[0].pageY - 20) + 'px'
   }
   public touchStart = (name,index,event) => {
-    if (event.target.offsetParent.id === 'main') {
-      event.target.offsetParent.style.zIndex = 20
-      offsetY = event.targetTouches['0'].clientY
-      event.target.offsetParent.style.height = 40
-      event.target.offsetParent.children[0].className = ''
-    }
-    let currentTop: number = parseInt(event.target.offsetParent.style.top.substr(0,event.target.offsetParent.style.top.length - 2),0)
+    let target: any = document.getElementById('main' + index)
+    let currentTop: number = parseInt(target.style.top.substr(0,target.style.top.length - 2),0)
+    target.style.zIndex = 20
+    target.style.transform = 'scale(1.1)'
+    offsetY = event.touches[0].pageY
+    target.style.height = 40
+    target.children[0].className = ''
     for (let i = 1;i <= this.state.data.length;i++) {  /* 遍历n次*/
       if (currentTop < ((i + 1) * 40 + top - 20) && currentTop >= ((i) * 40 + top - 20)) {
         layer = i
@@ -197,41 +194,41 @@ class User extends React.Component<Props, State> {
     }
   }
   public touchEnd = (order,index,event) => {
-    event.target.offsetParent.children[0].className = 'Segment_line4'
-    event.target.offsetParent.style.zIndex = 5
-    let currentTop: number = parseInt(event.target.offsetParent.style.top.substr(0,event.target.offsetParent.style.top.length - 2),0)
-    if (event.target.offsetParent.id === 'main') {
-      if (layer !== this.state.data[index].order && layer !== 0) {
-        for (let i = 0;i < this.state.data.length;i++) {  /* 遍历n次*/
-          if (this.state.data[i].order === layer) {
-            this.state.data[i].order = order
-          }
+    let target: any = document.getElementById('main' + index)
+    target.style.transform = 'scale(1)'
+    target.children[0].className = 'Segment_line4'
+    target.style.zIndex = 5
+    let currentTop: number = parseInt(target.style.top.substr(0,target.style.top.length - 2),0)
+    if (layer !== this.state.data[index].order && layer !== 0) {
+      for (let i = 0;i < this.state.data.length;i++) {  /* 遍历n次*/
+        if (this.state.data[i].order === layer) {
+          this.state.data[i].order = order
         }
-        this.state.data[index].order = layer  // 拿着的正确
-        this.setState({
-          refresh: 'refresh'
-        })
       }
-      if (currentTop <= top + 40) {
-        event.target.offsetParent.style.top = (top + 40) + 'px'
-        layer = 0
-        offsetY = 0
-        return
-      }
-      if (currentTop >= this.state.data.length * 40 + top) {
-        event.target.offsetParent.style.top = (this.state.data.length * 40 + top) + 'px'
-        layer = 0
-        offsetY = 0
-        return
-      }
-      event.target.offsetParent.style.top = (layer) * 40 + top + 'px'
+      this.state.data[index].order = layer  // 拿着的正确
+      this.setState({
+        refresh: 'refresh'
+      })
+    }
+    if (currentTop <= top + 40) {
+      target.style.top = (top + 40) + 'px'
       layer = 0
       offsetY = 0
+      return
     }
+    if (currentTop >= this.state.data.length * 40 + top) {
+      target.style.top = (this.state.data.length * 40 + top) + 'px'
+      layer = 0
+      offsetY = 0
+      return
+    }
+    target.style.top = (layer) * 40 + top + 'px'
+    layer = 0
+    offsetY = 0
   }
   public render () {
     return (
-      <div className={'t'} style={{ position: 'relative',width: '100%' }}>
+      <div className={'t'} style={{ position: 'relative',width: '100%',userSelect: 'none' }}>
         {this.renderNav()}
         {this.renderContent()}
         <div style={{ backgroundColor: '#ffffff' }}>
