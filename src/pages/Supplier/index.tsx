@@ -324,7 +324,7 @@ class Supplier extends React.Component<Props, State> {
             <div className={'commonFont'} style={{ fontSize: 14,color: '#333' }}>配送设置</div>
           </div>
           <div className={'flex-space-between-column-center'} style={{ height: 60 }}
-               onClick={() => history().push('sProductList')}>
+               onClick={() => history().push('detection')}>
             <div className={'flex-center-row-center'} style={{ width: 40,height: 40,borderRadius: 10,backgroundColor: '#0066ff' }}>
               <img src='./assets/images/SupplierTest/testing.png' width={MenuMaxSize} height={MenuMaxSize}/>
             </div>

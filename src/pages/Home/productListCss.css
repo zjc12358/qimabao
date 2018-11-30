@@ -5,18 +5,15 @@
 }
 
 .title-back {
-  position: fixed;
-  left: 0;
-  width: 60px;
   height: 40px;
   color: black;
   padding-left: 10px;
+  flex: 1;
 }
 
 .right-menu {
-  position: fixed;
-  right: 0;
   height: 40px;
+  flex: 1;
 }
 
 .choose-menu {
@@ -54,7 +51,7 @@
 }
 
 .product-list {
-  flex: 1;
+  width: 100%;
 }
 
 .product-list-item-content {
@@ -72,6 +69,7 @@
   font-size: 12px;
   color: #e5e5e5;
   text-overflow: ellipsis;
+  width: 100%;
 }
 
 .drawer-tag-item {
@@ -99,4 +97,12 @@
   background-color: #0084e7;
   width: 22px;
   height: 22px;
+}
+
+.cart-circle {
+  height: 20px;
+  width: 20px;
+  background-color: #0084e7;
+  border: 0 solid;
+  border-radius: 50%;
 }
