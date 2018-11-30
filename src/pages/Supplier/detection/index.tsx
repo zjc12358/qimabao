@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { List,InputItem,Button,ImagePicker, WingBlank, SegmentedControl } from 'antd-mobile'
+import { List,InputItem,Button,ImagePicker, TextareaItem, WingBlank, SegmentedControl } from 'antd-mobile'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
@@ -40,35 +40,25 @@ class Detection extends React.Component<Props, State> {
     super(props)
     this.state = {
       data: {},
-      files: [1,2],
+      files: [],
       multiple: false
     }
   }
 
   onChange = (files, type, index) => {
     console.log(files, type, index)
-    console.log(this.state.files)
+    // console.log(this.state.files)
     this.setState({
-      files: files
+      files
     })
   }
+
   onSegChange = (e) => {
     const index = e.nativeEvent.selectedSegmentIndex
     this.setState({
       multiple: index === 1
     })
   }
-
-  uploadChange = (event) => {
-    console.log(event.target.value)
-    console.log(this.state.files)
-    let file = event.target.value
-    let files = this.state.files
-    files.push(file)
-    console.log(files)
-    this.setState({ files: files })
-  }
-
   /**
    * 检测项目
    */
@@ -76,7 +66,7 @@ class Detection extends React.Component<Props, State> {
     return (
       <div className='detectionName'>
         <div>检测项目</div>
-        <div>
+        <div style={{ position: 'relative' }}>
           <select defaultValue='0' name=''>
             <option value='0' disabled>请选择检测项目</option>
             <option value='1'>1.有机认证</option>
@@ -84,6 +74,7 @@ class Detection extends React.Component<Props, State> {
             <option value='3'>3.瘦肉精检测</option>
             <option value='4'>4.无公害农业基地</option>
           </select>
+          <div className='triangle'></div>
         </div>
       </div>
     )
@@ -97,22 +88,118 @@ class Detection extends React.Component<Props, State> {
       <div className='uploadImages'>
         <div>检测项目</div>
         <div>
-          {/*<ImagePicker*/}
-            {/*style={{*/}
-              {/*width: '100%'*/}
-            {/*}}*/}
-            {/*files={this.state.files}*/}
-            {/*onChange={this.onChange}*/}
-            {/*onImageClick={(index, fs) => console.log(index, fs)}*/}
-            {/*selectable={this.state.files.length < 3}*/}
-            {/*length={4}*/}
-            {/*multiple={this.state.multiple}*/}
-          {/*/>*/}
+          <ImagePicker
+            style={{
+              width: '100%'
+            }}
+            files={this.state.files}
+            onChange={this.onChange}
+            onImageClick={(index, fs) => console.log(index, fs)}
+            selectable={this.state.files.length < 3}
+            length={3}
+            multiple={this.state.multiple}
+          />
         </div>
       </div>
     )
   }
 
+  /**
+   * 检测申请
+   */
+  renderTestDescription = () => {
+    return (
+      <div className='testDescription'>
+        <div>检测描述</div>
+        <TextareaItem
+          style={{ fontSize: 14 }}
+          placeholder='请输入简单描述'
+          data-seed='logId'
+          autoHeight
+          // ref={el => this.customFocusInst = el}
+        />
+      </div>
+    )
+  }
+
+  /**
+   * 预约时间
+   */
+  renderPresetTime = () => {
+    return (
+      <div className='pressTime'>
+        <div>预约时间</div>
+        <div>
+        </div>
+      </div>
+    )
+  }
+
+  /**
+   * 联系人
+   */
+  renderLinkman = () => {
+    return (
+      <div className='linkman'>
+        <div>联系人</div>
+        <div>
+          <InputItem
+            style={{ height: '30px' }}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  /**
+   * 联系号码
+   */
+  renderLinkNumber = () => {
+    return (
+      <div className='linkNumber'>
+        <div>联系号码</div>
+        <div>
+          <InputItem
+            style={{ height: '30px' }}
+            type='phone'
+          />
+        </div>
+      </div>
+    )
+  }
+
+  /**
+   * 所在区域
+   */
+  renderArea = () => {
+    return (
+      <div className='area'>
+        <div>所在地区</div>
+        <div>
+          <InputItem
+            style={{ height: '30px' }}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  /**
+   * 详细地址
+   */
+  renderAreaDetail = () => {
+    return (
+      <div className='areaDetail'>
+        <div>详细地址</div>
+        <TextareaItem
+          style={{ fontSize: 14 }}
+          placeholder='请输入您的详细地址'
+          data-seed='logId'
+          autoHeight
+        />
+      </div>
+    )
+  }
   public render () {
     return (
       <div className='bigContainer detection'>
@@ -126,19 +213,18 @@ class Detection extends React.Component<Props, State> {
           <div className='topContent' style={{ background: 'white' }}>
             {this.renderDetectionName()}
             {this.renderImagesPicker()}
-            <div>
-              <div>上传照片</div>
-              {this.state.files.map(i => (
-                i
-              ))}
-              <div className='picker_wrap'>
-                <input className='picker_input' type='file'
-                       multiple accept='image/*'
-                       onChange={ this.uploadChange }/>
-              </div>
-            </div>
+            {this.renderTestDescription()}
           </div>
-          <img src='data:image/jpg;base64,QzpcZmFrZXBhdGhcQ2hyeXNhbnRoZW11bS5qcGc%3D'/>
+          <div className='bottomContent'>
+            {this.renderPresetTime()}
+            {this.renderLinkman()}
+            {this.renderLinkNumber()}
+            {this.renderArea()}
+          </div>
+          {this.renderAreaDetail()}
+        </div>
+        <div className='footerSubmite'>
+          <Button type='primary'>提交</Button>
         </div>
       </div>
     )
