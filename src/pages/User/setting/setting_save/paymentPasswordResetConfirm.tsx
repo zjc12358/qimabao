@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 'antd-mobile'
+import { Toast, Modal, List, Button, WhiteSpace, WingBlank, Icon, InputItem } from 'antd-mobile'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
@@ -29,35 +29,41 @@ class User extends React.Component<Props, State> {
       phone: ''     /*要换绑的手机号  */
     }
   }
+
   public componentDidMount () {
     document.getElementById('input').focus()
   }
+
   /**
    * 重置密码验证码界面
    */
   public renderContent = () => {
-    return(
+    return (
       <div>
         <div className='Segment_line2'></div>
-        <div style={{ backgroundColor: '#ffffff',color: '#858585',textAlign: 'center',width: '100%',height: 120 }}>
+        <div style={{ backgroundColor: '#ffffff', color: '#858585', textAlign: 'center', width: '100%', height: 120 }}>
           <div style={{ paddingTop: 25 }}>
             <span style={{ fontSize: 16 }}>我们已发送 </span>
-            <span style={{ fontSize: 20,color: '#000000' }}>验证码</span>
+            <span style={{ fontSize: 20, color: '#000000' }}>验证码</span>
             <span style={{ fontSize: 16 }}> 到您的手机</span>
             <br/>
             <br/>
-            <span style={{ fontSize: 20,color: '#000000' }}>{this.state.phone.replace(/\s+/g,'').replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
+            <span style={{
+              fontSize: 20,
+              color: '#000000'
+            }}>{this.state.phone.replace(/\s+/g, '').replace(/(\d{3})(\d{6})(\d{2})/, '$1******$3')}</span>
           </div>
         </div>
         <div className='Segment_line2'></div>
-        <div style={{ backgroundColor: 'transparent',textAlign: 'center' }}>
+        <div style={{ backgroundColor: 'transparent', textAlign: 'center' }}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-around',
             flexDirection: 'row',
             paddingTop: 50
           }}>
-            <input id='input' type='number' pattern='\d*' style={{ border: 'none',backgroundColor: 'transparent', fontSize: 20}} />
+            <input id='input' type='number' pattern='\d*'
+                   style={{ border: 'none', backgroundColor: 'transparent', fontSize: 20 }}/>
           </div>
           <div style={{
             paddingTop: 20
@@ -86,7 +92,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'设置支付密码'} color={'#ffffff'} />
+        <Nav title={'设置支付密码'} color={'#ffffff'}/>
         {this.renderContent()}
       </div>
     )
