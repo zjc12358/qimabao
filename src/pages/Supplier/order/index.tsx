@@ -8,6 +8,7 @@ import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import './master.css'
 import Head from '@components/Head'
+import Loading from '@components/Loading'
 
 export interface Props {
 }
@@ -15,13 +16,15 @@ export interface Props {
 interface State {
   data: any
   getEmpty: boolean
+  loading: boolean
 }
 
 class Supplier extends React.Component<Props, State> {
-
+  private timer: NodeJS.Timeout
   constructor (props) {
     super(props)
     this.state = {
+      loading: true,
       getEmpty: true,
       data: [
         { code: 'SP5685698754382', status: '待付款', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
@@ -29,6 +32,17 @@ class Supplier extends React.Component<Props, State> {
         { code: 'SP2899898754356', status: '待收货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
       ]
     }
+  }
+  public componentDidMount () {
+    this.timer = setInterval(
+      () => this.setState({
+        loading: false
+      }),
+      600
+    )
+  }
+  componentWillUnmount () {
+    clearInterval(this.timer)
   }
   /**
    * 内容
@@ -43,13 +57,13 @@ class Supplier extends React.Component<Props, State> {
     ]
     return(
       <div className={'oBar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={5} />}
+        <Tabs tabs={tabs} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={5} />}
         >
-          {this.state.getEmpty ? this.renderAll : this.renderNone}
-          {this.state.getEmpty ? this.renderObligation : this.renderNone}
-          {this.state.getEmpty ? this.renderDispatching : this.renderNone}
-          {this.state.getEmpty ? this.renderReceived : this.renderNone}
-          {this.state.getEmpty ? this.renderEvaluate : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
         </Tabs>
       </div>
     )
@@ -57,12 +71,17 @@ class Supplier extends React.Component<Props, State> {
   /**
    * 全部
    */
-  public renderAll = () => {
+  public renderSwitch = (data: any) => {
+    if (this.state.loading) {
+      return (
+        <Loading/>
+      )
+    }
     return(
       <div style={{
         paddingTop: 20
       }}>
-        {this.state.data.map((i, index) => (
+        {data.map((i, index) => (
           <div>
             {this.renderItem(i, index)}
           </div>
@@ -90,7 +109,7 @@ class Supplier extends React.Component<Props, State> {
         float: 'right'
       }}>
         <div className={'Segment_line2'} />
-        <div className={'flex-space-between-row-center'} style={{ height: 40,padding: '5px' }}>
+        <div className={'flex-space-between-row-center'} style={{ height: 40,padding: 5 }}>
           <div className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：{i.code}</div>
           <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{i.status}</div>
         </div>
@@ -98,7 +117,7 @@ class Supplier extends React.Component<Props, State> {
         {this.renderItemDetail()}
         {this.renderItemDetail()}
         <div className={'flex-flex-end-row-center'}
-             style={{ padding: '20px 16px',borderTop: '1px solid #e5e5e5' ,borderBottom: '1px solid #e5e5e5' }}>
+             style={{  height: 40,padding: 5,borderTop: '1px solid #e5e5e5' ,borderBottom: '1px solid #e5e5e5' }}>
           <div>
             <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>共4件商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合计</span>
             <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>45.00</span></span>
@@ -174,70 +193,7 @@ class Supplier extends React.Component<Props, State> {
       </div>
     )
   }
-  /**
-   * 待付款
-   */
-  public renderObligation = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
-  /**
-   * 待配送
-   */
-  public renderDispatching = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
-  /**
-   * 待收货
-   */
-  public renderReceived = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
-  /**
-   * 待评价
-   */
-  public renderEvaluate = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
+
   /**
    * 空
    */

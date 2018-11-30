@@ -21,6 +21,7 @@ export interface Props {
 interface State {
   data: any
   dataShop: any
+  loading: boolean
 }
 
 let IconMaxSize: number = 30
@@ -28,10 +29,12 @@ let MenuMaxSize: number = 24
 const dataViewTitle: any = ['待付款','待收货','待发货','待评价','退款/售后']
 const dataShopTitle: any = ['出售中','已售完','仓库中','已下架']
 class Supplier extends React.Component<Props, State> {
+  private timer: NodeJS.Timeout
 
   constructor (props) {
     super(props)
     this.state = {
+      loading: true,
       data: [1,17,143,5,0],
       dataShop: [3,10,5,0]
     }
@@ -114,6 +117,9 @@ class Supplier extends React.Component<Props, State> {
         }
       ]
     })
+  }
+  componentWillUnmount () {
+    clearInterval(this.timer)
   }
   /**
    * 标题

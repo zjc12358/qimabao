@@ -7,6 +7,7 @@ import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import './master.css'
 import Nav from '@components/Head/nav'
+import history from 'history/createHashHistory'
 
 export interface Props {
   pageTab: PageTab
