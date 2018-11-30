@@ -169,7 +169,7 @@ class Menu extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div className='vertical render-style'>
+      <div className='vertical scroll touch_scroll'>
         {this.renderContent()}
         {this.renderShowBigPicture()}
         {this.renderPicturesList()}

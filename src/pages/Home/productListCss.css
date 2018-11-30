@@ -54,6 +54,13 @@
   width: 100%;
 }
 
+.product-img {
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 65px;
+  height: 65px;
+}
+
 .product-list-item-content {
   flex: 1;
   align-items: flex-start;

@@ -180,8 +180,8 @@ const config = {
           // context: 'public'
         },
         {
-          from: path.join(__dirname, './public/img'),
-          to: path.join(outputPath, './img/'),
+          from: path.join(__dirname, './src/components/Head'),
+          to: path.join(outputPath, './components/Head'),
         }
       ]
     ),

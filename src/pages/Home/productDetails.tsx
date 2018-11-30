@@ -11,6 +11,9 @@ import { updatePageTab } from '@store/actions/global_data'
 import ReactSVG from 'react-svg'
 import './productDetailCss.css'
 
+let topPic = ['http://file4.youboy.com/e/2015/3/14/73/541738.jpg', 'http://files.b2b.cn/product/ProductImages/2015_03/13/110/13110252636_b.jpg',
+  'http://pic.58pic.com/58pic/14/88/80/76C58PICvQx_1024.jpg']
+
 export interface Props {
   productDetailsData: {
     productId: number
@@ -24,7 +27,6 @@ interface State {
   topImgData: Array<string>
   imgHeight: any
   scrollY: number
-  width: any
   current: number
 }
 
@@ -34,10 +36,9 @@ class Home extends React.Component<Props, State> {
     super(props)
     this.state = {
       productDetails: null,
-      topImgData: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
+      topImgData: topPic,
       imgHeight: 176,
       scrollY: 0,
-      width: window.screen.availWidth,
       current: 0
     }
   }
@@ -51,14 +52,10 @@ class Home extends React.Component<Props, State> {
   componentDidMount () {
     // 获取滑动y高度
     window.addEventListener('scroll', () =>
-      this.setState({
-        scrollY: window.scrollY
-      })
-    )
-    let width = window.screen.availWidth
-    this.setState({
-      width: width
-    })
+        this.setState({
+          scrollY: window.scrollY
+        })
+      )
   }
 
   /**
@@ -76,7 +73,7 @@ class Home extends React.Component<Props, State> {
              height: 40,
              backgroundColor: 'white',
              zIndex: 100,
-             opacity: (this.state.scrollY / this.state.width)
+             opacity: (this.state.scrollY / 350)
            }}>
         默认名{this.state.productDetails !== null && this.state.productDetails!!.product_name}
         <div className='horizontal-center'
@@ -113,25 +110,25 @@ class Home extends React.Component<Props, State> {
     return (
       <div style={{
         width: '100%',
-        height: 0,
-        paddingBottom: '100%',
+        height: 350,
         position: 'relative'
       }}>
         <Carousel
           autoplay={false}
           infinite={false}
           afterChange={(current) => this.afterChange(current)}
+          style={{ height: 350 }}
         >
           {this.state.topImgData.map(val => (
             <a
               key={val}
               href='http://www.alipay.com'
-              style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
+              style={{ display: 'inline-block', width: '100%', height: 350 }}
             >
               <img
-                src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
+                src={val}
                 alt=''
-                style={{ width: '100%', verticalAlign: 'top' }}
+                style={{ width: '100%', height: '100%', verticalAlign: 'top' }}
                 onLoad={() => {
                   // fire window resize event to change height
                   window.dispatchEvent(new Event('resize'))
@@ -162,7 +159,7 @@ class Home extends React.Component<Props, State> {
           height: 125,
           width: '100%'
         }}>
-          未获取到商品详细
+          未获取到商品详细 {this.state.scrollY}
         </div>
         :
         <div className='vertical'

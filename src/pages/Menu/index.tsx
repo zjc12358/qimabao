@@ -30,10 +30,7 @@ class Order extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      <div className='bigContent' style={{
-        width: '100%',
-        flex: 1
-      }}>
+      <div className='vertical' style={{ width: '100%', flex: 1 }}>
         {this.props.selectMenu === true ? <MenuSelect/> : <MenuUpload/>}
       </div>
     )
@@ -62,7 +59,7 @@ class Order extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div className='bigContainer' style={{
+      <div className='vertical' style={{
         backgroundColor: '#efeff5',
         height: '100%'
       }}>

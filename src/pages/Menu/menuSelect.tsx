@@ -338,10 +338,10 @@ class Menu extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div className='vertical render-style'>
-          {this.renderCalendar()}
-          {this.renderContent()}
-          {this.renderFoot()}
+      <div className='vertical scroll touch_scroll'>
+        {this.renderCalendar()}
+        {this.renderContent()}
+        {this.renderFoot()}
       </div>
     )
   }
