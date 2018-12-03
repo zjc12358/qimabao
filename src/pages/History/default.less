@@ -37,3 +37,42 @@
 .am-list-item .am-list-line .am-list-content{
   padding-bottom: 0;
 }
+
+.yourLike{
+  .yourLikeTitle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 110px;
+    &>div:nth-child(1),&>div:nth-child(3){
+      width: 30%;
+      height: 1px;
+      background-color: #cccccc
+    }
+    &>div:nth-child(2){
+      display: flex;
+      font-size: 16px;
+      padding: 0 6px;
+    }
+  }
+  .yourLikeContent{
+    padding-top: 30px;
+    &>div{
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+    .yourLikeFood{
+      width: 50%;
+      max-width: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+  }
+  .likeIcon{
+    width: 12px;
+    height: 12px;
+  }
+}
+

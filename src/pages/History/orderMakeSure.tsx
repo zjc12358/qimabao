@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox, TextareaItem } from 'antd-mobile'
+import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Toast, TextareaItem } from 'antd-mobile'
 import ReactSVG from 'react-svg'
-import './default.css'
+import './default.less'
 import './orderMakeSure.less'
 import Head from '../../components/Head/index'
 import history from 'history/createHashHistory'
@@ -126,25 +126,15 @@ class History extends React.Component<Props, State> {
     }
   }
 
-  onWrapTouchStart = (e) => {
-    // fix touch to scroll background page on iOS
-    if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
-      return
-    }
-    const pNode = closest(e.target, '.am-modal-content')
-    if (!pNode) {
-      e.preventDefault()
-    }
-  }
-
-  radioOnChange = (obj, index) => {
-    console.log(11)
-    for (let i = 0; i < this.state.dateChooseData.length; i++) {
-      let dateChooseData = this.state.dateChooseData
-      dateChooseData[i].checked = false
-      if (i === index) dateChooseData[i].checked = true
-      console.log(dateChooseData[i].checked)
-      this.setState({ dateChooseData: dateChooseData })
+  /**
+   * 提交订单
+   */
+  subOnChange = (e) => {
+    if (this.state.timeIsSet === true) {
+      this.setState({ modal2: true })
+    } else {
+      Toast.info('请选择配送时间!',2,null,false)
+      this.showModal(e,1)
     }
   }
 
@@ -280,7 +270,7 @@ class History extends React.Component<Props, State> {
               }}
             >
               <div>
-                <img style={{ width: 20 }} src='../../assets/images/Cart/delete.svg' />
+                <img style={{ width: 20 }} src='../../assets/images/Cart/cart_location.svg' />
               </div>
               <div style={{ flex: 1, paddingLeft: 12, paddingRight: 10 }}>
                 <div style={{ display: 'flex' }}>
@@ -292,7 +282,7 @@ class History extends React.Component<Props, State> {
               </div>
               <div><Icon type='right'/></div>
             </div>
-            <div style={{ height: 5, backgroundColor: '#d69495', marginBottom: 15 }}></div>
+            <div style={{ height: 5, background: 'url(./assets/images/Cart/border_bg.jpg)', marginBottom: 15 }}></div>
           </div>
           <div className='orderDetail'>
             <div className='orderDetailCon'>
@@ -333,7 +323,7 @@ class History extends React.Component<Props, State> {
           <div style={{ flex: 1 }}></div>
           <div style={{ color: 'red',paddingRight: 20 }}>￥31</div>
           <Button type='primary' style={{ height: 50,width: 120,borderRadius: 0 }}
-               onClick={ () => { this.setState({ modal2: true }) }}
+               onClick={this.subOnChange}
           >提交订单</Button>
         </div>
         <DatePicker
@@ -366,15 +356,6 @@ class History extends React.Component<Props, State> {
           </List>
         </Modal>
         {this.renderPayConfirm()}
-        {/*<button onClick={() => {*/}
-          {/*let data = this.props.orderData*/}
-          {/*data.total = 100*/}
-          {/*this.props.updataOrderMakeSure(data)*/}
-          {/*console.log(this.props.orderData.total)*/}
-          {/*this.setState({ orderData: data })*/}
-        {/*}}>点我*/}
-        {/*</button>*/}
-        {/*<div>我是：{this.state.orderData.total}</div>*/}
       </div>
     )
   }
