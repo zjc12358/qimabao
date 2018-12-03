@@ -211,7 +211,7 @@ class Home extends React.Component<Props, State> {
           <div className='horizontal-center' onClick={this.headOnClick} style={{ fontSize: 18 }}>
             <span>{this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}</span>
             {/*<span className='horizontal-center' style={{ marginLeft: 8, marginBottom: 5 }}>*/}
-              {/*<ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>*/}
+            {/*<ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>*/}
             {/*</span>*/}
           </div>
           {/*右边2个按钮*/}
@@ -382,12 +382,12 @@ class Home extends React.Component<Props, State> {
         <div style={{ margin: 10 }}>
           <div className='price-area-border'>
             <div className='horizontal'>
-              <Input style={{ width: 80 }} onChange={this.priceMinChange} defaultValue={'最低价'}
+              <Input style={{ width: 100, paddingLeft: 10 }} onChange={this.priceMinChange} placeholder={'最低价'}
                      type={'number'} disableUnderline={true} className='center price-input-border'>
                 {this.state.minPrice === null ? '' : this.state.minPrice}
               </Input>
-              <span style={{ width: 10, height: 1 }}></span>
-              <Input style={{ width: 80 }} onChange={this.priceMaxChange} defaultValue={'最高价'}
+              <span style={{ width: 15, height: 1, backgroundColor: 'black', marginRight: 2, marginLeft: 2 }}/>
+              <Input style={{ width: 100, paddingLeft: 10 }} onChange={this.priceMaxChange} placeholder={'最高价'}
                      type={'number'} disableUnderline={true} className='center price-input-border'>
                 {this.state.maxPrice === null ? '' : this.state.maxPrice}
               </Input>

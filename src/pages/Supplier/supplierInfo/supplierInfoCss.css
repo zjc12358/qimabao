@@ -1,0 +1,30 @@
+.info-name {
+  width: 120px;
+  color: white;
+  margin-right: 20px
+}
+
+.company {
+  width: 120px;
+  margin-top: 5px;
+  color: #ffffff80;
+  margin-right: 20px;
+}
+
+.score {
+  margin-top: 20px;
+  margin-left: 20px;
+  color: #ffffff80;
+}
+
+.open-state {
+  width: 100%;
+  margin-top: 30px;
+  font-size: 18px;
+}
+
+.make-appointment-state {
+  width: 100%;
+  margin-top: 20px;
+  font-size: 18px;
+}
