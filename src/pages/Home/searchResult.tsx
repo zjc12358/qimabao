@@ -12,9 +12,13 @@ import './homeCss.css'
 import './searchResultCss.css'
 import LoadMore from '@components/LoadMore'
 import Drawer from '@material-ui/core/Drawer/Drawer'
+import Input from '@material-ui/core/Input/Input'
+import { TagBean } from '@datasources/TagBean'
 
 // 页码
 let pageIndex = 0
+
+let sortTag = ['有机', '冷冻', '纯天然', '野生', '绿色', '深加工']
 
 export interface Props {
   searchData: SearchData
@@ -29,6 +33,9 @@ interface State {
   hasMore: boolean
   showChoose: boolean
   drawerOpen: boolean
+  tagList: Array<TagBean>
+  minPrice: number // 最低价
+  maxPrice: number // 最高价
 }
 
 class Home extends React.Component<Props, State> {
@@ -42,12 +49,16 @@ class Home extends React.Component<Props, State> {
       isLoading: false,
       hasMore: true,
       showChoose: false,
-      drawerOpen: false
+      drawerOpen: false,
+      tagList: [],
+      minPrice: null,
+      maxPrice: null
     }
   }
 
   componentDidMount () {
     this.refresh()
+    this.getTagList()
   }
 
   refresh () {
@@ -80,6 +91,21 @@ class Home extends React.Component<Props, State> {
         isLoading: false
       })
     }, 1000)
+  }
+
+  getTagList () {
+    let list: Array<TagBean> = []
+    for (let i = 0; i < 6; i++) {
+      let item: TagBean = {
+        name: sortTag[i],
+        id: i,
+        checked: false
+      }
+      list.push(item)
+    }
+    this.setState({
+      tagList: list
+    })
   }
 
   /**
@@ -173,6 +199,52 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
+   * 抽屉内部布局
+   */
+  renderDrawer = () => {
+    return (
+      <div className='vertical' style={{ height: '100%' }}>
+        <span style={{ height: 40, fontSize: 20, marginTop: 20 }}>价格筛选</span>
+        <div style={{ margin: 10 }}>
+          <div className='price-area-border'>
+            <div className='horizontal'>
+              <Input style={{ width: 100, paddingLeft: 10 }} onChange={this.priceMinChange} placeholder={'最低价'}
+                     type={'number'} disableUnderline={true} className='center price-input-border'>
+                {this.state.minPrice === null ? '' : this.state.minPrice}
+              </Input>
+              <span style={{ width: 15, height: 1, backgroundColor: 'black', marginRight: 2, marginLeft: 2 }}/>
+              <Input style={{ width: 100, paddingLeft: 10 }} onChange={this.priceMaxChange} placeholder={'最高价'}
+                     type={'number'} disableUnderline={true} className='center price-input-border'>
+                {this.state.maxPrice === null ? '' : this.state.maxPrice}
+              </Input>
+            </div>
+          </div>
+        </div>
+        <span style={{ width: '100%', marginTop: 20 }}><span style={{ marginLeft: 20, fontSize: 14 }}>特色</span></span>
+        <div className='horizontal'
+             style={{ flexWrap: 'wrap', width: 200 }}>
+          {this.state.tagList.map((item, index) => this.renderDrawerTagItem(item.name, item.checked, index))}</div>
+      </div>
+    )
+  }
+
+  /**
+   * 标签样式
+   */
+  renderDrawerTagItem = (item: string, checked: boolean, index: number) => {
+    return (
+      checked ?
+        <div className='center drawer-tag-item-onClick' onClick={() => this.tagOnClick(index, checked)}>
+          <span>{item}</span>
+        </div>
+        :
+        <div className='center drawer-tag-item' onClick={() => this.tagOnClick(index, checked)}>
+          <span>{item}</span>
+        </div>
+    )
+  }
+
+  /**
    * 返回
    */
   goBackOnClick = () => {
@@ -222,6 +294,38 @@ class Home extends React.Component<Props, State> {
   toggleDrawer = (open) => {
     this.setState({
       drawerOpen: open
+    })
+  }
+
+  /**
+   * 改变最低价
+   * @param key
+   * @param event
+   */
+  priceMinChange = (event) => {
+    this.setState({
+      minPrice: event.target.value
+    })
+  }
+
+  /**
+   * 改变最高价
+   * @param event
+   */
+  priceMaxChange = (event) => {
+    this.setState({
+      maxPrice: event.target.value
+    })
+  }
+
+  /**
+   * 点击标签
+   */
+  tagOnClick = (index: number, checked: boolean) => {
+    let tagList = this.state.tagList
+    tagList[index].checked = !checked
+    this.setState({
+      tagList
     })
   }
 
@@ -277,7 +381,7 @@ class Home extends React.Component<Props, State> {
           <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}></span>
           {this.renderContentList()}
           <Drawer anchor={'right'} open={this.state.drawerOpen} onClose={() => this.toggleDrawer(false)}>
-            <div style={{ backgroundColor: 'white', height: '100%' }}>1111111111</div>
+            {this.renderDrawer()}
           </Drawer>
         </div>
       </div>

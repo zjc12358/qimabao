@@ -76,6 +76,11 @@ class LoadMore extends React.Component<Props, State> {
     })
   }
 
+  touchMove (e) {
+    console.log('移动了屏幕')
+    let moveX = e.changedTouches[0]
+  }
+
   // 离开屏幕 ([e.changedTouches][2])
   touchEnd (e) {
     let endX
@@ -122,7 +127,8 @@ class LoadMore extends React.Component<Props, State> {
   public render () {
     return (
       <div className='vertical'>
-        <div style={{ width: '100%' }} onTouchStart={this.touchStart.bind(this)} onTouchEnd={this.touchEnd.bind(this)}>
+        <div style={{ width: '100%' }} onTouchMove={this.touchMove.bind(this)}
+             onTouchStart={this.touchStart.bind(this)} onTouchEnd={this.touchEnd.bind(this)}>
           {this.props.list}
         </div>
         <div className='vertical-center'

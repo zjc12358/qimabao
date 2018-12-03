@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 'antd-mobile'
+import { Toast, Modal, List, Button, WhiteSpace, WingBlank, Icon, InputItem } from 'antd-mobile'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
@@ -25,16 +25,14 @@ class User extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
-    this.state = {
-
-    }
+    this.state = {}
   }
 
   /**
    * 验证支付密码（6位数字界面）
    */
   public renderContent = () => {
-    return(
+    return (
       <div>
         <div className='Segment_line2'></div>
         <div style={{
@@ -46,7 +44,7 @@ class User extends React.Component<Props, State> {
         }}>
           <span style={{ fontSize: 16 }}>输入支付密码，完成验证 </span>
         </div>
-        <div className='Segment_line2' />
+        <div className='Segment_line2'/>
         <div style={{
           display: 'flex',
           justifyContent: 'center',
@@ -54,7 +52,8 @@ class User extends React.Component<Props, State> {
           paddingTop: 40
         }}>
           <div className='passContainer'>
-            <input maxLength={6} autoFocus={true} type='password' className={'passWordInput'} onChange={(e) => this.passwordOnchange(e)}/>
+            <input maxLength={6} autoFocus={true} type='password' className={'passWordInput'}
+                   onChange={(e) => this.passwordOnchange(e)}/>
             <div className='passItem'/>
             <div className='passItem'/>
             <div className='passItem'/>
@@ -72,6 +71,7 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
+
   passwordOnchange (e) {
     console.log(e.target.value + '   ' + e.target.value.length)
     if (e.target.value.length === 6) {
@@ -84,7 +84,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'修改支付密码'} color={'#ffffff'} />
+        <Nav title={'修改支付密码'} color={'#ffffff'}/>
         {this.renderContent()}
       </div>
     )

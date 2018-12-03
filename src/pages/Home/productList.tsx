@@ -24,6 +24,24 @@ let pageIndex = 0
 
 let chooseData = ['价格高到低', '价格低到高', '销量高到低', '优惠优先']
 let sortTag = ['有机', '冷冻', '纯天然', '野生', '绿色', '深加工']
+let productName = ['民维大牧汗180羔羊肉片220g', '精品冰鲜五花肉450g', '泰森冷冻去皮鸡大胸454g',
+  '纽澜地黑牛雪花牛肉片300g/盒', '泰森冷冻鸡腿肉丁454g/袋', '兰皇生鲜鸡蛋10枚装600g/盒',
+  '牧羊天山羊颈块(羊蝎子) 50g/包', '帝皇鲜安格斯牛腱肉澳洲270天谷饲m3 500g', '凤中皇冷冻月子鸡900g',
+  '纽澜地黑牛带髓牛骨1000g/袋']
+let productDescribe = ['源自内蒙，细腻多汁，适合涮、炒、煲汤特价', ' 只卖当天肉自然林地生态养殖肉质坚实..',
+  '谷物饲养、鲜嫩多汁特价', '900天原生谷物饲养、新鲜雪花牛肉产地...', '谷物基础饲料喂养，肉质鲜嫩买1赠1',
+  '日本独资，安全新鲜美味特价', '精选巴什拜羔羊肉质鲜美', '源自澳洲270天谷饲安格斯牛种，M3等',
+  '源自国家农业部清远鸡原种保种基地，皮...', '900天原生谷物饲养、新鲜雪花牛肉产地...']
+let productImg = ['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550883495&di=fd64f106f64cc2c4051d172d679255c7&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dshijue1%252C0%252C0%252C294%252C40%2Fsign%3Db2404dec9a529822113e3180bfa311be%2F730e0cf3d7ca7bcbfe25b604b4096b63f624a8bb.jpg',
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550884204&di=5de0f0418f05549265afce8576646fa8&imgtype=0&src=http%3A%2F%2Fpic5.photophoto.cn%2F20071201%2F0042040416440419_b.jpg',
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550884204&di=9721b828f660ef3a381502f2fddc73f6&imgtype=0&src=http%3A%2F%2Fpic153.nipic.com%2Ffile%2F20180119%2F21485791_115944489000_2.jpg',
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550884204&di=002db97c091a9987ee6109318fbc0695&imgtype=0&src=http%3A%2F%2Fpic26.nipic.com%2F20121230%2F10756162_231509644000_2.jpg',
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550884203&di=eefce9aa43688c3e6911fc8902ddace8&imgtype=0&src=http%3A%2F%2Fimg001.hc360.cn%2Fm7%2FM00%2F8E%2FB1%2FwKhQo1VRo8iEXeN0AAAAAH6dCFU011.jpg',
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550884203&di=b6d1eaa257e9979550a3684ed4e476b1&imgtype=0&src=http%3A%2F%2Fpic7.nipic.com%2F20100618%2F4889034_104404851252_2.jpg',
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550884203&di=e81471da98b2d8e88625334b51d33002&imgtype=0&src=http%3A%2F%2Fpic11.nipic.com%2F20101107%2F6141505_114731576000_2.jpg',
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550884201&di=56f16734219b09848f440b28f3a5207e&imgtype=0&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140910%2F0042040499665999_b.jpg',
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550884201&di=2cfef41ffb95552cbfca249ac056ef66&imgtype=0&src=http%3A%2F%2Fimg3.redocn.com%2Ftupian%2F20141224%2Fyaxiongrou_3755858.jpg',
+  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543550884199&di=27247930e67ee663839d1ea5b6b0d254&imgtype=0&src=http%3A%2F%2Fpic14.nipic.com%2F20110608%2F2786001_234143163147_2.jpg']
 
 export interface Props {
   categoryItemData: CategoryItemData
@@ -133,13 +151,13 @@ class Home extends React.Component<Props, State> {
     let productList: Array<ProductBean> = []
     for (let i = 0; i < 10; i++) {
       let product: ProductBean = {
-        img: '',
+        img: productImg[i],
         id: i,
         store: '蓝宇科技',
-        describe: '和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克和大家看撒谎哈萨克',
-        price: '',
+        describe: productDescribe[i],
+        price: '' + (i + 1),
         weight: '200g',
-        name: '商品' + i,
+        name: productName[i],
         store_id: 0
       }
       productList.push(product)
@@ -183,7 +201,7 @@ class Home extends React.Component<Props, State> {
    */
   renderHead = () => {
     return (
-      <div style={{ width: '100%', zIndex: 100 }}>
+      <div style={{ width: '100%', zIndex: 100, position: 'relative' }}>
         <div className='horizontal-center'
              style={{ height: 40, width: '100%', backgroundColor: 'white' }}>
           <div className='horizontal title-back' onClick={() => history().goBack()}>
@@ -192,9 +210,9 @@ class Home extends React.Component<Props, State> {
           {/*标题*/}
           <div className='horizontal-center' onClick={this.headOnClick} style={{ fontSize: 18 }}>
             <span>{this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}</span>
-            <span className='horizontal-center' style={{ marginLeft: 8, marginBottom: 5 }}>
-              <ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>
-            </span>
+            {/*<span className='horizontal-center' style={{ marginLeft: 8, marginBottom: 5 }}>*/}
+            {/*<ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>*/}
+            {/*</span>*/}
           </div>
           {/*右边2个按钮*/}
           <div className='horizontal-center right-menu' style={{ justifyContent: 'flex-end' }}>
@@ -309,8 +327,8 @@ class Home extends React.Component<Props, State> {
     let list = this.state.productList.map((item) => this.renderRightProductListItem(item))
     return (
       <div className='touch_scroll scroll product-list'>
-        <LoadMore itemHeight={71} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
-                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll product-list'}
+        <LoadMore itemHeight={91} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
+                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
                   hasMore={this.state.hasMore}/>
       </div>
     )
@@ -323,16 +341,18 @@ class Home extends React.Component<Props, State> {
   renderRightProductListItem = (item: ProductBean) => {
     return (
       <div className='vertical'
-           style={{ height: 71, width: '100%', backgroundColor: 'white' }}
+           style={{ height: 91, width: '100%', backgroundColor: 'white' }}
            onClick={() => this.productOnClick(item.id)}>
         <div className='horizontal'
-             style={{ height: 70, width: '100%' }}>
-          <img style={{ margin: 5, width: 60, height: 60 }} src={item.img}/>
-          <div className='vertical product-list-item-content'>
-            <span style={{ marginTop: 5 }}>{item.name}</span>
+             style={{ height: 90, width: '100%' }}>
+          <img className='product-img' src={item.img}/>
+          <div className='vertical product-list-item-content'
+               style={{ justifyContent: 'space-between' }}>
+            <span className='text-nowrap' style={{ width: '100%', marginTop: 10 }}>{item.name}</span>
             <div className='product-list-item-describe text-nowrap'>{item.describe}</div>
+            <span className='text-nowrap' style={{ width: '100%', marginTop: 5 }}>{item.store}</span>
             <div className='horizontal'
-                 style={{ justifyContent: 'space-between', width: '100%' }}>
+                 style={{ justifyContent: 'space-between', width: '100%', marginBottom: 5 }}>
               <div className='horizontal'>
                 <span style={{ color: '#ff0000', fontSize: 12 }}>¥</span>
                 <span style={{ color: '#ff0000', fontSize: 12 }}>{item.price}</span>
@@ -347,7 +367,7 @@ class Home extends React.Component<Props, State> {
             </div>
           </div>
         </div>
-        <span style={{ height: 1, backgroundColor: '#e5e5e5', width: '100%', position: 'fixed', bottom: 0 }}></span>
+        <span style={{ height: 1, backgroundColor: '#e5e5e5', width: '100%' }}/>
       </div>
     )
   }
@@ -362,12 +382,12 @@ class Home extends React.Component<Props, State> {
         <div style={{ margin: 10 }}>
           <div className='price-area-border'>
             <div className='horizontal'>
-              <Input style={{ width: 80 }} onChange={this.priceMinChange} defaultValue={'最低价'}
+              <Input style={{ width: 100, paddingLeft: 10 }} onChange={this.priceMinChange} placeholder={'最低价'}
                      type={'number'} disableUnderline={true} className='center price-input-border'>
                 {this.state.minPrice === null ? '' : this.state.minPrice}
               </Input>
-              <span style={{ width: 10, height: 1 }}></span>
-              <Input style={{ width: 80 }} onChange={this.priceMaxChange} defaultValue={'最高价'}
+              <span style={{ width: 15, height: 1, backgroundColor: 'black', marginRight: 2, marginLeft: 2 }}/>
+              <Input style={{ width: 100, paddingLeft: 10 }} onChange={this.priceMaxChange} placeholder={'最高价'}
                      type={'number'} disableUnderline={true} className='center price-input-border'>
                 {this.state.maxPrice === null ? '' : this.state.maxPrice}
               </Input>
@@ -404,9 +424,9 @@ class Home extends React.Component<Props, State> {
   headOnClick = () => {
     // TODO 2018/10/29 显示选择弹窗
     // TODO 2018/10/29 选择完请求数据
-    this.setState({
-      showCategory: true
-    })
+    // this.setState({
+    //   showCategory: true
+    // })
   }
 
   /**
@@ -592,9 +612,9 @@ class Home extends React.Component<Props, State> {
         <Drawer anchor={'right'} open={this.state.drawerOpen} onClose={() => this.toggleDrawer(false)}>
           {this.renderDrawer()}
         </Drawer>
-        {window.addEventListener('touchmove', function (event) {
-          event.preventDefault()
-        }, { passive: false })}
+        {/*{window.addEventListener('touchmove', function (event) {*/}
+        {/*event.preventDefault()*/}
+        {/*}, { passive: false })}*/}
       </div>
     )
   }

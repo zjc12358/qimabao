@@ -92,7 +92,6 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {}
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {
-}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseMenu)
