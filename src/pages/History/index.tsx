@@ -2,13 +2,13 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon ,Toast } from 'antd-mobile'
+import ReactSVG from 'react-svg'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import './default.css'
+import './default.less'
 import Head from '../../components/Head/index'
 import { ShopCartSupplierBean } from '@datasources/ShopCartSupplierBean'
 import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
-import supplierRevise from '.'
 import { updatePageTab } from '@store/actions/global_data'
 import { needReload, updataAllSupplierItemCheck, updataShopCart } from '@store/actions/shopCart_data'
 
@@ -309,16 +309,16 @@ class History extends React.Component<Props, State> {
    */
   renderYourLike = () => {
     return (
-      <div>
-        <div style={{ display: 'flex',justifyContent: 'center', alignItems: 'center',marginTop: 40 }}>
-          <div style={{ width: '20%',height: 2, backgroundColor: '#cccccc' }}></div>
-          <div style={{ fontSize: 18, padding: '0 6px' }}>猜您喜欢</div>
-          <div style={{ width: '20%',height: 2, backgroundColor: '#cccccc' }}></div>
+      <div className='yourLike'>
+        <div className='yourLikeTitle'>
+          <div></div>
+          <div><ReactSVG svgClassName='likeIcon' path='./assets/images/Cart/yourLike.svg'/>猜您喜欢</div>
+          <div></div>
         </div>
-        <div style={{ paddingTop: 30 }}>
-          <div style={{ display: 'flex',flexFlow: 'row wrap',justifyContent: 'space-between' }}>
+        <div className='yourLikeContent'>
+          <div>
             {this.state.yourLink.map((i, key) => (
-              <div key={ key } style={{ width: '50%',maxWidth: 200,display: 'flex',flexDirection: 'column',alignItems: 'center' }}>
+              <div key={ key } className='yourLikeFood'>
                 <img style={{ display: 'block', width: '100%', maxWidth: 200, height: 157 }} src='http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg' />
                 <div>北海道原味吐司</div>
                 <div>
