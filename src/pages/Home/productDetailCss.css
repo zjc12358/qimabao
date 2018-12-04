@@ -1,3 +1,19 @@
+.evaluation-head {
+  justify-content: space-between;
+  font-size: 18px;
+  height: 40px;
+  width: 100%;
+  background-color: white;
+}
+
+.more-evaluation {
+  padding: 7px 30px;
+  font-size: 18px;
+  color: #ffaf7a;
+  border: 1px solid #ffaf7a;
+  border-radius: 20px;
+}
+
 .left-btn {
   flex: 1;
   height: 100%;
