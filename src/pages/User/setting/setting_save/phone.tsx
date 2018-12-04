@@ -6,9 +6,10 @@ import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import '../../master.css'
+import Head from '@components/Head'
+
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
@@ -36,13 +37,10 @@ class User extends React.Component<Props, State> {
     return(
       <div>
         <div style={{ backgroundColor: '#ffffff' }}>
-          <div className='Segment_line2' />
-          <div className={'flex-row-space-between-p1510'}>
-            <div className={'flex-row-center'}>
-              <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>当前手机号</span>
-            </div>
-            <div className={'flex-row-center'}>
-              <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
+          <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }}>
+            <span style={{ fontSize: '16px', paddingLeft: 10 }}>当前手机号</span>
+            <div className={'flex-center-row-center'}>
+              <span>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
             </div>
           </div>
         </div>
@@ -70,7 +68,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'手机号'} color={'#ffffff'} />
+        <Head title={'手机号'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )

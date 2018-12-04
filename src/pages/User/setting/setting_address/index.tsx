@@ -109,7 +109,7 @@ class User extends React.Component<Props, State> {
           <div style={{
             padding: 20
           }}>
-            <ReactSVG path='../assets/images/User/edit.svg' svgStyle={{ width: 16, height: 16 }}/>
+            <ReactSVG path='../assets/images/User/edit.svg' svgStyle={{ width: 18, height: 18 }}/>
           </div>
         </div>
       </div>

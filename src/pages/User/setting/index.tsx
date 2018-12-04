@@ -7,9 +7,9 @@ import Button from 'antd-mobile/lib/button'
 import { UserInfo } from '../../../datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
 import '../master.css'
-import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
+import Head from '@components/Head'
 
 export interface Props {
   pageTab: string
@@ -34,62 +34,61 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className='Segment_line2' />
-        <div className={'flex-row-space-between-p1510'} onClick={this.safeOnclick}>
-          <div className={'flex-center-row-center'}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.safeOnclick}>
+          <div className={'flex-flex-end-row-center'}>
             <ReactSVG path='./assets/images/User/safe.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span style={{ fontSize: '16px', paddingLeft: 10 }}>安全设置</span>
+            <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>安全设置</span>
           </div>
           <div className={'flex-center-row-center'}>
-            <span style={{ marginRight: 10 }}>手机号、密码</span>
+            <span className={'commonFont'} style={{ marginRight: 10 }}>手机号、密码</span>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-row-space-between-p1510'} onClick={this.payOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.payOnclick}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/setting_pay.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span style={{ fontSize: '16px', paddingLeft: 10 }}>支付设置</span>
+            <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>支付设置</span>
           </div>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-row-space-between-p1510'} onClick={this.addressOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.addressOnclick}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/address.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span style={{ fontSize: '16px', paddingLeft: 10 }}>收货地址</span>
+            <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>收货地址</span>
           </div>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-row-space-between-p1510'} onClick={this.EliminateOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.EliminateOnclick}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/eliminate.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span style={{ fontSize: '16px', paddingLeft: 10 }}>清除缓存</span>
+            <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>清除缓存</span>
           </div>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-row-space-between-p1510'} onClick={this.aboutOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.aboutOnclick}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/about.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span style={{ fontSize: '16px', paddingLeft: 10 }}>关于我们</span>
+            <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>关于我们</span>
           </div>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-row-space-between-p1510'}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/notice.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span style={{ fontSize: '16px', paddingLeft: 10 }}>开启通知</span>
+            <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>开启通知</span>
           </div>
           <div className={'flex-center-row-center'}>
             <Switch checked={this.state.noticeChecked} onChange={this.noticeOnclick} onClick={() => { this.setState({ noticeChecked: !this.state.noticeChecked }) }} />
@@ -131,7 +130,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'设置'} color={'#ffffff'} />
+        <Head title={'设置'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
         <Button type='warning' style={{
           marginTop: 35,
