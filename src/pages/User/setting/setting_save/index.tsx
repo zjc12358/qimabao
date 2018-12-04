@@ -6,9 +6,10 @@ import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import '../../master.css'
+import Head from '@components/Head'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: PageTab
@@ -20,7 +21,7 @@ export interface Props {
 interface State {
   data: any
 }
-
+let RightIconMaxSize: number = 18
 class User extends React.Component<Props, State> {
 
   constructor (props) {
@@ -36,24 +37,17 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className='Segment_line2' />
-        <div className={'flex-row-space-between-p1510'} onClick={this.phoneOnclick}>
-          <div className={'flex-row-center'}>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>手机号</span>
-          </div>
-          <div className={'flex-row-center'}>
-            <span style={{ marginTop: 8 }}>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
-            <Icon type='right' style={{ marginTop: 6 }} />
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.phoneOnclick}>
+          <span style={{ fontSize: '16px', paddingLeft: 10 }}>手机号</span>
+          <div className={'flex-flex-end-row-center'}>
+            <span>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
+            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-row-space-between-p1510'} onClick={this.payOnclick}>
-          <div className={'flex-row-center'}>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>支付密码设置</span>
-          </div>
-          <div className={'flex-row-center'}>
-            <Icon type='right' style={{ marginTop: 6 }} />
-          </div>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.payOnclick}>
+          <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>支付密码设置</span>
+          <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
         </div>
       </div>
     )
@@ -72,7 +66,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'安全设置'} color={'#ffffff'} />
+        <Head title={'安全设置'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )

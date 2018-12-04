@@ -9,17 +9,8 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import '../../master.css'
+import ReactSVG from 'react-svg'
 
-// 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
-// https://github.com/ant-design/ant-design-mobile/issues/307
-// https://github.com/ant-design/ant-design-mobile/issues/163
-const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent)
-let moneyKeyboardWrapProps
-if (isIPhone) {
-  moneyKeyboardWrapProps = {
-    onTouchStart: e => e.preventDefault()
-  }
-}
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
@@ -31,16 +22,19 @@ interface State {
   data: any
   phoneConfirmButtonType: boolean
   phone: string
+  value: string
+  clear: boolean
 }
 
 class User extends React.Component<Props, State> {
-
   constructor (props) {
     super(props)
     this.state = {
       phoneConfirmButtonType: false,   /*false为disabled */
       phone: '',     /*要换绑的手机号  */
-      data: { phone: '13589458987',address: '中国大陆' }   /*数据源 */
+      data: { phone: '13589458987',address: '中国大陆' },   /*数据源 */
+      value: '',
+      clear: false
     }
   }
 
@@ -52,24 +46,17 @@ class User extends React.Component<Props, State> {
       <div>
         <div style={{ backgroundColor: '#ffffff' }}>
           <div className='Segment_line2' />
-          <div className={'flex-row-space-between-p1510'}>
-            <div className={'flex-row-center'}>
-              <span style={{ fontSize: '18px', paddingTop: 7, paddingLeft: 10 }}>国家和地区</span>
-            </div>
-            <div className={'flex-row-center'}>
-              <span style={{ fontSize: '14px', marginTop: 8 }}>{this.state.data.address}</span>
-            </div>
+          <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}>
+            <span className={'commonFont'} style={{ fontSize: '18px' }}>国家和地区</span>
+            <span className={'commonFont'} style={{ fontSize: '14px' }}>{this.state.data.address}</span>
           </div>
           <div className='Segment_line2' />
-          <div>
-            <InputItem
-              type='phone'
-              placeholder='请输入您的手机号...'
-              clear
-              moneyKeyboardAlign='left'
-              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-              onChange={this.onPhoneChange}
-            >+86</InputItem>
+          <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }}>
+            <span className={'commonFont'} style={{ fontSize: 16 }}>+86</span>
+            <div className={'flex-flex-end-row-center'}>
+              <input id={'input'} value={this.state.value} className={'commonFont'} placeholder={'请输入您的手机号...'} onChange={this.onPhoneChange} style={{ direction: 'rtl', border: 'none',fontSize: 16 }} />
+              {this.state.clear === true ? <ReactSVG onClick={this.clearOnclick} path='./assets/images/User/close.svg' svgStyle={{ height: 16,width: '16',paddingLeft: 2 }}/> : ''}
+            </div>
           </div>
         </div>
         <div>
@@ -85,7 +72,35 @@ class User extends React.Component<Props, State> {
     )
   }
 
-  public onPhoneChange = (value) => {
+  public clearOnclick = () => {
+    document.getElementById('input').focus()
+    this.setState({
+      clear: false
+    })
+    this.setState({
+      value: ''
+    })
+    this.setState({
+      phoneConfirmButtonType: false
+    })
+  }
+
+  public onPhoneChange = (e) => {
+    let value = e.target.value
+    if (value.length > 13) return
+    this.setState({
+      value: value
+    })
+    if (value.length > 0) {
+      this.setState({
+        clear: true
+      })
+    }
+    if (value.length === 0) {
+      this.setState({
+        clear: false
+      })
+    }
     if (value.length === 13) {
       this.setState({
         phoneConfirmButtonType: true,
@@ -95,6 +110,19 @@ class User extends React.Component<Props, State> {
       this.setState({
         phoneConfirmButtonType: false
       })
+    }
+    if (value.length === 3) {
+      this.setState({
+        value: value.replace(/(.{3})/g,'$1 ')
+      })
+    }
+    if (value.length === 8) {
+      this.setState({
+        value: value.replace(/(.{8})/g,'$1 ')
+      })
+    }
+    if (value.length === 4) {
+      console.log(1)
     }
   }
 

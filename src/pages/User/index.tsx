@@ -301,6 +301,7 @@ class User extends React.Component<Props, State> {
             <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>9分钟后订单关闭</span>
           </div>
         </div>
+        <div style={{ height: 'auto' }}>
         <div className='Segment_line2'/>
         <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.orderOnclick}>
           <span style={{ fontSize: '16px' }}>我的购买</span>
@@ -311,14 +312,17 @@ class User extends React.Component<Props, State> {
           <span style={{ fontSize: '16px' }}>售后退款</span>
           <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
+        </div>
         <div style={{
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={() => this.props.changeMode('supplier')}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px',backgroundColor: '#fff' }} onClick={() => this.props.changeMode('supplier')}>
           <span style={{ fontSize: '16px',whiteSpace: 'nowrap' }}>我的店铺</span>
-          <span style={{ fontSize: 12, color: 'red',marginLeft: 100,whiteSpace: 'nowrap' }} >您有一条新的订单【点击查看】</span>
-          <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
+          <div className={'flex-flex-end-row-center'}>
+            <span style={{ fontSize: 12, color: 'red',whiteSpace: 'normal' }} >您有一条新的订单【点击查看】</span>
+            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
+          </div>
         </div>
       </div>
     )
@@ -333,21 +337,17 @@ class User extends React.Component<Props, State> {
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }}>
-          <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>常用工具</span>
-          <span style={{ fontSize: 12, color: 'red',marginLeft: -150 }} >【工具栏】 暂且无用</span>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px',backgroundColor: '#fff' }}>
+          <div className={'flex-flex-start-row-center'}>
+            <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>常用工具</span>
+            <span style={{ fontSize: 12, color: 'red' }} >【工具栏】 功能暂未开放</span>
+          </div>
           <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
-        <div className='Segment_line'></div>
-        <div style={{ backgroundColor: '#fff', height: 200,padding: 5 }}>
+        <div className='Segment_line' />
+        <div style={{ backgroundColor: '#fff', height: 200,padding: 10 }}>
           {this.renderUtils()}
         </div>
-        <div style={{
-          fontSize: 12,
-          height: 15,
-          color: 'red',
-          backgroundColor: '#f6f6f6'
-        }} />
       </div>
     )
   }
@@ -461,7 +461,7 @@ class User extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div className={'container'} style={{
+      <div style={{
         backgroundColor: '#fff'
       }}>
         {this.renderNav()}
