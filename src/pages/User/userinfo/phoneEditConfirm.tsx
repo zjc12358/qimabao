@@ -96,7 +96,7 @@ class User extends React.Component<Props, State> {
       console.log(this.i)
       if (this.i <= index) {
         console.log(this.i)
-        this.state.confirmCss[this.i - 1] = '1px solid red'
+        this.state.confirmCss[this.i - 1] = '1px solid #0084e7'
       } else {
         this.state.confirmCss[this.i - 1] = '1px solid'
       }

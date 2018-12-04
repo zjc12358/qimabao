@@ -21,11 +21,12 @@ interface State {
   phone: string
   data: any
 }
-let val: number = -1
-let back: boolean = false
-let i: number = 1
-let focus: boolean = false
+
 class User extends React.Component<Props, State> {
+  private val: number = -1
+  private back: boolean = false
+  private i: number = 1
+  private focus: boolean = false
   constructor (props) {
     super(props)
     this.state = {
@@ -94,60 +95,59 @@ class User extends React.Component<Props, State> {
   }
 
   public confirmOnFocus = (num,e) => {
-    console.log(focus)
-    if (num !== i && focus === false) {
-      console.log(num + ' ' + i + focus)
+    if (num !== this.i && this.focus === false) {
+      console.log(num + ' ' + this.i + focus)
       document.getElementById('input' + num).blur()
-      document.getElementById('input' + i).focus()
+      document.getElementById('input' + this.i).focus()
     }
     if (num === 1) {
       return
     }
-    if (val === -1) {
+    if (this.val === -1) {
       return
     }
-    if (back) {
+    if (this.back) {
       return
     }
-    this.state.data[num - 1] = val
-    e.target.value = val
-    i++
-    val = -1
-    focus = false
+    this.state.data[num - 1] = this.val
+    e.target.value = this.val
+    this.i++
+    this.val = -1
+    this.focus = false
   }
 
   public confirmOnchange = (num,e) => {
     let value = e.target.value
     switch (value.length) {
       case 0: {
-        back = true
+        this.back = true
         document.getElementById('bot' + num).style.borderBottomColor = '#333'
         this.state.data[num - 1] = -1
         if (num === 1) {
           return
         }
-        focus = true
+        this.focus = true
         document.getElementById('input' + (num - 1)).focus()
-        focus = false
-        i = num - 1
+        this.focus = false
+        this.i = num - 1
       }break
       case 1: {
         document.getElementById('bot' + num).style.borderBottomColor = '#0084e7'
         this.state.data[0] = value
       }break
       case 2: {
-        back = false
-        val = value.slice(1,2)
+        this.back = false
+        this.val = value.slice(1,2)
         e.target.value = value.slice(0,1)
         if (num === 4) {
-          val = -1
+          this.val = -1
           return
         }
         document.getElementById('bot' + (num + 1)).style.borderBottomColor = '#0084e7'
-        focus = true
+        this.focus = true
         document.getElementById('input' + (num + 1)).focus()
 
-        i = num + 1
+        this.i = num + 1
       }break
     }
   }

@@ -62,7 +62,7 @@ import Message from './pages/User/message/index' /* 用户消息页面 */
 import Coupon from './pages/User/coupon' /* 用户优惠券页面 */
 import BankCard from './pages/User/setting/settingPayBankCard' /* 添加银行卡页面 */
 import MyOrder from './pages/User/myOrder' /* 我的订单页面 */
-import AfterSale from './pages/User/afterSale' /* 售后页面 */
+import AfterSale from './pages/User/afterSale/index' /* 售后页面 */
 import MessageLogistics from './pages/User/message/messageLogistics' /* 物流助手页面 */
 import MessageSystemInfo from './pages/User/message/messageSystemInfo' /* 系统消息页面 */
 import MessageTradeInfo from './pages/User/message/messageTradeInfo' /* 交易信息页面 */

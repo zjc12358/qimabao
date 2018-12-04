@@ -22,6 +22,8 @@ interface State {
 let OrderIconMaxSize: number = 35
 
 class User extends React.Component<Props, State> {
+  private RightIconMaxSize: number = 16
+  private MenuMaxSize: number = 22
   constructor (props) {
     super(props)
     this.state = {}
@@ -225,14 +227,8 @@ class User extends React.Component<Props, State> {
         flexDirection: 'column',
         paddingTop: 100
       }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          padding: 10
-        }} onClick={this.orderOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }} >
           <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>我的订单</span>
-          <Icon type='right'></Icon>
         </div>
         <div className='Segment_line'></div>
         <div style={{
@@ -316,22 +312,23 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2'/>
-        <div className={'flex-row-space-between-p1510'} onClick={this.orderOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }} onClick={this.orderOnclick}>
           <span style={{ fontSize: '16px' }}>我的购买</span>
-          <Icon type='right'/>
+          <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
         <div className='Segment_line2'/>
-        <div className={'flex-row-space-between-p1510'} onClick={this.afterSaleOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }} onClick={this.afterSaleOnclick}>
           <span style={{ fontSize: '16px' }}>售后退款</span>
-          <Icon type='right'/>
+          <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
         <div style={{
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div className={'flex-row-space-between-p1510'} onClick={() => this.props.changeMode('supplier')}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }} onClick={() => this.props.changeMode('supplier')}>
           <span style={{ fontSize: '16px' }}>我的店铺</span>
-          <Icon type='right'></Icon>
+          <span></span>
+          <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
       </div>
     )
@@ -346,61 +343,95 @@ class User extends React.Component<Props, State> {
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          padding: 10,
-          backgroundColor: '#ffffff'
-        }}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }}>
           <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>常用工具</span>
-          <Icon type='right'></Icon>
+          <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
         <div className='Segment_line'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          padding: 20,
-          backgroundColor: '#ffffff'
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column'
-          }}>
-            <Icon type='loading'></Icon>
-            <span style={{ fontSize: '10px', color: '#828282', fontFamily: '黑体' }}>待付款</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column'
-          }}>
-            <Icon type='loading'></Icon>
-            <span style={{ fontSize: '10px', color: '#828282', fontFamily: '黑体' }}>待付款</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column'
-          }}>
-            <Icon type='loading'></Icon>
-            <span style={{ fontSize: '10px', color: '#828282', fontFamily: '黑体' }}>待付款</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column'
-          }}>
-            <Icon type='loading'></Icon>
-            <span style={{ fontSize: '10px', color: '#828282', fontFamily: '黑体' }}>待付款</span>
-          </div>
+        <div style={{ backgroundColor: '#fff', height: 170,padding: 5 }}>
+          {this.renderUtils()}
         </div>
         <div style={{
           height: 15,
           backgroundColor: '#f6f6f6'
         }}/>
+      </div>
+    )
+  }
+  /**
+   * 工具
+   */
+  public renderUtils = () => {
+    return (
+      <div className={'flex-space-between-column-stretch'} style={{ width: '100%', height: '100%' }}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 10px 0', height: '44%' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#3333cc' }}>
+              <img src='./assets/images/SupplierTest/commodityManagement.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+            </div>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>所有账单</div>
+          </div>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#6633ff' }}>
+              <img src='./assets/images/SupplierTest/classification.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+            </div>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>我的账户</div>
+          </div>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#009966' }}>
+              <img src='./assets/images/SupplierTest/distribution.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+            </div>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>收货地址</div>
+          </div>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('detection')}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#0066ff' }}>
+              <img src='./assets/images/SupplierTest/testing.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+            </div>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>退款申请</div>
+          </div>
+        </div>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 10px 10px 10px', height: '44%' }}>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#3399cc' }}>
+              <img src='./assets/images/SupplierTest/release.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+            </div>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>我的评价</div>
+          </div>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('sProductList')}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#ff6600' }}>
+              <img src='./assets/images/SupplierTest/evaluate.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+            </div>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>联系客服</div>
+          </div>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('/supplierAfterSale')}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#0099ff' }}>
+              <img src='./assets/images/SupplierTest/evaluate.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+            </div>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>尽请期待</div>
+          </div>
+          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+               onClick={() => history().push('/supplierAfterSale')}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#ff9900' }}>
+              <img src='./assets/images/SupplierTest/evaluate.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+            </div>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>尽请期待</div>
+          </div>
+        </div>
       </div>
     )
   }
