@@ -136,8 +136,7 @@ class Home extends React.Component<Props, State> {
   renderCarousel = () => {
     return (
       <div className='vertical' style={{
-        width: '100%',
-        flex: 1
+        width: '100%'
       }}>
         <Carousel
           autoplay={true}
@@ -300,7 +299,7 @@ class Home extends React.Component<Props, State> {
         backgroundColor: 'white'
       }}>
         {this.renderHead()}
-        <div className='touch_scroll'
+        <div className='touch_scroll scroll bigContent'
              style={{ paddingTop: 50 }}>
           {this.renderCarousel()}
         </div>

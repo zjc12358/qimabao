@@ -127,6 +127,14 @@ class History extends React.Component<Props, State> {
   }
 
   /**
+   * 获取当前时间  -------- 本机时间
+   */
+  getNowTime = () => {
+    let dd = new Date()
+    return dd
+  }
+
+  /**
    * 提交订单
    */
   subOnChange = (e) => {
@@ -153,6 +161,15 @@ class History extends React.Component<Props, State> {
     return dpValue
   }
 
+  datePickerOpen = (type) => {
+    if (type === 1) {
+      this.setState({ startVisible: true })
+    } else if (type === 2) {
+      if (this.state.startdpValue) this.setState({ endVisible: true })
+      else Toast.info('请先选择起始时间！',2,null,false)
+    }
+  }
+
   /*
   * 修改送达时间组件
   * */
@@ -163,9 +180,9 @@ class History extends React.Component<Props, State> {
             <div style={{ display: 'flex', fontSize: 13 }}>
               <div></div>
               <div style={{ flex: 1, textAlign: 'center' }}>
-                <span onClick={() => this.setState({ startVisible: true })}>{this.state.startdpValue ? this.state.startdpValue : '起始时间'}</span>
+                <span onClick={() => { this.datePickerOpen(1) }}>{this.state.startdpValue ? this.state.startdpValue : '起始时间'}</span>
                 &nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;
-                <span onClick={() => this.setState({ endVisible: true })}>{this.state.enddpValue ? this.state.enddpValue : '送达时间'}</span>
+                <span onClick={() => this.datePickerOpen(2)}>{this.state.enddpValue ? this.state.enddpValue : '送达时间'}</span>
               </div>
             </div>
           </List.Item>
@@ -327,6 +344,7 @@ class History extends React.Component<Props, State> {
           >提交订单</Button>
         </div>
         <DatePicker
+          minDate={this.getNowTime()}
           mode='datetime'
           visible={this.state.startVisible}
           value={this.state.dateValue1}
@@ -335,6 +353,8 @@ class History extends React.Component<Props, State> {
           onDismiss={() => this.setState({ startVisible: false })}
         ></DatePicker>
         <DatePicker
+          disabled={true}
+          minDate={this.state.dateValue1}
           mode='datetime'
           visible={this.state.endVisible}
           value={this.state.dateValue2}

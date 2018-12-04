@@ -52,10 +52,10 @@ class Home extends React.Component<Props, State> {
   componentDidMount () {
     // 获取滑动y高度
     window.addEventListener('scroll', () =>
-        this.setState({
-          scrollY: window.scrollY
-        })
-      )
+      this.setState({
+        scrollY: window.scrollY
+      })
+    )
   }
 
   /**
@@ -78,8 +78,6 @@ class Home extends React.Component<Props, State> {
         默认名{this.state.productDetails !== null && this.state.productDetails!!.product_name}
         <div className='horizontal-center'
              style={{
-               paddingLeft: 10,
-               paddingRight: 10,
                position: 'fixed',
                top: 5,
                left: 0,
@@ -87,17 +85,47 @@ class Home extends React.Component<Props, State> {
              }} onClick={() => history().goBack()}>
           <ReactSVG path='./assets/images/circle_back.svg' svgStyle={{ width: 30, height: 30 }}/>
         </div>
-        <div className='horizontal'
+        <div className='horizontal-center'
              style={{
-               justifyContent: 'center',
-               paddingLeft: 10,
-               paddingRight: 10,
                position: 'fixed',
                top: 5,
                right: 0,
                height: 30
              }} onClick={() => this.goHomeOnClick()}>
           <ReactSVG path='./assets/images/go_home.svg' svgStyle={{ width: 28, height: 28 }}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderContent = () => {
+    return (
+      <div className='bigContent scroll touch_scroll' style={{ width: '100%' }}>
+        <div className='vertical' style={{ width: '100%' }}>
+          {this.renderTopPic()}
+          {this.renderDetailsInfo()}
+          <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}/>
+          {this.renderEvaluation()}
+          <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}/>
+          {this.renderBottomPic()}
+          <ul>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+          </ul>
         </div>
       </div>
     )
@@ -201,55 +229,24 @@ class Home extends React.Component<Props, State> {
   renderEvaluation = () => {
     return (
       <div className='vertical'
-           style={{
-             width: '100%',
-             backgroundColor: 'white'
-           }}>
-        <div className='horizontal'
-             style={{
-               justifyContent: 'space-between',
-               fontSize: 18,
-               height: 40,
-               width: '100%',
-               backgroundColor: 'white'
-             }}>
-          <span style={{
-            fontSize: 18,
-            paddingLeft: 20
-          }}>商品评价</span>
-          <span style={{
-            color: 'red',
-            paddingRight: 20
-          }}>({this.state.productDetails === null || this.state.productDetails.product_evaluation_number === null ? 0 : this.state.productDetails.product_evaluation_number})</span>
+           style={{ width: '100%', backgroundColor: 'white', color: 'black' }}>
+        <div className='horizontal evaluation-head'>
+          <span style={{ fontSize: 18, paddingLeft: 20 }}>商品评价</span>
+          <span style={{ color: 'red', paddingRight: 20 }}>
+            ({this.state.productDetails === null || this.state.productDetails.product_evaluation_number === null ?
+            0 : this.state.productDetails.product_evaluation_number})
+          </span>
         </div>
         {this.state.productDetails === null || this.state.productDetails.product_evaluation_item === null ?
           <div style={{ fontSize: 20 }}>暂无评价</div>
           :
-          <div className='horizontal'
-               style={{
-                 justifyContent: 'space-between'
-               }}>
+          <div className='horizontal' style={{ justifyContent: 'space-between' }}>
             <span></span>
           </div>
         }
-        <div className='horizontal'
-             style={{
-               width: '100%',
-               height: 60,
-               justifyContent: 'center'
-             }}>
-          <div style={{
-            paddingLeft: 30,
-            paddingRight: 30,
-            paddingTop: 7,
-            paddingBottom: 7,
-            fontSize: 18,
-            color: '#ffaf7a',
-            borderStyle: 'solid',
-            borderWidth: 1,
-            borderColor: '#ffaf7a',
-            borderRadius: 20
-          }} onClick={this.moreEvaOnClick}>
+        <div className='horizontal-center'
+             style={{ width: '100%', height: 60 }}>
+          <div className='more-evaluation' onClick={this.moreEvaOnClick}>
             查看更多评论+
           </div>
         </div>
@@ -288,13 +285,7 @@ class Home extends React.Component<Props, State> {
   renderButton = () => {
     return (
       <div className='horizontal'
-           style={{
-             height: 50,
-             width: '100%',
-             position: 'fixed',
-             bottom: 0,
-             backgroundColor: 'white'
-           }}>
+           style={{ height: 50, width: '100%', backgroundColor: 'white' }}>
         <div className='horizontal-center left-btn' onClick={this.collectionOnClick}>
           {this.state.productDetails === null ?
             <ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/> :
@@ -325,8 +316,7 @@ class Home extends React.Component<Props, State> {
     return (
       <img style={{
         width: '100%',
-        height: 0,
-        paddingBottom: '100%'
+        height: 200
       }} src={item.picture_url}/>
     )
   }
@@ -409,52 +399,9 @@ class Home extends React.Component<Props, State> {
   public render () {
     return (
       <div className='vertical'
-           style={{
-             width: '100%',
-             backgroundColor: '#efeff5',
-             marginBottom: 60
-           }}>
+           style={{ width: '100%', backgroundColor: '#efeff5', height: '100%' }}>
         {this.renderHead()}
-        {this.renderTopPic()}
-        {this.renderDetailsInfo()}
-        <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
-        {this.renderEvaluation()}
-        <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
-        {this.renderBottomPic()}
-        <ul>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-        </ul>
+        {this.renderContent()}
         {this.renderButton()}
       </div>
     )
