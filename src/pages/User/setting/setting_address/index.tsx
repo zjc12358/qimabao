@@ -9,6 +9,7 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import '../../master.css'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: PageTab
@@ -108,7 +109,7 @@ class User extends React.Component<Props, State> {
           <div style={{
             padding: 20
           }}>
-            <Icon type={'loading'}></Icon>
+            <ReactSVG path='../assets/images/User/edit.svg' svgStyle={{ width: 16, height: 16 }}/>
           </div>
         </div>
       </div>

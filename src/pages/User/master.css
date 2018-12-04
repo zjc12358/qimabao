@@ -1,3 +1,53 @@
+@import '../../assets/css/font.css';
+@import '../../assets/css/flex.css';
+/** tab 样式调整 **/
+.moBar .am-tabs-default-bar-tab-active{
+  color: #0084e7;
+  background-color: #ffffff;
+}
+
+.moBar .am-tabs-default-bar-tab{
+  border-bottom: 1px solid #ffffff;
+  border-top: none;
+  border-left: 1px solid #ffffff;
+  border-right: 0;
+}
+
+.moBar .am-tabs-default-bar-content{
+  color: #000;
+  background-color: #ffffff;
+  border-right: 1px solid #ffffff;
+}
+.moBar .am-tabs-default-bar{
+  height: 44px;
+  border-bottom: 1px solid #eeeeee;
+}
+.moBar .am-tabs-default-bar-underline{
+  border: 2px solid #0084e7;
+  width: 14.666666% !important;
+  margin-left: 1%;
+}
+/** 按钮：立即付款 **/
+.buttonPay {
+  white-space: nowrap;
+  height: 28px;
+  border-radius: 5px;
+  border: 1px solid #0084E7;
+  background-color: #fff;
+  color: #0084E7;
+  font-size: 14px;
+}
+/** 按钮：查看详情 **/
+.buttonViewDetail {
+  white-space: nowrap;
+  height: 28px;
+  border-radius: 5px;
+  border: 1px solid #0084E7;
+  background-color: #0084E7;
+  color: #ffffff;
+  font-size: 14px;
+}
+
 /** 可以自适配屏幕宽度的分割线 **/
 .Segment_line {
   height: 1px;

@@ -1,0 +1,89 @@
+@import '../../../assets/css/font.css';
+@import '../../../assets/css/flex.css';
+/** tab 样式调整 **/
+.mBar .am-tabs-default-bar-tab-active{
+  color: #0084e7;
+  background-color: #ffffff;
+}
+
+.mBar .am-tabs-default-bar-tab{
+  border-bottom: 1px solid #ffffff;
+  border-top: none;
+  border-left: 1px solid #ffffff;
+  border-right: 0;
+}
+
+.mBar .am-tabs-default-bar-content{
+  color: #000;
+  background-color: #ffffff;
+  border-right: 1px solid #ffffff;
+}
+.mBar .am-tabs-default-bar{
+  height: 44px;
+  border-bottom: 1px solid #eeeeee;
+}
+.mBar .am-tabs-default-bar-underline{
+  border: 2px solid #0084e7;
+  width: 21% !important;
+  margin-left: 2%;
+}
+/** 按钮：立即处理 **/
+.buttonProcessing {
+  white-space: nowrap;
+  height: 28px;
+  border-radius: 5px;
+  border: 1px solid #0084E7;
+  background-color: #fff;
+  color: #0084E7;
+  font-size: 14px;
+}
+/** 按钮：查看详情 **/
+.buttonViewDetail {
+  white-space: nowrap;
+  height: 28px;
+  border-radius: 5px;
+  border: 1px solid #0084E7;
+  background-color: #0084E7;
+  color: #ffffff;
+  font-size: 14px;
+}
+/** 驳回退款，同意退款 **/
+.applyBtnWrap {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  z-index: 100;
+}
+/** 驳回退款 **/
+.rejectBtn {
+  background-color: #f6f6f6;
+  color: #292929;
+  border: none;
+  width: 50%;
+  height: 100%;
+  font-size: 18px;
+}
+/** 同意退款 **/
+.agreeBtn {
+  background-color: #0084E7;
+  color: #fff;
+  border: none;
+  width: 50%;
+  height: 100%;
+  font-size: 18px;
+}
+/** 完成 **/
+.completeBtn {
+  background-color: #5DC351;
+  color: #fff;
+  border: none;
+  width: 100%;
+  height: 45px;
+  border-radius: 5px;
+  font-size: 18px;
+}
+.completeBtn:active {
+  background-color: #3e8e41;
+}
+
