@@ -16,6 +16,7 @@ let categoryData = ['时令蔬菜', '肉禽蛋类', '海鲜水产', '新鲜水�
 let carouselData = ['./assets/images/ic_home_top0.png', './assets/images/ic_home_top1.png']
 
 export interface Props {
+  pageTab: string
   updateCategoryItem: (categoryItemData: Array<HomeCategoryItemBean>, index: number) => void
   updatePageTab: (pageTab: string) => void
 }
@@ -71,7 +72,7 @@ class Home extends React.Component<Props, State> {
     return (
       <div className='vertical'
            style={{
-             position: 'fixed',
+             position: this.props.pageTab === 'HomePageTabBar' ? 'fixed' : 'static',
              top: '0',
              width: '100%',
              zIndex: 100
@@ -309,7 +310,9 @@ class Home extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    pageTab: state.globalData.pageTab
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
