@@ -6,6 +6,7 @@ import { updateUserInfo, updatePageTab, changeMode } from '@store/actions/global
 import { UserInfo } from '@datasources/UserInfo'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
+import Badge from '@components/Badge'
 
 export interface Props {
   pageTab: string
@@ -59,21 +60,7 @@ class User extends React.Component<Props, State> {
           <ReactSVG path='./assets/images/User/setting.svg' svgStyle={{ width: 25, height: 25 }}
                     onClick={this.settingOnclick}/>
           <div style={{ position: 'relative' }}>
-            <div style={{
-              position: 'absolute',
-              width: 15,
-              height: 15,
-              backgroundColor: '#ee0813',
-              borderRadius: '50%',
-              fontSize: 8,
-              color: '#fff',
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              alignItems: 'center',
-              left: 15
-            }}>2
-            </div>
+            <Badge num={2} left={15}/>
             <ReactSVG path='./assets/images/User/message.svg' svgStyle={{ width: 25, height: 25 }}
                       onClick={this.messageOnclick}/>
           </div>
@@ -227,7 +214,7 @@ class User extends React.Component<Props, State> {
         flexDirection: 'column',
         paddingTop: 100
       }}>
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }} >
+        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} >
           <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>我的订单</span>
         </div>
         <div className='Segment_line'></div>
@@ -247,8 +234,11 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             alignItems: 'center'
           }} onClick={this.orderOnclick}>
-            <ReactSVG path='./assets/images/User/pay.svg'
-                      svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
+            <div style={{ position: 'relative' }}>
+              <Badge num={2} left={25}/>
+              <ReactSVG path='./assets/images/User/pay.svg'
+                        svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
+            </div>
             <span style={{ fontSize: '10px', color: '#828282', fontFamily: '黑体', paddingTop: 3 }}>待付款</span>
           </div>
           <div style={{
@@ -312,12 +302,12 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2'/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }} onClick={this.orderOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.orderOnclick}>
           <span style={{ fontSize: '16px' }}>我的购买</span>
           <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
         <div className='Segment_line2'/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }} onClick={this.afterSaleOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.afterSaleOnclick}>
           <span style={{ fontSize: '16px' }}>售后退款</span>
           <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
@@ -325,9 +315,9 @@ class User extends React.Component<Props, State> {
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }} onClick={() => this.props.changeMode('supplier')}>
-          <span style={{ fontSize: '16px' }}>我的店铺</span>
-          <span></span>
+        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={() => this.props.changeMode('supplier')}>
+          <span style={{ fontSize: '16px',whiteSpace: 'nowrap' }}>我的店铺</span>
+          <span style={{ fontSize: 12, color: 'red',marginLeft: 100,whiteSpace: 'nowrap' }} >您有一条新的订单【点击查看】</span>
           <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
       </div>
@@ -345,16 +335,19 @@ class User extends React.Component<Props, State> {
         }}/>
         <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px' }}>
           <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>常用工具</span>
+          <span style={{ fontSize: 12, color: 'red',marginLeft: -150 }} >【工具栏】 暂且无用</span>
           <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
         <div className='Segment_line'></div>
-        <div style={{ backgroundColor: '#fff', height: 170,padding: 5 }}>
+        <div style={{ backgroundColor: '#fff', height: 200,padding: 5 }}>
           {this.renderUtils()}
         </div>
         <div style={{
+          fontSize: 12,
           height: 15,
+          color: 'red',
           backgroundColor: '#f6f6f6'
-        }}/>
+        }} />
       </div>
     )
   }
@@ -398,7 +391,7 @@ class User extends React.Component<Props, State> {
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>退款申请</div>
           </div>
         </div>
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 10px 10px 10px', height: '44%' }}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '20px 10px 10px 10px', height: '44%' }}>
           <div className={'flex-space-between-column-center'} style={{ height: 60 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
