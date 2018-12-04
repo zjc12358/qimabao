@@ -11,7 +11,8 @@ import { updatePageTab } from '@store/actions/global_data'
 import ReactSVG from 'react-svg'
 import './productDetailCss.css'
 
-let topPic = ['http://file4.youboy.com/e/2015/3/14/73/541738.jpg', 'http://files.b2b.cn/product/ProductImages/2015_03/13/110/13110252636_b.jpg',
+let topPic = ['http://file4.youboy.com/e/2015/3/14/73/541738.jpg',
+  'http://files.b2b.cn/product/ProductImages/2015_03/13/110/13110252636_b.jpg',
   'http://pic.58pic.com/58pic/14/88/80/76C58PICvQx_1024.jpg']
 
 export interface Props {
@@ -51,10 +52,11 @@ class Home extends React.Component<Props, State> {
 
   componentDidMount () {
     // 获取滑动y高度
-    window.addEventListener('scroll', () =>
-      this.setState({
-        scrollY: window.scrollY
-      })
+    document.getElementsByClassName('vertical detail-content')[0].addEventListener('scrollTop', () =>
+        console.log(document.getElementsByClassName('vertical detail-content')[0].scrollTop)
+      // this.setState({
+      //   scrollY: document.getElementsByClassName('detail-content')[0].scrollTop
+      // })
     )
   }
 
@@ -101,7 +103,7 @@ class Home extends React.Component<Props, State> {
   renderContent = () => {
     return (
       <div className='bigContent scroll touch_scroll' style={{ width: '100%' }}>
-        <div className='vertical' style={{ width: '100%' }}>
+        <div className='vertical detail-content'>
           {this.renderTopPic()}
           {this.renderDetailsInfo()}
           <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}/>
