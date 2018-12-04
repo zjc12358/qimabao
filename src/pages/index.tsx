@@ -14,9 +14,11 @@ import Supplier from '@pages/Supplier'
 import { PageTab } from '@datasources/PageTab'
 
 import '../assets/css/GeneralStyle.less'
+import { updatePageTab } from '@store/actions/global_data'
 export interface Props {
   pageTab: string
   mode: 'supplier' | 'purchaser'
+  updatePageTab: (pageName: string) => void
 }
 
 interface State {
@@ -69,8 +71,8 @@ class App extends React.Component<Props, State> {
   }
 
   onTabBarSelectChange = (tabBarName) => {
+    this.props.updatePageTab(tabBarName)
     let pageContent
-
     switch (tabBarName) {
       case 'HomePageTabBar':
         pageContent = this.renderHomePage()	// 首页
@@ -133,7 +135,7 @@ class App extends React.Component<Props, State> {
           key='HomePage'
           icon={<ReactSVG path='./assets/images/Cart/home.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selectedIcon={<ReactSVG path='./assets/images/Cart/home_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selected={this.state.selectedTabBar === 'HomePageTabBar'}
+          selected={this.props.pageTab === 'HomePageTabBar'}
           onPress={() => this.onTabBarSelectChange('HomePageTabBar')}
         >
           {this.state.pageContent}
@@ -145,7 +147,7 @@ class App extends React.Component<Props, State> {
           key='OrderPage'
           icon={<ReactSVG path='./assets/images/Cart/recipe.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selectedIcon={<ReactSVG path='./assets/images/Cart/recipe_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selected={this.state.selectedTabBar === 'OrderPageTabBar'}
+          selected={this.props.pageTab === 'OrderPageTabBar'}
           onPress={() => this.onTabBarSelectChange('OrderPageTabBar')}
         >
           {this.state.pageContent}
@@ -157,7 +159,7 @@ class App extends React.Component<Props, State> {
           key='HistoryPage'
           icon={<ReactSVG path='./assets/images/Cart/cart.svg' svgStyle={{ width: 22, height: 22 }}/>}
           selectedIcon={<ReactSVG path='./assets/images/Cart/cart_on.svg' svgStyle={{ width: 22, height: 22 }}/>}
-          selected={this.state.selectedTabBar === 'HistoryPageTabBar'}
+          selected={this.props.pageTab === 'HistoryPageTabBar'}
           onPress={() => this.onTabBarSelectChange('HistoryPageTabBar')}
         >
           {this.state.pageContent}
@@ -169,7 +171,7 @@ class App extends React.Component<Props, State> {
           key='UserPage'
           icon={<ReactSVG path='./assets/images/Cart/user.svg' svgStyle={{ width: 20, height: 20 }}/>}
           selectedIcon={<ReactSVG path='./assets/images/Cart/user_on.svg' svgStyle={{ width: 20, height: 20 }}/>}
-          selected={this.state.selectedTabBar === 'UserPageTabBar'}
+          selected={this.props.pageTab === 'UserPageTabBar'}
           onPress={() => this.onTabBarSelectChange('UserPageTabBar')}
         >
           {this.state.pageContent}
@@ -190,6 +192,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  updatePageTab
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
