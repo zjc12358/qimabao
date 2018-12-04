@@ -53,12 +53,14 @@ class Supplier extends React.Component<Props, State> {
       { title: '待付款' },
       { title: '待发货' },
       { title: '待收货' },
-      { title: '待评价' }
+      { title: '待评价' },
+      { title: '已完成' }
     ]
     return(
       <div className={'oBar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={5} />}
+        <Tabs tabs={tabs} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
           {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
           {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
           {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}

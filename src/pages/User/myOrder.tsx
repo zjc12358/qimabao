@@ -1,68 +1,49 @@
 import * as React from 'react'
+import { Tabs,Button, Icon } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { Tabs,Icon } from 'antd-mobile'
-import { PageTab } from '@datasources/PageTab'
-import { UserInfo } from '@datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
-import './master.css'
+import { GlobalData } from '@store/reducers/globalDataReducer'
+import { addPageIndex, deletePageIndex } from '@store/actions/global_data'
 import history from 'history/createHashHistory'
-import Nav from '@components/Head/nav'
 import ReactSVG from 'react-svg'
+import './master.css'
+import Head from '@components/Head'
+import Loading from '@components/Loading'
 
 export interface Props {
-  pageTab: PageTab
-  userInfo: UserInfo
-  updatePageTab: (pageTab: string) => void
-  updateUserInfo: (userInfo: UserInfo) => void
 }
 
 interface State {
-  getEmpty: boolean
   data: any
-  data1: any
-  data2: any
-  data3: any
-  data4: any
-  data5: any
+  getEmpty: boolean
+  loading: boolean
 }
 
 class User extends React.Component<Props, State> {
-
+  private timer: NodeJS.Timeout
   constructor (props) {
     super(props)
     this.state = {
+      loading: true,
       getEmpty: true,
       data: [
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
-      ],
-      data1: [
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
-      ],
-      data2: [
-        { code: '2226946446889846', status: '待付款', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
-      ],
-      data3: [
-        { code: '2226946446889846', status: '带', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
-      ],
-      data4: [
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: '2226946446889846', status: '交易关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
-      ],
-      data5: [
-        { code: '2226946446889846', status: '已完成', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: '2226946446889846', status: '已完成', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: '2226946446889846', status: '已完成', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
+        { code: 'SP5685698754382', status: '待付款', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
+        { code: 'SP4556856987543', status: '待发货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
+        { code: 'SP2899898754356', status: '待收货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
       ]
     }
   }
-
+  public componentDidMount () {
+    this.timer = setInterval(
+      () => this.setState({
+        loading: false
+      }),
+      600
+    )
+  }
+  componentWillUnmount () {
+    clearInterval(this.timer)
+  }
   /**
    * 内容
    */
@@ -76,16 +57,15 @@ class User extends React.Component<Props, State> {
       { title: '已完成' }
     ]
     return(
-      <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className={'Segment_line3'} />
-        <Tabs tabs={tabs} animated={false} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+      <div className={'moBar'} style={{ color: '#858585' }}>
+        <Tabs tabs={tabs} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.getEmpty ? this.renderAll : this.renderNone}
-          {this.state.getEmpty ? this.renderObligation : this.renderNone}
-          {this.state.getEmpty ? this.renderDispatching : this.renderNone}
-          {this.state.getEmpty ? this.renderReceived : this.renderNone}
-          {this.state.getEmpty ? this.renderEvaluated : this.renderNone}
-          {this.state.getEmpty ? this.renderCompleted : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
         </Tabs>
       </div>
     )
@@ -93,12 +73,17 @@ class User extends React.Component<Props, State> {
   /**
    * 全部
    */
-  public renderAll = () => {
+  public renderSwitch = (data: any) => {
+    if (this.state.loading) {
+      return (
+        <Loading/>
+      )
+    }
     return(
       <div style={{
         paddingTop: 20
       }}>
-        {this.state.data.map((i, index) => (
+        {data.map((i, index) => (
           <div>
             {this.renderItem(i, index)}
           </div>
@@ -107,6 +92,18 @@ class User extends React.Component<Props, State> {
     )
   }
   public renderItem = (i, index) => {
+    let font: any = null
+    switch (i.status) {
+      case '已处理':
+        font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
+        break
+      case '待处理':
+        font = { borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
+        break
+      case '已关闭':
+        font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
+        break
+    }
     return(
       <div style={{
         backgroundColor: '#ffffff',
@@ -114,208 +111,127 @@ class User extends React.Component<Props, State> {
         float: 'right'
       }}>
         <div className={'Segment_line2'} />
-        <div className={'flex-row-space-between-p1510'}>
-          <div>订单号：{i.code}</div>
-          <div>{i.status}</div>
+        <div className={'flex-space-between-row-center'} style={{ height: 40,padding: 5 }}>
+          <div className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：{i.code}</div>
+          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{i.status}</div>
         </div>
         <div className={'Segment_line2'} />
-        <div className={'flex-center-row-space-between-p1510'}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            flexDirection: 'row',
-            alignItems: 'center',
-            height: '100%'
-          }}>
-            <ReactSVG path='./assets/images/User/business.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span style={{ fontSize: '14px',paddingLeft: 20 }}>{i.business}</span></div>
-          <Icon type='right' />
+        {this.renderItemDetail()}
+        {this.renderItemDetail()}
+        <div className={'flex-flex-end-row-center'}
+             style={{  height: 40,padding: 5,borderTop: '1px solid #e5e5e5' ,borderBottom: '1px solid #e5e5e5' }}>
+          <div>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>共4件商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合计</span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>45.00</span></span>
+          </div>
         </div>
-        <div style={{
-          paddingLeft: 20,
-          paddingRight: 20,
-          height: 130,
-          paddingBottom: 10
-        }}>
-          <div style={{
-            borderRadius: '20px 20px',
-            backgroundColor: '#f9f7f5',
-            height: '100%',
-            width: '100%',
-            position: 'relative'
-          }}>
-            <div style={{
-              top: 16,
-              left: 16,
-              position: 'absolute',
-              zIndex: 98,
-              borderRadius: '50%'
-            }}>
-              <div style={{ borderRadius: '50%',width: 85, height: 85,overflow: 'hidden' }}><img style={{
-                width: 'auto',
-                height: 'auto',
-                maxWidth: '100%',
-                maxHeight: '100%'
-              }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' /></div>
+        {this.renderItemStatus(i,index)}
+      </div>
+    )
+  }
+  /**
+   * 点击展开详细
+   */
+  public renderItemDetail = () => {
+    return(
+      <div style={{ padding: 16, height: 100, position: 'relative' }}>
+        <div style={{ position: 'absolute', zIndex: 98 }}>
+          <div style={{ width: 70, height: 70 }}><img style={{
+            width: 'auto',
+            height: 'auto',
+            maxWidth: '100%',
+            maxHeight: '100%'
+          }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
+        </div>
+        <div className={'flex-space-between-column-flex-start'} style={{ width: window.innerWidth - 116,position: 'absolute', left: 100, height: 70 }}>
+          <div className={'flex-space-between-row-flex-start'} style={{ width: '100%' }}>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#000',width: '70%',whiteSpace: 'normal' }}>现摘新鲜野生荠菜 蔬菜 1.5kg现</div>
+            <div className={'flex-space-between-column-flex-end'} style={{ width: '20%' }}>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>22.50</span></span>
+              <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>x2</span>
             </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'column',
-              position: 'absolute',
-              left: 130,
-              top: 24,
-              alignItems: 'flex-start',
-              height: 70
-            }}>
-              <div style={{ fontSize: 16, color: '#191919' }}>{i.Commodity}</div>
-              <div style={{ fontSize: 16, color: '#191919' }}>单价：<span style={{ fontSize: 18,color: '#ff0000' }}>￥{i.price}</span>/500g</div>
-              <div style={{ fontSize: 16, color: '#191919' }}>重量：{i.weight}</div>
+          </div>
+          <div>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>下单时间：2018-10-10 15:11:08</span>
+          </div>
+          <div className={'flex-center-row-center'}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 'auto', height: 'auto', padding: '3px 5px',backgroundColor: '#fff4f6',borderRadius: 10,marginRight: 5 }}>
+              <span className={'commonFont'} style={{ fontSize: 10, color: '#ff9900' }}>满100减15</span>
+            </div>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 'auto', height: 'auto', padding: '3px 5px',backgroundColor: '#fff4f6',borderRadius: 10,marginRight: 5 }}>
+              <span className={'commonFont'} style={{ fontSize: 10, color: '#ff9900' }}>满50减3</span>
             </div>
           </div>
         </div>
-        <div style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          position: 'relative',
-          paddingTop: 3
-        }}>
-          <div style={{ right: 20, position: 'absolute' }}>
-            合计：<span style={{ fontSize: 18,color: '#ff0000' }}>￥{i.price}</span>
-          </div>
-        </div>
-        <br/>
-        <div style={{
-          height: 40,
-          backgroundColor: '#fafafa',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          flexDirection: 'row',
-          alignItems: 'center'
-        }}>
-          <button style={{ height: 28, width: 70, borderRadius: 5,border: '1px solid #0084E7',backgroundColor: '#0084E7',color: '#ffffff',fontSize: 14,marginRight: 10 }}>去评价</button>
-          <button style={{ height: 28, width: 70, borderRadius: 5,border: '1px solid #404040',backgroundColor: 'transparent',color: '#404040',fontSize: 14,marginRight: 10 }}>删除订单</button>
-        </div>
       </div>
     )
   }
   /**
-   * 待付款
+   * 订单分支：立即处理 ，查看详情
    */
-  public renderObligation = () => {
+  public renderItemStatus = (i,index) => {
+    let showDeal: boolean = false
+    switch (i.status) {
+      case '待付款':
+        showDeal = true
+        break
+      case '待发货':
+        showDeal = false
+        break
+      case '待收货':
+        showDeal = false
+        break
+      case '待评价':
+        showDeal = false
+        break
+    }
     return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data1.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
+      <div className={'flex-flex-end-row-center'}
+           style={{ height: 40,backgroundColor: '#fafafa',padding: '0 5px' }}>
+        <button className={'buttonViewDetail'} onClick={this.viewResultOnclick}>查看详情</button>
+        {showDeal === true ? <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.viewDetailOnclick}>立即付款</button> : ''}
       </div>
     )
   }
-  /**
-   * 待配送
-   */
-  public renderDispatching = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data2.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
-  /**
-   * 待收货
-   */
-  public renderReceived = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data3.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
-  /**
-   * 待评价
-   */
-  public renderEvaluated = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data4.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
-  /**
-   * 已完成
-   */
-  public renderCompleted = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data5.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
+
   /**
    * 空
    */
   public renderNone = () => {
     return(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
+      <div className={'flex-center-row-center'} style={{ height: '250px', backgroundColor: '#fff' }}>
         空空如也
       </div>
     )
   }
+
+  public viewDetailOnclick = () => {
+    history().push('/afterSaleDetail')
+  }
+
+  public viewResultOnclick = () => {
+    history().push('/afterSaleResult')
+  }
+
   public render () {
     return (
       <div style={{
-        backgroundColor: '#ffffff',
         height: '100vh'
       }}>
-        <Nav title={'我的订单'} color={'#ffffff'} />
+        <Head title={'订单管理'} titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'} leftIconColor={'white'}/>
         {this.renderContent()}
       </div>
     )
   }
-
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {
-    pageTab: state.globalData.pageTab,
-    userInfo: state.globalData.userInfo
-  }
+  return {}
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updatePageTab,
-  updateUserInfo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

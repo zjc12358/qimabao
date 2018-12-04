@@ -117,14 +117,14 @@ class User extends React.Component<Props, State> {
 
   public noticeOnclick = () => {
     if (this.state.noticeChecked === false) {
-      Toast.info('开启通知成功！', 1)
+      Toast.success('开启通知成功！', 1, undefined, false)
     } else {
-      Toast.info('关闭通知成功！', 1)
+      Toast.success('关闭通知成功！', 1, undefined, false)
     }
   }
 
   EliminateOnclick = () => {
-    Toast.info('清除缓存成功！', 1)
+    Toast.loading('警告：手机3秒后爆炸！',3,undefined,false)
   }
   public render () {
     return (
