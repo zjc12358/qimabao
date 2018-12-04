@@ -39,7 +39,7 @@ class User extends React.Component<Props, State> {
   public renderNav = () => {
     return (
       <div style={{
-        position: 'fixed',
+        position: this.props.pageTab === 'UserPageTabBar' ? 'fixed' : 'static',
         top: '0',
         width: '100%',
         height: '40px',
@@ -180,7 +180,7 @@ class User extends React.Component<Props, State> {
               paddingRight: 20
             }} onClick={this.couponOnclick}>
               <span style={{ fontSize: '18px' }}>0</span>
-              <span style={{ fontSize: '14px', color: '#8d8d8d', fontFamily: '微软雅黑',paddingTop: 5 }}>电子券</span>
+              <span style={{ fontSize: '14px', color: '#8d8d8d', fontFamily: '微软雅黑', paddingTop: 5 }}>电子券</span>
             </div>
           </div>
         </div>

@@ -208,7 +208,8 @@ class History extends React.Component<Props, State> {
         <Head
           title='修改供应商'
           backgroundColor='#0084e7'
-          rightIconContent='确认'
+          leftIconColor='white'
+          rightIconContent={(<span style={{ color: 'white' }}>确认</span>)}
           showRightIcon='true'
           showLeftIcon='true'
           rightIconOnClick={ () => { console.log('确认修改') } }
