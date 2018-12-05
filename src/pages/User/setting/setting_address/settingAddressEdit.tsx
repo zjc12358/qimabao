@@ -10,6 +10,7 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import history from 'history/createHashHistory'
 import Nav from '@components/Head/nav'
 import '../../master.css'
+import Head from '@components/Head'
 
 export interface Props {
   pageTab: PageTab
@@ -37,37 +38,10 @@ class User extends React.Component<Props, State> {
     }
   }
 
-  public renderNav = (title) => {
-    return (
-      <div style={{
-        backgroundColor: '#ffffff',
-        width: '100%',
-        height: 40,
-        top: 0,
-        zIndex: 100,
-        position: 'fixed'
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }} onClick={() => history().goBack()}>
-          <Icon type='left' color='#000000' size='lg' />
-        </div>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>{title}</span>
-        </div>
-      </div>
-    )
-  }
-
   public renderContent = () => {
     return(
       <div style={{
-        paddingTop: 40
+        paddingTop: 0
       }}>
         <div style={{
           display: 'flex',
@@ -75,7 +49,6 @@ class User extends React.Component<Props, State> {
           flexDirection: 'column',
           backgroundColor: '#ffffff'
         }}>
-          <div className='Segment_line2' />
           <div style={{
             backgroundColor: '#ffffff',
             position: 'relative'
@@ -115,7 +88,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        {this.renderNav('编辑收货地址')}
+        <Head title={'编辑收货地址'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )

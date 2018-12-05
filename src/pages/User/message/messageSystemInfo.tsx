@@ -8,7 +8,7 @@ import { PageTab } from '../../../datasources/PageTab'
 import { UserInfo } from '../../../datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
 import '../master.css'
-import Nav from '@components/Head/nav'
+import Head from '@components/Head'
 
 export interface Props {
   pageTab: PageTab
@@ -103,7 +103,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'系统消息'} color={'#ffffff'} />
+        <Head title={'系统消息'} titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'} leftIconColor={'white'}/>
         {this.renderContent()}
       </div>
     )

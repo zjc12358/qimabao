@@ -6,7 +6,7 @@ import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import './master.css'
-import Nav from '@components/Head/nav'
+import Head from '@components/Head'
 
 export interface Props {
   pageTab: PageTab
@@ -51,7 +51,6 @@ class User extends React.Component<Props, State> {
     ]
     return(
       <div style={{ color: '#858585' }}>
-        <div className={'Segment_line3'} />
         <Tabs tabs={tabs} animated={false} initialPage={2}
         >
           {this.state.getEmpty ? this.renderCoupon : this.renderNone}
@@ -159,7 +158,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'我的优惠券'} color={'#ffffff'} />
+        <Head title={'我的优惠券'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )

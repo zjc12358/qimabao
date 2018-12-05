@@ -54,8 +54,8 @@ class User extends React.Component<Props, State> {
           <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }}>
             <span className={'commonFont'} style={{ fontSize: 16 }}>+86</span>
             <div className={'flex-flex-end-row-center'}>
-              <input id={'input'} value={this.state.value} className={'commonFont'} placeholder={'请输入您的手机号...'} onChange={this.onPhoneChange} style={{ direction: 'rtl', border: 'none',fontSize: 16 }} />
-              {this.state.clear === true ? <ReactSVG onClick={this.clearOnclick} path='./assets/images/User/close.svg' svgStyle={{ height: 16,width: '16',paddingLeft: 2 }}/> : ''}
+              <input id={'input'} value={this.state.value} className={'commonFont'} placeholder={'请输入您的手机号...'} onChange={this.onPhoneChange} style={{ textAlign: 'right', border: 'none',fontSize: 16 }} />
+              {this.state.clear === true ? <ReactSVG onClick={this.clearOnclick} path='./assets/images/User/close.svg' svgStyle={{ height: 16,width: 16,paddingLeft: 2 }}/> : ''}
             </div>
           </div>
         </div>
@@ -87,7 +87,7 @@ class User extends React.Component<Props, State> {
 
   public onPhoneChange = (e) => {
     let value = e.target.value
-    if (value.length > 13) return
+    if (value.length > 11) return
     this.setState({
       value: value
     })
@@ -101,7 +101,7 @@ class User extends React.Component<Props, State> {
         clear: false
       })
     }
-    if (value.length === 13) {
+    if (value.length === 11) {
       this.setState({
         phoneConfirmButtonType: true,
         phone: value
@@ -110,19 +110,6 @@ class User extends React.Component<Props, State> {
       this.setState({
         phoneConfirmButtonType: false
       })
-    }
-    if (value.length === 3) {
-      this.setState({
-        value: value.replace(/(.{3})/g,'$1 ')
-      })
-    }
-    if (value.length === 8) {
-      this.setState({
-        value: value.replace(/(.{8})/g,'$1 ')
-      })
-    }
-    if (value.length === 4) {
-      console.log(1)
     }
   }
 

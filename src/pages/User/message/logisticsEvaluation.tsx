@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '../../../store/reducers/globalDataReducer'
-import { Icon } from 'antd-mobile'
+import { Icon, Modal } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { PageTab } from '../../../datasources/PageTab'
 import { UserInfo } from '../../../datasources/UserInfo'
@@ -10,6 +10,8 @@ import { updateUserInfo, updatePageTab } from '../../../store/actions/global_dat
 import '../master.css'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
+import { Rate,Input } from 'element-react'
+import 'element-theme-default'
 
 export interface Props {
   pageTab: PageTab
@@ -21,6 +23,8 @@ export interface Props {
 interface State {
   data: any
   scroll: boolean
+  modal: boolean
+  evaluate: string
 }
 let starIconMaxSize: number = 25
 class User extends React.Component<Props, State> {
@@ -36,38 +40,25 @@ class User extends React.Component<Props, State> {
         { date: '10-24',time: '09:34',status: '',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' },
         { date: '10-24',time: '09:34',status: '已签收',address: '[收货地址]浙江省衢州市柯城区 荷花街道  兴华苑35幢2单元' }
       ],
-      scroll: false
+      scroll: false,
+      modal: false,
+      evaluate: '暂无评价'
     }
   }
 
   public renderNav = () => {
     return (
-      <div style={{
-        backgroundColor: '#ffffff',
+      <div className={'flex-flex-start-row-center'} style={{
+        backgroundColor: '#0084e7',
+        color: 'white',
         height: 40,
-        marginTop: 20,
-        marginLeft: 20,
-        marginRight: 20,
-        border: '1px solid #ddd',
-        borderRadius: 5,
         position: 'relative'
       }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          alignItems: 'center',
-          height: '100%'
-        }}>
-          <div style={{ paddingLeft: 10 }} onClick={() => history().goBack()}>
-            <Icon type={'left'} />
-          </div>
-          <div style={{ paddingLeft: 24 }}>
-            <Icon type={'loading'} />
-          </div>
-          <div style={{ paddingLeft: 15 }}>
-            <span style={{ fontSize: 16 }}>已签收</span>
-          </div>
+        <div style={{ paddingLeft: 10 }} onClick={() => history().goBack()}>
+          <ReactSVG path='./components/Head/ic_back_white.svg' svgStyle={{ width: 22, height: 22 }}/>
+        </div>
+        <div style={{ paddingLeft: 15 }}>
+          <span className={'commonFont'} style={{ fontSize: 16 }}>已签收</span>
         </div>
       </div>
     )
@@ -91,7 +82,7 @@ class User extends React.Component<Props, State> {
           alignItems: 'flex-start',
           height: '100%'
         }}>
-          <div style={{ paddingLeft: 10 }}><span style={{ color: '#b1b1b1' }}>物流评价</span></div>
+          <div style={{ paddingLeft: 10,paddingTop: 5 }}><span style={{ color: '#b1b1b1' }}>物流评价</span></div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -112,9 +103,9 @@ class User extends React.Component<Props, State> {
                   height: 'auto',
                   maxWidth: '100%',
                   maxHeight: '100%'
-                }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg' />
+                }} src='http://bpic.588ku.com/element_origin_min_pic/16/12/23/2c6eb9041609e50a683f614ca8fcc0ca.jpg' />
               </div>
-              <div className={'flex-row-space-around'} style={{ width: window.innerWidth * 0.5,paddingLeft: 5 }}>
+              <div className={'flex-row-space-around'} style={{ width: window.innerWidth * 0.5,paddingLeft: 5 }} onClick={this.showModal}>
                 <ReactSVG path='./assets/images/User/star_on.svg' svgStyle={{ width: starIconMaxSize, height: starIconMaxSize }}/>
                 <ReactSVG path='./assets/images/User/star_on.svg' svgStyle={{ width: starIconMaxSize, height: starIconMaxSize }}/>
                 <ReactSVG path='./assets/images/User/star_off.svg' svgStyle={{ width: starIconMaxSize, height: starIconMaxSize }}/>
@@ -178,36 +169,39 @@ class User extends React.Component<Props, State> {
       )
     }
     return(
-      <div style={{
-        backgroundColor: '#ffffff',
-        height: 20 + (this.state.scroll === true ? this.state.data.length * 60 : 140),
-        marginTop: 20,
-        marginLeft: 20,
-        marginRight: 20,
-        border: '1px solid #ddd',
-        borderRadius: 5,
-        position: 'relative'
-      }}>
+      <div>
         <div style={{
-          paddingTop: 20
+          backgroundColor: '#ffffff',
+          height: 20 + (this.state.scroll === true ? this.state.data.length * 60 : 140),
+          marginTop: 20,
+          marginLeft: 20,
+          marginRight: 20,
+          border: '1px solid #ddd',
+          borderRadius: 5,
+          position: 'relative'
         }}>
-          {this.state.data.map((i,index) => {
-            if (index > 1 && this.state.scroll !== true) { return }
-            return(
-              <div>
-                {this.renderTradeItem(i,index)}
-              </div>
-            )
-          })}
+          <div style={{
+            paddingTop: 20
+          }}>
+            {this.state.data.map((i,index) => {
+              if (index > 1 && this.state.scroll !== true) { return }
+              return(
+                <div>
+                  {this.renderTradeItem(i,index)}
+                </div>
+              )
+            })}
+          </div>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            height: 20
+          }}>
+            <span style={{ fontSize: 10, color: '#c3c3c3' }} onClick={this.scrollOnclick}>{!this.state.scroll ? '点击查看更多物流信息' : ''}</span>
+          </div>
         </div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          height: 20
-        }}>
-          <span style={{ fontSize: 10, color: '#c3c3c3' }} onClick={this.scrollOnclick}>{!this.state.scroll ? '点击查看更多物流信息' : ''}</span>
-        </div>
+        {this.renderEvaluation()}
       </div>
     )
   }
@@ -295,6 +289,102 @@ class User extends React.Component<Props, State> {
         {i.address}
       </div>
     )
+  }
+
+  public renderEvaluation = () => {
+    return(
+      <Modal
+        popup
+        visible={this.state.modal}
+        onClose={() => this.onClose()}
+        animationType='slide-up'
+        style={{ height: '60%' }}
+      >
+        <div>
+          <div className={'flex-space-around-column-center'} style={{ height: 100 }}>
+            <div style={{ position: 'relative',width: '100%',marginTop: 15 }}>
+              <div style={{ position: 'absolute',right: 15,top: 0 }}>
+                <ReactSVG onClick={() => this.onClose()} path='./assets/images/User/close.svg' svgStyle={{ height: 22,width: 22 }}/>
+              </div>
+              <div className={'flex-center-row-center'} >
+                <span className={'commonFont'} style={{ fontSize: 18,color: '#333' }}>物流评价</span>
+              </div>
+            </div>
+            <div className={'starLevel'} style={{ paddingBottom: 10 }}>
+              <Rate colors={['#99A9BF', '#F7BA2A', '#FF9900']} onChange={(val) => this.setLevel(val)} />
+            </div>
+            <span className={'commonFont'} style={{ fontSize: 14,color: '#999' }}>{this.state.evaluate}</span>
+          </div>
+          <div className={'flex-center-column-stretch'} style={{ position: 'relative',paddingTop: 10 }}>
+            <div className={'Segment_line'} />
+            <div style={{ position: 'absolute',left: '35%',backgroundColor: 'white',width: '30%' }}>
+              <span className={'commonFont'} style={{ fontSize: 16,color: '#333' }}>选择标签</span>
+            </div>
+          </div>
+          <div className={'flex-center-row-center'} style={{ flexWrap: 'wrap',paddingTop: 20,alignContent: 'stretch',height: 100 }}>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 'auto', height: 'auto', padding: '5px 10px',border: '1px solid #ccc',borderRadius: 15,marginRight: 20 }}>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>货品包装物破损</span>
+            </div>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 'auto', height: 'auto', padding: '5px 10px',border: '1px solid #ccc',borderRadius: 15,marginRight: 20 }}>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>送货前电联</span>
+            </div>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 'auto', height: 'auto', padding: '5px 10px',border: '1px solid #ccc',borderRadius: 15,marginRight: 20 }}>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>送货上门</span>
+            </div>
+            <div className={'flex-center-row-center'}
+                 style={{ width: 'auto', height: 'auto', padding: '5px 10px',border: '1px solid #ccc',borderRadius: 15,marginRight: 20 }}>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>态度服务好</span>
+            </div>
+          </div>
+          <div className={'flex-center-row-stretch'} style={{ padding: '10px 10px' }}>
+            <Input
+              type='textarea'
+              autosize={{ minRows: 4, maxRows: 6 }}
+              placeholder='请输入评价...'
+            />
+            <Button type={'primary'} style={{ marginTop: 10 }}>提交</Button>
+          </div>
+        </div>
+      </Modal>
+    )
+  }
+  public setLevel = (val) => {
+    switch (val) {
+      case 1:
+        this.setState({
+          evaluate: '极差'
+        });break
+      case 2:
+        this.setState({
+          evaluate: '一般'
+        });break
+      case 3:
+        this.setState({
+          evaluate: '良好'
+        });break
+      case 4:
+        this.setState({
+          evaluate: '满意'
+        });break
+      case 5:
+        this.setState({
+          evaluate: '非常满意'
+        });break
+    }
+
+  }
+  /**
+   * 打开modal
+   */
+  showModal = (e) => {
+    e.preventDefault() // 修复 Android 上点击穿透
+    this.setState({ modal: true })
+  }
+  onClose = () => {
+    this.setState({ modal: false })
   }
 
   public scrollOnclick = () => {

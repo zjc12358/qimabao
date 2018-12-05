@@ -18,6 +18,8 @@
     "bizcharts": "^3.2.1-beta.2",
     "bizcharts-plugin-slider": "^2.0.4",
     "echarts": "^4.2.0-rc.2",
+    "element-react": "^1.4.24",
+    "element-theme-default": "^1.4.13",
     "http-proxy-middleware": "^0.18.0",
     "koa": "^2.5.1",
     "koa-body": "^4.0.4",
