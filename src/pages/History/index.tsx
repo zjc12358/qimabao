@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon ,Toast } from 'antd-mobile'
 import ReactSVG from 'react-svg'
+import { cloneDeep, get } from 'lodash'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.less'
 import Head from '../../components/Head/index'
@@ -39,7 +40,8 @@ interface State {
   allSupplierItemCheck: Boolean,
   isEmpty: boolean,
   yourLink: any,
-  shopCartData: any
+  shopCartData: any,
+  bodyWidth: any
 }
 
 class History extends React.Component<Props, State> {
@@ -48,12 +50,13 @@ class History extends React.Component<Props, State> {
     super(props)
     this.state = {
       num: '',
-      allSupplierItemCheck: this.props.allSupplierItemCheck,
+      allSupplierItemCheck: cloneDeep(this.props.allSupplierItemCheck),
       total: 0,
       isEmpty: false,
-      yourLink: [1,2,3 ],
-      data: this.props.shopCartData,
-      shopCartData: this.props.shopCartData
+      yourLink: [1,2,3,4,5,6,7,8,9 ],
+      data:  cloneDeep(this.props.shopCartData),
+      shopCartData: cloneDeep(this.props.shopCartData),
+      bodyWidth: document.querySelector('body').offsetWidth
     }
   }
 
@@ -328,7 +331,7 @@ class History extends React.Component<Props, State> {
                 </div>
               </div>
             ))}
-            { this.state.yourLink.length % 2 !== 0 ? <div style={{ width: '50%',maxWidth: 200 }}></div> : console.log(1)}
+            { this.state.yourLink.length % 2 !== 0 ? <div style={{ width: 200 }}></div> : console.log(1)}
           </div>
         </div>
       </div>
