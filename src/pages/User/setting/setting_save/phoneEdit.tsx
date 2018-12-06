@@ -24,9 +24,11 @@ interface State {
   phone: string
   value: string
   clear: boolean
+  refresh: string
 }
 
 class User extends React.Component<Props, State> {
+  private input: HTMLInputElement
   constructor (props) {
     super(props)
     this.state = {
@@ -34,7 +36,8 @@ class User extends React.Component<Props, State> {
       phone: '',     /*要换绑的手机号  */
       data: { phone: '13589458987',address: '中国大陆' },   /*数据源 */
       value: '',
-      clear: false
+      clear: false,
+      refresh: ''
     }
   }
 
@@ -54,7 +57,7 @@ class User extends React.Component<Props, State> {
           <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }}>
             <span className={'commonFont'} style={{ fontSize: 16 }}>+86</span>
             <div className={'flex-flex-end-row-center'}>
-              <input id={'input'} value={this.state.value} className={'commonFont'} placeholder={'请输入您的手机号...'} onChange={this.onPhoneChange} style={{ textAlign: 'right', border: 'none',fontSize: 16 }} />
+              <input ref={(c) => { this.input = c }} className={'commonFont'} placeholder={'请输入您的手机号...'} onChange={this.onPhoneChange} style={{ textAlign: 'right', border: 'none',fontSize: 16 }} />
               {this.state.clear === true ? <ReactSVG onClick={this.clearOnclick} path='./assets/images/User/close.svg' svgStyle={{ height: 16,width: 16,paddingLeft: 2 }}/> : ''}
             </div>
           </div>
@@ -71,15 +74,12 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-
   public clearOnclick = () => {
-    document.getElementById('input').focus()
+    this.input.focus()
     this.setState({
       clear: false
     })
-    this.setState({
-      value: ''
-    })
+    this.input.value += ' '
     this.setState({
       phoneConfirmButtonType: false
     })
@@ -116,7 +116,6 @@ class User extends React.Component<Props, State> {
   public nextOnclick = () => {
     history().push('/PhoneEditConfirm')
   }
-
   public render () {
     return (
       <div style={{
