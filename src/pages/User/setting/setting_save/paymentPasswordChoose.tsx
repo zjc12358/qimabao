@@ -9,6 +9,7 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import '../../master.css'
+import Head from '@components/Head'
 
 export interface Props {
   pageTab: PageTab
@@ -37,12 +38,11 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div>
-        <div className='Segment_line2' />
         <div style={{
           textAlign: 'center',
           backgroundColor: '#ffffff',
           color: '#9c9c9c',
-          paddingTop: 35,
+          paddingTop: 40,
           paddingBottom: 20
         }}>
           <span style={{ fontSize: 16 }}>您是否记得账号 </span>
@@ -87,7 +87,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'修改支付密码'} color={'#ffffff'} />
+        <Head title={'修改支付密码'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )

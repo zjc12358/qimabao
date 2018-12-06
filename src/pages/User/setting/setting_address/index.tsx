@@ -10,6 +10,7 @@ import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import '../../master.css'
 import ReactSVG from 'react-svg'
+import Head from '@components/Head'
 
 export interface Props {
   pageTab: PageTab
@@ -40,15 +41,6 @@ class User extends React.Component<Props, State> {
     this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
     this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
     this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
 
   }
   /**
@@ -57,7 +49,8 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{
-        paddingTop: 0
+        paddingTop: 5,
+        paddingBottom: 50
       }}>
         {this.state.data.map((i, index) => (
           <div style={{ backgroundColor: 'white' }}>
@@ -84,9 +77,7 @@ class User extends React.Component<Props, State> {
         height: 60,
         backgroundColor: '#ffffff',
         position: 'relative'
-      }}
-           onClick={this.ItemOnclick.bind(this,index)}
-      >
+      }} onClick={this.ItemOnclick.bind(this,index)}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -125,7 +116,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'我的地址'} color={'#ffffff'} />
+        <Head title={'我的地址'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )
