@@ -1,12 +1,15 @@
 import * as React from 'react'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { NavBar, Icon } from 'antd-mobile'
+import { NavBar, Icon, Toast } from 'antd-mobile'
 import { updateUserInfo, updatePageTab, changeMode } from '@store/actions/global_data'
 import { UserInfo } from '@datasources/UserInfo'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import Badge from '@components/Badge'
+import axios from 'axios'
+import { LoginBean } from '@datasources/LoginBean'
+import { MyResponse } from '@datasources/MyResponse'
 
 export interface Props {
   pageTab: string
@@ -25,6 +28,7 @@ let OrderIconMaxSize: number = 35
 class User extends React.Component<Props, State> {
   private RightIconMaxSize: number = 16
   private MenuMaxSize: number = 22
+
   constructor (props) {
     super(props)
     this.state = {}
@@ -197,7 +201,7 @@ class User extends React.Component<Props, State> {
               whiteSpace: 'nowrap',
               width: '100%',
               display: 'block'
-            }}>衢州炒菜软件技术有限公司</span>
+            }} onClick={this.testLogin}>衢州炒菜软件技术有限公司</span>
           </div>
         </div>
       </div>
@@ -214,7 +218,7 @@ class User extends React.Component<Props, State> {
         flexDirection: 'column',
         paddingTop: 100
       }}>
-        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} >
+        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }}>
           <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>我的订单</span>
         </div>
         <div className='Segment_line'></div>
@@ -302,26 +306,31 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div style={{ height: 'auto' }}>
-        <div className='Segment_line2'/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.orderOnclick}>
-          <span style={{ fontSize: '16px' }}>我的购买</span>
-          <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
-        </div>
-        <div className='Segment_line2'/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.afterSaleOnclick}>
-          <span style={{ fontSize: '16px' }}>售后退款</span>
-          <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
-        </div>
+          <div className='Segment_line2'/>
+          <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.orderOnclick}>
+            <span style={{ fontSize: '16px' }}>我的购买</span>
+            <ReactSVG path='./assets/images/User/right.svg'
+                      svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
+          </div>
+          <div className='Segment_line2'/>
+          <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }}
+               onClick={this.afterSaleOnclick}>
+            <span style={{ fontSize: '16px' }}>售后退款</span>
+            <ReactSVG path='./assets/images/User/right.svg'
+                      svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
+          </div>
         </div>
         <div style={{
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px',backgroundColor: '#fff' }} onClick={() => this.props.changeMode('supplier')}>
-          <span style={{ fontSize: '16px',whiteSpace: 'nowrap' }}>我的店铺</span>
+        <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px', backgroundColor: '#fff' }}
+             onClick={() => this.props.changeMode('supplier')}>
+          <span style={{ fontSize: '16px', whiteSpace: 'nowrap' }}>我的店铺</span>
           <div className={'flex-flex-end-row-center'}>
-            <span style={{ fontSize: 12, color: 'red',whiteSpace: 'normal' }} >您有一条新的订单【点击查看】</span>
-            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
+            <span style={{ fontSize: 12, color: 'red', whiteSpace: 'normal' }}>您有一条新的订单【点击查看】</span>
+            <ReactSVG path='./assets/images/User/right.svg'
+                      svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
           </div>
         </div>
       </div>
@@ -337,15 +346,16 @@ class User extends React.Component<Props, State> {
           height: 8,
           backgroundColor: '#efeff5'
         }}/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px',backgroundColor: '#fff' }}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '10px 16px', backgroundColor: '#fff' }}>
           <div className={'flex-flex-start-row-center'}>
             <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>常用工具</span>
-            <span style={{ fontSize: 12, color: 'red' }} >【工具栏】 功能暂未开放</span>
+            <span style={{ fontSize: 12, color: 'red' }}>【工具栏】 功能暂未开放</span>
           </div>
-          <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
+          <ReactSVG path='./assets/images/User/right.svg'
+                    svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
         </div>
-        <div className='Segment_line' />
-        <div style={{ backgroundColor: '#fff', height: 200,padding: 10 }}>
+        <div className='Segment_line'/>
+        <div style={{ backgroundColor: '#fff', height: 200, padding: 10 }}>
           {this.renderUtils()}
         </div>
       </div>
@@ -362,7 +372,8 @@ class User extends React.Component<Props, State> {
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#3333cc' }}>
-              <img src='./assets/images/SupplierTest/commodityManagement.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+              <img src='./assets/images/SupplierTest/commodityManagement.png' width={this.MenuMaxSize}
+                   height={this.MenuMaxSize}/>
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>所有账单</div>
           </div>
@@ -370,7 +381,8 @@ class User extends React.Component<Props, State> {
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#6633ff' }}>
-              <img src='./assets/images/SupplierTest/classification.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+              <img src='./assets/images/SupplierTest/classification.png' width={this.MenuMaxSize}
+                   height={this.MenuMaxSize}/>
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>我的账户</div>
           </div>
@@ -378,7 +390,8 @@ class User extends React.Component<Props, State> {
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#009966' }}>
-              <img src='./assets/images/SupplierTest/distribution.png' width={this.MenuMaxSize} height={this.MenuMaxSize}/>
+              <img src='./assets/images/SupplierTest/distribution.png' width={this.MenuMaxSize}
+                   height={this.MenuMaxSize}/>
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>收货地址</div>
           </div>
@@ -457,6 +470,31 @@ class User extends React.Component<Props, State> {
   public afterSaleOnclick = () => {
     this.props.updatePageTab('UserPageTabBar')
     history().push('/afterSale')
+  }
+
+  /**
+   * 测试模拟用户登录
+   */
+  testLogin = () => {
+    let head = {
+      'date': new Date(),
+      'transfer-encoding': 'chunked',
+      'content-type': 'application/json;charset=UTF-8'
+    }
+    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
+    let query = 'openId=maoxiaoyan'
+    axios.get<MyResponse<LoginBean>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          Toast.info('登录成功', 2, null, false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   public render () {

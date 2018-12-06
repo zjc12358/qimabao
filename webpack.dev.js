@@ -34,8 +34,8 @@ const config = {
     host: '0.0.0.0',
     port,
     proxy: {
-      '/api': {
-        target: 'http://192.168.2.110:8080/'   //本地测试地址
+      '/CanteenProcurementManager': {
+        target: 'http://192.168.4.152:9091'   //本地测试地址
       }
     }
   },

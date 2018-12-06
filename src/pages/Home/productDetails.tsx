@@ -52,12 +52,34 @@ class Home extends React.Component<Props, State> {
 
   componentDidMount () {
     // 获取滑动y高度
-    document.getElementsByClassName('vertical detail-content')[0].addEventListener('scrollTop', () =>
-        console.log(document.getElementsByClassName('vertical detail-content')[0].scrollTop)
-      // this.setState({
-      //   scrollY: document.getElementsByClassName('detail-content')[0].scrollTop
-      // })
-    )
+    // document.getElementsByClassName('vertical detail-content')[0].addEventListener('scrollTop', () =>
+    //     console.log(document.getElementsByClassName('vertical detail-content')[0].scrollTop)
+    //   // this.setState({
+    //   //   scrollY: document.getElementsByClassName('detail-content')[0].scrollTop
+    //   // })
+    // ,{ passive: false })
+  }
+
+  touchStart (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    this.setState({
+      scrollY: document.getElementsByClassName('bigContent scroll touch_scroll')[0].scrollTop
+    })
+  }
+
+  touchMove (e) {
+    console.log('滑动')
+    this.setState({
+      scrollY: document.getElementsByClassName('bigContent scroll touch_scroll')[0].scrollTop
+    })
+  }
+
+  touchEnd (e) {
+    console.log('滑动结束')
+    this.setState({
+      scrollY: document.getElementsByClassName('bigContent scroll touch_scroll')[0].scrollTop
+    })
   }
 
   /**
@@ -100,9 +122,14 @@ class Home extends React.Component<Props, State> {
     )
   }
 
+  /**
+   * 页面内容区
+   */
   renderContent = () => {
     return (
-      <div className='bigContent scroll touch_scroll' style={{ width: '100%' }}>
+      // FIXME：滑动有问题
+      <div className='bigContent scroll touch_scroll'
+           onScroll={this.touchMove.bind(this)}>
         <div className='vertical detail-content'>
           {this.renderTopPic()}
           {this.renderDetailsInfo()}

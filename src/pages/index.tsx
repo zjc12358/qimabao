@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar } from 'antd-mobile'
+import { TabBar, Toast } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 
 import ReactSVG from 'react-svg'
@@ -15,6 +15,10 @@ import { PageTab } from '@datasources/PageTab'
 
 import '../assets/css/GeneralStyle.less'
 import { updatePageTab } from '@store/actions/global_data'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
+import { LoginBean } from '@datasources/LoginBean'
+
 export interface Props {
   pageTab: string
   mode: 'supplier' | 'purchaser'
@@ -36,6 +40,26 @@ class App extends React.Component<Props, State> {
       pageContent: null,
       hidden: false
     }
+  }
+
+  /**
+   * 测试模拟用户登录
+   */
+  componentWillMount () {
+    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
+    let query = 'openId=maoxiaoyan'
+    axios.get<MyResponse<LoginBean>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          Toast.info('登录成功', 2, null, false)
+        } else {
+          Toast.info('登录失败', 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   componentDidMount () {
