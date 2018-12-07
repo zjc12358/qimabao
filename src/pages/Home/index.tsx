@@ -11,6 +11,7 @@ import history from 'history/createHashHistory'
 import { ProductListState } from '@datasources/ProductListState'
 import { updateCategoryItem } from '@store/actions/categoryItem_data'
 import { updatePageTab } from '@store/actions/global_data'
+import { MyResponse } from '@datasources/MyResponse'
 
 let categoryData = ['时令蔬菜', '肉禽蛋类', '海鲜水产', '新鲜水果', '粮油副食', '酒水饮料', '乳品烘焙', '敬请期待', '敬请期待']
 let carouselData = ['./assets/images/ic_home_top0.png', './assets/images/ic_home_top1.png']
@@ -44,25 +45,26 @@ class Home extends React.Component<Props, State> {
   }
 
   componentDidMount () {
+    this.getHomeCategory()
     // simulate img loading
-    setTimeout(() => {
-      this.setState({
-        imgData: carouselData
-      })
-      let categoryList: Array<HomeCategoryItemBean> = []
-      for (let i = 0; i < 9; i++) {
-        let categoryItem: HomeCategoryItemBean = {
-          category_id: i,
-          category_name: categoryData[i],
-          category_picture: './assets/images/ic_home' + i + '.png',
-          show: false
-        }
-        categoryList.push(categoryItem)
-        this.setState({
-          homeCategoryItemData: categoryList
-        })
-      }
-    }, 100)
+    // setTimeout(() => {
+    //   this.setState({
+    //     imgData: carouselData
+    //   })
+    //   let categoryList: Array<HomeCategoryItemBean> = []
+    //   for (let i = 0; i < 9; i++) {
+    //     let categoryItem: HomeCategoryItemBean = {
+    //       category_id: i,
+    //       category_name: categoryData[i],
+    //       category_picture: './assets/images/ic_home' + i + '.png',
+    //       show: false
+    //     }
+    //     categoryList.push(categoryItem)
+    //     this.setState({
+    //       homeCategoryItemData: categoryList
+    //     })
+    //   }
+    // }, 100)
   }
 
   /**
@@ -141,9 +143,6 @@ class Home extends React.Component<Props, State> {
         <Carousel
           autoplay={true}
           infinite={true}
-          style={{
-            height: 140
-          }}
         >
           {carouselData.map((val, index) => (
             <a
@@ -154,7 +153,7 @@ class Home extends React.Component<Props, State> {
               <img
                 src={val}
                 style={{
-                  width: '100%', verticalAlign: 'top', height: 140,
+                  width: '100%', verticalAlign: 'top',
                   borderStyle: 'solid',
                   borderWidth: 0,
                   borderRadius: 10
@@ -218,35 +217,6 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
-   * 获取首页分类
-   */
-  getHomeCategory = () => {
-    const url = 'CanteenProcurementManager/homepage/productCategory/firstPageList'
-    axios.get(url)
-      .then(data => {
-        console.log('--- data =', data)
-        if (data.data.status === '0') {
-          this.setState({
-            homeCategoryItemData: data.data.data
-          })
-        } else {
-          if (data.data.status === '-100') {
-            let redirectUrl = window.location.hash.includes('redirectUrl')
-              ? `/${window.location.hash.split('=')[1]}`
-              : '/'
-            window.location.hash = redirectUrl === '/userCenter' ? '/?tabBar=userCenter' : redirectUrl
-            Toast.info('登录失效,请先登录', 1)
-          } else {
-            Toast.info(data.data.msg, 1)
-          }
-        }
-      })
-      .catch(() => {
-        Toast.info('请检查网络设置!', 1)
-      })
-  }
-
-  /**
    * 点击头部定位
    */
   locationOnclick = () => {
@@ -289,6 +259,27 @@ class Home extends React.Component<Props, State> {
     // this.state.commodityListState.index = index
     this.props.updatePageTab('HomePageTabBar')
     history().push('/productList')
+  }
+
+  /**
+   * 获取首页分类
+   */
+  getHomeCategory = () => {
+    const url = 'CanteenProcurementManager/homepage/productCategory/firstPageList'
+    axios.get<MyResponse<Array<HomeCategoryItemBean>>>(url)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            homeCategoryItemData: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 1)
+      })
   }
 
   public render () {

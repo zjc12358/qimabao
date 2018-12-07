@@ -73,12 +73,12 @@ class Menu extends React.Component<Props, State> {
              }}>
           <div style={{ paddingLeft: 10, color: '#e5e5e5' }}>
             <span>图标 </span>
-            <span> {item.name}</span>
+            <span> {item.company_name}</span>
           </div>
           <span style={{ paddingRight: 10 }}>→</span>
         </div>
         <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
-        {item.foodList.map((item, index) => this.renderProductItem(item, groupIndex, index))}
+        {item.shoppingCartDetails.map((item, index) => this.renderProductItem(item, groupIndex, index))}
       </div>
     )
   }
@@ -99,7 +99,7 @@ class Menu extends React.Component<Props, State> {
              alignItems: 'flex-start'
            }}>
         <div className='horizontal' style={{ padding: 20 }}>
-          <img style={{ display: 'block', width: 90, height: 90 }} src={item.img}/>
+          <img style={{ display: 'block', width: 90, height: 90 }} src={item.product_icon}/>
           <div style={{
             height: 90,
             display: 'flex',
@@ -107,10 +107,10 @@ class Menu extends React.Component<Props, State> {
             justifyContent: 'space-between',
             paddingLeft: 20
           }}>
-            <div style={{ fontSize: '16px' }}>{item.name}</div>
+            <div style={{ fontSize: '16px' }}>{item.product_name}</div>
             <div style={{ fontSize: '16px' }}>
-              <span style={{ color: 'red' }}>￥{item.price}</span>
-              <span style={{ color: '#8c8c8c' }}>/{item.unit}</span>
+              <span style={{ color: 'red' }}>￥{item.product_price}</span>
+              <span style={{ color: '#8c8c8c' }}>/500g</span>
             </div>
             <div style={{ display: 'flex', color: '#8c8c8c', fontSize: 14 }}>
               <Stepper
@@ -119,10 +119,10 @@ class Menu extends React.Component<Props, State> {
                 showNumber
                 max={10}
                 min={1}
-                defaultValue={this.state.menuDetailBean.storeList[groupIndex].foodList[childIndex].count}
+                defaultValue={this.state.menuDetailBean.storeList[groupIndex].shoppingCartDetails[childIndex].product_weight}
                 onChange={(v) => {
                   let data = this.state.menuDetailBean
-                  data.storeList[groupIndex].foodList[childIndex].count = v
+                  data.storeList[groupIndex].shoppingCartDetails[childIndex].product_weight = v
                   this.setState({
                     menuDetailBean: data,
                     isChange: true
@@ -141,7 +141,7 @@ class Menu extends React.Component<Props, State> {
              }}>
           <div style={{ paddingLeft: 20 }}>
             <span>小计: </span>
-            <span style={{ color: '#ff1717' }}>¥ {(item.price * item.count).toFixed(2)}</span>
+            <span style={{ color: '#ff1717' }}>¥ {item.product_total_price.toFixed(2)}</span>
           </div>
           <span className='horizontal' style={{
             height: 30,
@@ -207,8 +207,8 @@ class Menu extends React.Component<Props, State> {
    */
   deleteProductOnClick = (groupIndex: number, childIndex: number) => {
     let data = this.state.menuDetailBean
-    data.storeList[groupIndex].foodList.splice(childIndex, 1)
-    if (data.storeList[groupIndex].foodList === null || data.storeList[groupIndex].foodList.length < 1) {
+    data.storeList[groupIndex].shoppingCartDetails.splice(childIndex, 1)
+    if (data.storeList[groupIndex].shoppingCartDetails === null || data.storeList[groupIndex].shoppingCartDetails.length < 1) {
       data.storeList.splice(groupIndex, 1)
     }
     this.setState({
@@ -235,19 +235,22 @@ class Menu extends React.Component<Props, State> {
       let productList: Array<ShopCartProductBean> = []
       for (let j = 0; j < 5; j++) {
         let productItem: ShopCartProductBean = {
+          product_id: i,
+          supplier_id: i + i,
           isChecked: false,
-          name: '商品' + j,
-          img: '',
-          price: j + 1,
-          unit: j + 'g',
-          count: j + 1
+          product_name: '商品' + j,
+          product_icon: '',
+          product_price: j + 1,
+          product_weight: j + 1,
+          product_total_price: 0
         }
         productList.push(productItem)
       }
       let storeItem: ShopCartSupplierBean = {
-        name: '商店' + i,
+        supplier_id: i,
+        company_name: '商店' + i,
         allChecked: false,
-        foodList: productList
+        shoppingCartDetails: productList
       }
       storeList.push(storeItem)
     }
