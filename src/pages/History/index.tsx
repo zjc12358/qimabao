@@ -12,6 +12,9 @@ import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import history from 'history/createHashHistory'
 import { updatePageTab } from '@store/actions/global_data'
 import { needReload, updataAllSupplierItemCheck, updataShopCart } from '@store/actions/shopCart_data'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
+import { LoginBean } from '@datasources/LoginBean'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem
@@ -68,6 +71,33 @@ class History extends React.Component<Props, State> {
   updata = (data,allSupplierItemCheck) => {
     this.props.updataShopCart(data)
     this.props.updataAllSupplierItemCheck(allSupplierItemCheck)
+  }
+
+  /**
+   * axios请求购物车数据
+   */
+  getData = () => {
+    let url = 'CanteenProcurementManager/user/shoppingCart/findShoppingCart?'
+    let query = ''
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- 购物车data =', data)
+        if (data.data.code === 0) {
+          Toast.info('登录成功', 2, null, false)
+          let cartData = cloneDeep(data.data.data)
+          cartData.map((item) => {
+            item.allChecked = false
+            item.shoppingCartDetails.map((citem) => {
+              citem.isChecked = false
+            })
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   /**
@@ -232,6 +262,10 @@ class History extends React.Component<Props, State> {
     this.setState({ data: nextProps.shopCartData,allSupplierItemCheck: nextProps.allSupplierItemCheck },() => {
       Toast.hide()
     })
+  }
+
+  componentWillMount () {
+    this.getData()
   }
 
   /**
