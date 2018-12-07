@@ -78,16 +78,20 @@ class History extends React.Component<Props, State> {
       addressData: {},
       supplier: [
         {
+          supplier_id: 2,
           allChecked: false,
-          name: '衢州炒菜软件有限公司',
-          foodList: [
+          company_name: '衢州炒菜软件有限公司',
+          shoppingCartDetails: [
             {
+              product_id: 1,
+              supplier_id: 2,
               isChecked: false,
-              name: '红烧肉',
-              img: '1231231321',
-              price: 12.1,
+              product_name: '红烧肉',
+              product_icon: '1231231321',
+              product_price: 12.1,
               unit: '份',
-              count: 5
+              product_weight: 1,
+              product_total_price: 15.5
             }
           ]
         }

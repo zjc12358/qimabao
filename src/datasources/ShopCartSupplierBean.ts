@@ -1,7 +1,8 @@
 import { ShopCartProductBean } from './ShopCartProductBean'
 
 export interface ShopCartSupplierBean {
-  name: string,
+  supplier_id: number,
+  company_name: string,
   allChecked: boolean,
-  foodList: Array<ShopCartProductBean>
+  shoppingCartDetails: Array<ShopCartProductBean>
 }

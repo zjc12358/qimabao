@@ -132,12 +132,12 @@ class History extends React.Component<Props, State> {
     let data = this.state.data
     let len = 0
     let len2 = 0
-    data[index1].foodList[index].isChecked = !data[index1].foodList[index].isChecked
-    for (let i = 0; i < this.state.data[index1].foodList.length; i++) {
-      if (this.state.data[index1].foodList[i].isChecked === true) len += 1
-      if (len === this.state.data[index1].foodList.length) data[index1].allChecked = true
+    data[index1].shoppingCartDetails[index].isChecked = !data[index1].shoppingCartDetails[index].isChecked
+    for (let i = 0; i < this.state.data[index1].shoppingCartDetails.length; i++) {
+      if (this.state.data[index1].shoppingCartDetails[i].isChecked === true) len += 1
+      if (len === this.state.data[index1].shoppingCartDetails.length) data[index1].allChecked = true
     }
-    if (data[index1].foodList[index].isChecked === false) {
+    if (data[index1].shoppingCartDetails[index].isChecked === false) {
       // this.setState({ allSupplierItemCheck: false },() => {
       this.props.updataAllSupplierItemCheck(false)
       // })
@@ -166,8 +166,8 @@ class History extends React.Component<Props, State> {
     let data = this.state.data
     let len = 0
     data[index1].allChecked = !data[index1].allChecked
-    for (let i = 0; i < this.state.data[index1].foodList.length; i++) {
-      data[index1].foodList[i].isChecked = data[index1].allChecked
+    for (let i = 0; i < this.state.data[index1].shoppingCartDetails.length; i++) {
+      data[index1].shoppingCartDetails[i].isChecked = data[index1].allChecked
     }
     for (let i = 0; i < this.state.data.length; i++) {
       if (this.state.data[i].allChecked === true) len += 1
@@ -195,11 +195,11 @@ class History extends React.Component<Props, State> {
     let total = 0
     for (let i = 0; i < this.state.data.length; i++) {
       let data = this.state.data
-      let data2 = data[i].foodList
+      let data2 = data[i].shoppingCartDetails
       for (let j = 0; j < data2.length; j++) {
         if (data2[j].isChecked === true) {
           console.log(total)
-          let subtotal = data2[j].count * data2[j].price
+          let subtotal = data2[j].product_weight * data2[j].product_price
           total += subtotal
         }
       }
@@ -212,8 +212,8 @@ class History extends React.Component<Props, State> {
    */
   SlipRightDeleteOnClick = (index1,index) => {
     let data = this.state.data
-    data[index1].foodList.splice(index, 1)
-    if (data[index1].foodList.length === 0) data.splice(index,1)
+    data[index1].shoppingCartDetails.splice(index, 1)
+    if (data[index1].shoppingCartDetails.length === 0) data.splice(index,1)
     this.setState({ data: data })
     this.props.updataShopCart(data)
   }
@@ -236,14 +236,14 @@ class History extends React.Component<Props, State> {
           this.setState({ data: data })
           this.props.updataShopCart(data)
         } else {
-          let foodList = data[i].foodList
+          let foodList = data[i].shoppingCartDetails
           for (let j = 0; j < foodList.length; j++) {
             if (foodList[j].isChecked) {
               foodList.splice(j,1)
               if (foodList.length === 0) {
                 data.splice(i,1)
               }
-              data[i].foodList = foodList
+              data[i].shoppingCartDetails = foodList
               this.setState({ data: data })
               this.props.updataShopCart(data)
             }
@@ -276,38 +276,49 @@ class History extends React.Component<Props, State> {
     this.count()
     let data = [
       {
-        name: '衢州炒菜软件有限公司',
+        supplier_id: 2,
+        company_name: '衢州炒菜软件有限公司',
         allChecked: false,
-        foodList: [
+        shoppingCartDetails: [
           {
+            product_id: 1,
+            supplier_id: 2,
             isChecked: false,
-            name: '红烧秃头',
-            img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540889948447&di=ca343fa9d6d7f4bbb02cf277e48028fb&imgtype=0&src=http%3A%2F%2Fs06.lmbang.com%2FM00%2F37%2FDD%2FecloA1kw5S6ALagJAAKooS2esTQ657.jpg',
-            price: 15.5,
+            product_name: '红烧秃头',
+            product_icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540889948447&di=ca343fa9d6d7f4bbb02cf277e48028fb&imgtype=0&src=http%3A%2F%2Fs06.lmbang.com%2FM00%2F37%2FDD%2FecloA1kw5S6ALagJAAKooS2esTQ657.jpg',
+            product_price: 15.5,
             unit: '500g',
-            count: 1
+            product_weight: 1,
+            product_total_price: 15.5
           },
           {
+            product_id: 2,
+            supplier_id: 2,
             isChecked: false,
-            name: '蛋炒饭',
-            img: 'http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg',
-            price: 35.5,
+            product_name: '蛋炒饭',
+            product_icon: 'http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg',
+            product_price: 35.5,
             unit: '份',
-            count: 1
+            product_weight: 1,
+            product_total_price: 35.5
           }
         ]
       },
       {
-        name: '衢州都是煎熬分开了软件有限公司',
+        supplier_id: 3,
+        company_name: '衢州都是煎熬分开了软件有限公司',
         allChecked: false,
-        foodList: [
+        shoppingCartDetails: [
           {
+            product_id: 2,
+            supplier_id: 2,
             isChecked: false,
-            name: '烤串',
-            img: 'http://imgsrc.baidu.com/imgad/pic/item/f11f3a292df5e0fe52737e28576034a85edf72b4.jpg',
-            price: 25.5,
+            product_name: '烤串',
+            product_icon: 'http://imgsrc.baidu.com/imgad/pic/item/f11f3a292df5e0fe52737e28576034a85edf72b4.jpg',
+            product_price: 25.5,
             unit: '份',
-            count: 1
+            product_weight: 1,
+            product_total_price: 25.5
           }
         ]
       }
@@ -356,12 +367,14 @@ class History extends React.Component<Props, State> {
           <div>
             {this.state.yourLink.map((i, key) => (
               <div key={ key } className='yourLikeFood'>
-                <img style={{ display: 'block', width: '100%', maxWidth: 200, height: 157 }} src='http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg' />
-                <div>北海道原味吐司</div>
-                <div>
-                  <span style={{ color: 'red' }}>￥4.5</span>
-                  /500g
-                  <div></div>
+                <img src='http://m.qpic.cn/psb?/V11NnB0x3puSTE/0qT7u8b2fvvv6T9h*KmCax84SEhccXRrMy5fORJt0VM!/b/dLYAAAAAAAAA&bo=WAJUAQAAAAARBz8!&rf=viewer_4' />
+                <div className='yourLikeFoodName'>北海道原味吐司</div>
+                <div className='yourLikeFoodPrice'>
+                  <div>
+                    <span style={{ color: 'red' }}>￥4.5</span>
+                    /500g
+                  </div>
+                  <ReactSVG svgClassName='addCart' path='./assets/images/Cart/addCart.svg'/>
                 </div>
               </div>
             ))}
@@ -424,7 +437,7 @@ class History extends React.Component<Props, State> {
       <div key={item.value}>
         <div className='food' style={{ display: 'flex', alignItems: 'center' }}>
           <CheckboxItem
-            checked={ this.state.data[index1].foodList[index].isChecked }
+            checked={ this.state.data[index1].shoppingCartDetails[index].isChecked }
             onChange={() => {
               this.isCheckedOnChange(index1,index)
             }}
@@ -454,7 +467,7 @@ class History extends React.Component<Props, State> {
                     showNumber
                     max={10}
                     min={1}
-                    defaultValue={this.state.data[index1].foodList[index].count}
+                    defaultValue={this.state.data[index1].shoppingCartDetails[index].product_weight}
                     onChange={(v) => {
                       let data = this.props.shopCartData
                       data[index1].foodList[index].count = v
@@ -480,7 +493,7 @@ class History extends React.Component<Props, State> {
             borderTop: '1px solid #e5e5e5'
           }}>
             <div>小计: <span
-              style={{ color: 'red' }}>￥{this.state.data[index1].foodList[index].count * this.state.data[index1].foodList[index].price}</span>
+              style={{ color: 'red' }}>￥{this.state.data[index1].shoppingCartDetails[index].product_weight * this.state.data[index1].shoppingCartDetails[index].product_price}</span>
             </div>
           </div>
           <div style={{ width: 30 }}></div>

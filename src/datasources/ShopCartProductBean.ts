@@ -1,8 +1,10 @@
 export interface ShopCartProductBean {
+  product_id: number,
+  supplier_id: number,
   isChecked: boolean,
-  name: string,
-  img: string,
-  price: number,
-  unit: string,
-  count: number
+  product_name: string,
+  product_icon: string,
+  product_price: number,
+  product_weight: number,
+  product_total_price: number
 }

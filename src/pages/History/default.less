@@ -67,7 +67,37 @@
       max-width: 200px;
       display: flex;
       flex-direction: column;
-      align-items: center
+      align-items: center;
+      margin-bottom: 20px;
+      background: white;
+      &>img{
+        display: block;
+        width: 100%;
+        maxWidth: 200px;
+        height: 157px;
+      }
+      .yourLikeFoodName{
+        margin-top: 10px;
+        width: 100%;
+        font-size: 16px;
+        color: rgb(140, 140, 140);
+        text-indent: 10px;
+      }
+      .yourLikeFoodPrice{
+        margin-top: 15px;
+        margin-bottom: 5px;
+        text-indent: 10px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        color: rgb(140, 140, 140);
+        .addCart{
+          width: 24px;
+          height: 24px;
+          margin-right: 10px;
+        }
+      }
     }
   }
   .likeIcon{
