@@ -35,7 +35,8 @@ const config = {
     port,
     proxy: {
       '/CanteenProcurementManager': {
-        target: 'http://192.168.4.152:9091'   //本地测试地址
+        // target: 'http://192.168.4.152:9091',   // 本地测试地址朱
+        target: 'http://192.168.1.108:9091'  // 本地测试地址 江
       }
     }
   },
@@ -51,7 +52,7 @@ const config = {
                 loader: require.resolve('css-loader'),
                 options: {
                   importLoaders: 1,
-                  alias: { '../img': path.join(__dirname, 'public/img') }
+                  alias: {'../img': path.join(__dirname, 'public/img')}
                 },
               },
               {
