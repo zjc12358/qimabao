@@ -91,6 +91,7 @@ class History extends React.Component<Props, State> {
               citem.isChecked = false
             })
           })
+          return cartData
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
@@ -108,13 +109,13 @@ class History extends React.Component<Props, State> {
       for (let i = 0; i < this.state.data.length; i++) {
         let data = this.state.data
         data[i].allChecked = this.state.allSupplierItemCheck
-        let data2 = data[i].foodList
+        let data2 = data[i].shoppingCartDetails
         // console.log(data2.length)
         for (let j = 0; j < data2.length; j++) {
           // console.log(data2[j].isChecked)
           data2[j].isChecked = this.state.allSupplierItemCheck
         }
-        data[i].foodList = data2
+        data[i].shoppingCartDetails = data2
         // this.setState({ data: data })
         this.updata(data,this.state.allSupplierItemCheck)
       }
@@ -274,65 +275,84 @@ class History extends React.Component<Props, State> {
   componentDidMount () {
     // Toast.loading('loading...', 0, null)
     this.count()
-    let data = [
-      {
-        supplier_id: 2,
-        company_name: '衢州炒菜软件有限公司',
-        allChecked: false,
-        shoppingCartDetails: [
-          {
-            product_id: 1,
-            supplier_id: 2,
-            isChecked: false,
-            product_name: '红烧秃头',
-            product_icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540889948447&di=ca343fa9d6d7f4bbb02cf277e48028fb&imgtype=0&src=http%3A%2F%2Fs06.lmbang.com%2FM00%2F37%2FDD%2FecloA1kw5S6ALagJAAKooS2esTQ657.jpg',
-            product_price: 15.5,
-            unit: '500g',
-            product_weight: 1,
-            product_total_price: 15.5
-          },
-          {
-            product_id: 2,
-            supplier_id: 2,
-            isChecked: false,
-            product_name: '蛋炒饭',
-            product_icon: 'http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg',
-            product_price: 35.5,
-            unit: '份',
-            product_weight: 1,
-            product_total_price: 35.5
-          }
-        ]
-      },
-      {
-        supplier_id: 3,
-        company_name: '衢州都是煎熬分开了软件有限公司',
-        allChecked: false,
-        shoppingCartDetails: [
-          {
-            product_id: 2,
-            supplier_id: 2,
-            isChecked: false,
-            product_name: '烤串',
-            product_icon: 'http://imgsrc.baidu.com/imgad/pic/item/f11f3a292df5e0fe52737e28576034a85edf72b4.jpg',
-            product_price: 25.5,
-            unit: '份',
-            product_weight: 1,
-            product_total_price: 25.5
-          }
-        ]
-      }
-    ]
+    // let data = [
+    //   {
+    //     supplier_id: 2,
+    //     company_name: '衢州炒菜软件有限公司',
+    //     allChecked: false,
+    //     shoppingCartDetails: [
+    //       {
+    //         product_id: 1,
+    //         supplier_id: 2,
+    //         isChecked: false,
+    //         product_name: '红烧秃头',
+    //         product_icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540889948447&di=ca343fa9d6d7f4bbb02cf277e48028fb&imgtype=0&src=http%3A%2F%2Fs06.lmbang.com%2FM00%2F37%2FDD%2FecloA1kw5S6ALagJAAKooS2esTQ657.jpg',
+    //         product_price: 15.5,
+    //         unit: '500g',
+    //         product_weight: 1,
+    //         product_total_price: 15.5
+    //       },
+    //       {
+    //         product_id: 2,
+    //         supplier_id: 2,
+    //         isChecked: false,
+    //         product_name: '蛋炒饭',
+    //         product_icon: 'http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg',
+    //         product_price: 35.5,
+    //         unit: '份',
+    //         product_weight: 1,
+    //         product_total_price: 35.5
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     supplier_id: 3,
+    //     company_name: '衢州都是煎熬分开了软件有限公司',
+    //     allChecked: false,
+    //     shoppingCartDetails: [
+    //       {
+    //         product_id: 2,
+    //         supplier_id: 2,
+    //         isChecked: false,
+    //         product_name: '烤串',
+    //         product_icon: 'http://imgsrc.baidu.com/imgad/pic/item/f11f3a292df5e0fe52737e28576034a85edf72b4.jpg',
+    //         product_price: 25.5,
+    //         unit: '份',
+    //         product_weight: 1,
+    //         product_total_price: 25.5
+    //       }
+    //     ]
+    //   }
+    // ]
     // this.setState({ data: data })
-    console.log('willDidMount')
-    console.log(this.state.data)
-    console.log(this.props.shopCartData)
-    console.log(this.props.needReloadData)
+    // console.log('willDidMount')
+    // console.log(this.state.data)
+    // console.log(this.props.shopCartData)
+    // console.log(this.props.needReloadData)
     if (this.props.needReloadData === false) return
-    console.log(2222)
-    // this.setState({ data: data })
-    this.props.updataShopCart(data)
-    this.props.needReload(false)
+    let url = 'CanteenProcurementManager/user/shoppingCart/findShoppingCart?'
+    let query = ''
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- 购物车data =', data)
+        if (data.data.code === 0) {
+          Toast.info('登录成功', 2, null, false)
+          let cartData = cloneDeep(data.data.data)
+          cartData.map((item) => {
+            item.allChecked = false
+            item.shoppingCartDetails.map((citem) => {
+              citem.isChecked = false
+            })
+          })
+          this.props.updataShopCart(cartData)
+          this.props.needReload(false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   /**
@@ -447,7 +467,7 @@ class History extends React.Component<Props, State> {
               display: 'flex',
               alignItems: 'center'
             }}>
-              <img style={{ display: 'block', width: 90, height: 90 }} src={item.img}/>
+              <img style={{ display: 'block', width: 90, height: 90 }} src={item.product_icon}/>
               <div style={{
                 height: 105,
                 display: 'flex',
@@ -455,10 +475,10 @@ class History extends React.Component<Props, State> {
                 justifyContent: 'space-between',
                 paddingLeft: 20
               }}>
-                <div style={{ fontSize: '16px' }}>{item.name}</div>
+                <div style={{ fontSize: '16px' }}>{item.product_name}</div>
                 <div style={{ fontSize: '16px' }}>
-                  <span style={{ color: 'red' }}>￥{item.price}</span>
-                  <span style={{ color: '#8c8c8c' }}>/{item.unit}</span>
+                  <span style={{ color: 'red' }}>￥{item.product_price}</span>
+                  <span style={{ color: '#8c8c8c' }}>/500g</span>
                 </div>
                 <div style={{ display: 'flex', color: '#8c8c8c', fontSize: 14 }}>
                   <Stepper
@@ -470,7 +490,7 @@ class History extends React.Component<Props, State> {
                     defaultValue={this.state.data[index1].shoppingCartDetails[index].product_weight}
                     onChange={(v) => {
                       let data = this.props.shopCartData
-                      data[index1].foodList[index].count = v
+                      data[index1].shoppingCartDetails[index].product_weight = v
                       this.props.updataShopCart(data)
                       // this.setState({ data: data })
                       // 计算一遍总计
@@ -493,7 +513,7 @@ class History extends React.Component<Props, State> {
             borderTop: '1px solid #e5e5e5'
           }}>
             <div>小计: <span
-              style={{ color: 'red' }}>￥{this.state.data[index1].shoppingCartDetails[index].product_weight * this.state.data[index1].shoppingCartDetails[index].product_price}</span>
+              style={{ color: 'red' }}>￥{(this.state.data[index1].shoppingCartDetails[index].product_weight * this.state.data[index1].shoppingCartDetails[index].product_price).toFixed(2)}</span>
             </div>
           </div>
           <div style={{ width: 30 }}></div>
@@ -523,7 +543,7 @@ class History extends React.Component<Props, State> {
               }} />
             </div>
             <img style={{ width: 15 }} src='../../assets/images/Cart/merchant.svg' alt=''/>
-            <div style={{ color: '#8C8C8C',marginLeft: 15 }}>{i.name}</div>
+            <div style={{ color: '#8C8C8C',marginLeft: 15 }}>{i.company_name}</div>
             <div style={{ flex: 1 }}></div>
             <div style={{ paddingRight: 15 }}><Icon type='right' onClick={ () => {
               this.props.updatePageTab('HistoryPageTabBar')
@@ -535,7 +555,7 @@ class History extends React.Component<Props, State> {
             alignItems: 'center'
           }}>
           </div>
-          {i.foodList.map((item, index) =>
+          {i.shoppingCartDetails.map((item, index) =>
             <SwipeAction
               style={{ backgroundColor: 'gray' }}
               autoClose
