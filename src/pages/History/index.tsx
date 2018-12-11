@@ -273,70 +273,21 @@ class History extends React.Component<Props, State> {
    * 页面加载时判断选中项计算合计
    */
   componentDidMount () {
-    // Toast.loading('loading...', 0, null)
     this.count()
-    // let data = [
-    //   {
-    //     supplier_id: 2,
-    //     company_name: '衢州炒菜软件有限公司',
-    //     allChecked: false,
-    //     shoppingCartDetails: [
-    //       {
-    //         product_id: 1,
-    //         supplier_id: 2,
-    //         isChecked: false,
-    //         product_name: '红烧秃头',
-    //         product_icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540889948447&di=ca343fa9d6d7f4bbb02cf277e48028fb&imgtype=0&src=http%3A%2F%2Fs06.lmbang.com%2FM00%2F37%2FDD%2FecloA1kw5S6ALagJAAKooS2esTQ657.jpg',
-    //         product_price: 15.5,
-    //         unit: '500g',
-    //         product_weight: 1,
-    //         product_total_price: 15.5
-    //       },
-    //       {
-    //         product_id: 2,
-    //         supplier_id: 2,
-    //         isChecked: false,
-    //         product_name: '蛋炒饭',
-    //         product_icon: 'http://pic16.photophoto.cn/20100722/0042040338742223_b.jpg',
-    //         product_price: 35.5,
-    //         unit: '份',
-    //         product_weight: 1,
-    //         product_total_price: 35.5
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     supplier_id: 3,
-    //     company_name: '衢州都是煎熬分开了软件有限公司',
-    //     allChecked: false,
-    //     shoppingCartDetails: [
-    //       {
-    //         product_id: 2,
-    //         supplier_id: 2,
-    //         isChecked: false,
-    //         product_name: '烤串',
-    //         product_icon: 'http://imgsrc.baidu.com/imgad/pic/item/f11f3a292df5e0fe52737e28576034a85edf72b4.jpg',
-    //         product_price: 25.5,
-    //         unit: '份',
-    //         product_weight: 1,
-    //         product_total_price: 25.5
-    //       }
-    //     ]
-    //   }
-    // ]
-    // this.setState({ data: data })
     // console.log('willDidMount')
     // console.log(this.state.data)
     // console.log(this.props.shopCartData)
     // console.log(this.props.needReloadData)
     if (this.props.needReloadData === false) return
+    // Toast.loading('loading...', 0, null)
     let url = 'CanteenProcurementManager/user/shoppingCart/findShoppingCart?'
     let query = ''
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
-          Toast.info('登录成功', 2, null, false)
+          // Toast.hide()
+          // Toast.info('登录成功', 2, null, false)
           let cartData = cloneDeep(data.data.data)
           cartData.map((item) => {
             item.allChecked = false
