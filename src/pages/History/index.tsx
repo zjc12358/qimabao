@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon ,Toast } from 'antd-mobile'
+import { Loading,Button } from 'element-react'
 import ReactSVG from 'react-svg'
 import { cloneDeep, get } from 'lodash'
 import { GlobalData } from '@store/reducers/globalDataReducer'
@@ -44,7 +45,8 @@ interface State {
   isEmpty: boolean,
   yourLink: any,
   shopCartData: any,
-  bodyWidth: any
+  bodyWidth: any,
+  fullscreen: boolean
 }
 
 class History extends React.Component<Props, State> {
@@ -59,7 +61,8 @@ class History extends React.Component<Props, State> {
       yourLink: [1,2,3,4,5,6,7,8,9 ],
       data:  cloneDeep(this.props.shopCartData),
       shopCartData: cloneDeep(this.props.shopCartData),
-      bodyWidth: document.querySelector('body').offsetWidth
+      bodyWidth: document.querySelector('body').offsetWidth,
+      fullscreen: false
     }
   }
 
@@ -73,32 +76,22 @@ class History extends React.Component<Props, State> {
     this.props.updataAllSupplierItemCheck(allSupplierItemCheck)
   }
 
-  /**
-   * axios请求购物车数据
-   */
-  getData = () => {
-    let url = 'CanteenProcurementManager/user/shoppingCart/findShoppingCart?'
-    let query = ''
-    axios.get<MyResponse<any>>(url + query)
+  goPay = () => {
+    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?openId=maoxiaoyan'
+    let data = JSON.stringify(this.state.data)
+    axios.post(url,data,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
-        console.log('--- 购物车data =', data)
-        if (data.data.code === 0) {
-          Toast.info('登录成功', 2, null, false)
-          let cartData = cloneDeep(data.data.data)
-          cartData.map((item) => {
-            item.allChecked = false
-            item.shoppingCartDetails.map((citem) => {
-              citem.isChecked = false
-            })
-          })
-          return cartData
+        if (data.data.status === '0') {
+          console.log(data.data)
         } else {
-          Toast.info(data.data.msg, 2, null, false)
+          console.log(data.data)
         }
       })
       .catch(() => {
-        Toast.info('请检查网络设置!')
+        Toast.info('错误!')
       })
+    history().push('/orderMakeSure',{ name: 'zhangsan' })
+    this.props.updatePageTab('HistoryPageTabBar')
   }
 
   /**
@@ -265,10 +258,6 @@ class History extends React.Component<Props, State> {
     })
   }
 
-  componentWillMount () {
-    this.getData()
-  }
-
   /**
    * 页面加载时判断选中项计算合计
    */
@@ -279,15 +268,18 @@ class History extends React.Component<Props, State> {
     // console.log(this.props.shopCartData)
     // console.log(this.props.needReloadData)
     if (this.props.needReloadData === false) return
-    // Toast.loading('loading...', 0, null)
+    this.setState({
+      fullscreen: true
+    })
     let url = 'CanteenProcurementManager/user/shoppingCart/findShoppingCart?'
     let query = ''
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
-          // Toast.hide()
-          // Toast.info('登录成功', 2, null, false)
+          this.setState({
+            fullscreen: false
+          })
           let cartData = cloneDeep(data.data.data)
           cartData.map((item) => {
             item.allChecked = false
@@ -389,10 +381,7 @@ class History extends React.Component<Props, State> {
           </div>
           <div
             style={{ display: 'flex', alignItems: 'center',justifyContent: 'center',backgroundColor: '#0084e7',height: 50,width: 90,color: 'white' }}
-            onClick={() => {
-              history().push('/orderMakeSure')
-              this.props.updatePageTab('HistoryPageTabBar')
-            }}
+            onClick={this.goPay}
           >去结算</div>
         </div>
       </div>
@@ -544,6 +533,11 @@ class History extends React.Component<Props, State> {
               {this.renderSupplierItem(i, index1)}
             </div>
           )) : this.renderEmptyCart()}
+          <div>
+            {
+              this.state.fullscreen && <Loading fullscreen={true} />
+            }
+          </div>
           {this.renderYourLike()}
         </div>
         {this.state.data && this.state.data.length ? this.renderCartFooter() : <div></div>}
