@@ -46,7 +46,7 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
-    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
+    let url = 'qimabao-0.0.1-SNAPSHOT/user/nail/findNailOpenId?'
     let query = 'openId=maoxiaoyan'
     axios.get<MyResponse<LoginBean>>(url + query)
       .then(data => {

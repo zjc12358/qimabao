@@ -34,10 +34,10 @@ const config = {
     host: '0.0.0.0',
     port,
     proxy: {
-      '/CanteenProcurementManager': {
+      '/qimabao-0.0.1-SNAPSHOT': {
         // target: 'http://192.168.4.152:9091'   // 本地测试地址朱
         // target: 'http://192.168.1.108:8080'  // 本地测试地址 江
-        target: 'http://47.100.177.41:9091/qimabao-0.0.1-SNAPSHOT' // 服务器测试地址
+        target: 'http://47.100.177.41:9091' // 服务器测试地址
       }
     }
   },
