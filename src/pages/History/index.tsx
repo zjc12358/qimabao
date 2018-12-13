@@ -271,7 +271,7 @@ class History extends React.Component<Props, State> {
     this.setState({
       fullscreen: true
     })
-    let url = 'CanteenProcurementManager/user/shoppingCart/findShoppingCart?'
+    let url = '/user/shoppingCart/findShoppingCart?'
     let query = ''
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
