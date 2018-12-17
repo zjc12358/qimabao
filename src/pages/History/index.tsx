@@ -76,22 +76,57 @@ class History extends React.Component<Props, State> {
     this.props.updataAllSupplierItemCheck(allSupplierItemCheck)
   }
 
+  getCheckedProduct = () => {
+    let productDetails = []
+    this.state.data.map(i => {
+      i.shoppingCartDetails.map(i2 => {
+        if (i2.isChecked === true) {
+          let productItem = {
+            userId: 2,
+            cartId: i2.cart_id,
+            productId: i2.product_id,
+            supplierId: i2.supplier_id,
+            productName: i2.product_name,
+            productPrice: i2.product_price,
+            productQuantity: i2.product_weight,
+            productTotalPrice: i2.product_total_price,
+            productIcon: i2.product_icon,
+            companyName: i.company_name
+          }
+          productDetails.push(productItem)
+        }
+      })
+    })
+    return productDetails
+  }
+
   goPay = () => {
-    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?openId=maoxiaoyan'
-    let data = JSON.stringify(this.state.data)
+    if (this.getCheckedProduct().length < 1) {
+      Toast.info('请选择商品!')
+      return
+    }
+    let url = 'qimabao-0.0.1-SNAPSHOT/user/productOrder/saveProductOrder'
+    let data2 = {
+      productTotalPrice: this.state.total,
+      productDetails: this.getCheckedProduct()
+    }
+    let data = JSON.stringify(data2)
+    data = encodeURI(data)
+    url = url + '?json=' + data
     axios.post(url,data,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
-        if (data.data.status === '0') {
+        if (data.data.code === 1) {
           console.log(data.data)
+          history().push('/orderMakeSure',{ name: 'zhangsan' })
+          this.props.updatePageTab('HistoryPageTabBar')
         } else {
-          console.log(data.data)
+          Toast.info(data.data.msg)
+          console.log(data.data.msg)
         }
       })
       .catch(() => {
         Toast.info('错误!')
       })
-    history().push('/orderMakeSure',{ name: 'zhangsan' })
-    this.props.updatePageTab('HistoryPageTabBar')
   }
 
   /**
@@ -103,13 +138,10 @@ class History extends React.Component<Props, State> {
         let data = this.state.data
         data[i].allChecked = this.state.allSupplierItemCheck
         let data2 = data[i].shoppingCartDetails
-        // console.log(data2.length)
         for (let j = 0; j < data2.length; j++) {
-          // console.log(data2[j].isChecked)
           data2[j].isChecked = this.state.allSupplierItemCheck
         }
         data[i].shoppingCartDetails = data2
-        // this.setState({ data: data })
         this.updata(data,this.state.allSupplierItemCheck)
       }
       // 计算一遍总计
@@ -132,21 +164,16 @@ class History extends React.Component<Props, State> {
       if (len === this.state.data[index1].shoppingCartDetails.length) data[index1].allChecked = true
     }
     if (data[index1].shoppingCartDetails[index].isChecked === false) {
-      // this.setState({ allSupplierItemCheck: false },() => {
       this.props.updataAllSupplierItemCheck(false)
-      // })
       data[index1].allChecked = false
     }
     for (let i = 0; i < this.state.data.length; i++) {
       let data = this.state.data
       if (data[i].allChecked === true) len2 += 1
       if (len2 === this.state.data.length) {
-        // this.setState({ allSupplierItemCheck: true },() => {
         this.props.updataAllSupplierItemCheck(true)
-        // })
       }
     }
-    // this.setState({ data: data })
     this.props.updataShopCart(data)
     // 计算一遍总计
     this.count()
@@ -171,11 +198,8 @@ class History extends React.Component<Props, State> {
       }
     }
     if (data[index1].allChecked === false) {
-      // this.setState({ allSupplierItemCheck: false },() => {
       this.props.updataAllSupplierItemCheck(false)
-      // })
     }
-    // this.setState({ data: data })
     this.props.updataShopCart(data)
     // 计算一遍总计
     this.count()
@@ -271,7 +295,7 @@ class History extends React.Component<Props, State> {
     this.setState({
       fullscreen: true
     })
-    let url = '/user/shoppingCart/findShoppingCart?'
+    let url = 'qimabao-0.0.1-SNAPSHOT/user/shoppingCart/findShoppingCart?'
     let query = ''
     axios.get<MyResponse<any>>(url + query)
       .then(data => {

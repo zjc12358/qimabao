@@ -235,6 +235,7 @@ class Menu extends React.Component<Props, State> {
       let productList: Array<ShopCartProductBean> = []
       for (let j = 0; j < 5; j++) {
         let productItem: ShopCartProductBean = {
+          cart_id: i,
           product_id: i,
           supplier_id: i + i,
           isChecked: false,

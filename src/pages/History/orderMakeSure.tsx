@@ -83,6 +83,7 @@ class History extends React.Component<Props, State> {
           company_name: '衢州炒菜软件有限公司',
           shoppingCartDetails: [
             {
+              cart_id: 1,
               product_id: 1,
               supplier_id: 2,
               isChecked: false,

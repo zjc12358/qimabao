@@ -1,4 +1,5 @@
 export interface ShopCartProductBean {
+  cart_id: number,
   product_id: number,
   supplier_id: number,
   isChecked: boolean,
