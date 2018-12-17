@@ -11,6 +11,7 @@ const { store } = getStore()
  ============================================================================*/
 import Supplier from './pages/Supplier/index' /*首页*/
 import Shop from './pages/Supplier/shop/shop' /*店铺*/
+import Category from './pages/Supplier/category' /*分类页*/
 import Release from './pages/Supplier/release/release'/*发布*/
 import Withdrawal from './pages/Supplier/withdrawal/withdrawal'/*提现*/
 import Detection from './pages/Supplier/detection/index'/*检测申请*/
@@ -85,6 +86,7 @@ ReactDOM.render(
         <Route exact path='/afterSaleResult' component={AfterSaleResult} />
         <Route exact path='/afterSaleSuccess' component={AfterSaleSuccess} />
         <Route path='/shop' component={Shop}/>
+        <Route path='/category' component={Category}/>
         <Route path='/release' component={Release}/>
         <Route path='/withdrawal' component={Withdrawal} />
         <Route path='/sProductList' component={SProductList}/>

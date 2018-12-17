@@ -77,7 +77,7 @@ class Release extends React.Component<Props, State> {
     return (
       <List.Item
         className='category'
-        onClick={() => { console.log(1) }}
+        onClick={() => { history().push('/category') }}
         arrow='horizontal'
       >
         {param}
