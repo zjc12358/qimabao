@@ -8,20 +8,26 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import { HomeCategoryItemBean } from '../../datasources/HomeCategoryItemBean'
 import Head from '../../components/Head'
+import { MyResponse } from '../../datasources/MyResponse'
 
 export interface Props {
-  categoryItemData: Array<HomeCategoryItemBean>
 }
 
 interface State {
-
+  categoryItemData: Array<HomeCategoryItemBean>
 }
 
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      categoryItemData: []
+    }
+  }
+
+  componentWillMount () {
+    this.getHomeCategory()
   }
 
   /**
@@ -30,7 +36,7 @@ class Supplier extends React.Component<Props, State> {
   renderList = () => {
     return (
       <div className='vertical' style={{ marginTop: 40, flex: 1 }}>
-        {this.props.categoryItemData.map((item, index) => this.renderListItem(item, index))}
+        {this.state.categoryItemData.map((item, index) => this.renderListItem(item, index))}
       </div>
     )
   }
@@ -80,6 +86,28 @@ class Supplier extends React.Component<Props, State> {
         </div>
       </div>
     )
+  }
+
+  /**
+   * 获取首页分类
+   */
+  getHomeCategory = () => {
+    const url = 'qimabao-0.0.1-SNAPSHOT/homepage/productCategory/firstPageList'
+    axios.get<MyResponse<Array<HomeCategoryItemBean>>>(url)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          data.data.data.map(item => item.show = false)
+          this.setState({
+            categoryItemData: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 1)
+      })
   }
 
   public render () {
