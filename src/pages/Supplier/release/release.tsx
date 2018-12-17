@@ -18,7 +18,8 @@ interface State {
   data: any,
   openDrawer: boolean,
   files: any,
-  multiple: boolean
+  multiple: boolean,
+  productData: any
 }
 let IconMaxSize: number = 30
 class Release extends React.Component<Props, State> {
@@ -29,7 +30,8 @@ class Release extends React.Component<Props, State> {
       data: {},
       openDrawer: false,
       files: [],
-      multiple: false
+      multiple: false,
+      productData: {}
     }
   }
 
