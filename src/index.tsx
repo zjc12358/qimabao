@@ -12,6 +12,7 @@ const { store } = getStore()
 import Supplier from './pages/Supplier/index' /*首页*/
 import Shop from './pages/Supplier/shop/shop' /*店铺*/
 import Release from './pages/Supplier/release/release'/*发布*/
+import Describe from './pages/Supplier/release/describe'/*描述*/
 import Withdrawal from './pages/Supplier/withdrawal/withdrawal'/*提现*/
 import Detection from './pages/Supplier/detection/index'/*检测申请*/
 import SupplierAfterSale from './pages/Supplier/afterSale/index' /*售后退款*/
@@ -86,6 +87,7 @@ ReactDOM.render(
         <Route exact path='/afterSaleSuccess' component={AfterSaleSuccess} />
         <Route path='/shop' component={Shop}/>
         <Route path='/release' component={Release}/>
+        <Route path='/describe'component={Describe}/>
         <Route path='/withdrawal' component={Withdrawal} />
         <Route path='/sProductList' component={SProductList}/>
         <Route path='/supplierOrder' component={SupplierOrder}/>
