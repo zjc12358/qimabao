@@ -10,6 +10,8 @@ import { chooseProduct } from '@store/actions/productDetails_data'
 import { updatePageTab } from '@store/actions/global_data'
 import ReactSVG from 'react-svg'
 import './productDetailCss.css'
+import { MyResponse } from '@datasources/MyResponse'
+import { cloneDeep, get, isNil } from 'lodash'
 
 let topPic = ['http://file4.youboy.com/e/2015/3/14/73/541738.jpg',
   'http://files.b2b.cn/product/ProductImages/2015_03/13/110/13110252636_b.jpg',
@@ -46,7 +48,6 @@ class Home extends React.Component<Props, State> {
 
   componentWillMount () {
     let id = this.props.productDetailsData.productId
-    // TODO 2018/10/30 根据id获取商品信息
     this.getProductDetail(id)
   }
 
@@ -220,33 +221,32 @@ class Home extends React.Component<Props, State> {
         </div>
         :
         <div className='vertical'
-             style={{
-               height: 125,
-               padding: 20,
-               backgroundColor: 'white',
-               width: '100%'
-             }}>
-          <div>{this.state.productDetails.product_name}</div>
-          <div style={{ color: '#e5e5e5' }}>{this.state.productDetails.product_describe}</div>
-          <div>
-            <span style={{ color: '#ff6161' }}>{this.state.productDetails.product_price}</span>
-            <span>/</span>
-            <span>{this.state.productDetails.product_weight}</span>
-          </div>
-          <div className='horizontal'
-               style={{
-                 justifyContent: 'space-between'
-               }}>
-            <div>4星</div>
-            <div>{this.state.productDetails.product_sales}人购买</div>
-          </div>
-          <div className='horizontal'
-               style={{
-                 color: '#e5e5e5'
-               }}>
-            <span style={{ flex: 1 }}>快递:免运费</span>
-            <span style={{ flex: 1 }}>库存:{this.state.productDetails.product_inventory}</span>
-            <span style={{ flex: 1 }}>产地:{this.state.productDetails.product_origin}</span>
+             style={{ height: 125, backgroundColor: 'white', width: '100%' }}>
+          <div style={{ padding: 20 }}>
+            <div style={{ width: '100%' }}>
+              <div>{this.state.productDetails.product_name}</div>
+              <div style={{ color: '#e5e5e5' }}>{this.state.productDetails.product_description}</div>
+              <div>
+                <span style={{ color: '#ff6161' }}>{this.state.productDetails.product_price}</span>
+                <span>/</span>
+                <span>{this.state.productDetails.product_weight}</span>
+              </div>
+              <div className='horizontal'
+                   style={{
+                     justifyContent: 'space-between'
+                   }}>
+                <div>4星</div>
+                <div>{this.state.productDetails.product_volume}人购买</div>
+              </div>
+              <div className='horizontal'
+                   style={{
+                     color: '#e5e5e5'
+                   }}>
+                <span style={{ flex: 1 }}>快递:免运费</span>
+                <span style={{ flex: 1 }}>库存:{this.state.productDetails.product_inventory}</span>
+                <span style={{ flex: 1 }}>产地:{this.state.productDetails.product_origin}</span>
+              </div>
+            </div>
           </div>
         </div>
     )
@@ -266,7 +266,7 @@ class Home extends React.Component<Props, State> {
             0 : this.state.productDetails.product_evaluation_number})
           </span>
         </div>
-        {this.state.productDetails === null || this.state.productDetails.product_evaluation_item === null ?
+        {this.state.productDetails === null || isNil(this.state.productDetails.product_evaluation_item) ?
           <div style={{ fontSize: 20 }}>暂无评价</div>
           :
           <div className='horizontal' style={{ justifyContent: 'space-between' }}>
@@ -299,9 +299,9 @@ class Home extends React.Component<Props, State> {
                 fontSize: 18,
                 paddingLeft: 20
               }}>产品详情</span>
-        {this.state.productDetails === null || this.state.productDetails.product_bottom_pic === null || this.state.productDetails.product_bottom_pic.length < 1 ? null :
+        {this.state.productDetails === null || isNil(this.state.productDetails.product_bottom_pic) || this.state.productDetails.product_bottom_pic.length < 1 ? null :
           <div>
-            {this.state.productDetails.product_bottom_pic.map((item) => this.renderBottomPicItem(item))}
+            {!isNil(this.state.productDetails.product_bottom_pic) && this.state.productDetails.product_bottom_pic.map((item) => this.renderBottomPicItem(item))}
           </div>
         }
       </div>
@@ -416,9 +416,18 @@ class Home extends React.Component<Props, State> {
    * 获取商品详情
    */
   getProductDetail (id: number) {
-    axios.get('')
+    let url = 'qimabao-0.0.1-SNAPSHOT/homepage/productCategory/productCategoryById?'
+    let query = 'productId=' + id
+    axios.get<MyResponse<ProductDetailBean>>(url + query)
       .then(data => {
         console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            productDetails: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
       })
       .catch(() => {
         Toast.info('请检查网络设置!')
