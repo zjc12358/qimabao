@@ -228,7 +228,7 @@ class User extends React.Component<Props, State> {
   }
   public render () {
     return (
-      <div className={'t'} style={{ position: 'relative',width: '100%',userSelect: 'none' }}>
+      <div className={'t'} style={{ position: 'relative',width: '100%',height: '100%',userSelect: 'none' }}>
         {this.renderNav()}
         {this.renderContent()}
         <div style={{ backgroundColor: '#ffffff' }}>

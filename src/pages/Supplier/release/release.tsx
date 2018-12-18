@@ -75,11 +75,11 @@ class Release extends React.Component<Props, State> {
    * 可跳转的ListItem
    * @param param
    */
-  renderListItemGoTo = (param) => {
+  renderListItemGoTo = (param,path) => {
     return (
       <List.Item
         className='category'
-        onClick={() => { history().push('/category') }}
+        onClick={() => { history().push(path) }}
         arrow='horizontal'
       >
         {param}
@@ -153,15 +153,16 @@ class Release extends React.Component<Props, State> {
               rows={2}
               count = {60}
             />
-            {this.renderListItemGoTo('类目')}
+            {this.renderListItemGoTo('类目','/category')}
           </div>
           <div className='paramContent' style={{ marginTop: 15,backgroundColor: 'white' }}>
             {this.renderParameterInput('价格','number')}
             {this.renderParameterInput('库存','number')}
             {this.renderParameterInput('产品标签','text')}
-            {this.renderListItemGoTo('宝贝描述')}
+            {this.renderListItemGoTo('宝贝描述','/describe')}
           </div>
           {this.renderBottomDrawer()}
+
           <div className='releaseFooter'>
             <div>放入仓库</div>
             <div>立即发布</div>
