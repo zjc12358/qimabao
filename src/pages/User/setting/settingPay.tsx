@@ -153,8 +153,7 @@ class User extends React.Component<Props, State> {
           flexDirection: 'row',
           padding: 10,
           backgroundColor: '#ffffff',
-          height: 19,
-          background: '-webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#fafafa))'
+          height: 19
         }}>
           <span style={{ fontSize: '16px', marginLeft: 10 }}>{i.name}</span>
           <img src='../../assets/images/User/drag.svg' width='20' height='20' />
@@ -183,7 +182,6 @@ class User extends React.Component<Props, State> {
     let target: any = document.getElementById('main' + index)
     let currentTop: number = parseInt(target.style.top.substr(0,target.style.top.length - 2),0)
     target.style.zIndex = 20
-    target.style.transform = 'scale(1.1)'
     offsetY = event.touches[0].pageY
     target.style.height = 40
     target.children[0].className = ''
@@ -195,7 +193,6 @@ class User extends React.Component<Props, State> {
   }
   public touchEnd = (order,index,event) => {
     let target: any = document.getElementById('main' + index)
-    target.style.transform = 'scale(1)'
     target.children[0].className = 'Segment_line4'
     target.style.zIndex = 5
     let currentTop: number = parseInt(target.style.top.substr(0,target.style.top.length - 2),0)
