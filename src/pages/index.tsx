@@ -13,16 +13,21 @@ import User from '@pages/User'
 import Supplier from '@pages/Supplier'
 import { PageTab } from '@datasources/PageTab'
 
+import { cloneDeep, get } from 'lodash'
 import '../assets/css/GeneralStyle.less'
-import { updatePageTab } from '@store/actions/global_data'
+import { updatePageTab,updateUserInfo,setID } from '@store/actions/global_data'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
+import { UserInfo } from '@datasources/UserInfo'
 
 export interface Props {
+  id: number
   pageTab: string
   mode: 'supplier' | 'purchaser'
   updatePageTab: (pageName: string) => void
+  updateUserInfo: (userInfo: UserInfo) => void
+  setID: (id: number) => void
 }
 
 interface State {
@@ -52,7 +57,22 @@ class App extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          Toast.info('登录成功', 2, null, false)
+          this.props.setID(Number(data.data.data.userId))
+          url = 'qimabao-0.0.1-SNAPSHOT/user/nail/selectMean?'
+          query = 'user_id=' + this.props.id
+          axios.get<MyResponse<UserInfo>>(url + query)
+            .then(data => {
+              console.log('--- data =', data)
+              if (data.data.code === 0) {
+                this.props.updateUserInfo(cloneDeep(data.data.data))
+                Toast.info('登录成功', 1, null, false)
+              } else {
+                Toast.info('获取用户信息失败,请重试', 2, null, false)
+              }
+            })
+            .catch(() => {
+              Toast.info('请检查网络设置!')
+            })
         } else {
           Toast.info('登录失败', 2, null, false)
         }
@@ -211,13 +231,16 @@ class App extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
+    id: state.globalData.id,
     pageTab: state.globalData.pageTab,
     mode: state.globalData.mode
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updatePageTab
+  updateUserInfo,
+  updatePageTab,
+  setID
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

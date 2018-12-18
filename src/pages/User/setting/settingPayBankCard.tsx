@@ -9,6 +9,8 @@ import { UserInfo } from '../../../datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
 import history from 'history/createHashHistory'
 import '../master.css'
+import Head from '@components/Head'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: PageTab
@@ -43,30 +45,6 @@ class User extends React.Component<Props, State> {
     }
   }
 
-  public renderNav = () => {
-    return (
-      <div style={{
-        backgroundColor: '#ffffff',
-        position: 'relative',
-        height: 40
-      }}
-      >
-        <div style={{ float: 'left', position: 'absolute' }} onClick={() => history().goBack()}>
-          <Icon type='left' color='#000000' size='lg' />
-        </div>
-        <div style={{
-          fontSize: 20,
-          paddingTop: 5,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>添加银行卡</span>
-        </div>
-      </div>
-    )
-  }
-
   public renderContent = () => {
     return(
       <div>
@@ -80,37 +58,29 @@ class User extends React.Component<Props, State> {
         </div>
         <div className='Segment_line2' />
         <div style={{ backgroundColor: '#ffffff',color: '#585858' }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
+          <div className={'flex-flex-start-row-center'} style={{
             padding: 10,
             backgroundColor: '#ffffff',
             height: 20
           }}>
-            <span style={{ fontSize: 14, marginLeft: 10,color: '#b4b4b4' }}>请添加<span style={{ fontSize: 16,color: '#181818' }}>&nbsp;用户名&nbsp;</span>的银行卡</span>
-            <Icon type={'loading'} onClick={this.showModal}/>
+            <span style={{ fontSize: 14, marginLeft: 10,color: '#b4b4b4' }}>请添加<span style={{ fontSize: 16,color: '#333' }}>&nbsp;用户名&nbsp;</span>的银行卡</span>
+            <ReactSVG path='./assets/images/User/exclamationMark.svg' svgStyle={{ width: 16, height: 16,paddingLeft: '10' }} onClick={this.showModal}/>
           </div>
         </div>
         <div className='Segment_line2' />
         <div style={{ backgroundColor: 'transparent',height: 3 }}/>
         <div style={{ backgroundColor: '#ffffff',color: '#585858' }}>
           <div className='Segment_line2' />
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
+          <div className={'flex-space-between-row-center'} style={{
             backgroundColor: '#ffffff',
-            padding: 10,
-            height: 27
+            height: 45,
+            paddingLeft: 20,
+            paddingRight: 10
           }}>
-            <div style={{
-              backgroundColor: '#ffffff',
-              position: 'relative'
-            }}>
-              <span className={'bankCardText'}>卡号</span>
+            <span style={{ fontSize: 16 }}>卡号</span>
+            <div className={'flex-center-row-center'}>
               <InputItem placeholder={'请输入银行卡号'} maxLength={23} type='bankCard' className={'BankCode'} onChange={ this.cardCodeOnclick }/>
-              <Icon type={'loading'} style={{ top: 10, float: 'left',position: 'absolute', right: 0 }}/>
+              <ReactSVG path='./assets/images/User/addPhoto.svg' svgStyle={{ width: 22, height: 22 }} />
             </div>
           </div>
         </div>
@@ -181,11 +151,22 @@ class User extends React.Component<Props, State> {
       e.preventDefault()
     }
   }
-
+  public headIcon = () => {
+    return(
+      <ReactSVG path='./assets/images/User/questionMark.svg' svgStyle={{ width: 22, height: 22 }}/>
+    )
+  }
+  public addOnclick = () => {
+    return
+  }
   public render () {
     return (
       <div>
-        {this.renderNav()}
+        <Head title={'添加银行卡'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}
+              showRightIcon={true}
+              rightIconContent={this.headIcon()}
+              rightIconOnClick={this.addOnclick}
+        />
         {this.renderContent()}
       </div>
     )
