@@ -169,7 +169,7 @@ class Menu extends React.Component<Props, State> {
               <div style={{
                 marginLeft: 20,
                 height: 20
-              }}>{item.name}</div>
+              }}>{item.product_name}</div>
             )}
           </div>
         </div>
@@ -280,14 +280,14 @@ class Menu extends React.Component<Props, State> {
         let productNameList: Array<string> = []
         for (let i = 0; i < Math.random() * 20; i++) {
           let product: ProductBean = {
-            img: '',
-            id: i,
-            store: '蓝宇科技',
-            describe: '和大家看撒谎的空间撒活动撒U盾OS爱都殴打的萨达哈萨克的哈萨克的哈萨克的哈萨克',
-            price: '',
-            weight: '200g',
-            name: '商品' + (Math.random() * 10000).toFixed(0),
-            store_id: 0
+            product_id: i,
+            product_icon: '',
+            supplier_name: '蓝宇科技',
+            product_description: '和大家看撒谎的空间撒活动撒U盾OS爱都殴打的萨达哈萨克的哈萨克的哈萨克的哈萨克',
+            product_price: 1,
+            product_weight: '500g',
+            product_name: '商品' + (Math.random() * 10000).toFixed(0),
+            supplier_id: 0
           }
           let name = '商品' + i
           productNameList.push(name)

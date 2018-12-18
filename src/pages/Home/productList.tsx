@@ -6,7 +6,6 @@ import { CategoryItemData } from '@store/reducers/categoryItemDataReducer'
 import history from 'history/createHashHistory'
 import axios from 'axios'
 import ReactSVG from 'react-svg'
-import { SecondProductCategoryBean } from '@datasources/SecondProductCategoryBean'
 import { ProductBean } from '@datasources/ProductBean'
 import { chooseProduct } from '@store/actions/productDetails_data'
 import { updatePageTab } from '@store/actions/global_data'
@@ -18,6 +17,9 @@ import Input from '@material-ui/core/Input'
 import './homeCss.css'
 import './productListCss.css'
 import { TagBean } from '@datasources/TagBean'
+import { SecondCategoryBean } from '@datasources/SecondCategoryBean'
+import { MyResponse } from '@datasources/MyResponse'
+import { HomeCategoryItemBean } from '@datasources/HomeCategoryItemBean'
 
 const NUM_ROWS = 20
 let pageIndex = 0
@@ -51,7 +53,8 @@ export interface Props {
 }
 
 interface State {
-  secondCategoryList: Array<SecondProductCategoryBean>
+  homeCategory: Array<HomeCategoryItemBean>
+  secondCategoryList: Array<SecondCategoryBean>
   productList: Array<ProductBean>
   chooseData: Array<string>
   showChoose: boolean
@@ -73,6 +76,7 @@ class Home extends React.Component<Props, State> {
     super(props)
 
     this.state = {
+      homeCategory: this.props.categoryItemData.categoryItemData,
       secondCategoryList: [],
       productList: [],
       chooseData: ['1', '2', '3'],
@@ -100,6 +104,7 @@ class Home extends React.Component<Props, State> {
 
   componentWillMount () {
     this.refresh()
+    this.getSecondCategory()
     this.getTagList()
   }
 
@@ -109,7 +114,6 @@ class Home extends React.Component<Props, State> {
     }
     this.setState({ isLoading: true })
     setTimeout(() => {
-      this.getData(0)
       this.setState({
         isLoading: false
       })
@@ -122,57 +126,10 @@ class Home extends React.Component<Props, State> {
     }
     this.setState({ isLoading: true })
     setTimeout(() => {
-      this.getData(pageIndex++)
       this.setState({
         isLoading: false
       })
     }, 1000)
-  }
-
-  /**
-   * 模拟请求数据
-   */
-  getData (page) {
-    console.log('加载数据' + page)
-    let secondCategoryList: Array<SecondProductCategoryBean> = []
-    let categoryId = this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_id
-    for (let i = 0; i < 30; i++) {
-      let secondCategoryItem: SecondProductCategoryBean = {
-        category_id: categoryId,
-        second_category_id: i,
-        second_category_name: '子类别' + i,
-        check: i === 0
-      }
-      secondCategoryList.push(secondCategoryItem)
-      this.setState({
-        secondCategoryList: secondCategoryList
-      })
-    }
-    let productList: Array<ProductBean> = []
-    for (let i = 0; i < 10; i++) {
-      let product: ProductBean = {
-        img: productImg[i],
-        id: i,
-        store: '蓝宇科技',
-        describe: productDescribe[i],
-        price: '' + (i + 1),
-        weight: '200g',
-        name: productName[i],
-        store_id: 0
-      }
-      productList.push(product)
-    }
-    if (page > 0) {
-      this.setState({
-        productList: this.state.productList.concat(productList)
-      })
-      pageIndex++
-    } else {
-      this.setState({
-        productList: productList
-      })
-      pageIndex = 1
-    }
   }
 
   getTagList () {
@@ -209,7 +166,7 @@ class Home extends React.Component<Props, State> {
           </div>
           {/*标题*/}
           <div className='horizontal-center' onClick={this.headOnClick} style={{ fontSize: 18 }}>
-            <span>{this.props.categoryItemData.categoryItemData[this.props.categoryItemData.index].category_name}</span>
+            <span>{this.state.homeCategory[this.state.categoryIndex].category_name}</span>
             {/*<span className='horizontal-center' style={{ marginLeft: 8, marginBottom: 5 }}>*/}
             {/*<ReactSVG path='./assets/images/down.svg' svgStyle={{ width: 8, height: 8 }}/>*/}
             {/*</span>*/}
@@ -224,10 +181,10 @@ class Home extends React.Component<Props, State> {
           </span>
           </div>
         </div>
-        <ChooseMenu data={this.getCategoryData()} chooseHandClick={this.categoryHandClick.bind(this)}
-                    chooseIndex={this.state.categoryIndex} isShow={this.state.showCategory}
-                    closeHandClick={this.closePop.bind(this)}
-        />
+        {/*<ChooseMenu data={this.getCategoryData()} chooseHandClick={this.categoryHandClick.bind(this)}*/}
+        {/*chooseIndex={this.state.categoryIndex} isShow={this.state.showCategory}*/}
+        {/*closeHandClick={this.closePop.bind(this)}*/}
+        {/*/>*/}
       </div>
     )
   }
@@ -306,13 +263,13 @@ class Home extends React.Component<Props, State> {
    * @param item
    * @param index
    */
-  renderLeftChooseItem = (item: SecondProductCategoryBean, index: number) => {
+  renderLeftChooseItem = (item: SecondCategoryBean, index: number) => {
     return (
       <div className='vertical'
            style={{ width: '100%', height: 41, backgroundColor: item.check ? 'white' : '#efeff5' }}>
         <div className='horizontal-center left-choose-item'
              onClick={() => this.secondItemOnClick(index)}>
-          {item.second_category_name}
+          {item.category_class_name}
         </div>
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}/>
       </div>
@@ -326,7 +283,8 @@ class Home extends React.Component<Props, State> {
   renderRightProductList = () => {
     let list = this.state.productList.map((item) => this.renderRightProductListItem(item))
     return (
-      <div className='touch_scroll scroll product-list'>
+      <div className='touch_scroll scroll product-list'
+           style={{ backgroundColor: 'white' }}>
         <LoadMore itemHeight={91} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
                   hasMore={this.state.hasMore}/>
@@ -342,23 +300,23 @@ class Home extends React.Component<Props, State> {
     return (
       <div className='vertical'
            style={{ height: 91, width: '100%', backgroundColor: 'white' }}
-           onClick={() => this.productOnClick(item.id)}>
+           onClick={() => this.productOnClick(item.product_id)}>
         <div className='horizontal'
              style={{ height: 90, width: '100%' }}>
-          <img className='product-img' src={item.img}/>
+          <img className='product-img' src={item.product_icon}/>
           <div className='vertical product-list-item-content'
                style={{ justifyContent: 'space-between' }}>
-            <span className='text-nowrap' style={{ width: '100%', marginTop: 10 }}>{item.name}</span>
-            <div className='product-list-item-describe text-nowrap'>{item.describe}</div>
-            <span className='text-nowrap' style={{ width: '100%', marginTop: 5 }}>{item.store}</span>
+            <span className='text-nowrap' style={{ width: '100%', marginTop: 10 }}>{item.product_name}</span>
+            <div className='product-list-item-describe text-nowrap'>{item.product_description}</div>
+            <span className='text-nowrap' style={{ width: '100%', marginTop: 5 }}>{item.supplier_name}</span>
             <div className='horizontal'
                  style={{ justifyContent: 'space-between', width: '100%', marginBottom: 5 }}>
               <div className='horizontal'>
                 <span style={{ color: '#ff0000', fontSize: 12 }}>¥</span>
-                <span style={{ color: '#ff0000', fontSize: 12 }}>{item.price}</span>
-                <span style={{ color: '#e5e5e5', fontSize: 12 }}>/{item.weight}</span>
+                <span style={{ color: '#ff0000', fontSize: 12 }}>{item.product_price}</span>
+                <span style={{ color: '#e5e5e5', fontSize: 12 }}>/500g</span>
               </div>
-              <div className='cart-circle' onClick={(e) => this.addCartOnClick(e, item.id)}>
+              <div className='cart-circle' onClick={(e) => this.addCartOnClick(e, item.product_id)}>
                 <div className='center'>
                   <ReactSVG path='./assets/images/shop_cart_white.svg'
                             svgStyle={{ marginTop: 4, width: 12, height: 12 }}/>
@@ -460,7 +418,9 @@ class Home extends React.Component<Props, State> {
   chooseHandClick = (index: number) => {
     console.log(index)
     this.props.changeCategoryIndex(index)
-    // TODO 2018/11/7 根据选择类别请求
+    this.setState({
+      categoryIndex: index
+    }, () => this.getSecondCategory())
   }
 
   /**
@@ -478,8 +438,9 @@ class Home extends React.Component<Props, State> {
    */
   categoryHandClick = (index: number) => {
     console.log(index)
-    this.props.changeCategoryIndex(index)
-    // TODO 2018/11/8 根据类别请求数据
+    this.setState({
+      categoryIndex: index
+    }, () => this.getSecondCategory())
   }
 
   /**
@@ -521,7 +482,7 @@ class Home extends React.Component<Props, State> {
     for (let i = 0; i < this.state.secondCategoryList.length; i++) {
       if (index === i) {
         list[i].check = true
-        // TODO 2018/11/19 请求数据
+        this.categoryGetProductList(this.state.secondCategoryList[index].category_class_id)
       } else {
         list[i].check = false
       }
@@ -586,14 +547,46 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
-   * 获取商品列表
-   * @param categoryId 一级分类id
-   * @param secondCategoryId 二级分类id
+   * 获取二级类目
    */
-  getProductList (categoryId: number, secondCategoryId: number) {
-    axios.get('')
+  getSecondCategory () {
+    let url = 'qimabao-0.0.1-SNAPSHOT/homepage/productCategory/productCategoryClass?'
+    let query = 'categoryId=' + this.state.homeCategory[this.state.categoryIndex].category_id
+    axios.get<MyResponse<Array<SecondCategoryBean>>>(url + query)
       .then(data => {
         console.log('--- data =', data)
+        if (data.data.code === 0) {
+          data.data.data.map((item, index) => index === 0 ? item.check = true : item.check = false)
+          this.setState({
+            secondCategoryList: data.data.data
+          }, () => this.categoryGetProductList(this.state.secondCategoryList[0].category_class_id))
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+
+  }
+
+  /**
+   * 根据二级分类-获取商品列表
+   * @param secondCategoryId 二级分类id
+   */
+  categoryGetProductList (secondCategoryId: number) {
+    let url = 'qimabao-0.0.1-SNAPSHOT/homepage/productCategory/productInfo?'
+    let query = 'categoryClassId=' + secondCategoryId
+    axios.get<MyResponse<Array<ProductBean>>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            productList: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
       })
       .catch(() => {
         Toast.info('请检查网络设置!')

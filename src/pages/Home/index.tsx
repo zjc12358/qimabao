@@ -266,6 +266,7 @@ class Home extends React.Component<Props, State> {
    */
   getHomeCategory = () => {
     const url = 'qimabao-0.0.1-SNAPSHOT/homepage/productCategory/firstPageList'
+    console.error(url)
     axios.get<MyResponse<Array<HomeCategoryItemBean>>>(url)
       .then(data => {
         console.log('--- data =', data)
@@ -283,7 +284,6 @@ class Home extends React.Component<Props, State> {
   }
 
   public render () {
-    let userAgent = window.navigator.userAgent
     return (
       <div className='vertical' style={{
         height: '100%',

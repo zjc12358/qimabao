@@ -15,6 +15,8 @@ import 'echarts/lib/component/grid'
 import 'echarts/lib/component/tooltip'
 import Drawer from '@material-ui/core/Drawer'
 import SupplierInfo from '@pages/Supplier/supplierInfo/supplierInfo'
+import { MyResponse } from '@datasources/MyResponse'
+import { SupplierStateInfoBean } from '@datasources/SupplierStateInfoBean'
 
 export interface Props {
   changeMode: (model: 'supplier' | 'purchaser') => void
@@ -396,6 +398,27 @@ class Supplier extends React.Component<Props, State> {
     this.setState({
       drawerOpen: open
     })
+  }
+
+  /**
+   * 获取供应商信息
+   */
+  getSupplierInfo () {
+    let url = 'qimabao-0.0.1-SNAPSHOT/supplier/info/findSupplierInfo'
+    let query = ''
+    axios.get<MyResponse<SupplierStateInfoBean>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          console.log(1)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+
   }
 
   public render () {
