@@ -194,7 +194,7 @@ class User extends React.Component<Props, State> {
                 width: '100%',
                 height: '100%'
               }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg'/></div>
-          <div style={{ width: 150 }}>
+          <div style={{ width: 110 }}>
             <span style={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',

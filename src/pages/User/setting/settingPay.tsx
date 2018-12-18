@@ -9,6 +9,8 @@ import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import history from 'history/createHashHistory'
 import '../master.css'
+import Head from '@components/Head'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: PageTab
@@ -83,8 +85,7 @@ class User extends React.Component<Props, State> {
 
   public renderContent = () => {
     return(
-      <div style={{ paddingTop: 40 }}>
-        <div className='Segment_line2' />
+      <div>
         <div style={{ backgroundColor: 'transparent',height: 10 }}/>
         <div style={{ backgroundColor: '#ffffff',color: '#585858' }}>
           <div style={{
@@ -153,8 +154,7 @@ class User extends React.Component<Props, State> {
           flexDirection: 'row',
           padding: 10,
           backgroundColor: '#ffffff',
-          height: 19,
-          background: '-webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#fafafa))'
+          height: 19
         }}>
           <span style={{ fontSize: '16px', marginLeft: 10 }}>{i.name}</span>
           <img src='../../assets/images/User/drag.svg' width='20' height='20' />
@@ -183,7 +183,6 @@ class User extends React.Component<Props, State> {
     let target: any = document.getElementById('main' + index)
     let currentTop: number = parseInt(target.style.top.substr(0,target.style.top.length - 2),0)
     target.style.zIndex = 20
-    target.style.transform = 'scale(1.1)'
     offsetY = event.touches[0].pageY
     target.style.height = 40
     target.children[0].className = ''
@@ -195,7 +194,6 @@ class User extends React.Component<Props, State> {
   }
   public touchEnd = (order,index,event) => {
     let target: any = document.getElementById('main' + index)
-    target.style.transform = 'scale(1)'
     target.children[0].className = 'Segment_line4'
     target.style.zIndex = 5
     let currentTop: number = parseInt(target.style.top.substr(0,target.style.top.length - 2),0)
@@ -226,10 +224,19 @@ class User extends React.Component<Props, State> {
     layer = 0
     offsetY = 0
   }
+  public headIcon = () => {
+    return(
+      <ReactSVG path='./assets/images/User/addnoborder.svg' svgStyle={{ width: 22, height: 22 }}/>
+    )
+  }
   public render () {
     return (
       <div className={'t'} style={{ position: 'relative',width: '100%',userSelect: 'none' }}>
-        {this.renderNav()}
+        <Head title={'支付设置'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}
+              showRightIcon={true}
+              rightIconContent={this.headIcon()}
+              rightIconOnClick={this.addOnclick}
+          />
         {this.renderContent()}
         <div style={{ backgroundColor: '#ffffff' }}>
           {this.state.data.map((i, index) => (

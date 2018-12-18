@@ -9,6 +9,7 @@ import { UserInfo } from '../../../datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
+import Head from '@components/Head'
 
 export interface Props {
   pageTab: PageTab
@@ -66,7 +67,7 @@ class User extends React.Component<Props, State> {
   public render () {
     return (
       <div>
-        <Nav title={'修改用户昵称'} color={'#ffffff'} />
+        <Head title={'修改用户昵称'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>)
   }

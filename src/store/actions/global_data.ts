@@ -6,10 +6,12 @@ export enum Type {
   UPDATE_PAGE = 'UPDATE_PAGE',
   ADD_PAGEINDEX = 'ADD_PAGEINDEX',
   DELETE_PAGEINDEX = 'DELETE_PAGEINDEX',
-  CHANGE_MODE = 'CHANGE_MODE'
+  CHANGE_MODE = 'CHANGE_MODE',
+  SET_ID = 'SET_ID'
 }
 
 export interface GlobalDataAction extends Action {
+  id: number
   type: Type
   mode: 'supplier' | 'purchaser'
   userInfo: UserInfo
@@ -18,6 +20,9 @@ export interface GlobalDataAction extends Action {
   error?: any
   fetchFlag?: boolean // 传递是否loading状态
 }
+
+export const setID = (id: number) =>
+  (dispatch) => dispatch({ type: Type.SET_ID, id })
 
 export const updateUserInfo = (userInfo: UserInfo) =>
   (dispatch) => dispatch({ type: Type.UPDATE_USERINFO, userInfo })

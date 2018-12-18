@@ -2,6 +2,7 @@ import { GlobalDataAction, Type } from '../actions/global_data'
 import { UserInfo } from '@datasources/UserInfo'
 
 export interface GlobalData {
+  id: number
   userInfo: UserInfo
   pageTab: string
   isFetching: boolean
@@ -11,10 +12,8 @@ export interface GlobalData {
 }
 
 const initialState: GlobalData = {
-  userInfo: {
-    userName: '用户0',
-    isLogin: true
-  } as UserInfo,
+  userInfo: {} as UserInfo,
+  id: 0,
   mode: 'purchaser',
   pageTab: 'HomePageTabBar',
   isFetching: false,
@@ -24,6 +23,11 @@ const initialState: GlobalData = {
 
 export default (state = initialState, action: GlobalDataAction) => {
   switch (action.type) {
+    case Type.SET_ID:
+      return {
+        ...state,
+        id: action.id
+      }
     case Type.UPDATE_USERINFO:
       return {
         ...state,

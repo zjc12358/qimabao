@@ -123,11 +123,11 @@
   background-color: transparent;
   position: absolute;
   border: none;
-  padding: 0 10px;
+  padding-left: 14px;
+  margin-top: -2px;
   outline: none;
   font-size: 40px;
-  font-family: "courier new", sans-serif;
-  letter-spacing: 0.60em;
+  letter-spacing: 0.87em;
   text-align: left;
   text-overflow: initial;
 }
@@ -175,7 +175,6 @@
   padding: 0 10px;
   outline: none;
   font-size: 16px;
-  font-family: "courier new", sans-serif;
   text-align: left;
 }
 
@@ -226,14 +225,6 @@
 
 /** 添加银行卡样式 **/
 
-.bankCardText {
-  font-size: 16px;
-  color: #181818;
-  padding-left: 10px;
-  padding-top: 13px;
-  float: left;
-}
-
 .addressInput::-webkit-input-placeholder {
   color: #b6b6b6;
 }
@@ -252,7 +243,6 @@
 
 .BankCode {
   background-color: transparent !important;
-  padding: 0
 }
 
 .BankCode input {

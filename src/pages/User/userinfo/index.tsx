@@ -2,13 +2,18 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '../../../store/reducers/globalDataReducer'
-import { InputItem,ActionSheet, Icon } from 'antd-mobile'
+import { InputItem, ActionSheet, Icon, Toast } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { PageTab } from '../../../datasources/PageTab'
 import { UserInfo } from '../../../datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
+import { cloneDeep, get } from 'lodash'
+import Head from '@components/Head'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: PageTab
@@ -22,8 +27,9 @@ interface State {
   step: number
   confirmCss: any
   refresh: string
+  userInfo: UserInfo
 }
-
+let RightIconMaxSize: number = 18
 class User extends React.Component<Props, State> {
 
   constructor (props) {
@@ -32,188 +38,75 @@ class User extends React.Component<Props, State> {
       data: { img: 'http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg', username: 'pubg',name: '阿木木',phone: '17568452298', qr: '',sex: '男' },
       step: 0,
       confirmCss: [],
-      refresh: ''
+      refresh: '',
+      userInfo: this.props.userInfo
     }
   }
+
   /**
    * 个人信息页面
    */
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 5,
-          paddingLeft: 10,
-          paddingBottom: 5,
-          paddingRight: 10
-        }}
-             onClick={this.uploadPicturesOnClick}
-        >
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '16px', marginTop: 15, marginLeft: 10 }}>用户头像</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-          <div style={{
-            width: 50,
-            height: 50
-          }}>
-            <div style={{ borderRadius: '50%',width: 50, height: 50,overflow: 'hidden' }} >
-              <img style={{
-                width: 'auto',
-                height: 'auto',
-                maxWidth: '100%',
-                maxHeight: '100%'
-              }} src={this.state.data.img} />
+        <div className={'flex-space-between-row-center'} style={{ padding: '5px 15px' }}
+             onClick={this.uploadPicturesOnClick}>
+          <span style={{ fontSize: '16px' }}>用户头像</span>
+          <div className={'flex-center-row-center'}>
+            <div style={{
+              width: 50,
+              height: 50
+            }}>
+              <div style={{ borderRadius: '50%',width: 50, height: 50,overflow: 'hidden' }} >
+                <img style={{
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '100%',
+                  maxHeight: '100%'
+                }} src={this.state.userInfo.user_head_portrait} />
+              </div>
             </div>
-          </div>
-          <Icon type='right' style={{ marginTop: 15, marginRight: 2 }}></Icon>
-        </div>
-        </div>
-        <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>账号</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.username}</span>
+            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize,paddingLeft: 5 }}/>
           </div>
         </div>
-        <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}
-             onClick={this.nameOnclick}
-        >
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>昵称</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.name}</span>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+        <div className='Segment_line2' />
+        <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}>
+          <span style={{ fontSize: '16px' }}>账号</span>
+          <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_class_name}</span>
+        </div>
+        <div className='Segment_line2'/>
+        <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}
+             onClick={this.nameOnclick}>
+          <span style={{ fontSize: '16px' }}>昵称</span>
+          <div className={'flex-center-row-center'}>
+            <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_name}</span>
+            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
-        <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}
-             onClick={this.phoneOnclick}
-        >
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>手机号码</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.phone}</span>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+        <div className='Segment_line2'/>
+        <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}
+             onClick={this.phoneOnclick}>
+          <span style={{ fontSize: '16px' }}>手机号码</span>
+          <div className={'flex-center-row-center'}>
+            <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_phone}</span>
+            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
-        <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>我的二维码名片</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.qr}</span>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+        <div className='Segment_line2'/>
+        <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}>
+          <span style={{ fontSize: '16px' }}>我的二维码名片</span>
+          <div className={'flex-center-row-center'}>
+            <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_qr_code}</span>
+            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
-        <div className='Segment_line2'></div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingLeft: 10,
-          paddingBottom: 15,
-          paddingRight: 10
-        }}
-             onClick={this.uploadSexOnClick}
-        >
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>性别</span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-            <span style={{ fontSize: '14px', paddingTop: 7, paddingLeft: 10 }}>{this.state.data.sex}</span>
-            <Icon type='right' style={{ marginTop: 6 }}></Icon>
+        <div className='Segment_line2'/>
+        <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}
+             onClick={this.uploadSexOnClick}>
+          <span style={{ fontSize: '16px' }}>性别</span>
+          <div className={'flex-center-row-center'}>
+            <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_sex}</span>
+            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
       </div>
@@ -293,7 +186,7 @@ class User extends React.Component<Props, State> {
   public render () {
     return (
       <div>
-        <Nav title={'个人资料'} color={'#ffffff'} />
+        <Head title={'个人资料'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>)
   }

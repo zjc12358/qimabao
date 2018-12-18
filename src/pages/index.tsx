@@ -46,7 +46,20 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
-    this.login()
+    let url = 'qimabao-0.0.1-SNAPSHOT/user/nail/findNailOpenId?'
+    let query = 'openId=maoxiaoyan'
+    axios.get<MyResponse<LoginBean>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          Toast.info('登录成功', 2, null, false)
+        } else {
+          Toast.info('登录失败', 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   componentDidMount () {
@@ -189,26 +202,6 @@ class App extends React.Component<Props, State> {
         </TabBar.Item>
       </TabBar>
     )
-  }
-
-  /**
-   * 登录
-   */
-  login () {
-    let url = 'qimabao-0.0.1-SNAPSHOT/user/nail/findNailOpenId?'
-    let query = 'openId=maoxiaoyan'
-    axios.get<MyResponse<LoginBean>>(url + query)
-      .then(data => {
-        console.log('--- data =', data)
-        if (data.data.code === 0) {
-          Toast.info('登录成功', 2, null, false)
-        } else {
-          Toast.info('登录失败', 2, null, false)
-        }
-      })
-      .catch(() => {
-        Toast.info('请检查网络设置!')
-      })
   }
 
   public render () {

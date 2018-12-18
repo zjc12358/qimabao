@@ -62,7 +62,6 @@ class Supplier extends React.Component<Props, State> {
         <div className='vertical' style={{ width: '100%' }}>
         </div>
       </div>
-
     )
   }
 
