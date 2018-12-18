@@ -9,6 +9,8 @@ import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import history from 'history/createHashHistory'
 import '../master.css'
+import Head from '@components/Head'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   pageTab: PageTab
@@ -83,8 +85,7 @@ class User extends React.Component<Props, State> {
 
   public renderContent = () => {
     return(
-      <div style={{ paddingTop: 40 }}>
-        <div className='Segment_line2' />
+      <div>
         <div style={{ backgroundColor: 'transparent',height: 10 }}/>
         <div style={{ backgroundColor: '#ffffff',color: '#585858' }}>
           <div style={{
@@ -223,10 +224,19 @@ class User extends React.Component<Props, State> {
     layer = 0
     offsetY = 0
   }
+  public headIcon = () => {
+    return(
+      <ReactSVG path='./assets/images/User/addnoborder.svg' svgStyle={{ width: 22, height: 22 }}/>
+    )
+  }
   public render () {
     return (
-      <div className={'t'} style={{ position: 'relative',width: '100%',height: '100%',userSelect: 'none' }}>
-        {this.renderNav()}
+      <div className={'t'} style={{ position: 'relative',width: '100%',userSelect: 'none' }}>
+        <Head title={'支付设置'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}
+              showRightIcon={true}
+              rightIconContent={this.headIcon()}
+              rightIconOnClick={this.addOnclick}
+          />
         {this.renderContent()}
         <div style={{ backgroundColor: '#ffffff' }}>
           {this.state.data.map((i, index) => (
