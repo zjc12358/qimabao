@@ -14,13 +14,15 @@ import { changeMenuState, setReload, updateMenuList } from '@store/actions/menu_
 import ReactSVG from 'react-svg'
 import './menuCss.css'
 import './menuSelectCss.css'
+import { MyResponse } from '@datasources/MyResponse'
+import { MenuInfoListBean } from '@datasources/MenuInfoListBean'
 
 export interface Props {
   setMenuId?: (id: number) => void
   updatePageTab?: (pageTab: string) => void
-  menuList?: Array<MenuBean>
+  menuList?: Array<MenuInfoListBean>
   setReload?: (reload: boolean) => void
-  updateMenuList?: (menuList: Array<MenuBean>) => void
+  updateMenuList?: (menuList: Array<MenuInfoListBean>) => void
   reload?: boolean
 }
 
@@ -28,7 +30,7 @@ interface State {
   data: Date
   hadOrder: boolean,
   chooseData: Date,
-  menuList: Array<MenuBean>
+  menuList: Array<MenuInfoListBean>
 }
 
 class Menu extends React.Component<Props, State> {
@@ -127,7 +129,7 @@ class Menu extends React.Component<Props, State> {
   /**
    * 菜谱列表单项
    */
-  renderMenuListItem = (item: MenuBean, index: number) => {
+  renderMenuListItem = (item: MenuInfoListBean, index: number) => {
     return (
       <div className='vertical'
            style={{
@@ -147,7 +149,7 @@ class Menu extends React.Component<Props, State> {
                 (<ReactSVG path='./assets/images/ic_check.svg' svgStyle={{ width: 18, height: 18 }}/>)
                 : (<ReactSVG path='./assets/images/ic_uncheck.svg' svgStyle={{ width: 18, height: 18 }}/>)}
               </span>
-            <span style={{ marginLeft: 5 }}>{item.menuName}</span>
+            <span style={{ marginLeft: 5 }}>{item.menu_detail}</span>
           </div>
           <span style={{ paddingRight: 20 }} onClick={() => this.showMenuOnClick(index)}>
             {this.state.menuList[index].isShow ?
@@ -165,7 +167,7 @@ class Menu extends React.Component<Props, State> {
                  marginBottom: 10,
                  paddingRight: 10
                }} onClick={() => this.updateMenuOnClick(index)}>
-            {item.productList.map((item) =>
+            {item.menuBasketList.map((item) =>
               <div style={{
                 marginLeft: 20,
                 height: 20
@@ -245,7 +247,7 @@ class Menu extends React.Component<Props, State> {
    * @param index
    */
   updateMenuOnClick = (index: number) => {
-    let id = this.state.menuList[index].id
+    let id = this.state.menuList[index].menu_id
     this.props.setMenuId(id)
     this.props.updatePageTab('OrderPageTabBar')
     history().push('/menuDetail')
@@ -255,13 +257,13 @@ class Menu extends React.Component<Props, State> {
    * 下单点击
    */
   downOrderOnClick = () => {
-    let menu: MenuBean
+    let menu: MenuInfoListBean
     for (let i = 0; i < this.state.menuList.length; i++) {
       if (this.state.menuList[i].isCheck) {
         menu = this.state.menuList[i]
       }
     }
-    console.log('下单' + menu.id)
+    console.log('下单' + menu.menu_id)
     this.props.updatePageTab('OrderPageTabBar')
     // TODO 2018/11/9 请求数据
     history().push('/menuOrderCheck')
@@ -270,44 +272,44 @@ class Menu extends React.Component<Props, State> {
   /**
    * 获取菜谱列表
    */
-  getMenuList () {
-    if (this.props.reload) {
-      // TODO 2018/11/9 请求获取菜谱数据
-      console.log('获取菜谱数据')
-      let menuList: Array<MenuBean> = []
-      for (let i = 0; i < 5; i++) {
-        let productList: Array<ProductBean> = []
-        let productNameList: Array<string> = []
-        for (let i = 0; i < Math.random() * 20; i++) {
-          let product: ProductBean = {
-            product_id: i,
-            product_icon: '',
-            supplier_name: '蓝宇科技',
-            product_description: '和大家看撒谎的空间撒活动撒U盾OS爱都殴打的萨达哈萨克的哈萨克的哈萨克的哈萨克',
-            product_price: 1,
-            product_weight: '500g',
-            product_name: '商品' + (Math.random() * 10000).toFixed(0),
-            supplier_id: 0
-          }
-          let name = '商品' + i
-          productNameList.push(name)
-          productList.push(product)
-        }
-        let menuItem: MenuBean = {
-          productList: productList,
-          menuName: '菜谱' + i,
-          isShow: i === 0,
-          isCheck: i === 0,
-          id: i,
-          productNameList: productNameList
-        }
-        menuList.push(menuItem)
-
-      }
-      this.props.updateMenuList(menuList)
-      this.props.setReload(false)
-    }
-  }
+  // getMenuList () {
+  //   if (this.props.reload) {
+  //     // TODO 2018/11/9 请求获取菜谱数据
+  //     console.log('获取菜谱数据')
+  //     let menuList: Array<MenuBean> = []
+  //     for (let i = 0; i < 5; i++) {
+  //       let productList: Array<ProductBean> = []
+  //       let productNameList: Array<string> = []
+  //       for (let i = 0; i < Math.random() * 20; i++) {
+  //         let product: ProductBean = {
+  //           product_id: i,
+  //           product_icon: '',
+  //           supplier_name: '蓝宇科技',
+  //           product_description: '和大家看撒谎的空间撒活动撒U盾OS爱都殴打的萨达哈萨克的哈萨克的哈萨克的哈萨克',
+  //           product_price: 1,
+  //           product_weight: '500g',
+  //           product_name: '商品' + (Math.random() * 10000).toFixed(0),
+  //           supplier_id: 0
+  //         }
+  //         let name = '商品' + i
+  //         productNameList.push(name)
+  //         productList.push(product)
+  //       }
+  //       let menuItem: MenuBean = {
+  //         productList: productList,
+  //         menuName: '菜谱' + i,
+  //         isShow: i === 0,
+  //         isCheck: i === 0,
+  //         id: i,
+  //         productNameList: productNameList
+  //       }
+  //       menuList.push(menuItem)
+  //
+  //     }
+  //     this.props.updateMenuList(menuList)
+  //     this.props.setReload(false)
+  //   }
+  // }
 
   /**
    * 根据日期请求,是否下单信息
@@ -334,6 +336,35 @@ class Menu extends React.Component<Props, State> {
     let m = (dd.getMonth() + 1) < 10 ? '0' + (dd.getMonth() + 1) : (dd.getMonth() + 1)// 获取当前月份的日期，不足10补0
     let d = dd.getDate() < 10 ? dd.getDate() : dd.getDate() // 获取当前几号，不足10补0
     return y + '-' + m + '-' + d
+  }
+
+  /**
+   * 获取菜谱信息列表
+   */
+  getMenuList () {
+    let url = 'CanteenProcurementManager/user/menuInfo/findMenuInfoList?'
+    let query = ''
+    axios.get<MyResponse<Array<MenuInfoListBean>>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          data.data.data.map((item, index) => this.setMenuList(item, index))
+          this.setState({
+            menuList: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+
+  }
+
+  setMenuList = (item: MenuInfoListBean, index: number) => {
+    item.isCheck = false
+    item.isShow = index === 0
   }
 
   public render () {

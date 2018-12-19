@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { MenuBean } from '@datasources/MenuBean'
+import { MenuInfoListBean } from '@datasources/MenuInfoListBean'
 
 export enum Type {
   CHANGE_MENU_STATE = 'CHANGE_MENU_STATE',
@@ -10,7 +10,7 @@ export enum Type {
 export interface MenuAction extends Action {
   type: Type
   selectMenu: boolean,
-  menuList: Array<MenuBean>
+  menuList: Array<MenuInfoListBean>
   reload: boolean
 }
 
@@ -20,7 +20,7 @@ export const changeMenuState = (selectMenu: boolean) =>
     selectMenu: selectMenu
   })
 
-export const updateMenuList = (menuList: Array<MenuBean>) =>
+export const updateMenuList = (menuList: Array<MenuInfoListBean>) =>
   (dispatch) => dispatch({
     type: Type.UPDATE_MENU_LIST,
     menuList: menuList

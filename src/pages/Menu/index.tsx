@@ -5,8 +5,6 @@ import Head from '@components/Head'
 import { changeMenuState, setReload, updateMenuList } from '@store/actions/menu_data'
 import MenuUpload from './menuUpload'
 import MenuSelect from './menuSelect'
-import { MenuBean } from '@datasources/MenuBean'
-import { ProductBean } from '@datasources/ProductBean'
 import ReactSVG from 'react-svg'
 import '../../assets/css/GeneralStyle.less'
 

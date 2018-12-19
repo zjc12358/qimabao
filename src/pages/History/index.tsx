@@ -105,7 +105,7 @@ class History extends React.Component<Props, State> {
       Toast.info('请选择商品!')
       return
     }
-    let url = 'qimabao-0.0.1-SNAPSHOT/user/productOrder/saveProductOrder'
+    let url = 'CanteenProcurementManager/user/productOrder/saveProductOrder'
     let data2 = {
       productTotalPrice: this.state.total,
       productDetails: this.getCheckedProduct()
@@ -295,7 +295,7 @@ class History extends React.Component<Props, State> {
     this.setState({
       fullscreen: true
     })
-    let url = 'qimabao-0.0.1-SNAPSHOT/user/shoppingCart/findShoppingCart?'
+    let url = 'CanteenProcurementManager/user/shoppingCart/findShoppingCart?'
     let query = ''
     axios.get<MyResponse<any>>(url + query)
       .then(data => {

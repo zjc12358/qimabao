@@ -1,10 +1,10 @@
 import { MenuAction, Type } from '../actions/menu_data'
-import { MenuBean } from '@datasources/MenuBean'
+import { MenuInfoListBean } from '@datasources/MenuInfoListBean'
 
 export interface MenuData {
   selectMenu: boolean
   reload: boolean
-  menuList: Array<MenuBean>
+  menuList: Array<MenuInfoListBean>
 }
 
 const initialState: MenuData = {
