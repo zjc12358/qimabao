@@ -63,6 +63,7 @@ class Describe extends React.Component<Props, State> {
             rows={8}
             placeholder='请输入商品描述'
           />
+          <div onClick={() => { history().push('/orderDetail') } }>点我跳转</div>
         </div>
         <div className='describeFooter'>
           <div>添加图片</div>
