@@ -295,7 +295,7 @@ class History extends React.Component<Props, State> {
     this.setState({
       fullscreen: true
     })
-    let url = 'qimabao-0.0.1-SNAPSHOT/user/shoppingCart/findShoppingCart?'
+    let url = 'CanteenProcurementManager/user/shoppingCart/findShoppingCart?'
     let query = ''
     axios.get<MyResponse<any>>(url + query)
       .then(data => {

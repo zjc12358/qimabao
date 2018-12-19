@@ -550,7 +550,7 @@ class Home extends React.Component<Props, State> {
    * 获取二级类目
    */
   getSecondCategory () {
-    let url = 'qimabao-0.0.1-SNAPSHOT/homepage/productCategory/productCategoryClass?'
+    let url = 'CanteenProcurementManager/homepage/productCategory/productCategoryClass?'
     let query = 'categoryId=' + this.state.homeCategory[this.state.categoryIndex].category_id
     axios.get<MyResponse<Array<SecondCategoryBean>>>(url + query)
       .then(data => {
@@ -575,7 +575,7 @@ class Home extends React.Component<Props, State> {
    * @param secondCategoryId 二级分类id
    */
   categoryGetProductList (secondCategoryId: number) {
-    let url = 'qimabao-0.0.1-SNAPSHOT/homepage/productCategory/productInfo?'
+    let url = 'CanteenProcurementManager/homepage/productCategory/productInfo?'
     let query = 'categoryClassId=' + secondCategoryId
     axios.get<MyResponse<Array<ProductBean>>>(url + query)
       .then(data => {

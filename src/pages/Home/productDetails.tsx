@@ -416,7 +416,7 @@ class Home extends React.Component<Props, State> {
    * 获取商品详情
    */
   getProductDetail (id: number) {
-    let url = 'qimabao-0.0.1-SNAPSHOT/homepage/productCategory/productCategoryById?'
+    let url = 'CanteenProcurementManager/homepage/productCategory/productCategoryById?'
     let query = 'productId=' + id
     axios.get<MyResponse<ProductDetailBean>>(url + query)
       .then(data => {

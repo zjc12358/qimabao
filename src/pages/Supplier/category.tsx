@@ -91,7 +91,7 @@ class Supplier extends React.Component<Props, State> {
    * 获取首页分类
    */
   getHomeCategory = () => {
-    const url = 'qimabao-0.0.1-SNAPSHOT/homepage/productCategory/firstPageList'
+    const url = 'CanteenProcurementManager/homepage/productCategory/firstPageList'
     axios.get<MyResponse<Array<HomeCategoryItemBean>>>(url)
       .then(data => {
         console.log('--- data =', data)

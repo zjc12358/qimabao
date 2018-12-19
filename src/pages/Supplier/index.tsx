@@ -404,7 +404,7 @@ class Supplier extends React.Component<Props, State> {
    * 获取供应商信息
    */
   getSupplierInfo () {
-    let url = 'qimabao-0.0.1-SNAPSHOT/supplier/info/findSupplierInfo'
+    let url = 'CanteenProcurementManager/supplier/info/findSupplierInfo'
     let query = ''
     axios.get<MyResponse<SupplierStateInfoBean>>(url + query)
       .then(data => {
