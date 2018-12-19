@@ -3,22 +3,27 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, Toast } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-
 import ReactSVG from 'react-svg'
-
 import Home from '@pages/Home'
 import Menu from '@pages/Menu'
 import History from '@pages/History'
 import User from '@pages/User'
 import Supplier from '@pages/Supplier'
 import { PageTab } from '@datasources/PageTab'
-import dd from 'dingtalk-javascript-sdk'
-
+import dd from '../../public/dingtalk.open'
 import '../assets/css/GeneralStyle.less'
 import { updatePageTab } from '@store/actions/global_data'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
+
+function ddtest () {
+  dd.scan({
+    success: function (res) {
+      alert(1)
+    }
+  })
+}
 
 export interface Props {
   pageTab: string
@@ -48,7 +53,7 @@ class App extends React.Component<Props, State> {
    */
   componentWillMount () {
     dd.ready(function () {
-      Toast.info('45645', 2, null, false)
+      ddtest()
     })
     let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
     let query = 'openId=maoxiaoyan'
