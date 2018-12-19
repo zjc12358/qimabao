@@ -115,7 +115,7 @@ class History extends React.Component<Props, State> {
     url = url + '?json=' + data
     axios.post(url,data,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
-        if (data.data.code === 1) {
+        if (data.data.code === 0) {
           console.log(data.data)
           history().push('/orderMakeSure',{ name: 'zhangsan' })
           this.props.updatePageTab('HistoryPageTabBar')
@@ -219,6 +219,7 @@ class History extends React.Component<Props, State> {
           console.log(total)
           let subtotal = data2[j].product_weight * data2[j].product_price
           total += subtotal
+          total = Number(total.toFixed(2))
         }
       }
       this.setState({ total: total })
@@ -449,7 +450,6 @@ class History extends React.Component<Props, State> {
                     ref='stepper'
                     className='Stepper'
                     showNumber
-                    max={10}
                     min={1}
                     defaultValue={this.state.data[index1].shoppingCartDetails[index].product_weight}
                     onChange={(v) => {
