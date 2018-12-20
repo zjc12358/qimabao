@@ -12,8 +12,6 @@ import History from '@pages/History'
 import User from '@pages/User'
 import Supplier from '@pages/Supplier'
 import { PageTab } from '@datasources/PageTab'
-import dd from 'dingtalk-javascript-sdk'
-
 import '../assets/css/GeneralStyle.less'
 import { updatePageTab } from '@store/actions/global_data'
 import axios from 'axios'
@@ -47,9 +45,6 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
-    dd.ready(function () {
-      Toast.info('45645', 2, null, false)
-    })
     let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
     let query = 'openId=maoxiaoyan'
     axios.get<MyResponse<LoginBean>>(url + query)
