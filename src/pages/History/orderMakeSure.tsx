@@ -202,7 +202,7 @@ class History extends React.Component<Props, State> {
   * */
   renderSupplier = () => {
     return (
-      <div>
+      <div style={{ marginBottom: 20 }}>
         <div className='supplierItem' style={{
           display: 'flex',
           alignItems: 'center',
