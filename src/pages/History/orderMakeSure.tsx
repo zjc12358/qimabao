@@ -17,6 +17,7 @@ const RadioItem = Radio.RadioItem
 export interface Props {
   updataOrderMakeSure: (orderMakeSure: OrderMakeSureBean) => void,
   needReload: (reload: boolean) => void,
+  shopCartData: any,
   orderData: any,
   needReloadData: boolean
 }
@@ -69,6 +70,7 @@ class History extends React.Component<Props, State> {
   }
 
   componentDidMount () {
+    console.log(this.props.shopCartData)
     console.log('componentDidMount')
     console.log(this.props.needReloadData + '1111111111111111')
     if (this.props.needReloadData === false) return
@@ -200,7 +202,7 @@ class History extends React.Component<Props, State> {
   * */
   renderSupplier = () => {
     return (
-      <div>
+      <div style={{ marginBottom: 20 }}>
         <div className='supplierItem' style={{
           display: 'flex',
           alignItems: 'center',
@@ -327,7 +329,9 @@ class History extends React.Component<Props, State> {
                   {this.state.startdpValue} - {this.state.enddpValue} &nbsp;&nbsp;免运费
               </div> : <div></div> }
             </div>
-            {this.renderSupplier()}
+            {this.props.shopCartData.map(i => (
+              <div>{this.renderSupplier()}</div>
+            ))}
             <div style={{ margin: '0 20px',fontSize: 16,marginBottom: 3 }}>买家留言：</div>
             <div style={{ marginLeft: 20,marginRight: 20,border: '1px solid #cccccc' }}>
               <TextareaItem
@@ -388,6 +392,7 @@ class History extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
+    shopCartData: state.shopCartData.ShopCartData,
     orderData: state.orderMakeSure.OrderMakeSureData,
     needReloadData: state.orderMakeSure.reload
   }

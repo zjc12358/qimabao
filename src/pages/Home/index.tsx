@@ -12,9 +12,23 @@ import { ProductListState } from '@datasources/ProductListState'
 import { updateCategoryItem } from '@store/actions/categoryItem_data'
 import { updatePageTab } from '@store/actions/global_data'
 import { MyResponse } from '@datasources/MyResponse'
+import * as dd from 'dingtalk-jsapi'
 
 let categoryData = ['时令蔬菜', '肉禽蛋类', '海鲜水产', '新鲜水果', '粮油副食', '酒水饮料', '乳品烘焙', '敬请期待', '敬请期待']
 let carouselData = ['./assets/images/ic_home_top0.png', './assets/images/ic_home_top1.png']
+
+function ddScan () {
+  dd.biz.util.scan({
+    type: 'qrCode',
+    onSuccess: function (data) {
+      alert(data.text)
+    },
+    onFail : function (err) {
+      alert(JSON.stringify(err))
+    }
+  })
+    .catch(err => console.log(err.toString() + '好的'))
+}
 
 export interface Props {
   pageTab: string
@@ -238,6 +252,7 @@ class Home extends React.Component<Props, State> {
    */
   scanOnclick = () => {
     // TODO 2018/10/24 点击头部扫一扫
+    ddScan()
     console.log('扫一扫')
   }
 
