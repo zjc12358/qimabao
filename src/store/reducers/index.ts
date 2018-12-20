@@ -7,6 +7,7 @@ import searchDataReducer from '@store/reducers/searchDataReducer'
 import shopCartDataReducer from '@store/reducers/shopCartDataReducer'
 import menuDataReducer from '@store/reducers/menuDataReducer'
 import menuDetailDataReducer from '@store/reducers/menuDetailDataReducer'
+import addressDetailDataReducer from '@store/reducers/addressDetailDataReducer'
 
 const rootReducer = combineReducers<any>({
   globalData: globalDataReducer as any,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers<any>({
   orderMakeSure: orderMakeSureDataReducer as any,
   searchData: searchDataReducer as any,
   menuData: menuDataReducer as any,
-  menuDetailData: menuDetailDataReducer as any
+  menuDetailData: menuDetailDataReducer as any,
+  addressDetailData: addressDetailDataReducer as any
 })
 
 export default rootReducer

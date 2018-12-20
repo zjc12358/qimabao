@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 'antd-mobile'
+import { Toast, Modal, List, Button, WhiteSpace, WingBlank, Icon, InputItem } from 'antd-mobile'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
@@ -10,17 +10,23 @@ import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import '../../master.css'
 import ReactSVG from 'react-svg'
+import axios from 'axios'
 import Head from '@components/Head'
+import { AddressBean } from '@datasources/AddressBean'
+import { MyResponse } from '@datasources/MyResponse'
+import { setId } from '@store/actions/address_detail_data'
 
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
   updatePageTab: (pageTab: PageTab) => void
   updateUserInfo: (userInfo: UserInfo) => void
+  setId: (receivingId: number) => void
 }
 
 interface State {
-  data: any
+  addressList: Array<AddressBean>
+  isLoading: boolean
 }
 
 class User extends React.Component<Props, State> {
@@ -28,31 +34,25 @@ class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      data: [
-        { name: '魏嘉豪', phone: '13548545685', address: '朝晖社区',houseNumber: '808室' },
-        { name: '大当家', phone: '13548545685', address: '泰山路往左走120号do花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路路荷',houseNumber: '508室' },
-        { name: '二当家', phone: '13548545685', address: '华山路往右走121号花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路荷花路路荷花路荷花路荷花',houseNumber: '1557室' }
-      ]
+      addressList: [],
+      isLoading: false
     }
   }
 
   componentWillMount () {
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-    this.state.data.push({ name: '魏嘉豪1', phone: '1354854562285', address: '荷花路荷花路荷花路荷花路22荷路荷花路',houseNumber: '808室' })
-
+    this.getAddressList()
   }
+
   /**
    * 收货地址详情
    */
   public renderContent = () => {
-    return(
+    return (
       <div style={{
         paddingTop: 5,
         paddingBottom: 50
       }}>
-        {this.state.data.map((i, index) => (
+        {this.state.addressList.map((i, index) => (
           <div style={{ backgroundColor: 'white' }}>
             {this.renderAddressItem(i, index)}
           </div>
@@ -64,20 +64,20 @@ class User extends React.Component<Props, State> {
           zIndex: 100,
           color: '#ffffff',
           position: 'fixed'
-        }}>添加新的收货地址</Button>
+        }} onClick={this.addNewAddressOnClick}>添加新的收货地址</Button>
       </div>
     )
   }
 
-  public renderAddressItem = (i, index) => {
-    return(
+  public renderAddressItem = (i: AddressBean, index) => {
+    return (
       <div style={{
         marginTop: 2,
         width: '100%',
         height: 60,
         backgroundColor: '#ffffff',
         position: 'relative'
-      }} onClick={this.ItemOnclick.bind(this,index)}>
+      }} onClick={() => this.ItemOnclick(i.receiving_id)}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -94,8 +94,12 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             paddingLeft: 10
           }}>
-            <span style={{ fontSize: 15 }}>{i.name}&nbsp;&nbsp;{i.phone}</span>
-            <span style={{ fontSize: 12, paddingTop: 5,color: '#969696' }}>{i.address}&nbsp;{i.houseNumber}</span>
+            <span style={{ fontSize: 15 }}>{i.receiving_name}&nbsp;&nbsp;{i.receiving_iphone}</span>
+            <span style={{
+              fontSize: 12,
+              paddingTop: 5,
+              color: '#969696'
+            }}>{i.receiving_address}&nbsp;{i.receiving_address_detail}</span>
           </div>
           <div style={{
             padding: 20
@@ -107,14 +111,55 @@ class User extends React.Component<Props, State> {
     )
   }
 
-  public ItemOnclick = (index) => {
+  /**
+   * 点击地址单项
+   * @param receivingId
+   * @constructor
+   */
+  ItemOnclick = (receivingId) => {
+    this.props.setId(receivingId)
     history().push('/settingAddressEdit')
+  }
+
+  /**
+   * 点击添加新地址
+   */
+  addNewAddressOnClick () {
+    history().push('addNewAddress')
   }
 
   /**
    * 获取收货地址列表
    */
   getAddressList () {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    let url = 'CanteenProcurementManager/user/receivingAddress/AddressList'
+    let query = ''
+    axios.get<MyResponse<Array<AddressBean>>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
+        if (data.data.code === 0) {
+          this.setState({
+            addressList: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+        this.setState({
+          isLoading: false
+        })
+      })
 
   }
 
@@ -123,7 +168,8 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Head title={'我的地址'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
+        <Head title={'我的地址'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'}
+              showLine={true}/>
         {this.renderContent()}
       </div>
     )
@@ -139,7 +185,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
-  updateUserInfo
+  updateUserInfo,
+  setId
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
