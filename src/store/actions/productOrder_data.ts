@@ -3,13 +3,14 @@ import { ProductOrder } from '../../datasources/ProductOrder'
 
 export enum Type {
   UPDATE_PRODUCTORDER = 'UPDATE_PRODUCTORDER',
-  CHANGE_INDEX = 'CHANGE_INDEX'
+  CHANGE_TAB = 'CHANGE_TAB'
 }
 
 export interface ProductOrderAction extends Action {
   type: Type
   ProductOrderData: Array<ProductOrder>
   index: number
+  tab: number
 }
 
 export const updateProductOrder = (ProductOrderData: Array<ProductOrder>,index) =>
@@ -19,8 +20,8 @@ export const updateProductOrder = (ProductOrderData: Array<ProductOrder>,index) 
     index: index
   })
 
-export const changeIndex = (index: number) =>
+export const changeTab = (tab: number) =>
   (dispatch) => dispatch({
-    type: Type.CHANGE_INDEX,
-    index: index
+    type: Type.CHANGE_TAB,
+    tab: tab
   })

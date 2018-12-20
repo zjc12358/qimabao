@@ -15,22 +15,27 @@ import { ProductOrder } from '@datasources/ProductOrder'
 import { cloneDeep, get } from 'lodash'
 
 export interface Props {
-  updateProductOrder: (productOrder: Array<ProductOrder>) => void
+  updateProductOrder: (productOrder: Array<ProductOrder>,index: number) => void
 }
 
 interface State {
   data: any
   getEmpty: boolean
-  loading: boolean
   productOrder: Array<ProductOrder>
 }
-
+const tabs = [
+  { title: '全部' },
+  { title: '待付款' },
+  { title: '待配送' },
+  { title: '待收货' },
+  { title: '待评价' },
+  { title: '已完成' }
+]
 class User extends React.Component<Props, State> {
-  private timer: NodeJS.Timeout
+
   constructor (props) {
     super(props)
     this.state = {
-      loading: true,
       getEmpty: true,
       data: [
         { code: 'SP5685698754382', status: '待付款', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
@@ -41,47 +46,22 @@ class User extends React.Component<Props, State> {
     }
   }
 
-  componentWillUnmount () {
-    clearInterval(this.timer)
-  }
-  /**
-   * 内容
-   */
-  public renderContent = () => {
-    const tabs = [
-      { index: null,title: '全部' },
-      { index: 0,title: '待付款' },
-      { index: 1,title: '待配送' },
-      { index: 2,title: '待收货' },
-      { index: 3,title: '待评价' },
-      { index: 4,title: '已完成' }
-    ]
-    return(
-      <div className={'moBar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={tabs.length} />}
-        >
-          {tabs.map((i,index) => (
-            <div>
-              {this.state.getEmpty ? () => this.renderSwitch(i.index) : this.renderNone}
-            </div>
-          ))}
-        </Tabs>
-      </div>
-    )
-  }
-  /**
-   * 全部
-   */
-  public renderSwitch = (index) => {
-    let url = '/user/productOrder/findProductOrder?'
-    let query = 'payStatus=' + index
+  componentDidMount () {
+    // for (this.i = 0; this.i < 6; this.i++) {
+    //   this.getData(this.i)
+    // }
+    // this.setState({
+    //   loading: false
+    // })
+    let url = 'CanteenProcurementManager/user/productOrder/findProductOrder'
+    let query = ''
     axios.get<MyResponse<ProductOrder>>(url + query)
       .then(data => {
-        console.log('--- data =', data)
+        console.log('--- data =', data.data.data)
         if (data.data.code === 0) {
-          this.props.updateProductOrder(cloneDeep(data.data.data))
+          this.props.updateProductOrder(cloneDeep(data.data.data),0)
           this.setState({
-            loading: false
+            productOrder: cloneDeep(data.data.data)
           })
         } else {
           Toast.info('获取订单信息失败,请重试', 2, null, false)
@@ -90,11 +70,51 @@ class User extends React.Component<Props, State> {
       .catch(() => {
         Toast.info('请检查网络设置!')
       })
-    if (this.state.loading) {
-      return (
-        <Loading/>
-      )
-    }
+  }
+  tabOnClick = (tab, index) => {
+
+    let url = 'CanteenProcurementManager/user/productOrder/findProductOrder'
+    let query = '?payStatus=' + (index - 1)
+    if (index === 0) query = ''
+    axios.get<MyResponse<ProductOrder>>(url + query)
+      .then(data => {
+        console.log('--- data =', data.data.data)
+        if (data.data.code === 0) {
+          this.props.updateProductOrder(cloneDeep(data.data.data),index)
+          this.setState({
+            productOrder: cloneDeep(data.data.data)
+          })
+        } else {
+          Toast.info('获取订单信息失败,请重试', 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+  }
+
+  /**
+   * 内容
+   */
+  public renderContent = () => {
+    return(
+      <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
+        <Tabs tabs={tabs} onTabClick={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+        >
+          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
+        </Tabs>
+      </div>
+    )
+  }
+  /**
+   * 全部
+   */
+  public renderSwitch = () => {
     return(
       <div style={{
         paddingTop: 20
@@ -109,14 +129,20 @@ class User extends React.Component<Props, State> {
   }
   public renderItem = (i, index) => {
     let font: any = null
-    switch (i.status) {
-      case '已处理':
+    switch (i.order_status) {
+      case 0:
         font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
         break
-      case '待处理':
+      case 1:
         font = { borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
         break
-      case '已关闭':
+      case 2:
+        font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
+        break
+      case 3:
+        font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
+        break
+      case 4:
         font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
         break
     }
@@ -128,17 +154,20 @@ class User extends React.Component<Props, State> {
       }}>
         <div className={'Segment_line2'} />
         <div className={'flex-space-between-row-center'} style={{ height: 40,padding: 5 }}>
-          <div className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：{i.code}</div>
-          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{i.status}</div>
+          <div className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：{i.order_id}</div>
+          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{tabs[i.order_status + 1].title}</div>
         </div>
         <div className={'Segment_line2'} />
-        {this.renderItemDetail()}
-        {this.renderItemDetail()}
-        <div className={'flex-flex-end-row-center'}
-             style={{  height: 40,padding: 5,borderTop: '1px solid #e5e5e5' ,borderBottom: '1px solid #e5e5e5' }}>
+        {i.orderDetailList.map((lI, lIndex) => (
           <div>
-            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>共4件商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合计</span>
-            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>45.00</span></span>
+            {this.renderItemDetail(lI,lIndex,i.create_time)}
+          </div>
+        ))}
+        <div className={'flex-flex-end-row-center'}
+             style={{  height: 40,padding: '5px 15px 5px 5px',borderTop: '1px solid #e5e5e5' ,borderBottom: '1px solid #e5e5e5' }}>
+          <div>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }}>共{i.orderDetailList.length}件商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合计&nbsp;</span>
+            <span className={'commonFont'} style={{ fontSize: 16, color: '#000' }}>￥<span style={{ color: 'red' }}>{i.order_amount}</span></span>
           </div>
         </div>
         {this.renderItemStatus(i,index)}
@@ -148,7 +177,7 @@ class User extends React.Component<Props, State> {
   /**
    * 点击展开详细
    */
-  public renderItemDetail = () => {
+  public renderItemDetail = (i,index,time) => {
     return(
       <div style={{ padding: 16, height: 100, position: 'relative' }}>
         <div style={{ position: 'absolute', zIndex: 98 }}>
@@ -161,14 +190,14 @@ class User extends React.Component<Props, State> {
         </div>
         <div className={'flex-space-between-column-flex-start'} style={{ width: window.innerWidth - 116,position: 'absolute', left: 100, height: 70 }}>
           <div className={'flex-space-between-row-flex-start'} style={{ width: '100%' }}>
-            <div className={'commonFont'} style={{ fontSize: 14, color: '#000',width: '70%',whiteSpace: 'normal' }}>现摘新鲜野生荠菜 蔬菜 1.5kg现</div>
+            <div className={'commonFont'} style={{ fontSize: 14, color: '#000',width: '70%',whiteSpace: 'normal' }}>{i.product_name}</div>
             <div className={'flex-space-between-column-flex-end'} style={{ width: '20%' }}>
-              <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>22.50</span></span>
-              <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>x2</span>
+              <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }}>￥<span style={{ color: 'red' }}>{i.product_price}</span></span>
+              <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>x{i.product_quantity}</span>
             </div>
           </div>
           <div>
-            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>下单时间：2018-10-10 15:11:08</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>下单时间：{time.substr(0,19)}</span>
           </div>
           <div className={'flex-center-row-center'}>
             <div className={'flex-center-row-center'}

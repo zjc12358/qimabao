@@ -1,17 +1,13 @@
+import { ProductOrderDetail } from './ProductOrderDetail'
+
 export interface ProductOrder {
-  company_name: string
   create_time: string
-  detail_id: string
-  detail_status: number
+  orderDetailList: Array<ProductOrderDetail>
+  order_amount: any
   order_id: string
-  product_icon: string
-  product_id: number
-  product_name: string
-  product_price: number
-  product_quantity: number
-  product_total_price: number
-  product_weight: string
-  supplier_Id: number
-  update_time: string
-  userId: number
+  order_status: number
+  over_time: number
+  pay_china_status: string
+  pay_status: number
+  product_count: number
 }

@@ -10,6 +10,7 @@ import Badge from '@components/Badge'
 import axios from 'axios'
 import { LoginBean } from '@datasources/LoginBean'
 import { MyResponse } from '@datasources/MyResponse'
+import * as dd from 'dingtalk-jsapi'
 
 export interface Props {
   pageTab: string
@@ -137,7 +138,7 @@ class User extends React.Component<Props, State> {
             alignItems: 'center',
             height: 50
           }}>
-            <ReactSVG path='./assets/images/User/scan.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
+            <ReactSVG onClick={() => this.ddScan()} path='./assets/images/User/scan.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
             <ReactSVG path='./assets/images/User/qr_code.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
           </div>
           <div style={{
@@ -208,6 +209,18 @@ class User extends React.Component<Props, State> {
         </div>
       </div>
     )
+  }
+  public ddScan = () => {
+    dd.biz.util.scan({
+      type: 'qrCode',
+      onSuccess: function (data) {
+        alert(data.text)
+      },
+      onFail : function (err) {
+        alert(JSON.stringify(err))
+      }
+    })
+      .catch(err => console.log(err.toString() + '好的'))
   }
   /**
    * 内容
