@@ -1,7 +1,8 @@
 import { ShopCartSupplierBean } from './ShopCartSupplierBean'
+import { MenuSupplierBean } from '@datasources/MenuSupplierBean'
 
 export interface MenuDetailBean {
   total: number
-  storeList: Array<ShopCartSupplierBean>
+  menuSupplierList: Array<MenuSupplierBean>
   name: string
 }

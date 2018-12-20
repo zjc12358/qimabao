@@ -12,6 +12,10 @@ import { ShopCartProductBean } from '@datasources/ShopCartProductBean'
 import { setReload } from '@store/actions/menu_data'
 import ReactSVG from 'react-svg'
 import './menuCss.css'
+import { MyResponse } from '@datasources/MyResponse'
+import { cloneDeep, get, isNil } from 'lodash'
+import { MenuSupplierBean } from '@datasources/MenuSupplierBean'
+import { MenuProductBean } from '@datasources/MenuProductBean'
 
 export interface Props {
   menuId: number
@@ -42,7 +46,7 @@ class Menu extends React.Component<Props, State> {
    */
   renderContent = () => {
     return (
-      this.state.menuDetailBean !== null &&
+      !isNil(this.state.menuDetailBean) &&
       <div className='scroll'
            style={{
              flex: 1,
@@ -50,7 +54,7 @@ class Menu extends React.Component<Props, State> {
              marginBottom: 40,
              width: '100%'
            }}>
-        {this.state.menuDetailBean.storeList.map((item, index) => this.renderStoreItem(item, index))}
+        {this.state.menuDetailBean.menuSupplierList.map((item, index) => this.renderStoreItem(item, index))}
       </div>
     )
   }
@@ -60,7 +64,7 @@ class Menu extends React.Component<Props, State> {
    * @param item
    * @param groupIndex
    */
-  renderStoreItem = (item: ShopCartSupplierBean, groupIndex: number) => {
+  renderStoreItem = (item: MenuSupplierBean, groupIndex: number) => {
     return (
       <div className='vertical'>
         <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
@@ -78,7 +82,7 @@ class Menu extends React.Component<Props, State> {
           <span style={{ paddingRight: 10 }}>→</span>
         </div>
         <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}></span>
-        {item.shoppingCartDetails.map((item, index) => this.renderProductItem(item, groupIndex, index))}
+        {item.menuBasketList.map((item, index) => this.renderProductItem(item, groupIndex, index))}
       </div>
     )
   }
@@ -89,7 +93,7 @@ class Menu extends React.Component<Props, State> {
    * @param groupIndex
    * @param childIndex
    */
-  renderProductItem = (item: ShopCartProductBean, groupIndex: number, childIndex: number) => {
+  renderProductItem = (item: MenuProductBean, groupIndex: number, childIndex: number) => {
     return (
       <div className='vertical'
            style={{
@@ -119,10 +123,10 @@ class Menu extends React.Component<Props, State> {
                 showNumber
                 max={10}
                 min={1}
-                defaultValue={this.state.menuDetailBean.storeList[groupIndex].shoppingCartDetails[childIndex].product_weight}
+                defaultValue={this.state.menuDetailBean.menuSupplierList[groupIndex].menuBasketList[childIndex].product_weight}
                 onChange={(v) => {
                   let data = this.state.menuDetailBean
-                  data.storeList[groupIndex].shoppingCartDetails[childIndex].product_weight = v
+                  data.menuSupplierList[groupIndex].menuBasketList[childIndex].product_weight = v
                   this.setState({
                     menuDetailBean: data,
                     isChange: true
@@ -207,9 +211,9 @@ class Menu extends React.Component<Props, State> {
    */
   deleteProductOnClick = (groupIndex: number, childIndex: number) => {
     let data = this.state.menuDetailBean
-    data.storeList[groupIndex].shoppingCartDetails.splice(childIndex, 1)
-    if (data.storeList[groupIndex].shoppingCartDetails === null || data.storeList[groupIndex].shoppingCartDetails.length < 1) {
-      data.storeList.splice(groupIndex, 1)
+    data.menuSupplierList[groupIndex].menuBasketList.splice(childIndex, 1)
+    if (data.menuSupplierList[groupIndex].menuBasketList === null || data.menuSupplierList[groupIndex].menuBasketList.length < 1) {
+      data.menuSupplierList.splice(groupIndex, 1)
     }
     this.setState({
       menuDetailBean: data,
@@ -229,39 +233,56 @@ class Menu extends React.Component<Props, State> {
    */
   getMenuDetail () {
     console.log(this.props.menuId)
-    // TODO 2018/11/9 网络请求
-    let storeList: Array<ShopCartSupplierBean> = []
-    for (let i = 0; i < 3; i++) {
-      let productList: Array<ShopCartProductBean> = []
-      for (let j = 0; j < 5; j++) {
-        let productItem: ShopCartProductBean = {
-          cart_id: i,
-          product_id: i,
-          supplier_id: i + i,
-          isChecked: false,
-          product_name: '商品' + j,
-          product_icon: '',
-          product_price: j + 1,
-          product_weight: j + 1,
-          product_total_price: 0
+    // // TODO 2018/11/9 网络请求
+    // let storeList: Array<ShopCartSupplierBean> = []
+    // for (let i = 0; i < 3; i++) {
+    //   let productList: Array<ShopCartProductBean> = []
+    //   for (let j = 0; j < 5; j++) {
+    //     let productItem: ShopCartProductBean = {
+    //       cart_id: i,
+    //       product_id: i,
+    //       supplier_id: i + i,
+    //       isChecked: false,
+    //       product_name: '商品' + j,
+    //       product_icon: '',
+    //       product_price: j + 1,
+    //       product_weight: j + 1,
+    //       product_total_price: 0
+    //     }
+    //     productList.push(productItem)
+    //   }
+    //   let storeItem: ShopCartSupplierBean = {
+    //     supplier_id: i,
+    //     company_name: '商店' + i,
+    //     allChecked: false,
+    //     shoppingCartDetails: productList
+    //   }
+    //   storeList.push(storeItem)
+    // }
+    // this.setState({
+    //   menuDetailBean: {
+    //     storeList: storeList,
+    //     total: 0,
+    //     name: '菜谱' + this.props.menuId
+    //   }
+    // })
+    let url = 'CanteenProcurementManager/user/menuInfo/findMenuInfoDetail?'
+    let query = 'menuId=' + this.props.menuId
+    axios.get<MyResponse<MenuDetailBean>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            menuDetailBean: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
         }
-        productList.push(productItem)
-      }
-      let storeItem: ShopCartSupplierBean = {
-        supplier_id: i,
-        company_name: '商店' + i,
-        allChecked: false,
-        shoppingCartDetails: productList
-      }
-      storeList.push(storeItem)
-    }
-    this.setState({
-      menuDetailBean: {
-        storeList: storeList,
-        total: 0,
-        name: '菜谱' + this.props.menuId
-      }
-    })
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+
   }
 
   /**

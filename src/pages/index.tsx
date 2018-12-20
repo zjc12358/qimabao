@@ -47,9 +47,9 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
-    // dd.ready(function () {
-    //   // Toast.info('45645', 2, null, false)
-    // })
+    dd.ready(function () {
+      Toast.info('45645', 2, null, false)
+    })
     let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
     let query = 'openId=maoxiaoyan'
     axios.get<MyResponse<LoginBean>>(url + query)

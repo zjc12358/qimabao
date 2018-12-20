@@ -229,7 +229,7 @@ class Home extends React.Component<Props, State> {
               <div>
                 <span style={{ color: '#ff6161' }}>{this.state.productDetails.product_price}</span>
                 <span>/</span>
-                <span>{this.state.productDetails.product_weight}</span>
+                <span>500g</span>
               </div>
               <div className='horizontal'
                    style={{
