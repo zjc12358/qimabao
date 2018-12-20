@@ -121,7 +121,7 @@ class Home extends React.Component<Props, State> {
           </div>
           <div className='horizontal-center' style={{
             flex: 1, marginLeft: 5
-          }} onClick={this.scanOnclick}>
+          }} onClick={this.scanOnclick} >
             <ReactSVG path='./assets/images/scan_one_scan.svg' svgStyle={{ width: 20, height: 20 }}/>
           </div>
           <div className='horizontal-center' style={{

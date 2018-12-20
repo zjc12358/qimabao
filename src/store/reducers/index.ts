@@ -7,6 +7,7 @@ import searchDataReducer from '@store/reducers/searchDataReducer'
 import shopCartDataReducer from '@store/reducers/shopCartDataReducer'
 import menuDataReducer from '@store/reducers/menuDataReducer'
 import menuDetailDataReducer from '@store/reducers/menuDetailDataReducer'
+import productOrderDataReducer from '@store/reducers/productOrderDataReducer'
 import addressDetailDataReducer from '@store/reducers/addressDetailDataReducer'
 
 const rootReducer = combineReducers<any>({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers<any>({
   searchData: searchDataReducer as any,
   menuData: menuDataReducer as any,
   menuDetailData: menuDetailDataReducer as any,
+  productOrderData: productOrderDataReducer as any,
   addressDetailData: addressDetailDataReducer as any
 })
 
