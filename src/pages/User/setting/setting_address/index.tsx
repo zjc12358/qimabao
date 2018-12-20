@@ -111,6 +111,13 @@ class User extends React.Component<Props, State> {
     history().push('/settingAddressEdit')
   }
 
+  /**
+   * 获取收货地址列表
+   */
+  getAddressList () {
+
+  }
+
   public render () {
     return (
       <div style={{

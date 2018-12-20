@@ -31,6 +31,7 @@ interface State {
   imgHeight: any
   scrollY: number
   current: number
+  isLoading: boolean
 }
 
 class Home extends React.Component<Props, State> {
@@ -42,7 +43,8 @@ class Home extends React.Component<Props, State> {
       topImgData: topPic,
       imgHeight: 176,
       scrollY: 0,
-      current: 0
+      current: 0,
+      isLoading: false
     }
   }
 
@@ -179,14 +181,9 @@ class Home extends React.Component<Props, State> {
         >
           {this.state.topImgData.map(val => (
             <a
-              key={val}
-              href='http://www.alipay.com'
-              style={{ display: 'inline-block', width: '100%', height: 350 }}
-            >
+              key={val} style={{ display: 'inline-block', width: '100%', height: 350 }}>
               <img
-                src={val}
-                alt=''
-                style={{ width: '100%', height: '100%', verticalAlign: 'top' }}
+                src={val} alt='' style={{ width: '100%', height: '100%', verticalAlign: 'top' }}
                 onLoad={() => {
                   // fire window resize event to change height
                   window.dispatchEvent(new Event('resize'))
@@ -416,6 +413,12 @@ class Home extends React.Component<Props, State> {
    * 获取商品详情
    */
   getProductDetail (id: number) {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
     let url = 'CanteenProcurementManager/homepage/productCategory/productCategoryById?'
     let query = 'productId=' + id
     axios.get<MyResponse<ProductDetailBean>>(url + query)
@@ -428,9 +431,15 @@ class Home extends React.Component<Props, State> {
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
+        this.setState({
+          isLoading: false
+        })
       })
       .catch(() => {
         Toast.info('请检查网络设置!')
+        this.setState({
+          isLoading: false
+        })
       })
   }
 
