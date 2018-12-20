@@ -20,7 +20,7 @@ export interface Props {
 }
 
 interface State {
-
+  userInfo: UserInfo
 }
 
 let OrderIconMaxSize: number = 35
@@ -31,7 +31,9 @@ class User extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      userInfo: this.props.userInfo
+    }
   }
 
   public componentDidMount () {
@@ -193,7 +195,7 @@ class User extends React.Component<Props, State> {
               style={{
                 width: '100%',
                 height: '100%'
-              }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg'/></div>
+              }} src={this.state.userInfo.user_head_portrait}/></div>
           <div style={{ width: 110 }}>
             <span style={{
               overflow: 'hidden',
@@ -201,7 +203,7 @@ class User extends React.Component<Props, State> {
               whiteSpace: 'nowrap',
               width: '100%',
               display: 'block'
-            }} onClick={this.testLogin}>衢州炒菜软件技术有限公司</span>
+            }} onClick={this.testLogin}>{this.state.userInfo.user_name}</span>
           </div>
         </div>
       </div>

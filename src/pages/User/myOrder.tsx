@@ -1,22 +1,28 @@
 import * as React from 'react'
-import { Tabs,Button, Icon } from 'antd-mobile'
+import { Tabs, Button, Icon, Toast } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { addPageIndex, deletePageIndex } from '@store/actions/global_data'
+import { updateProductOrder } from '@store/actions/productOrder_data'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import './master.css'
 import Head from '@components/Head'
 import Loading from '@components/Loading'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
+import { ProductOrder } from '@datasources/ProductOrder'
+import { cloneDeep, get } from 'lodash'
 
 export interface Props {
+  updateProductOrder: (productOrder: Array<ProductOrder>) => void
 }
 
 interface State {
   data: any
   getEmpty: boolean
   loading: boolean
+  productOrder: Array<ProductOrder>
 }
 
 class User extends React.Component<Props, State> {
@@ -30,17 +36,11 @@ class User extends React.Component<Props, State> {
         { code: 'SP5685698754382', status: '待付款', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
         { code: 'SP4556856987543', status: '待发货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
         { code: 'SP2899898754356', status: '待收货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
-      ]
+      ],
+      productOrder: []
     }
   }
-  public componentDidMount () {
-    this.timer = setInterval(
-      () => this.setState({
-        loading: false
-      }),
-      600
-    )
-  }
+
   componentWillUnmount () {
     clearInterval(this.timer)
   }
@@ -49,23 +49,22 @@ class User extends React.Component<Props, State> {
    */
   public renderContent = () => {
     const tabs = [
-      { title: '全部' },
-      { title: '待付款' },
-      { title: '待配送' },
-      { title: '待收货' },
-      { title: '待评价' },
-      { title: '已完成' }
+      { index: null,title: '全部' },
+      { index: 0,title: '待付款' },
+      { index: 1,title: '待配送' },
+      { index: 2,title: '待收货' },
+      { index: 3,title: '待评价' },
+      { index: 4,title: '已完成' }
     ]
     return(
       <div className={'moBar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+        <Tabs tabs={tabs} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={tabs.length} />}
         >
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.data) : this.renderNone}
+          {tabs.map((i,index) => (
+            <div>
+              {this.state.getEmpty ? () => this.renderSwitch(i.index) : this.renderNone}
+            </div>
+          ))}
         </Tabs>
       </div>
     )
@@ -73,7 +72,24 @@ class User extends React.Component<Props, State> {
   /**
    * 全部
    */
-  public renderSwitch = (data: any) => {
+  public renderSwitch = (index) => {
+    let url = '/user/productOrder/findProductOrder?'
+    let query = 'payStatus=' + index
+    axios.get<MyResponse<ProductOrder>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.props.updateProductOrder(cloneDeep(data.data.data))
+          this.setState({
+            loading: false
+          })
+        } else {
+          Toast.info('获取订单信息失败,请重试', 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
     if (this.state.loading) {
       return (
         <Loading/>
@@ -83,7 +99,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         paddingTop: 20
       }}>
-        {data.map((i, index) => (
+        {this.state.productOrder.map((i, index) => (
           <div>
             {this.renderItem(i, index)}
           </div>
@@ -232,6 +248,7 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  updateProductOrder
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

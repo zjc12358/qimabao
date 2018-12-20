@@ -19,6 +19,7 @@
     "bizcharts-plugin-slider": "^2.0.4",
     "dingtalk": "^2.0.0",
     "dingtalk-javascript-sdk": "^0.2.0",
+    "dingtalk-jsapi": "^2.5.10",
     "echarts": "^4.2.0-rc.2",
     "element-react": "^1.4.24",
     "element-theme-default": "^1.4.13",
