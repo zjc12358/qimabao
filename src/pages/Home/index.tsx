@@ -23,7 +23,7 @@ function ddScan () {
     onSuccess: function (data) {
       alert(data.text)
     },
-    onFail : function (err) {
+    onFail: function (err) {
       alert(JSON.stringify(err))
     }
   })
@@ -159,18 +159,11 @@ class Home extends React.Component<Props, State> {
           infinite={true}
         >
           {carouselData.map((val, index) => (
-            <a
-              key={val}
-              href='http://www.alipay.com'
-              style={{ display: 'inline-block', width: '100%', paddingLeft: 10, paddingRight: 10 }}
-            >
+            <a key={val} style={{ display: 'inline-block', width: '100%', paddingLeft: 10, paddingRight: 10 }}>
               <img
                 src={val}
                 style={{
-                  width: '100%', verticalAlign: 'top',
-                  borderStyle: 'solid',
-                  borderWidth: 0,
-                  borderRadius: 10
+                  width: '100%', verticalAlign: 'top', borderStyle: 'solid', borderWidth: 0, borderRadius: 10
                 }}
                 onLoad={() => {
                   // fire window resize event to change height
