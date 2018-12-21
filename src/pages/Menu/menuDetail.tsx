@@ -16,6 +16,7 @@ import { MyResponse } from '@datasources/MyResponse'
 import { cloneDeep, get, isNil } from 'lodash'
 import { MenuSupplierBean } from '@datasources/MenuSupplierBean'
 import { MenuProductBean } from '@datasources/MenuProductBean'
+import { Loading } from 'element-react'
 
 export interface Props {
   menuId: number
@@ -25,6 +26,7 @@ export interface Props {
 interface State {
   menuDetailBean: MenuDetailBean
   isChange: boolean
+  isLoading: boolean
 }
 
 class Menu extends React.Component<Props, State> {
@@ -33,7 +35,8 @@ class Menu extends React.Component<Props, State> {
     super(props)
     this.state = {
       menuDetailBean: null,
-      isChange: false
+      isChange: false,
+      isLoading: false
     }
   }
 
@@ -54,7 +57,7 @@ class Menu extends React.Component<Props, State> {
              marginBottom: 40,
              width: '100%'
            }}>
-        {this.state.menuDetailBean.menuSupplierList.map((item, index) => this.renderStoreItem(item, index))}
+        {this.state.menuDetailBean.resultVO.map((item, index) => this.renderStoreItem(item, index))}
       </div>
     )
   }
@@ -123,10 +126,10 @@ class Menu extends React.Component<Props, State> {
                 showNumber
                 max={10}
                 min={1}
-                defaultValue={this.state.menuDetailBean.menuSupplierList[groupIndex].menuBasketList[childIndex].product_weight}
+                defaultValue={this.state.menuDetailBean.resultVO[groupIndex].menuBasketList[childIndex].product_weight}
                 onChange={(v) => {
                   let data = this.state.menuDetailBean
-                  data.menuSupplierList[groupIndex].menuBasketList[childIndex].product_weight = v
+                  data.resultVO[groupIndex].menuBasketList[childIndex].product_weight = v
                   this.setState({
                     menuDetailBean: data,
                     isChange: true
@@ -210,15 +213,35 @@ class Menu extends React.Component<Props, State> {
    * 删除商品
    */
   deleteProductOnClick = (groupIndex: number, childIndex: number) => {
-    let data = this.state.menuDetailBean
-    data.menuSupplierList[groupIndex].menuBasketList.splice(childIndex, 1)
-    if (data.menuSupplierList[groupIndex].menuBasketList === null || data.menuSupplierList[groupIndex].menuBasketList.length < 1) {
-      data.menuSupplierList.splice(groupIndex, 1)
+    if (this.state.isLoading) {
+      return
     }
     this.setState({
-      menuDetailBean: data,
-      isChange: true
+      isLoading: true
     })
+    let data = this.state.menuDetailBean
+    let productId = data.resultVO[groupIndex].menuBasketList[childIndex].menu_id
+    let url = 'CanteenProcurementManager/user/menuBasket/deleteFromMenuId?'
+    let query = 'menuId=' + productId
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          Toast.info('删除商品成功', 2, null, false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+        this.setState({
+          isLoading: false
+        }, () => this.getMenuDetail())
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+        this.setState({
+          isLoading: false
+        })
+      })
+
   }
 
   /**
@@ -232,45 +255,20 @@ class Menu extends React.Component<Props, State> {
    * 获取菜谱详情
    */
   getMenuDetail () {
-    console.log(this.props.menuId)
-    // // TODO 2018/11/9 网络请求
-    // let storeList: Array<ShopCartSupplierBean> = []
-    // for (let i = 0; i < 3; i++) {
-    //   let productList: Array<ShopCartProductBean> = []
-    //   for (let j = 0; j < 5; j++) {
-    //     let productItem: ShopCartProductBean = {
-    //       cart_id: i,
-    //       product_id: i,
-    //       supplier_id: i + i,
-    //       isChecked: false,
-    //       product_name: '商品' + j,
-    //       product_icon: '',
-    //       product_price: j + 1,
-    //       product_weight: j + 1,
-    //       product_total_price: 0
-    //     }
-    //     productList.push(productItem)
-    //   }
-    //   let storeItem: ShopCartSupplierBean = {
-    //     supplier_id: i,
-    //     company_name: '商店' + i,
-    //     allChecked: false,
-    //     shoppingCartDetails: productList
-    //   }
-    //   storeList.push(storeItem)
-    // }
-    // this.setState({
-    //   menuDetailBean: {
-    //     storeList: storeList,
-    //     total: 0,
-    //     name: '菜谱' + this.props.menuId
-    //   }
-    // })
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
     let url = 'CanteenProcurementManager/user/menuInfo/findMenuInfoDetail?'
     let query = 'menuId=' + this.props.menuId
     axios.get<MyResponse<MenuDetailBean>>(url + query)
       .then(data => {
         console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
         if (data.data.code === 0) {
           this.setState({
             menuDetailBean: data.data.data
@@ -280,20 +278,45 @@ class Menu extends React.Component<Props, State> {
         }
       })
       .catch(() => {
+        this.setState({
+          isLoading: false
+        })
         Toast.info('请检查网络设置!')
       })
-
   }
 
   /**
    * 删除菜谱请求
    */
   deleteMenu () {
-    console.log('删除菜谱')
-    let id = this.props.menuId
-    // TODO 2018/11/9 网络请求
-    this.props.setReload(true)
-    history().goBack()
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    let url = 'CanteenProcurementManager/user/menuBasket/deleteRecipes?'
+    let query = 'menuId=' + this.props.menuId
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
+        if (data.data.code === 0) {
+          Toast.info('菜谱已删除', 2, null, false)
+          history().goBack()
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+        this.setState({
+          isLoading: false
+        })
+      })
+
   }
 
   /**
@@ -318,12 +341,14 @@ class Menu extends React.Component<Props, State> {
         backgroundColor: '#efeff5',
         height: '100vh'
       }}>
-        <Head title={this.state.menuDetailBean.name} titleColor={'white'} showLeftIcon={true}
+        <Head title={!isNil(this.state.menuDetailBean) && this.state.menuDetailBean.menu_detail}
+              titleColor={'white'} showLeftIcon={true}
               backgroundColor={'#0084e7'} rightIconOnClick={this.deleteMenuOnClick} showRightIcon={true}
               rightIconContent={(<ReactSVG path='./assets/images/ic_delete.svg' svgStyle={{ height: 24, width: 24 }}/>)}
               leftIconColor={'white'}/>
         {this.renderContent()}
         {this.renderFoot()}
+        {this.state.isLoading && <Loading fullscreen={true}/>}
       </div>
     )
   }
