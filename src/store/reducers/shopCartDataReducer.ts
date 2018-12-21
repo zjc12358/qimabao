@@ -1,5 +1,6 @@
 import { ShopCartSupplierBean } from '../../datasources/ShopCartSupplierBean'
 import { ShopCartAction, Type } from '../actions/shopCart_data'
+import { number } from 'prop-types'
 
 export interface ShopCartData {
   ShopCartData: Array<ShopCartSupplierBean>,
@@ -16,7 +17,6 @@ const initialState: ShopCartData = {
 export default (state = initialState, action: ShopCartAction) => {
   switch (action.type) {
     case Type.UPDATA_SHOPCART:
-      console.log(11111)
       return {
         ...state,
         ShopCartData: action.ShopCartData
