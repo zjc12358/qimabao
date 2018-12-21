@@ -123,6 +123,9 @@ class History extends React.Component<Props, State> {
     return data
   }
 
+  /**
+   * 去结算
+   */
   goPay = () => {
     if (this.getCheckedProduct().length < 1) {
       Toast.info('请选择商品!')
@@ -267,10 +270,36 @@ class History extends React.Component<Props, State> {
    */
   SlipRightDeleteOnClick = (index1,index) => {
     let data = this.state.data
-    data[index1].shoppingCartDetails.splice(index, 1)
-    if (data[index1].shoppingCartDetails.length === 0) data.splice(index,1)
-    this.setState({ data: data })
-    this.props.updataShopCart(data)
+    console.log('1289u732oiuewiofcjudskfdusalksfjdkslajfdsklaoajfdskl')
+    this.deleteFoodAxios(data[index1].shoppingCartDetails[index].cart_id)
+    // data[index1].shoppingCartDetails.splice(index, 1)
+    // if (data[index1].shoppingCartDetails.length === 0) data.splice(index,1)
+    // this.setState({ data: data })
+    // this.props.updataShopCart(data)
+  }
+
+  deleteFoodAxios = (cartId) => {
+    console.log(cartId)
+    this.setState({
+      fullscreen: true
+    })
+    let url = 'CanteenProcurementManager//user/shoppingCart/deleteSwitchCart?'
+    let query = 'cartId=' + cartId
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log(data)
+        if (data.data.code === 0) {
+          this.setState({
+            fullscreen: false
+          })
+          this.getShopCartData()
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   /**
@@ -280,7 +309,7 @@ class History extends React.Component<Props, State> {
     console.log(1111)
     if (this.state.allSupplierItemCheck) {
       // 全选状态下清空购物车,总计归0
-      this.setState({ data: [],total: 0 })
+      this.setState({ total: 0 })
       this.props.updataShopCart([])
     } else {
       // console.log('我被组织了')
@@ -308,27 +337,10 @@ class History extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    console.log(nextProps)
-    // if (nextProps === this.props) {
-    //   Toast.hide()
-    //   return
-    // }
-    this.setState({ data: nextProps.shopCartData,allSupplierItemCheck: nextProps.allSupplierItemCheck },() => {
-      Toast.hide()
-    })
-  }
-
   /**
-   * 页面加载时判断选中项计算合计
+   * 获取购物车数据
    */
-  componentDidMount () {
-    this.count()
-    // console.log('willDidMount')
-    // console.log(this.state.data)
-    // console.log(this.props.shopCartData)
-    // console.log(this.props.needReloadData)
-    if (this.props.needReloadData === false) return
+  getShopCartData = () => {
     this.setState({
       fullscreen: true
     })
@@ -357,6 +369,26 @@ class History extends React.Component<Props, State> {
       .catch(() => {
         Toast.info('请检查网络设置!')
       })
+  }
+
+  componentWillReceiveProps (nextProps) {
+    console.log(nextProps)
+    // if (nextProps === this.props) {
+    //   Toast.hide()
+    //   return
+    // }
+    this.setState({ data: nextProps.shopCartData,allSupplierItemCheck: nextProps.allSupplierItemCheck },() => {
+      Toast.hide()
+    })
+  }
+
+  /**
+   * 页面加载时判断选中项计算合计
+   */
+  componentDidMount () {
+    this.count()
+    if (this.props.needReloadData === false) return
+    this.getShopCartData()
   }
 
   /**
