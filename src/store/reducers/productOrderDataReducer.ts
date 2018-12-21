@@ -18,13 +18,17 @@ export default (state = initialState, action: ProductOrderAction) => {
     case Type.UPDATE_PRODUCTORDER:
       return {
         ...state,
-        ProductOrderData: action.ProductOrderData,
-        index: action.index
+        ProductOrderData: action.ProductOrderData
       }
     case Type.CHANGE_TAB:
       return{
         ...state,
         tab: action.tab
+      }
+    case Type.CHANGE_INDEX:
+      return{
+        ...state,
+        index: action.index
       }
     default:
       return state
