@@ -18,6 +18,9 @@
 </body>
 <script type="text/javascript" src="http://g.alicdn.com/dingding/dingtalk-jsapi/2.3.0/dingtalk.open.js" charset="utf-8"></script>
 <script>
+  document.getElementById("body").addEventListener("touchmove", function (e) {
+    e.preventDefault();
+  })
   // var overscroll = function(el) {
   //   el.addEventListener('touchstart', function() {
   //     var top = el.scrollTop

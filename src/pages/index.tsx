@@ -47,15 +47,16 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
-    dd.ready(function () {
-      Toast.info('45645', 2, null, false)
-    })
+    // dd.ready(function () {
+    //   Toast.info('45645', 2, null, false)
+    // })
     let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
     let query = 'openId=maoxiaoyan'
     axios.get<MyResponse<LoginBean>>(url + query)
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
+          Toast.info('登录成功', 1, null, false)
           console.log('--- data =', data)
         } else {
           Toast.info('登录失败', 2, null, false)
