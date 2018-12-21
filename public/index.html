@@ -17,6 +17,9 @@
   <div id="root"></div>
 </body>
 <script>
+  document.getElementById("body").addEventListener("touchmove", function (e) {
+    e.preventDefault();
+  })
   // var overscroll = function(el) {
   //   el.addEventListener('touchstart', function() {
   //     var top = el.scrollTop

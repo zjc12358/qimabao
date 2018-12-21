@@ -5,6 +5,7 @@ import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Toast, TextareaIt
 import ReactSVG from 'react-svg'
 import './default.less'
 import './orderMakeSure.less'
+import { cloneDeep, isNil } from 'lodash'
 import Head from '../../components/Head/index'
 import history from 'history/createHashHistory'
 import { needReload, updataOrderMakeSure } from '@store/actions/oderMakeSure_data'
@@ -17,7 +18,9 @@ const RadioItem = Radio.RadioItem
 export interface Props {
   updataOrderMakeSure: (orderMakeSure: OrderMakeSureBean) => void,
   needReload: (reload: boolean) => void,
-  shopCartData: any,
+  BookingSheetFood: any,
+  total: number,
+  orderId: string,
   orderData: any,
   needReloadData: boolean
 }
@@ -70,9 +73,7 @@ class History extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    console.log(this.props.shopCartData)
-    console.log('componentDidMount')
-    console.log(this.props.needReloadData + '1111111111111111')
+    console.log(this.props.BookingSheetFood)
     if (this.props.needReloadData === false) return
     let orderData = {
       user: {},
@@ -200,7 +201,7 @@ class History extends React.Component<Props, State> {
   /*
   * 供应商选项
   * */
-  renderSupplier = () => {
+  renderSupplier = (i) => {
     return (
       <div style={{ marginBottom: 20 }}>
         <div className='supplierItem' style={{
@@ -213,23 +214,25 @@ class History extends React.Component<Props, State> {
           <div className='checkBox'>
           </div>
           <ReactSVG svgStyle={{ width: 16,height: 16,display: 'flex',alignItems: 'center',marginRight: 16 }} path='./assets/images/Cart/merchant.svg' />
-          <div className='fontGray'>衢州炒菜软件开发有限公司 </div>
+          <div className='fontGray'>{i.supplier_name}</div>
           <div style={{ flex: 1 }}></div>
           <Icon style={{ paddingRight: 15 }} type='right'/>
         </div>
-        <div
-          className='foodWrap'
-        >
-          <div className='foodDetail'>
-            <img className='' style={{ width: 95,height: 95,borderRadius: '50%',display: 'block' }} src='http://img0.imgtn.bdimg.com/it/u=508694851,709788791&fm=200&gp=0.jpg' />
-            <div style={{ width: 180,paddingLeft: 15 }}>
-              <p>精选有机红皮洋葱</p>
-              <p>单价：<span style={{ color: 'red' }}>￥15.5 </span><span style={{ color: '#8c8c8c' }}>/500g</span></p>
-              <p>重量: 1000g</p>
-              <p style={{ position: 'absolute',bottom: 0,right: 20 }}>小计：<span style={{ color: 'red' }}>￥15</span></p>
+        {!isNil(i.shoppingCartDetails) && i.shoppingCartDetails.map(i2 => (
+          <div
+            className='foodWrap'
+          >
+            <div className='foodDetail'>
+              <img className='' style={{ width: 95,height: 95,borderRadius: '50%',display: 'block' }} src='http://img0.imgtn.bdimg.com/it/u=508694851,709788791&fm=200&gp=0.jpg' />
+              <div style={{ width: 180,paddingLeft: 15 }}>
+                <p>{i2.product_name}</p>
+                <p>单价：<span style={{ color: 'red' }}>￥{i2.product_price} </span><span style={{ color: '#8c8c8c' }}>/500g</span></p>
+                <p>数量: {i2.product_weight}</p>
+                <p style={{ position: 'absolute',bottom: 0,right: 20 }}>小计：<span style={{ color: 'red' }}>￥{i2.product_total_price}</span></p>
+              </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     )
   }
@@ -329,8 +332,8 @@ class History extends React.Component<Props, State> {
                   {this.state.startdpValue} - {this.state.enddpValue} &nbsp;&nbsp;免运费
               </div> : <div></div> }
             </div>
-            {this.props.shopCartData.map(i => (
-              <div>{this.renderSupplier()}</div>
+            {!isNil(this.props.BookingSheetFood) && this.props.BookingSheetFood.map(i => (
+              <div>{this.renderSupplier(i)}</div>
             ))}
             <div style={{ margin: '0 20px',fontSize: 16,marginBottom: 3 }}>买家留言：</div>
             <div style={{ marginLeft: 20,marginRight: 20,border: '1px solid #cccccc' }}>
@@ -341,7 +344,7 @@ class History extends React.Component<Props, State> {
             </div>
             <div style={{ display: 'flex',padding: '10px 0' }}>
               <div style={{ flex: 1 }}></div>
-              <div style={{ paddingRight: 20 }}>合计: <span style={{ color: 'red',fontSize: 18 }}>￥31</span></div>
+              <div style={{ paddingRight: 20 }}>合计: <span style={{ color: 'red',fontSize: 18 }}>￥{this.props.total}</span></div>
             </div>
           </div>
         </div>
@@ -393,8 +396,10 @@ class History extends React.Component<Props, State> {
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
     shopCartData: state.shopCartData.ShopCartData,
-    orderData: state.orderMakeSure.OrderMakeSureData,
-    needReloadData: state.orderMakeSure.reload
+    BookingSheetFood: state.BookingSheetFood.BookingSheetFood,
+    orderId: state.BookingSheetFood.orderId,
+    needReloadData: state.orderMakeSure.reload,
+    total: state.BookingSheetFood.total
   }
 }
 

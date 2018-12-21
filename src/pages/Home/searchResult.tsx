@@ -7,28 +7,30 @@ import history from 'history/createHashHistory'
 import { SearchData } from '@store/reducers/searchDataReducer'
 import { updatePageTab } from '@store/actions/global_data'
 import ChooseMenu from '@components/ChooseMenu'
-import { SearchResultBean } from '@datasources/SearchResultBean'
 import './homeCss.css'
 import './searchResultCss.css'
 import LoadMore from '@components/LoadMore'
 import Drawer from '@material-ui/core/Drawer/Drawer'
 import Input from '@material-ui/core/Input/Input'
 import { TagBean } from '@datasources/TagBean'
+import { MyResponse } from '@datasources/MyResponse'
+import { ProductBean } from '@datasources/ProductBean'
+import ReactSVG from 'react-svg'
+import { needReload } from '@store/actions/shopCart_data'
 
-// 页码
-let pageIndex = 0
-
+const NUM_ROWS = 20
 let sortTag = ['有机', '冷冻', '纯天然', '野生', '绿色', '深加工']
 
 export interface Props {
   searchData: SearchData
   updatePageTab: (pageIndex: string) => void,
+  needReload: (needReload: boolean) => void
 }
 
 interface State {
   sortData: Array<string>
   sortIndex: number
-  searchResultList: Array<SearchResultBean>
+  searchResultList: Array<ProductBean>
   isLoading: boolean
   hasMore: boolean
   showChoose: boolean
@@ -36,6 +38,7 @@ interface State {
   tagList: Array<TagBean>
   minPrice: number // 最低价
   maxPrice: number // 最高价
+  pageNum: number
 }
 
 class Home extends React.Component<Props, State> {
@@ -52,7 +55,8 @@ class Home extends React.Component<Props, State> {
       drawerOpen: false,
       tagList: [],
       minPrice: null,
-      maxPrice: null
+      maxPrice: null,
+      pageNum: 1
     }
   }
 
@@ -62,35 +66,16 @@ class Home extends React.Component<Props, State> {
   }
 
   refresh () {
-    if (this.state.isLoading) {
-      return
-    }
-    this.setState({ isLoading: true })
-    setTimeout(() => {
-      this.getSearchList(0)
-      this.setState({
-        isLoading: false
-      })
-    }, 1000)
+    this.setState({
+      pageNum: 1
+    }, () => this.getSearchList())
+
   }
 
   loadMore () {
-    if (pageIndex > 5) {
-      this.setState({
-        hasMore: false
-      })
-      return
-    }
-    if (this.state.isLoading && !this.state.hasMore) {
-      return
-    }
-    this.setState({ isLoading: true })
-    setTimeout(() => {
-      this.getSearchList(pageIndex++)
-      this.setState({
-        isLoading: false
-      })
-    }, 1000)
+    this.setState({
+      pageNum: this.state.pageNum + 1
+    }, () => this.getSearchList())
   }
 
   getTagList () {
@@ -185,15 +170,31 @@ class Home extends React.Component<Props, State> {
   /**
    * 搜索结果单项
    */
-  renderContentItem = (item: SearchResultBean) => {
+  renderContentItem = (item: ProductBean) => {
     return (
-      <div style={{
-        width: '49%',
-        height: 220,
-        backgroundColor: 'white',
-        marginTop: 5
-      }}>
-        {item.name}
+      <div className='vertical' style={{ width: '49%', height: 220, backgroundColor: 'white', marginTop: 5 }}>
+        <img style={{ height: 140, width: '100%' }} src={item.product_icon}/>
+        <div className='vertical' style={{ flex: 1, justifyContent: 'space-between', width: '100%' }}>
+          <span style={{ marginTop: 10, width: '100%' }}>
+            <span style={{ marginLeft: 10 }}>{item.product_name}</span>
+            </span>
+          <div className='horizontal' style={{
+            justifyContent: 'space-between', marginBottom: 10, width: '100%'
+          }}>
+            <div style={{ marginLeft: 10 }}>
+              <span style={{ color: '#ff6161' }}>{item.product_price}</span>
+              <span>/</span>
+              <span>500g</span>
+            </div>
+            <div style={{ marginRight: 10 }}
+                 className='cart-circle' onClick={(e) => this.addCartOnClick(e, item)}>
+              <div className='center'>
+                <ReactSVG path='./assets/images/shop_cart_white.svg'
+                          svgStyle={{ marginTop: 4, width: 12, height: 12 }}/>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
@@ -204,26 +205,35 @@ class Home extends React.Component<Props, State> {
   renderDrawer = () => {
     return (
       <div className='vertical' style={{ height: '100%' }}>
-        <span style={{ height: 40, fontSize: 20, marginTop: 20 }}>价格筛选</span>
-        <div style={{ margin: 10 }}>
-          <div className='price-area-border'>
-            <div className='horizontal'>
-              <Input style={{ width: 100, paddingLeft: 10 }} onChange={this.priceMinChange} placeholder={'最低价'}
-                     type={'number'} disableUnderline={true} className='center price-input-border'>
-                {this.state.minPrice === null ? '' : this.state.minPrice}
-              </Input>
-              <span style={{ width: 15, height: 1, backgroundColor: 'black', marginRight: 2, marginLeft: 2 }}/>
-              <Input style={{ width: 100, paddingLeft: 10 }} onChange={this.priceMaxChange} placeholder={'最高价'}
-                     type={'number'} disableUnderline={true} className='center price-input-border'>
-                {this.state.maxPrice === null ? '' : this.state.maxPrice}
-              </Input>
+        <div className='vertical' style={{ flex: 1 }}>
+          <span style={{ height: 40, fontSize: 20, marginTop: 20 }}>价格筛选</span>
+          <div style={{ margin: 10 }}>
+            <div className='price-area-border'>
+              <div className='horizontal'>
+                <Input className='center price-input-border' onChange={this.priceMinChange}
+                       placeholder={'最低价'} type={'number'} disableUnderline={true}
+                       value={this.state.minPrice === null ? null : this.state.minPrice.toString()}>
+                  {this.state.minPrice === null ? '' : this.state.minPrice}
+                </Input>
+                <span style={{ width: 15, height: 1, backgroundColor: 'black', marginRight: 2, marginLeft: 2 }}/>
+                <Input className='center price-input-border' onChange={this.priceMaxChange}
+                       placeholder={this.state.maxPrice === null ? '最高价' : this.state.maxPrice.toString()}
+                       type={'number'} disableUnderline={true}>
+                  {this.state.maxPrice === null ? '' : this.state.maxPrice}
+                </Input>
+              </div>
             </div>
           </div>
+          <span style={{ width: '100%', marginTop: 20 }}><span style={{ marginLeft: 20, fontSize: 14 }}>特色</span></span>
+          <div className='horizontal'
+               style={{ flexWrap: 'wrap', width: 200 }}>
+            {this.state.tagList.map((item, index) => this.renderDrawerTagItem(item.name, item.checked, index))}
+          </div>
         </div>
-        <span style={{ width: '100%', marginTop: 20 }}><span style={{ marginLeft: 20, fontSize: 14 }}>特色</span></span>
-        <div className='horizontal'
-             style={{ flexWrap: 'wrap', width: 200 }}>
-          {this.state.tagList.map((item, index) => this.renderDrawerTagItem(item.name, item.checked, index))}</div>
+        <div className='vertical-center' onClick={this.drawerSure}
+             style={{ fontSize: 20, width: '100%', height: 40, backgroundColor: '#d66b67' }}>
+          确定搜索
+        </div>
       </div>
     )
   }
@@ -298,6 +308,16 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
+   * 点击抽屉确定
+   */
+  drawerSure = () => {
+    this.setState({
+      drawerOpen: false
+    })
+    this.getSearchList()
+  }
+
+  /**
    * 改变最低价
    * @param key
    * @param event
@@ -330,44 +350,111 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
-   * 模拟请求数据
+   * 添加到购物车
+   * @param e
+   * @param item
    */
-  getSearchList (page) {
-    if (this.state.isLoading || !this.state.hasMore) {
+  addCartOnClick = (e, item: ProductBean) => {
+    // TODO 2018/10/29 添加到购物车
+    // 阻止事件冒泡
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
+    console.log(item + '添加到购物车')
+    this.addToCart(item)
+  }
+
+  /**
+   * 获取搜索结果列表
+   */
+  getSearchList = () => {
+    if (this.state.isLoading) {
       return
     }
     this.setState({
       isLoading: true
     })
-    console.log('加载数据')
-    let list: Array<SearchResultBean> = []
-    for (let i = 0; i < 5; i++) {
-      let item: SearchResultBean = {
-        id: i,
-        name: '商品' + i,
-        price: i * 100,
-        weight: '10' + i + 'g',
-        buy: true,
-        store: '商店' + i,
-        storeId: i,
-        pic: ''
-      }
-      list.push(item)
+    let url = 'CanteenProcurementManager/homepage/productCategory/findAllProductInfoMessage?'
+    let param = {
+      productName: this.props.searchData.searchText,
+      lowerPrice: this.state.minPrice,
+      highestPrice: this.state.maxPrice,
+      mode: this.getMode(this.state.sortIndex),
+      label: this.getLabel(),
+      pageNum: this.state.pageNum,
+      pageSize: NUM_ROWS
     }
-    if (page > 0) {
-      this.setState({
-        searchResultList: this.state.searchResultList.concat(list)
+    let data = JSON.stringify(param)
+    data = encodeURI(data)
+    let query = 'condition=' + data
+    axios.post<MyResponse<Array<ProductBean>>>(url + query, data, { headers: { 'Content-Type': 'application/json' } })
+      .then(data => {
+        console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
+        if (data.data.code === 0) {
+          this.setState({
+            searchResultList: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
       })
-      pageIndex++
-    } else {
-      this.setState({
-        searchResultList: list
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+        this.setState({
+          isLoading: false
+        })
       })
-      pageIndex = 1
+  }
+
+  /**
+   * 筛选上传数据
+   */
+  getMode = (index: number): string => {
+    switch (index) {
+      case 0:
+        return 'HighToLow'
+      case 1:
+        return 'LowToHigh'
+      case 2:
+        return 'StockHighToLow'
+      default:
+        return null
     }
-    this.setState({
-      isLoading: false
-    })
+  }
+
+  /**
+   * 标签组装字符串
+   */
+  getLabel = (): string => {
+    let str = ''
+    this.state.tagList.map(item => item.checked ? str += item.name + ',' : null)
+    return str
+  }
+
+  /**
+   * 添加商品到购物车
+   */
+  addToCart (item: ProductBean) {
+    let url = 'CanteenProcurementManager/user/shoppingCart/saveShoppingCart?'
+    let query = 'productName=' + item.product_name + '&productPrice=' + item.product_price + '&productWeight=' + 1 +
+      '&productTotalPrice=' + item.product_price * 1 + '&productIcon=' + item.product_icon + '&productId=' + item.product_id +
+      '&supplierId=' + item.supplier_id
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          Toast.info('添加商品成功', 2, null, false)
+          this.props.needReload(true)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+
   }
 
   public render () {
@@ -397,7 +484,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updatePageTab
+  updatePageTab,
+  needReload
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

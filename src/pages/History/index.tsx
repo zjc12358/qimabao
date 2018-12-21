@@ -16,6 +16,7 @@ import { needReload, updataAllSupplierItemCheck, updataShopCart } from '@store/a
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
+import { updataBookingSheetFood, updataOrderId, updataToTal } from '@store/actions/bookingSheet_data'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem
@@ -31,10 +32,14 @@ export interface Props {
   updatePageTab: (pageTab: string) => void,
   updataShopCart: (shopCart: Array<ShopCartSupplierBean>) => void,
   updataAllSupplierItemCheck: (allSupplierItemCheck: boolean) => void,
+  updataBookingSheetFood: (shopCart: Array<ShopCartSupplierBean>) => void,
+  updataOrderId: (orderId: string) => void,
+  updataToTal: (total: number) => void,
   needReload: (reload: boolean) => void,
   shopCartData: any,
   needReloadData: boolean,
-  allSupplierItemCheck: boolean
+  allSupplierItemCheck: boolean,
+  BookingSheetFood: any
 }
 
 interface State {
@@ -82,7 +87,6 @@ class History extends React.Component<Props, State> {
       i.shoppingCartDetails.map(i2 => {
         if (i2.isChecked === true) {
           let productItem = {
-            userId: 2,
             cartId: i2.cart_id,
             productId: i2.product_id,
             supplierId: i2.supplier_id,
@@ -100,6 +104,25 @@ class History extends React.Component<Props, State> {
     return productDetails
   }
 
+  getCheckedProductTwo = () => {
+    let data = []
+    this.state.data.map(i => {
+      let suplier = {
+        supplier_id: i.supplier_id,
+        supplier_name: i.company_name,
+        shoppingCartDetails: []
+      }
+      i.shoppingCartDetails.map(i2 => {
+        if (i2.isChecked === true) {
+          let productItem = cloneDeep(i2)
+          suplier.shoppingCartDetails.push(productItem)
+        }
+      })
+      if (suplier.shoppingCartDetails.length) data.push(suplier)
+    })
+    return data
+  }
+
   goPay = () => {
     if (this.getCheckedProduct().length < 1) {
       Toast.info('请选择商品!')
@@ -113,11 +136,17 @@ class History extends React.Component<Props, State> {
     let data = JSON.stringify(data2)
     data = encodeURI(data)
     url = url + '?json=' + data
+    this.setState({ fullscreen: true })
     axios.post(url,data,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
         if (data.data.code === 0) {
           console.log(data.data)
-          history().push('/orderMakeSure',{ name: 'zhangsan' })
+          console.log(this.getCheckedProductTwo())
+          this.props.updataOrderId(data.data.data)
+          this.props.updataBookingSheetFood(this.getCheckedProductTwo())
+          this.props.updataToTal(this.state.total)
+          this.setState({ fullscreen: false })
+          history().push('/orderMakeSure')
           this.props.updatePageTab('HistoryPageTabBar')
         } else {
           Toast.info(data.data.msg)
@@ -181,7 +210,7 @@ class History extends React.Component<Props, State> {
 
   /**
    * 供应商的勾选事件
-   * @param index1
+   * @para  m index1
    */
   allCheckedOnChange = (index1) => {
     let data = this.state.data
@@ -224,6 +253,13 @@ class History extends React.Component<Props, State> {
       }
       this.setState({ total: total })
     }
+  }
+
+  smallAdd = (item,index,index1) => {
+    let data = cloneDeep(this.state.data)
+    let subtotal = (item.product_weight * item.product_price).toFixed(2)
+    data[index1].shoppingCartDetails[index].product_total_price = subtotal
+    this.props.updataShopCart(data)
   }
 
   /**
@@ -457,6 +493,7 @@ class History extends React.Component<Props, State> {
                       data[index1].shoppingCartDetails[index].product_weight = v
                       this.props.updataShopCart(data)
                       // this.setState({ data: data })
+                      this.smallAdd(item,index,index1)
                       // 计算一遍总计
                       this.count()
                     }}
@@ -477,7 +514,7 @@ class History extends React.Component<Props, State> {
             borderTop: '1px solid #e5e5e5'
           }}>
             <div>小计: <span
-              style={{ color: 'red' }}>￥{(this.state.data[index1].shoppingCartDetails[index].product_weight * this.state.data[index1].shoppingCartDetails[index].product_price).toFixed(2)}</span>
+              style={{ color: 'red' }}>￥{item.product_total_price}</span>
             </div>
           </div>
           <div style={{ width: 30 }}></div>
@@ -574,7 +611,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
     shopCartData: state.shopCartData.ShopCartData,
     needReloadData: state.shopCartData.reload,
-    allSupplierItemCheck: state.shopCartData.AllSupplierCheckBoolean
+    allSupplierItemCheck: state.shopCartData.AllSupplierCheckBoolean,
+    BookingSheetFood: state.BookingSheetFood.BookingSheetFood
   }
 }
 
@@ -582,6 +620,9 @@ const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
   updataShopCart,
   updataAllSupplierItemCheck,
+  updataBookingSheetFood,
+  updataOrderId,
+  updataToTal,
   needReload
 }
 
