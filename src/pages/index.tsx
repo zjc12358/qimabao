@@ -12,18 +12,22 @@ import History from '@pages/History'
 import User from '@pages/User'
 import Supplier from '@pages/Supplier'
 import { PageTab } from '@datasources/PageTab'
-import dd from 'dingtalk-javascript-sdk'
 
+import { cloneDeep, get } from 'lodash'
 import '../assets/css/GeneralStyle.less'
-import { updatePageTab } from '@store/actions/global_data'
+import { updatePageTab,updateUserInfo,setID } from '@store/actions/global_data'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
+import { UserInfo } from '@datasources/UserInfo'
 
 export interface Props {
+  id: number
   pageTab: string
   mode: 'supplier' | 'purchaser'
   updatePageTab: (pageName: string) => void
+  updateUserInfo: (userInfo: UserInfo) => void
+  setID: (id: number) => void
 }
 
 interface State {
@@ -47,17 +51,27 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
-    // dd.ready(function () {
-    //   Toast.info('45645', 2, null, false)
-    // })
     let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
     let query = 'openId=maoxiaoyan'
     axios.get<MyResponse<LoginBean>>(url + query)
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          Toast.info('登录成功', 1, null, false)
-          console.log('--- data =', data)
+          this.props.setID(Number(data.data.data.userId))
+          url = 'CanteenProcurementManager/user/nail/selectMean?'
+          query = 'user_id=' + this.props.id
+          axios.get<MyResponse<UserInfo>>(url + query)
+            .then(data => {
+              console.log('--- data =', data)
+              if (data.data.code === 0) {
+                this.props.updateUserInfo(cloneDeep(data.data.data))
+              } else {
+                Toast.info('获取用户信息失败,请重试', 2, null, false)
+              }
+            })
+            .catch(() => {
+              Toast.info('请检查网络设置!')
+            })
         } else {
           Toast.info('登录失败', 2, null, false)
         }
@@ -216,13 +230,16 @@ class App extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
+    id: state.globalData.id,
     pageTab: state.globalData.pageTab,
     mode: state.globalData.mode
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updatePageTab
+  updateUserInfo,
+  updatePageTab,
+  setID
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

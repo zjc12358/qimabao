@@ -4,6 +4,7 @@ import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { Toast, ListView, PullToRefresh } from 'antd-mobile'
 import { CategoryItemData } from '@store/reducers/categoryItemDataReducer'
 import history from 'history/createHashHistory'
+import { Loading, Button } from 'element-react'
 import axios from 'axios'
 import ReactSVG from 'react-svg'
 import { ProductBean } from '@datasources/ProductBean'
@@ -357,7 +358,7 @@ class Home extends React.Component<Props, State> {
         </div>
         <div className='vertical-center' onClick={this.drawerSure}
              style={{ fontSize: 20, width: '100%', height: 40, backgroundColor: '#d66b67' }}>
-          确定
+          确定搜索
         </div>
       </div>
     )
@@ -520,7 +521,7 @@ class Home extends React.Component<Props, State> {
   /**
    * 添加到购物车
    * @param e
-   * @param id
+   * @param item
    */
   addCartOnClick = (e, item: ProductBean) => {
     // TODO 2018/10/29 添加到购物车
@@ -696,6 +697,7 @@ class Home extends React.Component<Props, State> {
         {/*{window.addEventListener('touchmove', function (event) {*/}
         {/*event.preventDefault()*/}
         {/*}, { passive: false })}*/}
+        <div>{this.state.isLoading && <Loading fullscreen={true}/>}</div>
       </div>
     )
   }

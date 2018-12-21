@@ -10,6 +10,7 @@ import Badge from '@components/Badge'
 import axios from 'axios'
 import { LoginBean } from '@datasources/LoginBean'
 import { MyResponse } from '@datasources/MyResponse'
+import * as dd from 'dingtalk-jsapi'
 
 export interface Props {
   pageTab: string
@@ -20,7 +21,7 @@ export interface Props {
 }
 
 interface State {
-
+  userInfo: UserInfo
 }
 
 let OrderIconMaxSize: number = 35
@@ -31,7 +32,9 @@ class User extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      userInfo: this.props.userInfo
+    }
   }
 
   public componentDidMount () {
@@ -135,7 +138,7 @@ class User extends React.Component<Props, State> {
             alignItems: 'center',
             height: 50
           }}>
-            <ReactSVG path='./assets/images/User/scan.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
+            <ReactSVG onClick={() => this.ddScan()} path='./assets/images/User/scan.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
             <ReactSVG path='./assets/images/User/qr_code.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
           </div>
           <div style={{
@@ -193,7 +196,7 @@ class User extends React.Component<Props, State> {
               style={{
                 width: '100%',
                 height: '100%'
-              }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg'/></div>
+              }} src={this.state.userInfo.user_head_portrait}/></div>
           <div style={{ width: 110 }}>
             <span style={{
               overflow: 'hidden',
@@ -201,11 +204,23 @@ class User extends React.Component<Props, State> {
               whiteSpace: 'nowrap',
               width: '100%',
               display: 'block'
-            }} onClick={this.testLogin}>衢州炒菜软件技术有限公司</span>
+            }} onClick={this.testLogin}>{this.state.userInfo.user_name}</span>
           </div>
         </div>
       </div>
     )
+  }
+  public ddScan = () => {
+    dd.biz.util.scan({
+      type: 'qrCode',
+      onSuccess: function (data) {
+        alert(data.text)
+      },
+      onFail : function (err) {
+        alert(JSON.stringify(err))
+      }
+    })
+      .catch(err => console.log(err.toString() + '好的'))
   }
   /**
    * 内容
