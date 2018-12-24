@@ -53,7 +53,6 @@ class Menu extends React.Component<Props, State> {
       <div className='scroll'
            style={{
              flex: 1,
-             marginTop: 40,
              marginBottom: 40,
              width: '100%'
            }}>
@@ -228,8 +227,14 @@ class Menu extends React.Component<Props, State> {
         console.log('--- data =', data)
         if (data.data.code === 0) {
           Toast.info('删除商品成功', 2, null, false)
+          this.setState({
+            isLoading: false
+          }, () => this.getMenuDetail())
         } else {
           Toast.info(data.data.msg, 2, null, false)
+          this.setState({
+            isLoading: false
+          })
         }
         this.setState({
           isLoading: false

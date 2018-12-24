@@ -1,6 +1,5 @@
 import { ShopCartSupplierBean } from '../../datasources/ShopCartSupplierBean'
 import { ShopCartAction, Type } from '../actions/shopCart_data'
-import { number } from 'prop-types'
 
 export interface ShopCartData {
   ShopCartData: Array<ShopCartSupplierBean>,
