@@ -124,6 +124,8 @@ import LogisticsEvaluation from './pages/User/message/logisticsEvaluation'
 /* 物流评价页面 */
 import OrderDetail from './pages/User/order/orderDetails'
 /* 订单详情 */
+import PaySuccess from './pages/User/order/paySuccess'
+/* 支付成功 */
 /*我的*/
 // 菜篮子
 import supplierRevise from './pages/History/supplierRevise'
@@ -202,6 +204,7 @@ ReactDOM.render(
         <Route path='/settingAddressEdit' component={SettingAddressEdit}/>
         <Route path='/addNewAddress' component={AddNewAddress}/>
         <Route path='/orderDetail' component={OrderDetail}/>
+        <Route path='/paySuccess' component={PaySuccess}/>
         {/*我的*/}
 
         {/*菜篮*/}

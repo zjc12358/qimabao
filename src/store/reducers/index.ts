@@ -10,6 +10,7 @@ import menuDetailDataReducer from '@store/reducers/menuDetailDataReducer'
 import bookingSheetDataReducer from '@store/reducers/bookingSheetDataReducer'
 import productOrderDataReducer from '@store/reducers/productOrderDataReducer'
 import addressDetailDataReducer from '@store/reducers/addressDetailDataReducer'
+import productAfterSaleDataReducer from '@store/reducers/productAfterSaleDataReducer'
 
 const rootReducer = combineReducers<any>({
   globalData: globalDataReducer as any,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers<any>({
   menuData: menuDataReducer as any,
   menuDetailData: menuDetailDataReducer as any,
   productOrderData: productOrderDataReducer as any,
-  addressDetailData: addressDetailDataReducer as any
+  addressDetailData: addressDetailDataReducer as any,
+  productAfterSaleData: productAfterSaleDataReducer as any
 })
 
 export default rootReducer

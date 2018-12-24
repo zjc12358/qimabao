@@ -67,8 +67,9 @@ class User extends React.Component<Props, State> {
       loading: true
     })
     let url = 'CanteenProcurementManager/user/productOrder/findProductOrder'
-    let query = '?payStatus=' + (index - 1)
+    let query = ''
     if (index === 0) query = ''
+    else query = '?payStatus=' + (index - 1)
     axios.get<MyResponse<ProductOrder>>(url + query)
       .then(data => {
         console.log('--- data =', data.data.data)
@@ -132,12 +133,12 @@ class User extends React.Component<Props, State> {
       <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
         <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderPei) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderShou) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderPing) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderWan) : this.renderNone}
+          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
+          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
+          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei) : this.renderNone}
+          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou) : this.renderNone}
+          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing) : this.renderNone}
+          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan) : this.renderNone}
         </Tabs>
         {this.loadingRender()}
       </div>
@@ -250,17 +251,17 @@ class User extends React.Component<Props, State> {
    */
   public renderItemStatus = (i,index) => {
     let showDeal: any = false
-    switch (i.status) {
-      case '待付款':
+    switch (i.order_status) {
+      case 0:
         showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即付款</button>
         break
-      case '待发货':
+      case 1:
         showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即催货</button>
         break
-      case '待收货':
+      case 2:
         showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>确认收货</button>
         break
-      case '待评价':
+      case 3:
         showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即评价</button>
         break
     }
@@ -289,7 +290,7 @@ class User extends React.Component<Props, State> {
   }
 
   public payOnclick = () => {
-    history().push('/afterSaleResult')
+    history().push('/paySuccess')
   }
 
   public render () {

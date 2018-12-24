@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Tabs,Button, Icon } from 'antd-mobile'
+import { Tabs, Button, Icon, Toast } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
@@ -8,62 +8,129 @@ import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import './master.css'
 import Head from '@components/Head'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
+import { ProductAfterSale } from '@datasources/ProductAfterSale'
+import Loading from '@components/Loading'
+import { cloneDeep, get } from 'lodash'
+import { updateProductAfterSale } from '../../../store/actions/productAfterSale_data'
 
 export interface Props {
+  updateProductAfterSale: (ProductAfterSale: Array<ProductAfterSale>) => void
 }
 
 interface State {
-  data: any
-  getEmpty: boolean
   loading: boolean
+  afterSaleAll: any
+  afterSaleDCL: any
+  afterSaleYCL: any
+  afterSaleYGB: any
 }
-
+const tabs = [
+  { title: '全部退款' },
+  { title: '待处理' },
+  { title: '已处理' },
+  { title: '已关闭' }
+]
+const status = [
+  { title: 'ALL' },
+  { title: 'TQ' },
+  { title: 'PD' },
+  { title: 'BC' }
+]
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
     this.state = {
-      getEmpty: true,
       loading: true,
-      data: [
-        { code: 'TQ12856987543', status: '已处理', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: 'TQ12856987543', status: '待处理', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: 'TQ12856987543', status: '已关闭', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
-      ]
+      afterSaleAll: [],
+      afterSaleDCL: [],
+      afterSaleYCL: [],
+      afterSaleYGB: []
+    }
+  }
+  componentDidMount () {
+    this.tabOnClick(null,0)
+  }
+  tabOnClick = (tab, index) => {
+    this.setState({
+      loading: true
+    })
+    let url = 'CanteenProcurementManager/user/orderDetailController/selectAfterSale'
+    let query = '?start=' + status[index].title
+    axios.get<MyResponse<ProductAfterSale>>(url + query)
+      .then(data => {
+        console.log('--- data =', data.data.data)
+        if (data.data.code === 0) {
+          switch (index) {
+            case 0:
+              this.setState({
+                afterSaleAll: cloneDeep(data.data.data)
+              })
+              break
+            case 1:
+              this.setState({
+                afterSaleDCL: cloneDeep(data.data.data)
+              })
+              break
+            case 2:
+              this.setState({
+                afterSaleYCL: cloneDeep(data.data.data)
+              })
+              break
+            case 3:
+              this.setState({
+                afterSaleYGB: cloneDeep(data.data.data)
+              })
+              break
+          }
+          this.setState({
+            loading: false
+          })
+          this.props.updateProductAfterSale(cloneDeep(data.data.data))
+        } else {
+          Toast.info('获取订单信息失败,请重试', 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+  }
+  loadingRender = () => {
+    if (this.state.loading) {
+      return (
+        <Loading/>
+      )
     }
   }
   /**
    * 内容
    */
   public renderContent = () => {
-    const tabs = [
-      { title: '全部退款' },
-      { title: '待处理' },
-      { title: '已处理' },
-      { title: '已关闭' }
-    ]
+
     return(
       <div className={'bar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
+        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
-          {this.state.getEmpty ? this.renderAll : this.renderNone}
-          {this.state.getEmpty ? this.renderObligation : this.renderNone}
-          {this.state.getEmpty ? this.renderDispatching : this.renderNone}
-          {this.state.getEmpty ? this.renderReceived : this.renderNone}
+          {this.state.afterSaleAll.length !== 0 ? () => this.renderSwitch(this.state.afterSaleAll) : this.renderNone}
+          {this.state.afterSaleDCL.length !== 0 ? () => this.renderSwitch(this.state.afterSaleDCL) : this.renderNone}
+          {this.state.afterSaleYCL.length !== 0 ? () => this.renderSwitch(this.state.afterSaleYCL) : this.renderNone}
+          {this.state.afterSaleYGB.length !== 0 ? () => this.renderSwitch(this.state.afterSaleYGB) : this.renderNone}
         </Tabs>
+        {this.loadingRender()}
       </div>
     )
   }
   /**
    * 全部
    */
-  public renderAll = () => {
-    if (this.state.loading) return
+  public renderSwitch = (poi) => {
     return(
       <div style={{
         paddingTop: 20
       }}>
-        {this.state.data.map((i, index) => (
+        {poi.map((i, index) => (
           <div>
             {this.renderItem(i, index)}
           </div>
@@ -179,57 +246,7 @@ class Supplier extends React.Component<Props, State> {
       </div>
     )
   }
-  /**
-   * 待付款
-   */
-  public renderObligation = () => {
-    if (this.state.loading) return
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
-  /**
-   * 待配送
-   */
-  public renderDispatching = () => {
-    if (this.state.loading) return
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
-  /**
-   * 待收货
-   */
-  public renderReceived = () => {
-    if (this.state.loading) return
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
-      </div>
-    )
-  }
+
   /**
    * 空
    */
@@ -248,14 +265,7 @@ class Supplier extends React.Component<Props, State> {
   public viewResultOnclick = () => {
     history().push('/afterSaleResult')
   }
-  public componentDidMount () {
-    setInterval(
-      () => this.setState({
-        loading: false
-      }),
-      300
-    )
-  }
+
   public render () {
     return (
       <div style={{
@@ -273,6 +283,7 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  updateProductAfterSale
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)
