@@ -110,7 +110,7 @@ import Coupon from './pages/User/coupon'
 /* 用户优惠券页面 */
 import BankCard from './pages/User/setting/settingPayBankCard'
 /* 添加银行卡页面 */
-import MyOrder from './pages/User/myOrder'
+import MyOrder from './pages/User/order/index'
 /* 我的订单页面 */
 import AfterSale from './pages/User/afterSale/index'
 /* 售后页面 */
@@ -122,7 +122,7 @@ import MessageTradeInfo from './pages/User/message/messageTradeInfo'
 /* 交易信息页面 */
 import LogisticsEvaluation from './pages/User/message/logisticsEvaluation'
 /* 物流评价页面 */
-import OrderDetail from './pages/User/orderDetails'
+import OrderDetail from './pages/User/order/orderDetails'
 /* 订单详情 */
 /*我的*/
 // 菜篮子

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox, TextareaItem } from 'antd-mobile'
 import ReactSVG from 'react-svg'
-import Head from '../../components/Head/index'
+import Head from '../../../components/Head/index'
 import './orderDetail.less'
 import history from 'history/createHashHistory'
 

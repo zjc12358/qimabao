@@ -2,11 +2,11 @@ import * as React from 'react'
 import { Tabs, Button, Icon, Toast } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { GlobalData } from '@store/reducers/globalDataReducer'
-import { updateProductOrder } from '@store/actions/productOrder_data'
+import { GlobalData } from '../../../store/reducers/globalDataReducer'
+import { updateProductOrder } from '../../../store/actions/productOrder_data'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
-import './master.css'
+import '../master.css'
 import Head from '@components/Head'
 import Loading from '@components/Loading'
 import axios from 'axios'
@@ -15,6 +15,7 @@ import { ProductOrder } from '@datasources/ProductOrder'
 import { cloneDeep, get } from 'lodash'
 
 export interface Props {
+  tab: number
   updateProductOrder: (productOrder: Array<ProductOrder>) => void
 }
 
@@ -59,7 +60,7 @@ class User extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    this.tabOnClick(null,0)
+    this.tabOnClick(null,this.props.tab)
   }
   tabOnClick = (tab, index) => {
     this.setState({
@@ -129,7 +130,7 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
-        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
           {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
           {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
@@ -248,26 +249,26 @@ class User extends React.Component<Props, State> {
    * 订单分支：立即处理 ，查看详情
    */
   public renderItemStatus = (i,index) => {
-    let showDeal: boolean = false
+    let showDeal: any = false
     switch (i.status) {
       case '待付款':
-        showDeal = true
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即付款</button>
         break
       case '待发货':
-        showDeal = false
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即催货</button>
         break
       case '待收货':
-        showDeal = false
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>确认收货</button>
         break
       case '待评价':
-        showDeal = false
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即评价</button>
         break
     }
     return(
       <div className={'flex-flex-end-row-center'}
            style={{ height: 40,backgroundColor: '#fafafa',padding: '0 5px' }}>
-        <button className={'buttonViewDetail'} onClick={this.viewResultOnclick}>查看详情</button>
-        {showDeal === true ? <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.viewDetailOnclick}>立即付款</button> : ''}
+        <button className={'buttonViewDetail'} onClick={this.viewDetailOnclick}>查看详情</button>
+        {showDeal}
       </div>
     )
   }
@@ -284,10 +285,10 @@ class User extends React.Component<Props, State> {
   }
 
   public viewDetailOnclick = () => {
-    history().push('/afterSaleDetail')
+    history().push('/orderDetail')
   }
 
-  public viewResultOnclick = () => {
+  public payOnclick = () => {
     history().push('/afterSaleResult')
   }
 
@@ -304,7 +305,9 @@ class User extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    tab: state.productOrderData.tab
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
