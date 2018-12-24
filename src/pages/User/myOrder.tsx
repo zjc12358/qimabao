@@ -15,13 +15,19 @@ import { ProductOrder } from '@datasources/ProductOrder'
 import { cloneDeep, get } from 'lodash'
 
 export interface Props {
-  updateProductOrder: (productOrder: Array<ProductOrder>,index: number) => void
+  updateProductOrder: (productOrder: Array<ProductOrder>) => void
 }
 
 interface State {
+  loading: boolean
   data: any
   getEmpty: boolean
-  productOrder: Array<ProductOrder>
+  productOrderAll: Array<ProductOrder>
+  productOrderFu: Array<ProductOrder>
+  productOrderPei: Array<ProductOrder>
+  productOrderShou: Array<ProductOrder>
+  productOrderPing: Array<ProductOrder>
+  productOrderWan: Array<ProductOrder>
 }
 const tabs = [
   { title: '全部' },
@@ -36,43 +42,29 @@ class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
+      loading: true,
       getEmpty: true,
       data: [
         { code: 'SP5685698754382', status: '待付款', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
         { code: 'SP4556856987543', status: '待发货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
         { code: 'SP2899898754356', status: '待收货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
       ],
-      productOrder: []
+      productOrderAll: [],
+      productOrderFu: [],
+      productOrderPei: [],
+      productOrderShou: [],
+      productOrderPing: [],
+      productOrderWan: []
     }
   }
 
   componentDidMount () {
-    // for (this.i = 0; this.i < 6; this.i++) {
-    //   this.getData(this.i)
-    // }
-    // this.setState({
-    //   loading: false
-    // })
-    let url = 'CanteenProcurementManager/user/productOrder/findProductOrder'
-    let query = ''
-    axios.get<MyResponse<ProductOrder>>(url + query)
-      .then(data => {
-        console.log('--- data =', data.data.data)
-        if (data.data.code === 0) {
-          this.props.updateProductOrder(cloneDeep(data.data.data),0)
-          this.setState({
-            productOrder: cloneDeep(data.data.data)
-          })
-        } else {
-          Toast.info('获取订单信息失败,请重试', 2, null, false)
-        }
-      })
-      .catch(() => {
-        Toast.info('请检查网络设置!')
-      })
+    this.tabOnClick(null,0)
   }
   tabOnClick = (tab, index) => {
-
+    this.setState({
+      loading: true
+    })
     let url = 'CanteenProcurementManager/user/productOrder/findProductOrder'
     let query = '?payStatus=' + (index - 1)
     if (index === 0) query = ''
@@ -80,10 +72,42 @@ class User extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data.data.data)
         if (data.data.code === 0) {
-          this.props.updateProductOrder(cloneDeep(data.data.data),index)
+          switch (index) {
+            case 0:
+              this.setState({
+                productOrderAll: cloneDeep(data.data.data)
+              })
+              break
+            case 1:
+              this.setState({
+                productOrderFu: cloneDeep(data.data.data)
+              })
+              break
+            case 2:
+              this.setState({
+                productOrderPei: cloneDeep(data.data.data)
+              })
+              break
+            case 3:
+              this.setState({
+                productOrderShou: cloneDeep(data.data.data)
+              })
+              break
+            case 4:
+              this.setState({
+                productOrderPing: cloneDeep(data.data.data)
+              })
+              break
+            case 5:
+              this.setState({
+                productOrderWan: cloneDeep(data.data.data)
+              })
+              break
+          }
           this.setState({
-            productOrder: cloneDeep(data.data.data)
+            loading: false
           })
+          this.props.updateProductOrder(cloneDeep(data.data.data))
         } else {
           Toast.info('获取订单信息失败,请重试', 2, null, false)
         }
@@ -92,34 +116,41 @@ class User extends React.Component<Props, State> {
         Toast.info('请检查网络设置!')
       })
   }
-
+  loadingRender = () => {
+    if (this.state.loading) {
+      return (
+        <Loading/>
+      )
+    }
+  }
   /**
    * 内容
    */
   public renderContent = () => {
     return(
       <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
-        <Tabs tabs={tabs} onTabClick={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch() : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderPei) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderShou) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderPing) : this.renderNone}
+          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderWan) : this.renderNone}
         </Tabs>
+        {this.loadingRender()}
       </div>
     )
   }
   /**
    * 全部
    */
-  public renderSwitch = () => {
+  public renderSwitch = (poi) => {
     return(
       <div style={{
         paddingTop: 20
       }}>
-        {this.state.productOrder.map((i, index) => (
+        {poi.map((i, index) => (
           <div>
             {this.renderItem(i, index)}
           </div>
