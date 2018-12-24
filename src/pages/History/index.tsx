@@ -262,6 +262,7 @@ class History extends React.Component<Props, State> {
     let data = cloneDeep(this.state.data)
     let subtotal = (item.product_weight * item.product_price).toFixed(2)
     data[index1].shoppingCartDetails[index].product_total_price = subtotal
+    console.log(subtotal)
     this.props.updataShopCart(data)
   }
 
@@ -283,7 +284,7 @@ class History extends React.Component<Props, State> {
     this.setState({
       fullscreen: true
     })
-    let url = 'CanteenProcurementManager//user/shoppingCart/deleteSwitchCart?'
+    let url = 'CanteenProcurementManager/user/shoppingCart/deleteSwitchCart?'
     let query = 'cartId=' + cartId
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
@@ -293,6 +294,36 @@ class History extends React.Component<Props, State> {
             fullscreen: false
           })
           this.getShopCartData()
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+  }
+
+  foodAddSub = (v,item,index1,index) => {
+    let shopdata = cloneDeep(this.props.shopCartData)
+    let productWeight = v
+    console.log(v)
+    let subtotal = (v * item.product_price).toFixed(2)
+    console.log(subtotal)
+    let cartId = item.cart_id
+    this.setState({
+      fullscreen: true
+    })
+    let url = 'CanteenProcurementManager/user/shoppingCart/increaseAndDecreaseCart?'
+    let query = 'cartId=' + cartId + '&productWeight=' + productWeight + '&productTotalPrice=' + subtotal
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log(data)
+        if (data.data.code === 0) {
+          this.setState({
+            fullscreen: false
+          })
+          console.log(shopdata)
+          // this.getShopCartData()
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
@@ -399,7 +430,7 @@ class History extends React.Component<Props, State> {
       <div>
         <div style={{ display: 'flex',justifyContent: 'center', paddingTop: 20 }}>
           <div style={{ width: 135,height: 135,borderRadius: '50%',backgroundColor: '#cccccc',display: 'flex',alignItems: 'center',justifyContent: 'center' }}>
-            <img style={{ width: 80 }} src='./assets/images/icon/cartEmpty.svg' />
+            <img style={{ width: 80 }} src='./assets/images/Cart/cartEmpty.svg' />
           </div>
         </div>
         <div style={{ display: 'flex',justifyContent: 'center', fontSize: 18, marginTop: 12 }}>菜篮为空</div>
@@ -490,7 +521,7 @@ class History extends React.Component<Props, State> {
       <div key={item.value}>
         <div className='food' style={{ display: 'flex', alignItems: 'center' }}>
           <CheckboxItem
-            checked={ this.state.data[index1].shoppingCartDetails[index].isChecked }
+            checked={ item.isChecked }
             onChange={() => {
               this.isCheckedOnChange(index1,index)
             }}
@@ -514,20 +545,22 @@ class History extends React.Component<Props, State> {
                   <span style={{ color: '#8c8c8c' }}>/500g</span>
                 </div>
                 <div style={{ display: 'flex', color: '#8c8c8c', fontSize: 14 }}>
+                  {/*<input type='number'/>*/}
                   <Stepper
                     ref='stepper'
                     className='Stepper'
                     showNumber
                     min={1}
-                    defaultValue={this.state.data[index1].shoppingCartDetails[index].product_weight}
+                    value={ item.product_weight }
                     onChange={(v) => {
-                      let data = this.props.shopCartData
-                      data[index1].shoppingCartDetails[index].product_weight = v
-                      this.props.updataShopCart(data)
-                      // this.setState({ data: data })
-                      this.smallAdd(item,index,index1)
-                      // 计算一遍总计
-                      this.count()
+                      // let data = this.props.shopCartData
+                      // data[index1].shoppingCartDetails[index].product_weight = v
+                      // this.props.updataShopCart(data)
+                      // // this.setState({ data: data })
+                      // this.smallAdd(item,index,index1)
+                      // // 计算一遍总计
+                      // this.count()
+                      this.foodAddSub(v,item,index1,index)
                     }}
                   />
                 </div>
