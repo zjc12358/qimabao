@@ -2,7 +2,7 @@ import { ShopCartSupplierBean } from './ShopCartSupplierBean'
 import { MenuSupplierBean } from '@datasources/MenuSupplierBean'
 
 export interface MenuDetailBean {
-  total: number
-  menuSupplierList: Array<MenuSupplierBean>
-  name: string
+  menu_id: number
+  resultVO: Array<MenuSupplierBean>
+  menu_detail: string
 }

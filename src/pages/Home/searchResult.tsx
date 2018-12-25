@@ -17,6 +17,7 @@ import { MyResponse } from '@datasources/MyResponse'
 import { ProductBean } from '@datasources/ProductBean'
 import ReactSVG from 'react-svg'
 import { needReload } from '@store/actions/shopCart_data'
+import { Loading } from 'element-react'
 
 const NUM_ROWS = 20
 let sortTag = ['有机', '冷冻', '纯天然', '野生', '绿色', '深加工']
@@ -293,8 +294,7 @@ class Home extends React.Component<Props, State> {
   chooseHandClick = (index: number) => {
     this.setState({
       sortIndex: index
-    })
-    // TODO 2018/11/6 根据index 判断选择类型 请求数据
+    }, () => this.refresh())
   }
 
   /**
@@ -470,6 +470,7 @@ class Home extends React.Component<Props, State> {
           <Drawer anchor={'right'} open={this.state.drawerOpen} onClose={() => this.toggleDrawer(false)}>
             {this.renderDrawer()}
           </Drawer>
+          {this.state.isLoading && <Loading fullscreen={true}/>}
         </div>
       </div>
 

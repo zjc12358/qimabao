@@ -680,7 +680,7 @@ class Home extends React.Component<Props, State> {
         {/*{window.addEventListener('touchmove', function (event) {*/}
         {/*event.preventDefault()*/}
         {/*}, { passive: false })}*/}
-        <div>{this.state.isLoading && <Loading fullscreen={true}/>}</div>
+        {this.state.isLoading && <Loading fullscreen={true}/>}
       </div>
     )
   }
