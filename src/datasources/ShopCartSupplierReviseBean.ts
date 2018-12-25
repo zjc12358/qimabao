@@ -1,13 +1,15 @@
-import { ShopCartSupplierReviseNowSupplierBean } from './ShopCartSupplierReviseNowSupplierBean'
-import { ShopCartSupplierReviseOtherSupplierBean } from './ShopCartSupplierReviseOtherSupplierBean'
+import { ShopCartSupplierReviseOtherSupplierFoodBean } from '@datasources/ShopCartSupplierReviseOtherSupplierFoodBean'
 
 export interface ShopCartSupplierReviseBean {
-  id: number,
-  name: string,
-  price: number,
-  count: number,
-  img: string,
-  unit: string,
-  nowSupplierMsg: ShopCartSupplierReviseNowSupplierBean,
-  otherSupplierList: Array<ShopCartSupplierReviseOtherSupplierBean>
+  cart_id: number,
+  user_id: number,
+  product_id: number,
+  supplier_id: number,
+  product_name: string,
+  product_price: number,
+  product_weight: string,
+  product_total_price: number,
+  product_icon: string,
+  company_name: string,
+  shoppingCartList: Array<ShopCartSupplierReviseOtherSupplierFoodBean>
 }
