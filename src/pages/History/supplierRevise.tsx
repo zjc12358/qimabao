@@ -1,12 +1,16 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, List, Checkbox, Stepper, SwipeAction, Button } from 'antd-mobile'
+import { TabBar, List, Checkbox, Stepper, SwipeAction, Button, Toast } from 'antd-mobile'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import './default.less'
+import { cloneDeep, get } from 'lodash'
 import Head from '../../components/Head/index'
 import { ShopCartSupplierReviseBean } from '@datasources/ShopCartSupplierReviseBean'
 import history from 'history/createHashHistory'
+import supplierReviseDataReducer from '@store/reducers/supplierReviseDataReducer'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
 
 const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent)
 let moneyKeyboardWrapProps
@@ -17,11 +21,12 @@ if (isIPhone) {
 }
 
 export interface Props {
-
+  productMsg: any
 }
 
 interface State {
   foodList: Array<ShopCartSupplierReviseBean>,
+  fullscreen: boolean
 }
 
 class History extends React.Component<Props, State> {
@@ -29,7 +34,8 @@ class History extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      foodList: []
+      foodList: [],
+      fullscreen: false
     }
   }
   componentDidMount () {
@@ -80,32 +86,31 @@ class History extends React.Component<Props, State> {
             }
           }
         ]
-      },
-      {
-        id: 2,
-        name: '青椒肉丝',
-        price: 25.5,
-        img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541043891384&di=52fa13745adfe0a22da2e2cd48e0f0d9&imgtype=0&src=http%3A%2F%2Ffood.365jia.cn%2Fuploads%2Fnews%2Ffolder_1744197%2Fimages%2F1ee0c0040368bd20a9a980d639e2623b.jpg',
-        count: 3,
-        unit: '份',
-        nowSupplierMsg: {
-          id: 0,
-          name: '衢州炒菜软件有限公司'
-        },
-        otherSupplierList: null
       }
     ]
-    this.setState({ foodList: foodList })
+    console.log(this.props.productMsg)
+    this.getData()
   }
-  /**
-   * 食物增减事件
-   * @param v
-   * @param foodListIndex
-   */
-  stepperOnChange = (v,foodListIndex) => {
-    let foodList = this.state.foodList
-    foodList[foodListIndex].count = v
-    this.setState({ foodList: foodList })
+
+  getData = () => {
+    this.setState({
+      fullscreen: true
+    })
+    let url = 'CanteenProcurementManager/user/shoppingCart/findProductSupplier?'
+    let query = 'supplierId=' + this.props.productMsg.supplierId + '&cartId=' + this.props.productMsg.cartId
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- 购物车data =', data)
+        if (data.data.code === 0) {
+          console.log(data.data.data)
+          this.setState({ foodList: data.data.data })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   /**
@@ -113,10 +118,10 @@ class History extends React.Component<Props, State> {
    * @param foodListIndex
    * @param otherSupplierListIndex
    */
-  otherSupplierOnClick = (foodListIndex,otherSupplierListIndex) => {
-    console.log(this.state.foodList[foodListIndex].otherSupplierList[otherSupplierListIndex].name)
-    let foodList = this.state.foodList
-    let other = this.state.foodList[foodListIndex].otherSupplierList[otherSupplierListIndex]
+  otherSupplierOnClick = (i,foodListIndex,otherSupplierListIndex) => {
+    console.log(this.state.foodList[foodListIndex].shoppingCartList[otherSupplierListIndex].company_name)
+    let foodList = cloneDeep(this.state.foodList)
+    let other = cloneDeep(this.state.foodList[foodListIndex].shoppingCartList[otherSupplierListIndex])
     foodList[foodListIndex].id = other.foodMsg.id
     foodList[foodListIndex].name = other.foodMsg.name
     foodList[foodListIndex].price = other.foodMsg.price
@@ -130,7 +135,7 @@ class History extends React.Component<Props, State> {
    * 食物
    * @param foodListIndex
    */
-  renderFoodItem = (foodListIndex) => {
+  renderFoodItem = (j,foodListIndex) => {
     return (
       <div>
         <div className='food' style={{ display: 'flex', alignItems: 'center' }}>
@@ -139,7 +144,7 @@ class History extends React.Component<Props, State> {
             alignItems: 'center',
             paddingLeft: 20
           }}>
-            <img style={{ display: 'block', width: 90, height: 90 }} src={this.state.foodList[foodListIndex].img}/>
+            <img style={{ display: 'block', width: 90, height: 90 }} src={j.product_icon}/>
             <div style={{
               height: 105,
               display: 'flex',
@@ -147,21 +152,13 @@ class History extends React.Component<Props, State> {
               justifyContent: 'space-around',
               paddingLeft: 20
             }}>
-              <div style={{ fontSize: '16px' }}>{this.state.foodList[foodListIndex].name}</div>
+              <div style={{ fontSize: '16px' }}>{j.product_name}</div>
               <div style={{ fontSize: '16px' }}>
-                <span style={{ color: 'red' }}>￥{this.state.foodList[foodListIndex].price}</span>
-                <span style={{ color: '#8c8c8c' }}>/{this.state.foodList[foodListIndex].unit}</span>
+                <span style={{ color: 'red' }}>￥{j.product_price}</span>
+                <span style={{ color: '#8c8c8c' }}>/份</span>
               </div>
               <div style={{ display: 'flex', color: '#8c8c8c', fontSize: 14 }}>
-                <Stepper
-                  ref='stepper'
-                  className='Stepper'
-                  showNumber
-                  max={10}
-                  min={1}
-                  defaultValue={ this.state.foodList[foodListIndex].count }
-                  onChange={ (v) => { this.stepperOnChange(v,foodListIndex) } }
-                />
+                X{j.product_weight}
               </div>
             </div>
           </div>
@@ -177,7 +174,7 @@ class History extends React.Component<Props, State> {
             borderTop: '1px solid #e5e5e5'
           }}>
             <div>小计: <span
-              style={{ color: 'red' }}>￥{ this.state.foodList[foodListIndex].count * this.state.foodList[foodListIndex].price }</span>
+              style={{ color: 'red' }}>￥{ j.product_total_price }</span>
             </div>
           </div>
           <div style={{ width: 30 }}></div>
@@ -191,13 +188,13 @@ class History extends React.Component<Props, State> {
    * @param otherSupplierListIndex
    * @param foodListIndex
    */
-  renderOtherSupplier = (otherSupplierListIndex,foodListIndex) => {
+  renderOtherSupplier = (i,otherSupplierListIndex,foodListIndex) => {
     return (
-      <Button onClick={ () => { this.otherSupplierOnClick(foodListIndex,otherSupplierListIndex) }} style={{ height: 45,fontSize: 15,marginTop: 5,paddingLeft: 15,paddingRight: 15,display: 'flex',justifyContent: 'space-between',alignItems: 'center' }}>
-        <div>{this.state.foodList[foodListIndex].otherSupplierList[otherSupplierListIndex].name}</div>
+      <Button onClick={ () => { this.otherSupplierOnClick(i,foodListIndex,otherSupplierListIndex) }} style={{ height: 45,fontSize: 15,marginTop: 5,paddingLeft: 15,paddingRight: 15,display: 'flex',justifyContent: 'space-between',alignItems: 'center' }}>
+        <div>{i.company_name}</div>
         <div>
-        <span style={{ color: 'red' }}>{this.state.foodList[foodListIndex].otherSupplierList[otherSupplierListIndex].foodMsg.price}</span>
-        <span style={{ color: '#8c8c8c' }}>/{this.state.foodList[foodListIndex].otherSupplierList[otherSupplierListIndex].foodMsg.unit}</span>
+        <span style={{ color: 'red' }}>{i.product_price}</span>
+        <span style={{ color: '#8c8c8c' }}>/份</span>
         </div>
       </Button>
     )
@@ -230,17 +227,17 @@ class History extends React.Component<Props, State> {
                   <div className='checkBox'>
                   </div>
                   <img className='iconStyle' src='./assets/images/Cart/merchant.svg' />
-                  <div style={{ color: '#8C8C8C' }}>{this.state.foodList[foodListIndex].nowSupplierMsg.name}</div>
+                  <div style={{ color: '#8C8C8C' }}>{i.company_name}</div>
                 </div>
-                {this.renderFoodItem(foodListIndex)}
+                {this.renderFoodItem(i,foodListIndex)}
                 <div style={{
                   display: 'flex',
                   alignItems: 'center'
                 }}>
                 </div>
               </div>
-              {this.state.foodList[foodListIndex].otherSupplierList && this.state.foodList[foodListIndex].otherSupplierList.length ? this.state.foodList[foodListIndex].otherSupplierList.map((i,otherSupplierListIndex) => (
-                this.renderOtherSupplier(otherSupplierListIndex,foodListIndex)
+              {i.shoppingCartList && i.shoppingCartList.length ? i.shoppingCartList.map((i,otherSupplierListIndex) => (
+                this.renderOtherSupplier(i,otherSupplierListIndex,foodListIndex)
               )) : <div>该菜品暂无其他供应商</div>}
             </div>
           ))}
@@ -251,7 +248,9 @@ class History extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    productMsg: state.supplierReviseData.productMsg
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {}
