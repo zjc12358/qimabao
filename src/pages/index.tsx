@@ -15,7 +15,7 @@ import { PageTab } from '@datasources/PageTab'
 
 import { cloneDeep, get } from 'lodash'
 import '../assets/css/GeneralStyle.less'
-import { updatePageTab,updateUserInfo,setID } from '@store/actions/global_data'
+import { updatePageTab,updateUserInfo,setID,setPhone } from '@store/actions/global_data'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
@@ -28,6 +28,7 @@ export interface Props {
   updatePageTab: (pageName: string) => void
   updateUserInfo: (userInfo: UserInfo) => void
   setID: (id: number) => void
+  setPhone: (phone: string) => void
 }
 
 interface State {
@@ -65,6 +66,7 @@ class App extends React.Component<Props, State> {
               console.log('--- data =', data)
               if (data.data.code === 0) {
                 this.props.updateUserInfo(cloneDeep(data.data.data))
+                this.props.setPhone(data.data.data.user_phone)
               } else {
                 Toast.info('获取用户信息失败,请重试', 2, null, false)
               }
@@ -239,7 +241,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updateUserInfo,
   updatePageTab,
-  setID
+  setID,
+  setPhone
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

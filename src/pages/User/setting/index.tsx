@@ -34,7 +34,7 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.safeOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }} onClick={this.safeOnclick}>
           <div className={'flex-flex-end-row-center'}>
             <ReactSVG path='./assets/images/User/safe.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>安全设置</span>
@@ -45,7 +45,7 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.payOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }} onClick={this.payOnclick}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/setting_pay.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>支付设置</span>
@@ -55,7 +55,7 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.addressOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }} onClick={this.addressOnclick}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/address.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>收货地址</span>
@@ -65,7 +65,7 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.EliminateOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }} onClick={this.EliminateOnclick}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/eliminate.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>清除缓存</span>
@@ -75,7 +75,7 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.aboutOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }} onClick={this.aboutOnclick}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/about.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>关于我们</span>
@@ -85,7 +85,7 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/notice.svg' svgStyle={{ width: 22, height: 22 }}/>
             <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>开启通知</span>

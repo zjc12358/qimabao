@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '../../../store/reducers/globalDataReducer'
-import { InputItem,ActionSheet, Icon } from 'antd-mobile'
+import { InputItem, ActionSheet, Icon, Toast } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { PageTab } from '../../../datasources/PageTab'
 import { UserInfo } from '../../../datasources/UserInfo'
@@ -10,6 +10,9 @@ import { updateUserInfo, updatePageTab } from '../../../store/actions/global_dat
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import Head from '@components/Head'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
+import { cloneDeep, get } from 'lodash'
 
 export interface Props {
   pageTab: PageTab
@@ -26,6 +29,7 @@ interface State {
 }
 
 class User extends React.Component<Props, State> {
+  private input: HTMLInputElement
 
   constructor (props) {
     super(props)
@@ -36,6 +40,7 @@ class User extends React.Component<Props, State> {
       refresh: ''
     }
   }
+
   /**
    * 第一个页面，修改用户昵称
    */
@@ -49,7 +54,7 @@ class User extends React.Component<Props, State> {
         <div style={{
           padding: 15
         }}>
-          <InputItem clear/>
+          <InputItem clear ref={(c) => { this.input = c }}/>
         </div>
         <div style={{
           padding: 20
@@ -59,10 +64,29 @@ class User extends React.Component<Props, State> {
         <div style={{
           padding: 15
         }}>
-          <Button type={'primary'}>保存</Button>
+          <Button type={'primary'} onClick={this.textOnchange}>保存</Button>
         </div>
       </div>
     )
+  }
+  public textOnchange = () => {
+    let nickname: any = this.input
+    let url = 'CanteenProcurementManager/user/nail/updateMeans?'
+    let query = 'index=user_name&content=' + nickname.state.value
+    console.log(url + query)
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.props.updateUserInfo(cloneDeep(data.data.data))
+          Toast.info('修改成功', 2, null, false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
   public render () {
     return (

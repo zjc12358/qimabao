@@ -4,6 +4,8 @@ import { UserInfo } from '@datasources/UserInfo'
 export interface GlobalData {
   id: number
   userInfo: UserInfo
+  phone: string
+  iphone: string
   pageTab: string
   isFetching: boolean
   pageIndex: number
@@ -14,6 +16,8 @@ export interface GlobalData {
 const initialState: GlobalData = {
   userInfo: {} as UserInfo,
   id: 0,
+  phone: '',
+  iphone: '',
   mode: 'purchaser',
   pageTab: 'HomePageTabBar',
   isFetching: false,
@@ -54,6 +58,16 @@ export default (state = initialState, action: GlobalDataAction) => {
       return {
         ...state,
         mode: action.mode
+      }
+    case Type.SET_PHONE:
+      return {
+        ...state,
+        phone: action.phone
+      }
+    case Type.SET_IPHONE:
+      return {
+        ...state,
+        iphone: action.iphone
       }
     default:
       return state

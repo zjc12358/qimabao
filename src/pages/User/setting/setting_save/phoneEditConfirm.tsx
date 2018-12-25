@@ -5,16 +5,22 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import { Toast,Modal, List, Button, WhiteSpace, WingBlank,Icon,InputItem } from 'antd-mobile'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
+import { updateUserInfo, updatePageTab,setPhone } from '@store/actions/global_data'
 import history from 'history/createHashHistory'
 import '../../master.css'
 import Head from '@components/Head'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
+import { cloneDeep, get } from 'lodash'
 
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
+  iphone: string
+  phone: string
   updatePageTab: (pageTab: PageTab) => void
   updateUserInfo: (userInfo: UserInfo) => void
+  setPhone: (phone: string) => void
 }
 
 interface State {
@@ -37,6 +43,7 @@ class User extends React.Component<Props, State> {
   public componentDidMount () {
     document.getElementById('input1').focus()
   }
+
   /**
    * 重置密码验证码界面
    */
@@ -49,7 +56,7 @@ class User extends React.Component<Props, State> {
           <span style={{ fontSize: 16 }}> 到您的手机</span>
           <br/>
           <br/>
-          <span style={{ fontSize: 20,color: '#000000' }}>{this.state.phone.replace(/\s+/g,'').replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
+          <span style={{ fontSize: 20,color: '#000000' }}>{this.props.iphone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
         </div>
         <div className='Segment_line2'></div>
         <div style={{ backgroundColor: 'transparent',textAlign: 'center' }}>
@@ -147,6 +154,26 @@ class User extends React.Component<Props, State> {
         this.i = num + 1
       }break
     }
+    let input: any = document.getElementById('input4')
+    if (input.value.length !== 0) {
+      let confirm = this.state.data[0] + this.state.data[1] + this.state.data[2] + this.state.data[3]
+      let url = 'CanteenProcurementManager/user/nail/VerificationPhone?'
+      let query = 'phone=' + this.props.phone
+      axios.get<MyResponse<string>>(url + query)
+        .then(data => {
+          console.log('--- data =', data)
+          if (data.data.code === 0) {
+            if (confirm === '') {
+              this.props.setPhone(this.props.iphone)
+            }
+          } else {
+            Toast.info(data.data.msg, 2, null, false)
+          }
+        })
+        .catch(() => {
+          Toast.info('请检查网络设置!')
+        })
+    }
   }
 
   public render () {
@@ -164,13 +191,16 @@ class User extends React.Component<Props, State> {
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
     pageTab: state.globalData.pageTab,
-    userInfo: state.globalData.userInfo
+    userInfo: state.globalData.userInfo,
+    iphone: state.globalData.iphone,
+    phone: state.globalData.phone
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
-  updateUserInfo
+  updateUserInfo,
+  setPhone
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
