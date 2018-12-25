@@ -30,6 +30,5 @@ export const needReload = (reload: boolean) =>
 export const updataAllSupplierItemCheck = (allSupplierItemCheck: boolean) =>
   (dispatch) => dispatch({
     type: Type.UPDATA_ALLSUPPLIERITEMCHECK,
-    AllSupplierCheckBoolean: allSupplierItemCheck,
-    reload: true
+    AllSupplierCheckBoolean: allSupplierItemCheck
   })

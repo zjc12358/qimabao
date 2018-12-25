@@ -17,15 +17,20 @@ import Drawer from '@material-ui/core/Drawer'
 import SupplierInfo from '@pages/Supplier/supplierInfo/supplierInfo'
 import { MyResponse } from '@datasources/MyResponse'
 import { SupplierStateInfoBean } from '@datasources/SupplierStateInfoBean'
+import { updateAppointmentState, updateBusinessState, updateSupplierInfo } from '@store/actions/supplier_info_data'
 
 export interface Props {
   changeMode: (model: 'supplier' | 'purchaser') => void
+  updateSupplierInfo: (supplierStateInfo: SupplierStateInfoBean) => void
+  supplierStateInfo: SupplierStateInfoBean
+  updateBusinessState: (state: 'Y' | 'N') => void
+  updateAppointmentState: (state: 'Y' | 'N') => void
 }
 
 interface State {
   data: any
   dataShop: any
-  loading: boolean
+  isLoading: boolean
   drawerOpen: boolean
 }
 
@@ -40,7 +45,7 @@ class Supplier extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      loading: true,
+      isLoading: false,
       data: [1, 17, 143, 5, 0],
       dataShop: [3, 10, 5, 0],
       drawerOpen: false
@@ -48,6 +53,8 @@ class Supplier extends React.Component<Props, State> {
   }
 
   componentDidMount () {
+    // 获取供应商详情
+    this.getSupplierInfo()
     // 基于准备好的dom，初始化echarts实例
     let myChart = eCharts.init(document.getElementById('main'))
     // 绘制图表
@@ -404,19 +411,33 @@ class Supplier extends React.Component<Props, State> {
    * 获取供应商信息
    */
   getSupplierInfo () {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
     let url = 'CanteenProcurementManager/supplier/info/findSupplierInfo'
     let query = ''
     axios.get<MyResponse<SupplierStateInfoBean>>(url + query)
       .then(data => {
         console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
         if (data.data.code === 0) {
-          console.log(1)
+          this.props.updateSupplierInfo(data.data.data)
+          this.props.updateBusinessState(data.data.data.supplier_normal_business)
+          this.props.updateAppointmentState(data.data.data.supplier_appointment)
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
       })
       .catch(() => {
         Toast.info('请检查网络设置!')
+        this.setState({
+          isLoading: false
+        })
       })
 
   }
@@ -438,11 +459,16 @@ class Supplier extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    supplierStateInfo: state.SupplierInfoDate.supplierStateInfo
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  changeMode
+  changeMode,
+  updateSupplierInfo,
+  updateBusinessState,
+  updateAppointmentState
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)
