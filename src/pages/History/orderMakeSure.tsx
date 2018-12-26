@@ -10,6 +10,8 @@ import Head from '../../components/Head/index'
 import history from 'history/createHashHistory'
 import { needReload, updataOrderMakeSure } from '@store/actions/oderMakeSure_data'
 import { OrderMakeSureBean } from '@datasources/OrderMakeSureBean'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
 
 const nowTimeStamp = Date.now()
 const now = new Date(nowTimeStamp)
@@ -37,6 +39,8 @@ interface State {
   modal1: boolean,
   modal2: boolean,
   dateChooseData: any,
+  buyMsg: any,
+  fullscreen: boolean
 }
 
 function closest (el, selector) {
@@ -68,7 +72,9 @@ class History extends React.Component<Props, State> {
       enddpValue: 0,
       dateValue1: '',
       dateValue2: '',
-      orderData: this.props.orderData
+      orderData: this.props.orderData,
+      buyMsg: '',
+      fullscreen: false
     }
   }
 
@@ -138,8 +144,8 @@ class History extends React.Component<Props, State> {
    * 获取当前时间  -------- 本机时间
    */
   getNowTime = () => {
-    let dd = new Date()
-    return dd
+    let nd = new Date()
+    return nd
   }
 
   /**
@@ -147,7 +153,7 @@ class History extends React.Component<Props, State> {
    */
   subOnChange = (e) => {
     if (this.state.timeIsSet === true) {
-      this.setState({ modal2: true })
+      this.submite()
     } else {
       Toast.info('请选择配送时间!',2,null,false)
       this.showModal(e,1)
@@ -169,6 +175,50 @@ class History extends React.Component<Props, State> {
     return dpValue
   }
 
+  foramatteDateYDH = (dateValue) => {
+    let da = new Date(dateValue)
+    let year = da.getFullYear()
+    let month = da.getMonth() + 1
+    let date = da.getDate()
+    let hour = da.getHours()
+    let minutes = da.getMinutes()
+    let second = da.getSeconds()
+    let month2
+    let date2
+    let hour2
+    let minutes2
+    let second2
+    if (month < 10) {
+      month2 = '0' + month
+      console.log(month2)
+    } else {
+      month2 = month
+    }
+    if (date < 10) {
+      date2 = '0' + date
+    } else {
+      date2 = date
+    }
+    if (hour < 10) {
+      hour2 = '0' + hour
+    } else {
+      hour2 = hour
+    }
+    if (minutes < 10) {
+      minutes2 = '0' + minutes
+    } else {
+      minutes2 = minutes
+    }
+    if (second < 10) {
+      second2 = '0' + second
+    } else {
+      second2 = second
+    }
+    let dateStr = year + '-' + month2 + '-' + date2 + ' ' + hour2 + ':' + minutes2 + ':' + second2
+    console.log(dateStr)
+    return dateStr
+  }
+
   datePickerOpen = (type) => {
     if (type === 1) {
       this.setState({ startVisible: true })
@@ -176,6 +226,30 @@ class History extends React.Component<Props, State> {
       if (this.state.startdpValue) this.setState({ endVisible: true })
       else Toast.info('请先选择起始时间！',2,null,false)
     }
+  }
+
+  submite = () => {
+    let dateValue1 = this.foramatteDateYDH(this.state.dateValue1)
+    let dateValue2 = this.foramatteDateYDH(this.state.dateValue2)
+    Toast.loading('loading...', 0)
+    let url = 'CanteenProcurementManager/user/productOrder/submitProductOrder?'
+    let query = 'orderDeliveryTime=' + dateValue1 + '&orderOverTime=' + dateValue2 + '&orderId=' + this.props.orderId + '&orderMessage=' + this.state.buyMsg
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- 购物车data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            fullscreen: false
+          })
+          Toast.hide()
+          this.setState({ modal2: true })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   /*
@@ -340,6 +414,11 @@ class History extends React.Component<Props, State> {
               <TextareaItem
                 style={{ height: 85,fontSize: 15 }}
                 placeholder='选填：对本次交易的说明（建议填写...'
+                onBlur={ (e) => {
+                  this.setState({ buyMsg: e },() => {
+                    console.log(this.state.buyMsg)
+                  })
+                }}
               />
             </div>
             <div style={{ display: 'flex',padding: '10px 0' }}>
@@ -348,9 +427,10 @@ class History extends React.Component<Props, State> {
             </div>
           </div>
         </div>
+        <div style={{ height: 50 }}></div>
         <div style={{ width: '100vw',display: 'flex',height: 50,alignItems: 'center',backgroundColor: 'white',position: 'fixed',bottom: 0 }}>
           <div style={{ flex: 1 }}></div>
-          <div style={{ color: 'red',paddingRight: 20 }}>￥31</div>
+          <div style={{ color: 'red',paddingRight: 20 }}>￥{this.props.total}</div>
           <Button type='primary' style={{ height: 50,width: 120,borderRadius: 0 }}
                onClick={this.subOnChange}
           >提交订单</Button>
@@ -383,7 +463,9 @@ class History extends React.Component<Props, State> {
           <List renderHeader={() => '选择送达时间'} className='popup-list'>
             {this.renderSetTime()}
             <List.Item>
-              <Button type='primary' onClick={ () => this.onClose(1)}>确定</Button>
+              <Button type='primary' onClick={ () => {
+                this.onClose(1)
+              }}>确定</Button>
             </List.Item>
           </List>
         </Modal>

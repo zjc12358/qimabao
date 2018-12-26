@@ -160,7 +160,6 @@ class User extends React.Component<Props, State> {
           isLoading: false
         })
       })
-
   }
 
   public render () {

@@ -68,23 +68,28 @@
 .my-address-item {
   justify-content: space-between;
   height: 60px;
-  padding-left: 10px;
-  padding-right: 10px;
+  width: 100%;
+  background-color: white;
 }
 
 .my-address-item-info {
   height: 60px;
+  padding-left: 15px;
+  width: 80%;
+  align-items: flex-start;
 }
 
 .my-address-item-top {
   margin-top: 10px;
   font-size: 16px;
+  width: 100%;
 }
 
 .my-address-item-bottom {
   margin-top: 10px;
   font-size: 14px;
   color: #a6a6a6;
+  width: 100%;
 }
 
 .more-address {

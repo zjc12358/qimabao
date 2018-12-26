@@ -121,7 +121,7 @@ class Home extends React.Component<Props, State> {
           </div>
           <div className='horizontal-center' style={{
             flex: 1, marginLeft: 5
-          }} onClick={this.scanOnclick} >
+          }} onClick={this.scanOnclick}>
             <ReactSVG path='./assets/images/scan_one_scan.svg' svgStyle={{ width: 20, height: 20 }}/>
           </div>
           <div className='horizontal-center' style={{
@@ -301,6 +301,15 @@ class Home extends React.Component<Props, State> {
         <div className='touch_scroll scroll bigContent'
              style={{ paddingTop: 50 }}>
           {this.renderCarousel()}
+        </div>
+        <div>
+          <form name='punchout_form' method='post'
+                action='https://openapi.alipay.com/gateway.do?charset=utf-8&method=alipay.trade.page.pay&sign=bI4KVDoDp2gKwbI4AXf3pIyeSVjZPVuRlQ7IQV5N0O8dkqWwN%2BQCNbL5BwkohLDQuhcWfSKkz0pHmi0eCJ%2BlImTk9ik4Ws87Qs3h85n3zV2WbHgP0K640cUw6klSDsebH4acE2sdSigQgWidE%2FSk95s8y9vx8Hf2%2Bl%2B9ies9qxGi%2FIzuTETjvGpRPS2vnmdrBHO8hjhAGewp0tdy1gjIL8%2FLEHLVUC8TD2AIpD2w%2BPwGxXxzJaGoYwllgVe4UqmlSkG%2F3pnbjIdVDVkgrp50aY%2FX8%2FjIlEw6akPxB3FmYZrUqETd7MZUdOuubBiTuuSnAhRTEvSdMCb7J6lgFtm0YQ%3D%3D&return_url=%E4%BD%A0%E7%9A%84%E5%9B%9E%E8%B0%83%E9%A1%B5%E9%9D%A2&notify_url=%E4%BD%A0%E7%9A%84%E5%BC%82%E6%AD%A5%E9%80%9A%E7%9F%A5%E9%A1%B5%E9%9D%A2&version=1.0&app_id=2018112762324780&sign_type=RSA2&timestamp=2018-12-26+13%3A21%3A53&alipay_sdk=alipay-sdk-java-3.3.2&format=json'>
+            <input type='hidden' name='biz_content'
+                   value='{&quot;out_trade_no&quot;:&quot;dasdas&quot;,&quot;total_amount&quot;:&quot;41&quot;,&quot;subject&quot;:&quot;dasad&quot;,&quot;timeout_express&quot;:&quot;90m&quot;,&quot;body&quot;:&quot;dasda&quot;,&quot;product_code&quot;:&quot;FAST_INSTANT_TRADE_PAY&quot;}'/>
+            <input type='submit' value='立即支付' style={{ display: 'none' }}/>
+          </form>
+          <script>document.forms[0].submit();</script>
         </div>
       </div>
     )

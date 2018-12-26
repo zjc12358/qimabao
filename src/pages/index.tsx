@@ -15,11 +15,12 @@ import { PageTab } from '@datasources/PageTab'
 
 import { cloneDeep, get } from 'lodash'
 import '../assets/css/GeneralStyle.less'
-import { updatePageTab,updateUserInfo,setID,setPhone } from '@store/actions/global_data'
+import { updatePageTab, updateUserInfo, setID, setPhone } from '@store/actions/global_data'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
 import { UserInfo } from '@datasources/UserInfo'
+import { Loading } from 'element-react'
 import * as dd from 'dingtalk-jsapi'
 
 export interface Props {
@@ -36,6 +37,7 @@ interface State {
   selectedTabBar: string
   pageContent: JSX.Element
   hidden: boolean
+  isLoading: boolean
 }
 
 class App extends React.Component<Props, State> {
@@ -45,7 +47,8 @@ class App extends React.Component<Props, State> {
     this.state = {
       selectedTabBar: 'HomePageTabBar',
       pageContent: null,
-      hidden: false
+      hidden: false,
+      isLoading: false
     }
   }
 
@@ -62,6 +65,14 @@ class App extends React.Component<Props, State> {
   public getLogin = (res) => {
     let url = 'CanteenProcurementManager/user/nail/tinkerFree?'
     let query = 'AuthCode=' + res.code
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
+    let query = 'openId=maoxiaoyan'
     axios.get<MyResponse<LoginBean>>(url + query)
       .then(data => {
         console.log('--- data =', data)
@@ -78,16 +89,28 @@ class App extends React.Component<Props, State> {
               } else {
                 Toast.info('获取用户信息失败,请重试', 2, null, false)
               }
+              this.setState({
+                isLoading: false
+              })
             })
             .catch(() => {
               Toast.info('请检查网络设置!')
+              this.setState({
+                isLoading: false
+              })
             })
         } else {
           Toast.info('登录失败', 2, null, false)
+          this.setState({
+            isLoading: false
+          })
         }
       })
       .catch(() => {
         Toast.info('请检查网络设置!')
+        this.setState({
+          isLoading: false
+        })
       })
   }
   componentDidMount () {
@@ -111,12 +134,14 @@ class App extends React.Component<Props, State> {
           }}
         >
           {this.renderTabBar()}
+          {this.state.isLoading && <Loading fullscreen={true}/>}
         </div>
       )
     } else {
       return (
         <div>
           <Supplier/>
+          {this.state.isLoading && <Loading fullscreen={true}/>}
         </div>
       )
     }

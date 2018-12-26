@@ -13,6 +13,7 @@ import addressDetailDataReducer from '@store/reducers/addressDetailDataReducer'
 import supplierReviseDataReducer from '@store/reducers/supplierReviseDataReducer'
 import productAfterSaleDataReducer from '@store/reducers/productAfterSaleDataReducer'
 import SupplierInfoDataReducer from '@store/reducers/SupplierInfoDataReducer'
+import releaseDataReducer from '@store/reducers/releaseDataReducer'
 
 const rootReducer = combineReducers<any>({
   globalData: globalDataReducer as any,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers<any>({
   addressDetailData: addressDetailDataReducer as any,
   supplierReviseData: supplierReviseDataReducer as any,
   productAfterSaleData: productAfterSaleDataReducer as any,
-  SupplierInfoDate: SupplierInfoDataReducer as any
+  SupplierInfoDate: SupplierInfoDataReducer as any,
+  releaseData: releaseDataReducer as any
 })
 
 export default rootReducer

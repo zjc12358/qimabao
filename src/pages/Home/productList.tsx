@@ -592,6 +592,14 @@ class Home extends React.Component<Props, State> {
       pageNum: this.state.pageNum,
       pageSize: NUM_ROWS
     }
+    // let data = new FormData()
+    // data.append('categoryClassId', JSON.stringify(this.state.categoryClassId))
+    // data.append('categoryId', JSON.stringify(this.state.minPrice))
+    // data.append('highestPrice', JSON.stringify(this.state.maxPrice))
+    // data.append('mode', JSON.stringify(this.getMode(this.state.sortIndex)))
+    // data.append('label', JSON.stringify(this.getLabel()))
+    // data.append('pageNum', JSON.stringify(this.state.pageNum))
+    // data.append('pageSize', JSON.stringify(NUM_ROWS))
     let data = JSON.stringify(param)
     data = encodeURI(data)
     let query = 'condition=' + data

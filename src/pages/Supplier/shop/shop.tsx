@@ -63,8 +63,8 @@ class Shop extends React.Component<Props, State> {
       <div className='topBackground'>
         <div className='shopMsgBox'>
           <div className='shopMsg'>
-            <img src='./assets/images/SupplierTest/user_logo.jpg'/>
-            <div className='shopName'>衢州超彩软件有限公司</div>
+            <img src={this.props.supplierStateInfo.supplier_icon}/>
+            <div className='shopName'>{this.props.supplierStateInfo.supplier_name}</div>
             <div className='starGroup'>
               {[1, 2, 3, 4, 5].map(i => (
                 <ReactSVG svgClassName='start' path='./assets/images/Supplier/star.svg'/>
