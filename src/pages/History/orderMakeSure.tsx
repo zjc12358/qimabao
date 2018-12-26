@@ -427,6 +427,7 @@ class History extends React.Component<Props, State> {
             </div>
           </div>
         </div>
+        <div style={{ height: 50 }}></div>
         <div style={{ width: '100vw',display: 'flex',height: 50,alignItems: 'center',backgroundColor: 'white',position: 'fixed',bottom: 0 }}>
           <div style={{ flex: 1 }}></div>
           <div style={{ color: 'red',paddingRight: 20 }}>￥{this.props.total}</div>
@@ -464,9 +465,6 @@ class History extends React.Component<Props, State> {
             <List.Item>
               <Button type='primary' onClick={ () => {
                 this.onClose(1)
-                let dateValue = this.state.dateValue1
-                // date = date + ''
-                // date = date.replace(/ GMT.+$/, '')// Or str = str.substring(0, 24)
               }}>确定</Button>
             </List.Item>
           </List>
