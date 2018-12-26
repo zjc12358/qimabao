@@ -69,6 +69,16 @@ export default (state = initialState, action: GlobalDataAction) => {
         ...state,
         iphone: action.iphone
       }
+    case Type.UPDATEUSERNAME:
+      return {
+        ...state,
+        userInfo: Object.assign({}, state.userInfo, { user_name: action.name })
+      }
+    case Type.UPDATEUSERSEX:
+      return {
+        ...state,
+        userInfo: Object.assign({}, state.userInfo, { user_sex: action.sex })
+      }
     default:
       return state
   }

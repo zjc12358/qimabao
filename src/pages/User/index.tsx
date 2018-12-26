@@ -5,6 +5,7 @@ import { NavBar, Icon, Toast } from 'antd-mobile'
 import { updateUserInfo, updatePageTab, changeMode } from '@store/actions/global_data'
 import { changeTab } from '@store/actions/productOrder_data'
 import { UserInfo } from '@datasources/UserInfo'
+import { NewestOrder } from '@datasources/NewestOrder'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import Badge from '@components/Badge'
@@ -23,6 +24,7 @@ export interface Props {
 
 interface State {
   userInfo: UserInfo
+  NewestOrder: NewestOrder
 }
 
 let OrderIconMaxSize: number = 35
@@ -34,11 +36,16 @@ class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      userInfo: this.props.userInfo
+      userInfo: this.props.userInfo,
+      NewestOrder: {} as NewestOrder
     }
   }
 
   public componentDidMount () {
+    setInterval(
+      () => this.getNewestOrder(),
+      1000
+    )
     window.console.log(window.navigator)
   }
 
@@ -205,7 +212,7 @@ class User extends React.Component<Props, State> {
               whiteSpace: 'nowrap',
               width: '100%',
               display: 'block'
-            }} onClick={this.testLogin}>{this.state.userInfo.user_name}</span>
+            }}>{this.state.userInfo.user_name}</span>
           </div>
         </div>
       </div>
@@ -317,8 +324,8 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             paddingLeft: 10
           }} onClick={this.orderOnclick}>
-            <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '微软雅黑' }}>待付款</span>
-            <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>9分钟后订单关闭</span>
+            <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '微软雅黑' }}>{this.state.NewestOrder.pay_status}</span>
+            <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>{this.state.NewestOrder.over_time}分钟后订单关闭</span>
           </div>
         </div>
         <div style={{ height: 'auto' }}>
@@ -484,21 +491,18 @@ class User extends React.Component<Props, State> {
   }
 
   /**
-   * 测试模拟用户登录
+   * 获取最新订单
    */
-  testLogin = () => {
-    let head = {
-      'date': new Date(),
-      'transfer-encoding': 'chunked',
-      'content-type': 'application/json;charset=UTF-8'
-    }
-    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
-    let query = 'openId=maoxiaoyan'
-    axios.get<MyResponse<LoginBean>>(url + query)
+  getNewestOrder = () => {
+    let url = 'CanteenProcurementManager/user/productOrder/newestOrder'
+    let query = ''
+    axios.get<MyResponse<any>>(url + query)
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          Toast.info('登录成功', 2, null, false)
+          this.setState({
+            NewestOrder: data.data.data
+          })
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }

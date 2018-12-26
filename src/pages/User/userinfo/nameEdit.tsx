@@ -6,7 +6,7 @@ import { InputItem, ActionSheet, Icon, Toast } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { PageTab } from '../../../datasources/PageTab'
 import { UserInfo } from '../../../datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
+import { updateUserName, updatePageTab } from '../../../store/actions/global_data'
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import Head from '@components/Head'
@@ -18,7 +18,7 @@ export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
   updatePageTab: (pageTab: string) => void
-  updateUserInfo: (userInfo: UserInfo) => void
+  updateUserName: (name: string) => void
 }
 
 interface State {
@@ -78,7 +78,7 @@ class User extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          this.props.updateUserInfo(cloneDeep(data.data.data))
+          this.props.updateUserName(cloneDeep(nickname.state.value))
           Toast.info('修改成功', 2, null, false)
         } else {
           Toast.info(data.data.msg, 2, null, false)
@@ -106,7 +106,7 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
-  updateUserInfo
+  updateUserName
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

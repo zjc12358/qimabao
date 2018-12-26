@@ -6,7 +6,7 @@ import { InputItem, ActionSheet, Icon, Toast } from 'antd-mobile'
 import Button from 'antd-mobile/lib/button'
 import { PageTab } from '../../../datasources/PageTab'
 import { UserInfo } from '../../../datasources/UserInfo'
-import { updateUserInfo, updatePageTab } from '../../../store/actions/global_data'
+import { updateUserInfo,updateUserSex, updatePageTab } from '../../../store/actions/global_data'
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import axios from 'axios'
@@ -18,6 +18,7 @@ import ReactSVG from 'react-svg'
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
+  updateUserSex: (sex: string) => void
   updatePageTab: (pageTab: string) => void
   updateUserInfo: (userInfo: UserInfo) => void
 }
@@ -177,10 +178,46 @@ class User extends React.Component<Props, State> {
     })
   }
   manOnClick = () => {
-    return
+    let url = 'CanteenProcurementManager/user/nail/updateMeans?'
+    let query = 'index=user_sex&content=' + '男'
+    console.log(url + query)
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.props.updateUserSex('男')
+          this.setState({
+            userInfo: Object.assign({}, this.state.userInfo, { user_sex: '男' })
+          })
+          Toast.info('修改成功', 2, null, false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
   womanOnClick = () => {
-    return
+    let url = 'CanteenProcurementManager/user/nail/updateMeans?'
+    let query = 'index=user_sex&content=' + '男'
+    console.log(url + query)
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.props.updateUserSex('女')
+          this.setState({
+            userInfo: Object.assign({}, this.state.userInfo, { user_sex: '女' })
+          })
+          Toast.info('修改成功', 2, null, false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   public render () {
@@ -201,7 +238,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
-  updateUserInfo
+  updateUserInfo,
+  updateUserSex
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

@@ -9,7 +9,9 @@ export enum Type {
   CHANGE_MODE = 'CHANGE_MODE',
   SET_ID = 'SET_ID',
   SET_PHONE = 'SET_PHONE',
-  SET_IPHONE = 'SET_IPHONE'
+  SET_IPHONE = 'SET_IPHONE',
+  UPDATEUSERNAME = 'UPDATEUSERNAME',
+  UPDATEUSERSEX = 'UPDATEUSERSEX'
 }
 
 export interface GlobalDataAction extends Action {
@@ -17,6 +19,8 @@ export interface GlobalDataAction extends Action {
   type: Type
   mode: 'supplier' | 'purchaser'
   userInfo: UserInfo
+  name: string
+  sex: string
   phone: string
   iphone: string
   pageIndex: number
@@ -30,6 +34,12 @@ export const setID = (id: number) =>
 
 export const updateUserInfo = (userInfo: UserInfo) =>
   (dispatch) => dispatch({ type: Type.UPDATE_USERINFO, userInfo })
+
+export const updateUserName = (name: string) =>
+  (dispatch) => dispatch({ type: Type.UPDATEUSERNAME, name })
+
+export const updateUserSex = (sex: string) =>
+  (dispatch) => dispatch({ type: Type.UPDATEUSERSEX, sex })
 
 export const addPageIndex = (pageIndex: number) =>
   (dispatch) => dispatch({ type: Type.ADD_PAGEINDEX, pageIndex })

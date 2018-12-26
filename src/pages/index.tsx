@@ -20,6 +20,7 @@ import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
 import { UserInfo } from '@datasources/UserInfo'
+import * as dd from 'dingtalk-jsapi'
 
 export interface Props {
   id: number
@@ -52,8 +53,15 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
-    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
-    let query = 'openId=maoxiaoyan'
+    dd.runtime.permission.requestAuthCode(
+      { corpId: 'dingff2af124327c79bd35c2f4657eb6378f' }
+    )
+      .then(res => this.getLogin(res))
+      .catch(err => console.log(err))
+  }
+  public getLogin = (res) => {
+    let url = 'CanteenProcurementManager/user/nail/tinkerFree?'
+    let query = 'AuthCode=' + res.code
     axios.get<MyResponse<LoginBean>>(url + query)
       .then(data => {
         console.log('--- data =', data)
@@ -82,7 +90,6 @@ class App extends React.Component<Props, State> {
         Toast.info('请检查网络设置!')
       })
   }
-
   componentDidMount () {
     console.log(this.props.pageTab)
     this.onTabBarSelectChange(this.props.pageTab)
