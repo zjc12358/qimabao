@@ -270,48 +270,6 @@ class Menu extends React.Component<Props, State> {
   }
 
   /**
-   * 获取菜谱列表
-   */
-  // getMenuList () {
-  //   if (this.props.reload) {
-  //     // TODO 2018/11/9 请求获取菜谱数据
-  //     console.log('获取菜谱数据')
-  //     let menuList: Array<MenuBean> = []
-  //     for (let i = 0; i < 5; i++) {
-  //       let productList: Array<ProductBean> = []
-  //       let productNameList: Array<string> = []
-  //       for (let i = 0; i < Math.random() * 20; i++) {
-  //         let product: ProductBean = {
-  //           product_id: i,
-  //           product_icon: '',
-  //           supplier_name: '蓝宇科技',
-  //           product_description: '和大家看撒谎的空间撒活动撒U盾OS爱都殴打的萨达哈萨克的哈萨克的哈萨克的哈萨克',
-  //           product_price: 1,
-  //           product_weight: '500g',
-  //           product_name: '商品' + (Math.random() * 10000).toFixed(0),
-  //           supplier_id: 0
-  //         }
-  //         let name = '商品' + i
-  //         productNameList.push(name)
-  //         productList.push(product)
-  //       }
-  //       let menuItem: MenuBean = {
-  //         productList: productList,
-  //         menuName: '菜谱' + i,
-  //         isShow: i === 0,
-  //         isCheck: i === 0,
-  //         id: i,
-  //         productNameList: productNameList
-  //       }
-  //       menuList.push(menuItem)
-  //
-  //     }
-  //     this.props.updateMenuList(menuList)
-  //     this.props.setReload(false)
-  //   }
-  // }
-
-  /**
    * 根据日期请求,是否下单信息
    */
   getDataHadOrderInfo = () => {

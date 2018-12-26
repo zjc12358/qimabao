@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { List,InputItem,Button } from 'antd-mobile'
+import { List, InputItem, Button } from 'antd-mobile'
 import Drawer from '@material-ui/core/Drawer'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
@@ -18,7 +18,9 @@ interface State {
   data: any,
   openDrawer: boolean
 }
+
 let IconMaxSize: number = 30
+
 class Withdrawal extends React.Component<Props, State> {
 
   constructor (props) {
@@ -46,7 +48,7 @@ class Withdrawal extends React.Component<Props, State> {
         onClick={this.toggleDrawer(true)}
       >
         <div className={'brankWrap'}>
-          <img style={{ width: 60,height: 60 }} src='./assets/images/SupplierTest/bank.png' alt=''/>
+          <img style={{ width: 60, height: 60 }} src='./assets/images/SupplierTest/bank.png' alt=''/>
           <div className='brankMsg'>
             <div>中国工商银行</div>
             <div className='fontGray' style={{ fontSize: 14 }}>624745456454564546456</div>
@@ -61,9 +63,9 @@ class Withdrawal extends React.Component<Props, State> {
    * @param height
    * @param text
    */
-  renderPrompt = (height,text) => {
+  renderPrompt = (height, text) => {
     return (
-      <div className='prompt' style={{ height: height }} >
+      <div className='prompt' style={{ height: height }}>
         <div className='point'></div>
         <div style={{ flex: 1 }}>
           {text}
@@ -90,7 +92,7 @@ class Withdrawal extends React.Component<Props, State> {
             <InputItem
               placeholder='最低100最高5万'
               moneyKeyboardAlign='left'
-              style={{ flex: 1,fontSize: 14 }}
+              style={{ flex: 1, fontSize: 14 }}
               type={'money'}
             />
           </div>
@@ -132,7 +134,7 @@ class Withdrawal extends React.Component<Props, State> {
               <div style={{ height: '44px' }}>
                 <ReactSVG
                   onClick={this.toggleDrawer(false)}
-                  style={{ position: 'absolute',left: 15 }}
+                  style={{ position: 'absolute', left: 15 }}
                   svgClassName='drawerDeleteIcon'
                   path='./assets/images/Supplier/drawerDelete.svg'
                 />
@@ -147,6 +149,7 @@ class Withdrawal extends React.Component<Props, State> {
               <List.Item
                 arrow='horizontal'
                 className='drawerItem'
+                onClick={this.goBank}
               >
                 <img src='./assets/images/Supplier/brankCard.svg' alt=''/>
                 添加银行卡
@@ -156,6 +159,13 @@ class Withdrawal extends React.Component<Props, State> {
         </Drawer>
       </div>
     )
+  }
+
+  /**
+   * 跳转添加银行卡
+   */
+  goBank = () => {
+    history().push('/addBankCard')
   }
 
   public render () {
@@ -168,9 +178,9 @@ class Withdrawal extends React.Component<Props, State> {
           leftIconColor='white'
         />
         {this.renderChooseBank()}
-        {this.renderPrompt(45,'请检查账号类别及账号，确保是提现您本人的账号')}
+        {this.renderPrompt(45, '请检查账号类别及账号，确保是提现您本人的账号')}
         {this.renderWidthdwral()}
-        {this.renderPrompt(90,'提现须向第三方交纳一定金额的手续费，提现到账时间3-7个工作日，请耐心等待。如超过7个工作日仍未到账请联系客服。')}
+        {this.renderPrompt(90, '提现须向第三方交纳一定金额的手续费，提现到账时间3-7个工作日，请耐心等待。如超过7个工作日仍未到账请联系客服。')}
         {this.renderMakeSure()}
         {this.renderBottomDrawer()}
       </div>

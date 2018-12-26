@@ -21,6 +21,8 @@ import Describe from './pages/Supplier/release/describe'
 /*描述*/
 import Withdrawal from './pages/Supplier/withdrawal/withdrawal'
 /*提现*/
+import AddBankCard from './pages/Supplier/addBankCard/index'
+/*添加银行卡*/
 import Detection from './pages/Supplier/detection/index'
 /*检测申请*/
 import SupplierAfterSale from './pages/Supplier/afterSale/index'
@@ -148,6 +150,7 @@ ReactDOM.render(
         <Route path='/release' component={Release}/>
         <Route path='/describe' component={Describe}/>
         <Route path='/withdrawal' component={Withdrawal}/>
+        <Route path='/addBankCard' component={AddBankCard}/>
         <Route path='/sProductList' component={SProductList}/>
         <Route path='/supplierOrder' component={SupplierOrder}/>
         <Route path='/detection' component={Detection}/>
