@@ -175,6 +175,50 @@ class History extends React.Component<Props, State> {
     return dpValue
   }
 
+  foramatteDateYDH = (dateValue) => {
+    let da = new Date(dateValue)
+    let year = da.getFullYear()
+    let month = da.getMonth() + 1
+    let date = da.getDate()
+    let hour = da.getHours()
+    let minutes = da.getMinutes()
+    let second = da.getSeconds()
+    let month2
+    let date2
+    let hour2
+    let minutes2
+    let second2
+    if (month < 10) {
+      month2 = '0' + month
+      console.log(month2)
+    } else {
+      month2 = month
+    }
+    if (date < 10) {
+      date2 = '0' + date
+    } else {
+      date2 = date
+    }
+    if (hour < 10) {
+      hour2 = '0' + hour
+    } else {
+      hour2 = hour
+    }
+    if (minutes < 10) {
+      minutes2 = '0' + minutes
+    } else {
+      minutes2 = minutes
+    }
+    if (second < 10) {
+      second2 = '0' + second
+    } else {
+      second2 = second
+    }
+    let dateStr = year + '-' + month2 + '-' + date2 + ' ' + hour2 + ':' + minutes2 + ':' + second2
+    console.log(dateStr)
+    return dateStr
+  }
+
   datePickerOpen = (type) => {
     if (type === 1) {
       this.setState({ startVisible: true })
@@ -185,9 +229,11 @@ class History extends React.Component<Props, State> {
   }
 
   submite = () => {
+    let dateValue1 = this.foramatteDateYDH(this.state.dateValue1)
+    let dateValue2 = this.foramatteDateYDH(this.state.dateValue2)
     Toast.loading('loading...', 0)
     let url = 'CanteenProcurementManager/user/productOrder/submitProductOrder?'
-    let query = 'orderDeliveryTime=' + this.state.startdpValue + '&orderOverTime=' + this.state.enddpValue + '&orderId=' + this.props.orderId + '&orderMessage=' + this.state.buyMsg
+    let query = 'orderDeliveryTime=' + dateValue1 + '&orderOverTime=' + dateValue2 + '&orderId=' + this.props.orderId + '&orderMessage=' + this.state.buyMsg
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
         console.log('--- 购物车data =', data)
@@ -418,6 +464,9 @@ class History extends React.Component<Props, State> {
             <List.Item>
               <Button type='primary' onClick={ () => {
                 this.onClose(1)
+                let dateValue = this.state.dateValue1
+                // date = date + ''
+                // date = date.replace(/ GMT.+$/, '')// Or str = str.substring(0, 24)
               }}>确定</Button>
             </List.Item>
           </List>

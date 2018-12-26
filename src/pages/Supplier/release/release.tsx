@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TextareaItem, List, InputItem, Button, ImagePicker, Carousel, Toast } from 'antd-mobile'
+// import { Carousel } from 'element-react'
 import Drawer from '@material-ui/core/Drawer'
 import axios from 'axios'
 import { cloneDeep, get } from 'lodash'
@@ -21,7 +22,14 @@ interface State {
   openDrawer: boolean,
   files: Array<any>,
   multiple: boolean,
-  productData: any
+  productData: any,
+  productName: string,
+  categoryId: number,
+  categoryClassId: number,
+  productPrice: number,
+  productStock: number,
+  productLabel: string,
+  productDescription: string
 }
 let IconMaxSize: number = 30
 class Release extends React.Component<Props, State> {
@@ -33,7 +41,14 @@ class Release extends React.Component<Props, State> {
       openDrawer: false,
       files: [],
       multiple: false,
-      productData: {}
+      productData: {},
+      productName: '',
+      categoryId: null,
+      categoryClassId: null,
+      productPrice: null,
+      productStock: null,
+      productLabel: '',
+      productDescription: ''
     }
   }
 
@@ -42,9 +57,34 @@ class Release extends React.Component<Props, State> {
   }
 
   submite = () => {
-    let url = 'CanteenProcurementManager/user/ProductInfo/releaseProduct?'
-    let query = 'productName=大头鱼&categoryId=1&categoryClassId=1&productPrice=15&productStock=100&productLabel=有机&productDescription=dhsajdksadshas&files=' + this.state.files
-    axios.get<MyResponse<any>>(url + query)
+    let url = 'CanteenProcurementManager/user/ProductInfo/releaseProduct'
+    // let query = 'productName=大头鱼&categoryId=1&categoryClassId=1&productPrice=15&productStock=100&productLabel=有机&productDescription=dhsajdksadshas&files=' + this.state.files
+    let data = {
+      productName: '大头鱼',
+      categoryId: 1,
+      categoryClassId: 1,
+      productPrice: 15,
+      productStock: 100,
+      productLabel: '有机 ',
+      productDescription: 'dhsajdksadshas',
+      files: this.state.files
+    }
+    // let data2 = JSON.stringify(data)
+    let ret = ''
+    for (let it in data) {
+      ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+    }
+    console.log(ret)
+    let fd = new FormData()
+    fd.append('productName', JSON.stringify(data.productName))
+    fd.append('categoryId', JSON.stringify(data.categoryId))
+    fd.append('categoryClassId', JSON.stringify(data.categoryClassId))
+    fd.append('productPrice', JSON.stringify(data.productPrice))
+    fd.append('productStock', JSON.stringify(data.productStock))
+    fd.append('productLabel', JSON.stringify(data.productLabel))
+    fd.append('productDescription', JSON.stringify(data.productDescription))
+    fd.append('files', JSON.stringify(data.files))
+    axios.post(url,fd,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
@@ -94,7 +134,8 @@ class Release extends React.Component<Props, State> {
         <div className={'readImages'}>
           <ReactSVG svgClassName={'delectUp ' + (this.state.files.length > 0 ? '' : 'delectUpNone')} path={'./assets/images/Supplier/delete_white.svg'}/>
           <Carousel
-            autoplay={false}
+            autoplay={true}
+            autoplayInterval={300}
             infinite
             beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
             afterChange={index => console.log('slide to', index)}
@@ -112,10 +153,6 @@ class Release extends React.Component<Props, State> {
             ))}
           </Carousel>
         </div>
-        {/*{this.state.files.map(item => (*/}
-          {/*<img src={item}/>*/}
-        {/*))}*/}
-        {/*<img src={this.state.files[0]}/>*/}
       </div>
     )
   }
@@ -125,7 +162,7 @@ class Release extends React.Component<Props, State> {
    * @param param 参数名
    * @param type  input类型
    */
-  renderParameterInput = (param,type) => {
+  renderParameterInput = (param,type,stateName) => {
     return (
       <List.Item>
         <div className='parameter'>
@@ -133,6 +170,19 @@ class Release extends React.Component<Props, State> {
           <InputItem
             style={{ flex: 1 }}
             type={type}
+            onBlur={ (e) => {
+              switch (stateName) {
+                case 'productPrice':
+                  this.setState({ productPrice: Number(e) })
+                  break
+                case 'productStock':
+                  this.setState({ productStock: Number(e) })
+                  break
+                case 'productLabel':
+                  this.setState({ productLabel: e })
+                  break
+              }
+            }}
           />
         </div>
       </List.Item>
@@ -220,14 +270,16 @@ class Release extends React.Component<Props, State> {
               placeholder='输入商品标题'
               rows={2}
               count={60}
+              onBlur={ e => {
+                this.setState({ productName: e })
+              }}
             />
             {this.renderListItemGoTo('类目', '/category')}
           </div>
-          {/*<img src={this.state.files} />*/}
           <div className='paramContent' style={{ marginTop: 15, backgroundColor: 'white' }}>
-            {this.renderParameterInput('价格', 'number')}
-            {this.renderParameterInput('库存', 'number')}
-            {this.renderParameterInput('产品标签', 'text')}
+            {this.renderParameterInput('价格', 'number','productPrice')}
+            {this.renderParameterInput('库存', 'number','productStock')}
+            {this.renderParameterInput('产品标签', 'text','productLabel')}
             {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
           {this.renderBottomDrawer()}

@@ -687,7 +687,7 @@ class History extends React.Component<Props, State> {
               this.state.fullscreen && <Loading fullscreen={true} />
             }
           </div>
-          {this.renderYourLike()}
+          {/*{this.renderYourLike()}*/}
         </div>
         {this.state.data && this.state.data.length ? this.renderCartFooter() : <div></div>}
       </div>
