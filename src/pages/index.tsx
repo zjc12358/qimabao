@@ -61,18 +61,16 @@ class App extends React.Component<Props, State> {
     )
       .then(res => this.getLogin(res))
       .catch(err => console.log(err))
-  }
-  public getLogin = (res) => {
-    let url = 'CanteenProcurementManager/user/nail/tinkerFree?'
-    let query = 'AuthCode=' + res.code
     if (this.state.isLoading) {
       return
     }
     this.setState({
       isLoading: true
     })
-    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
-    let query = 'openId=maoxiaoyan'
+  }
+  public getLogin = (res) => {
+    let url = 'CanteenProcurementManager/user/nail/tinkerFree?'
+    let query = 'AuthCode=' + res.code
     axios.get<MyResponse<LoginBean>>(url + query)
       .then(data => {
         console.log('--- data =', data)
