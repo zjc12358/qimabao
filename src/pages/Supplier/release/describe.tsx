@@ -12,14 +12,15 @@ import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import Head from '../../../components/Head/index'
 import './describe.less'
+import { cloneDeep, get } from 'lodash'
+import { updataProductDescription } from '@store/actions/release_data'
 
 export interface Props {
-
+  updataProductDescription: (productDescription: string) => void
 }
 
 interface State {
-  data: any,
-  files: any
+  data: string
 }
 let IconMaxSize: number = 30
 class Describe extends React.Component<Props, State> {
@@ -27,8 +28,7 @@ class Describe extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      data: {},
-      files: {}
+      data: ''
     }
   }
   componentDidMount () {
@@ -54,57 +54,27 @@ class Describe extends React.Component<Props, State> {
           <div><ReactSVG svgClassName='ic delete' path='./assets/images/Supplier/drawerDelete.svg'/></div>
         </div>
         <div className='describeContainer'>
-          {/*<ReactQuill*/}
-            {/*theme='snow'*/}
-            {/*modules={{*/}
-              {/*toolbar: ['image','link']*/}
-            {/*}}*/}
-            {/*onChange={ this.onQuillChange }*/}
-          {/*/>*/}
-          <input id='input' type='file' onChange={ e => {
-            let file = e.target.files[0]
-            this.setState({ files: file })
-          }}/>
-          <div onClick={() => {
-            const formData = new FormData()
-            formData.append('file', this.state.files)
-            let url = '/CanteenProcurementManager/picket'
-            // fetch(url,{
-            //   method : 'POST',
-            //   body: formData,
-            //   headers: {
-            //     'Content-Type': 'multipart/form-data'
-            //   }
-            // })
-            let data = new FormData()
-            data.append('files',this.state.files)
-            console.log(data)
-            // var cfg = {
-            //   'Content-type':'multipart/form-data'
-            // }
-            let headers = { headers: { 'Content-Type': 'multipart/form-data' } }
-            // axios.post(url,data,headers).then(function (data) {
-            //   console.log(data)
-            // },function (err) {
-            //   console.log(err)
-            // })
-            axios.post(url,data,{ headers: { 'Content-Type': 'multipart/form-data' } })
-              .then(data => {
-                console.log(data)
-              })
-              .catch(err => {
-                console.log(err)
-              })
-          }}>点击</div>
           <TextareaItem
             rows={8}
             placeholder='请输入商品描述'
+            onBlur={ e => {
+              // console.log(e)
+              this.setState({ data: e })
+            }}
           />
           <div onClick={() => { history().push('/orderDetail') } }>点我跳转</div>
         </div>
         <div className='describeFooter'>
-          <div>添加图片</div>
-          <div>完成</div>
+          {/*<div></div>*/}
+          <div>
+            <Button
+              type='primary'
+              onClick={ () => {
+                console.log(this.state.data)
+                this.props.updataProductDescription(this.state.data)
+              }}
+            >完成</Button>
+          </div>
         </div>
       </div>
     )
@@ -115,6 +85,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {}
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  updataProductDescription
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Describe)

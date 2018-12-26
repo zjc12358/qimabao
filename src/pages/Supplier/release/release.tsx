@@ -63,6 +63,9 @@ class Release extends React.Component<Props, State> {
     files.pop()
   }
 
+  // convertImgToBase64 = (url, callback, outputFormat) => {
+  // }
+
   /**
    * 图片选择器
    */
@@ -80,9 +83,10 @@ class Release extends React.Component<Props, State> {
             let reader = new FileReader()
             reader.readAsDataURL(file)
             reader.onload = (e) => {
+              let base64 = reader.result
               let files = cloneDeep(this.state.files)
-              files.push(reader.result)
-              console.log(files)
+              files.push(base64)
+              console.log(base64)
               this.setState({ files: files })
             }
           }} />
