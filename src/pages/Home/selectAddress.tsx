@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { Toast, Icon } from 'antd-mobile'
+import { cloneDeep, isNil } from 'lodash'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
@@ -15,6 +16,21 @@ import { AddressDetailBean } from '@datasources/MapBean/AddressDetailBean'
 import { MyAddressDetailBean } from '@datasources/MyAddressDetailBean'
 import { Map } from 'react-amap'
 import Geolocation from 'react-amap-plugin-geolocation'
+import { MyResponse } from '@datasources/MyResponse'
+import { AddressBean } from '@datasources/AddressBean'
+import { Loading } from 'element-react'
+
+function getL () {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition)
+  } else {
+    alert('定位有问题')
+  }
+}
+
+function showPosition (position) {
+  alert('lat' + position.coords.latitude + 'log' + position.coords.longitude)
+}
 
 const pluginProps = {
   enableHighAccuracy: true,// 是否使用高精度定位，默认:true
@@ -38,10 +54,12 @@ interface State {
   showTitle: boolean
   searchText: string
   mapAddressList: Array<AddressDetailBean>
-  myAddressList: Array<MyAddressDetailBean>
+  myAddressList: Array<AddressBean>
   nearbyAddressList: Array<AddressDetailBean>
   inLocation: boolean
   mapCenter: object
+  isLoading: boolean
+  position: any
 }
 
 class Home extends React.Component<Props, State> {
@@ -55,8 +73,24 @@ class Home extends React.Component<Props, State> {
       myAddressList: [],
       nearbyAddressList: [],
       inLocation: true,
-      mapCenter: { longitude: 120, latitude: 30 }
+      mapCenter: { longitude: 120, latitude: 30 },
+      isLoading: false,
+      position: [0, 0]
     }
+  }
+
+  componentWillMount () {
+    this.getAddressList()
+    getL()
+  }
+
+  /**
+   * 右边新增地址按钮
+   */
+  rightAddAddress = () => {
+    return (
+      <div className='text-nowrap' style={{ color: '#0084e7', fontSize: 14 }}>新增地址</div>
+    )
   }
 
   /**
@@ -150,8 +184,8 @@ class Home extends React.Component<Props, State> {
         <div className='horizontal' style={{ height: 40, width: '100%' }}>
           <div style={{ paddingLeft: 20 }}>我的收货地址</div>
         </div>
-        <div>
-          {this.state.myAddressList.map((item) => this.renderMyAddressItem(item))}
+        <div style={{ width: '100%' }}>
+          {!isNil(this.state.myAddressList) && this.state.myAddressList.map((item) => this.renderMyAddressItem(item))}
         </div>
       </div>
     )
@@ -160,20 +194,21 @@ class Home extends React.Component<Props, State> {
   /**
    * 我的地址单列
    */
-  renderMyAddressItem = (item: MyAddressDetailBean) => {
+  renderMyAddressItem = (item: AddressBean) => {
     return (
       <div className='horizontal my-address-item'>
         <div className='vertical my-address-item-info'>
           <div className='horizontal my-address-item-top'>
-            <span>{item.userName} </span>
-            <span> {item.mobile}</span>
+            <span>{item.receiving_name} </span>
+            <span>&nbsp; {item.receiving_iphone}</span>
           </div>
           <div className='horizontal my-address-item-bottom'>
-            {item.address + item.houseNumber}
+            <div className='text-nowrap'
+                 style={{ width: '100%' }}>{item.receiving_address + item.receiving_address_detail}</div>
           </div>
         </div>
-        {item.default &&
-        <ReactSVG path='./assets/images/ic_check_0084.svg' svgStyle={{ width: 20, height: 20 }}/>}
+        {/*{item.default &&*/}
+        <ReactSVG path='./assets/images/ic_check_0084.svg' svgStyle={{ width: 20, height: 20, marginRight: 15 }}/>
       </div>
     )
   }
@@ -182,6 +217,42 @@ class Home extends React.Component<Props, State> {
    * 附近地址
    */
   renderNearbyAddress = () => {
+    // const onComplete = (data: any) => {
+    //   alert(data + '定位成功')
+    //   this.setState({
+    //     position: [data.position.getLng(), data.position.getLat()]
+    //   }, () => console.log(this.state.position))
+    // }
+    // const onError = () => {
+    //   alert('定位失败')
+    //   // that.setState({
+    //   //     position:[112.58032,37.857965]
+    //   // })
+    // }
+    // const events = {
+    //   created: (instance: any, window: any) => {
+    //     console.log(instance + '=====' + window + '===123')
+    //     instance.plugin('AMap.Geolocation', () => {
+    //       const geolocation = new window.AMap.Geolocation({
+    //         enableHighAccuracy: true,// 是否使用高精度定位，默认:true
+    //         timeout: 10000,          // 超过10秒后停止定位，默认：无穷大
+    //         maximumAge: 0,           // 定位结果缓存0毫秒，默认：0
+    //         convert: true,           // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+    //         showButton: true,        // 显示定位按钮，默认：true
+    //         buttonPosition: 'RB',    // 定位按钮停靠位置，默认：'LB'，左下角
+    //         buttonOffset: new window.AMap.Pixel(14, 130),// 定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+    //         showMarker: false,        // 定位成功后在定位到的位置显示点标记，默认：true
+    //         showCircle: false,        // 定位成功后用圆圈表示定位精度范围，默认：true
+    //         panToLocation: true,     // 定位成功后将定位到的位置作为地图中心点，默认：true
+    //         zoomToAccuracy: true      // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+    //       })
+    //       instance.addControl(geolocation)
+    //       geolocation.getCurrentPosition()
+    //       window.AMap.event.addListener(geolocation, 'complete', onComplete)// 返回定位信息
+    //       window.AMap.event.addListener(geolocation, 'error', onError)      // 返回定位出错信息
+    //     })
+    //   }
+    // }
     return (
       <div className='vertical' style={{ justifyContent: 'space-between', width: '100%' }}>
         <div className='horizontal' style={{ height: 40, width: '100%' }}>
@@ -189,6 +260,13 @@ class Home extends React.Component<Props, State> {
         </div>
         <div>
           {this.state.nearbyAddressList.map((item, index) => this.renderNearbyAddressItem(item, index))}
+        </div>
+        <div>
+          <Map amapkey={'e062e2a80c3e0e1c31a588faa9822dcb'}
+               // events={events}
+               plugins={['Scale', 'ToolBar']}
+               zoom={16}>
+          </Map>
         </div>
       </div>
     )
@@ -237,7 +315,7 @@ class Home extends React.Component<Props, State> {
    * 新增地址
    */
   addAddressOnClick = () => {
-    history().push('')
+    history().push('/addNewAddress')
   }
 
   /**
@@ -256,7 +334,7 @@ class Home extends React.Component<Props, State> {
     console.log('输入' + event.target.value)
     this.setState({
       searchText: event.target.value
-    }, () => this.getAddressList())
+    }, () => this.getMapAddressList())
   }
 
   /**
@@ -297,9 +375,50 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
-   * 高德搜索地址api
+   * 获取定位
+   */
+  getLocation = () => {
+    console.log(1)
+  }
+
+  /**
+   * 获取收货地址列表
    */
   getAddressList () {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    let url = 'CanteenProcurementManager/user/receivingAddress/AddressList'
+    let query = ''
+    axios.get<MyResponse<Array<AddressBean>>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
+        if (data.data.code === 0) {
+          this.setState({
+            myAddressList: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+        this.setState({
+          isLoading: false
+        })
+      })
+  }
+
+  /**
+   * 高德搜索地址api
+   */
+  getMapAddressList = () => {
     if (this.state.searchText.length < 1) {
       return
     }
@@ -325,14 +444,45 @@ class Home extends React.Component<Props, State> {
       })
   }
 
+  fun = (status, result) => {
+    if (status === 'complete') {
+      this.onComplete(result)
+    } else {
+      this.onError(result)
+    }
+  }
+
+  onComplete = (result) => {
+    console.log('定位成功')
+    let str = []
+    str.push('定位结果：' + result.position)
+    str.push('定位类别：' + result.location_type)
+    if (result.accuracy) {
+      str.push('精度：' + result.accuracy + ' 米')
+    }
+    // 如为IP精确定位结果则没有精度信息
+    str.push('是否经过偏移：' + (result.isConverted ? '是' : '否'))
+    console.log(str)
+    // document.getElementById('result').innerHTML = str.join('<br>')
+  }
+
+  onError = (result) => {
+    console.log('定位失败')
+    console.log('失败原因排查信息' + result.meaage)
+    // document.getElementById('status').innerHTML='定位失败'
+    // document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
+  }
+
   public render () {
     return (
       <div className='vertical' style={{ backgroundColor: '#efeff5', height: '100%', width: '100%' }}>
         {this.state.showTitle &&
         <Head title={'选择收货地址'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#ffffff'}
-              rightIconOnClick={this.addAddressOnClick} showRightIcon={true}/>
+              rightIconOnClick={this.addAddressOnClick.bind(this)} showRightIcon={true}
+              rightIconContent={this.rightAddAddress()}/>
         }
         {this.renderContent()}
+        {this.state.isLoading && <Loading fullscreen={true}/>}
       </div>
     )
   }

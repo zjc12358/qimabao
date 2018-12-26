@@ -64,9 +64,9 @@ class SupplierInfo extends React.Component<Props, State> {
         </div>
         <div style={{ width: '100%' }}>
           <div className='vertical score' style={{ alignItems: 'flex-start' }}>
-            <span>描述符合{this.props.supplierStateInfo.supplier_description_service},高于同行$</span>
-            <span>服务态度{this.props.supplierStateInfo.supplier_service_attitude},高于同行$</span>
-            <span>物流服务{this.props.supplierStateInfo.supplier_logistics_service},高于同行$</span>
+            <span>描述符合{this.props.supplierStateInfo.supplier_description_service},高于同行100%</span>
+            <span>服务态度{this.props.supplierStateInfo.supplier_service_attitude},高于同行100%</span>
+            <span>物流服务{this.props.supplierStateInfo.supplier_logistics_service},高于同行100%</span>
           </div>
         </div>
       </div>

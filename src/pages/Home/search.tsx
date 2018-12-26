@@ -2,11 +2,15 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { Toast } from 'antd-mobile'
+import { Loading, Button } from 'element-react'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import { updateSearchText } from '@store/actions/search_data'
 import { SearchData } from '@store/reducers/searchDataReducer'
+import { MyResponse } from '@datasources/MyResponse'
+import { SearchHistoryBean } from '@datasources/SearchHistoryBean'
+import { cloneDeep, isNil } from 'lodash'
 
 export interface Props {
   searchData: SearchData
@@ -14,15 +18,22 @@ export interface Props {
 }
 
 interface State {
+  isLoading: boolean
+  searchHistoryList: Array<SearchHistoryBean>
 }
-
-let his = ['面包', '鱼', '白菜', '面包', '鱼', '213', '11111', 'dsadasdas鱼', 'dsadsadasda大叔大婶大']
 
 class Home extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      isLoading: false,
+      searchHistoryList: null
+    }
+  }
+
+  componentWillMount () {
+    this.getHistoryFind()
   }
 
   renderHead = () => {
@@ -83,7 +94,8 @@ class Home extends React.Component<Props, State> {
                fontSize: 16
              }}>
           <span style={{ marginLeft: 20 }}>搜索历史</span>
-          <span style={{ marginRight: 20 }}>清空</span>
+          <span style={{ marginRight: 20 }}
+                onClick={this.clearSearchHistory}>清空</span>
         </div>
         <div className='horizontal'
              style={{
@@ -91,7 +103,7 @@ class Home extends React.Component<Props, State> {
                flexWrap: 'wrap',
                width: '100%'
              }}>
-          {his.map((item, index) => this.renderSearchHistoryItem(item, index))}
+          {!isNil(this.state.searchHistoryList) && this.state.searchHistoryList.map((item, index) => this.renderSearchHistoryItem(item, index))}
         </div>
       </div>
     )
@@ -100,7 +112,7 @@ class Home extends React.Component<Props, State> {
   /**
    * 搜索历史 单项
    */
-  renderSearchHistoryItem = (item, index: number) => {
+  renderSearchHistoryItem = (item: SearchHistoryBean, index: number) => {
     return (
       <div style={{
         paddingLeft: 12,
@@ -115,8 +127,8 @@ class Home extends React.Component<Props, State> {
         borderWidth: 0,
         borderRadius: 20,
         backgroundColor: '#f5f5f5'
-      }} onClick={() => this.historySearchOnClick(his[index])}>
-        {item}
+      }} onClick={() => this.historySearchOnClick(this.state.searchHistoryList[index])}>
+        {item.find_history_name}
       </div>
     )
   }
@@ -139,10 +151,87 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
-   * 历史搜索
+   * 历史搜索点击
    */
-  historySearchOnClick = (text: string) => {
-    this.props.updateSearchText(text)
+  historySearchOnClick = (item: SearchHistoryBean) => {
+    this.props.updateSearchText(item.find_history_name)
+    history().push('/searchResult')
+  }
+
+  /**
+   * 清空搜索历史
+   */
+  clearSearchHistory = () => {
+    this.clearHistoryFind()
+  }
+
+  /**
+   * 获取搜索记录
+   */
+  getHistoryFind = () => {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    let url = 'CanteenProcurementManager/homepage/productCategory/findHistoryFind'
+    let query = ''
+    axios.get<MyResponse<Array<SearchHistoryBean>>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
+        if (data.data.code === 0) {
+          this.setState({
+            searchHistoryList: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+        this.setState({
+          isLoading: false
+        })
+      })
+  }
+
+  /**
+   * 清空查询历史记录
+   */
+  clearHistoryFind = () => {
+    if (this.state.searchHistoryList === null || this.state.searchHistoryList.length < 1) {
+      return
+    }
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    let url = 'CanteenProcurementManager/homepage/productCategory/emptyHistoryFind'
+    let query = ''
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
+        if (data.data.code === 0) {
+          this.getHistoryFind()
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+        this.setState({
+          isLoading: false
+        })
+      })
   }
 
   public render () {
@@ -150,6 +239,7 @@ class Home extends React.Component<Props, State> {
       <div style={{ height: '100vh', backgroundColor: '#efeff5' }}>
         {this.renderHead()}
         {this.renderSearchHistory()}
+        {this.state.isLoading && <Loading fullscreen={true}/>}
       </div>
     )
   }
