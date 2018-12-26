@@ -2,11 +2,11 @@ import * as React from 'react'
 import { Tabs, Button, Icon, Toast } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { GlobalData } from '@store/reducers/globalDataReducer'
-import { updateProductOrder } from '@store/actions/productOrder_data'
+import { GlobalData } from '../../../store/reducers/globalDataReducer'
+import { changeTab, updateProductOrder } from '../../../store/actions/productOrder_data'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
-import './master.css'
+import '../master.css'
 import Head from '@components/Head'
 import Loading from '@components/Loading'
 import axios from 'axios'
@@ -15,7 +15,9 @@ import { ProductOrder } from '@datasources/ProductOrder'
 import { cloneDeep, get } from 'lodash'
 
 export interface Props {
+  tab: number
   updateProductOrder: (productOrder: Array<ProductOrder>) => void
+  changeTab: (index: number) => void
 }
 
 interface State {
@@ -59,15 +61,17 @@ class User extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    this.tabOnClick(null,0)
+    this.tabOnClick(null,this.props.tab)
   }
   tabOnClick = (tab, index) => {
+    this.props.changeTab(index)
     this.setState({
       loading: true
     })
     let url = 'CanteenProcurementManager/user/productOrder/findProductOrder'
-    let query = '?payStatus=' + (index - 1)
+    let query = ''
     if (index === 0) query = ''
+    else query = '?payStatus=' + (index - 1)
     axios.get<MyResponse<ProductOrder>>(url + query)
       .then(data => {
         console.log('--- data =', data.data.data)
@@ -129,14 +133,14 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
-        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderPei) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderShou) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderPing) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.productOrderWan) : this.renderNone}
+          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
+          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
+          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei) : this.renderNone}
+          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou) : this.renderNone}
+          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing) : this.renderNone}
+          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan) : this.renderNone}
         </Tabs>
         {this.loadingRender()}
       </div>
@@ -248,26 +252,26 @@ class User extends React.Component<Props, State> {
    * 订单分支：立即处理 ，查看详情
    */
   public renderItemStatus = (i,index) => {
-    let showDeal: boolean = false
-    switch (i.status) {
-      case '待付款':
-        showDeal = true
+    let showDeal: any = false
+    switch (i.order_status) {
+      case 0:
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即付款</button>
         break
-      case '待发货':
-        showDeal = false
+      case 1:
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即催货</button>
         break
-      case '待收货':
-        showDeal = false
+      case 2:
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>确认收货</button>
         break
-      case '待评价':
-        showDeal = false
+      case 3:
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即评价</button>
         break
     }
     return(
       <div className={'flex-flex-end-row-center'}
            style={{ height: 40,backgroundColor: '#fafafa',padding: '0 5px' }}>
-        <button className={'buttonViewDetail'} onClick={this.viewResultOnclick}>查看详情</button>
-        {showDeal === true ? <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.viewDetailOnclick}>立即付款</button> : ''}
+        <button className={'buttonViewDetail'} onClick={this.viewDetailOnclick}>查看详情</button>
+        {showDeal}
       </div>
     )
   }
@@ -284,11 +288,11 @@ class User extends React.Component<Props, State> {
   }
 
   public viewDetailOnclick = () => {
-    history().push('/afterSaleDetail')
+    history().push('/orderDetail')
   }
 
-  public viewResultOnclick = () => {
-    history().push('/afterSaleResult')
+  public payOnclick = () => {
+    history().push('/paySuccess')
   }
 
   public render () {
@@ -304,11 +308,14 @@ class User extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    tab: state.productOrderData.tab
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updateProductOrder
+  updateProductOrder,
+  changeTab
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

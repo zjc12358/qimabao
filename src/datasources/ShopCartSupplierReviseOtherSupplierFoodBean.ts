@@ -1,7 +1,5 @@
 export interface ShopCartSupplierReviseOtherSupplierFoodBean {
-  id: number,
-  name: string,
-  price: number,
-  img: string,
-  unit: string
+  supplier_id: number,
+  product_price: number,
+  company_name: ShopCartSupplierReviseOtherSupplierFoodBean
 }

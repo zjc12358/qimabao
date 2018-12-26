@@ -1,7 +1,7 @@
 import { ShopCartSupplierReviseOtherSupplierFoodBean } from './ShopCartSupplierReviseOtherSupplierFoodBean'
 
 export interface ShopCartSupplierReviseOtherSupplierBean {
-  id: number,
-  name: string,
-  foodMsg: ShopCartSupplierReviseOtherSupplierFoodBean
+  supplier_id: number,
+  product_price: number,
+  company_name: ShopCartSupplierReviseOtherSupplierFoodBean
 }

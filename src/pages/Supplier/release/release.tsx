@@ -1,14 +1,16 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TextareaItem,List,InputItem,Button,ImagePicker } from 'antd-mobile'
+import { TextareaItem, List, InputItem, Button, ImagePicker, Carousel, Toast } from 'antd-mobile'
 import Drawer from '@material-ui/core/Drawer'
 import axios from 'axios'
+import { cloneDeep, get } from 'lodash'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import Head from '../../../components/Head/index'
 import './release.less'
+import { MyResponse } from '@datasources/MyResponse'
 
 export interface Props {
 
@@ -17,7 +19,7 @@ export interface Props {
 interface State {
   data: any,
   openDrawer: boolean,
-  files: any,
+  files: Array<any>,
   multiple: boolean,
   productData: any
 }
@@ -39,15 +41,81 @@ class Release extends React.Component<Props, State> {
     this.setState({ openDrawer: open })
   }
 
+  submite = () => {
+    let url = 'CanteenProcurementManager/user/ProductInfo/releaseProduct?'
+    let query = 'productName=大头鱼&categoryId=1&categoryClassId=1&productPrice=15&productStock=100&productLabel=有机&productDescription=dhsajdksadshas&files=' + this.state.files
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- 购物车data =', data)
+        if (data.data.code === 0) {
+          console.log(11111)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+  }
+
+  deleteUp = () => {
+    let files = this.state.files
+    files.pop()
+  }
+
+  // convertImgToBase64 = (url, callback, outputFormat) => {
+  // }
+
   /**
    * 图片选择器
    */
   renderImagePicker = () => {
     return (
-      <div className='img_picker' onClick={this.toggleDrawer('bottom',true)}>
-        <div className='camera'>
+      <div className='img_picker'
+           // onClick={this.toggleDrawer('bottom',true)}
+      >
+        <div className={'camera' + ' ' + (this.state.files.length > 0 ? 'smallCamera' : '')}>
           <ReactSVG svgClassName='cameraIcon' path='./assets/images/Supplier/camera.svg'/>
+          <input className={'fileUpload'} type={'file'} onChange={ e => {
+            let file = e.target.files[0]
+            console.log(file)
+            // this.setState({ files: files })
+            let reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = (e) => {
+              let base64 = reader.result
+              let files = cloneDeep(this.state.files)
+              files.push(base64)
+              console.log(base64)
+              this.setState({ files: files })
+            }
+          }} />
         </div>
+        <div className={'readImages'}>
+          <ReactSVG svgClassName={'delectUp ' + (this.state.files.length > 0 ? '' : 'delectUpNone')} path={'./assets/images/Supplier/delete_white.svg'}/>
+          <Carousel
+            autoplay={false}
+            infinite
+            beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
+            afterChange={index => console.log('slide to', index)}
+          >
+            {this.state.files.map(val => (
+              <a
+                key={val}
+                style={{ display: 'inline-block', width: '100%', height: 136 }}
+              >
+                <img
+                  src={val}
+                  style={{ width: '100%', verticalAlign: 'top' }}
+                />
+              </a>
+            ))}
+          </Carousel>
+        </div>
+        {/*{this.state.files.map(item => (*/}
+          {/*<img src={item}/>*/}
+        {/*))}*/}
+        {/*<img src={this.state.files[0]}/>*/}
       </div>
     )
   }
@@ -151,21 +219,22 @@ class Release extends React.Component<Props, State> {
             <TextareaItem
               placeholder='输入商品标题'
               rows={2}
-              count = {60}
+              count={60}
             />
-            {this.renderListItemGoTo('类目','/category')}
+            {this.renderListItemGoTo('类目', '/category')}
           </div>
-          <div className='paramContent' style={{ marginTop: 15,backgroundColor: 'white' }}>
-            {this.renderParameterInput('价格','number')}
-            {this.renderParameterInput('库存','number')}
-            {this.renderParameterInput('产品标签','text')}
-            {this.renderListItemGoTo('宝贝描述','/describe')}
+          {/*<img src={this.state.files} />*/}
+          <div className='paramContent' style={{ marginTop: 15, backgroundColor: 'white' }}>
+            {this.renderParameterInput('价格', 'number')}
+            {this.renderParameterInput('库存', 'number')}
+            {this.renderParameterInput('产品标签', 'text')}
+            {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
           {this.renderBottomDrawer()}
 
           <div className='releaseFooter'>
             <div>放入仓库</div>
-            <div>立即发布</div>
+            <div onClick={this.submite}>立即发布</div>
           </div>
         </div>
       </div>

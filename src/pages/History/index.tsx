@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon ,Toast } from 'antd-mobile'
+import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon , Toast, InputItem } from 'antd-mobile'
 import { Loading,Button } from 'element-react'
 import ReactSVG from 'react-svg'
 import { cloneDeep, get } from 'lodash'
@@ -17,6 +17,7 @@ import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
 import { updataBookingSheetFood, updataOrderId, updataToTal } from '@store/actions/bookingSheet_data'
+import { updateSupplierRevise } from '@store/actions/supplierRevise_data'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem
@@ -35,6 +36,7 @@ export interface Props {
   updataBookingSheetFood: (shopCart: Array<ShopCartSupplierBean>) => void,
   updataOrderId: (orderId: string) => void,
   updataToTal: (total: number) => void,
+  updateSupplierRevise: (productMsg: any) => void,
   needReload: (reload: boolean) => void,
   shopCartData: any,
   needReloadData: boolean,
@@ -241,7 +243,7 @@ class History extends React.Component<Props, State> {
    * 合计计算
    */
   count = () => {
-    console.log(111)
+    // console.log(111)
     let total = 0
     for (let i = 0; i < this.state.data.length; i++) {
       let data = this.state.data
@@ -304,7 +306,7 @@ class History extends React.Component<Props, State> {
   }
 
   foodAddSub = (v,item,index1,index) => {
-    let shopdata = cloneDeep(this.props.shopCartData)
+    // let shopdata = cloneDeep(this.props.shopCartData)
     let productWeight = v
     console.log(v)
     let subtotal = (v * item.product_price).toFixed(2)
@@ -322,7 +324,12 @@ class History extends React.Component<Props, State> {
           this.setState({
             fullscreen: false
           })
-          console.log(shopdata)
+          let shopdata = cloneDeep(this.state.data)
+          shopdata[index1].shoppingCartDetails[index].product_weight = v
+          shopdata[index1].shoppingCartDetails[index].product_total_price = subtotal
+          this.props.updataShopCart(shopdata)
+          // 计算一遍总计
+          this.count()
           // this.getShopCartData()
         } else {
           Toast.info(data.data.msg, 2, null, false)
@@ -337,7 +344,7 @@ class History extends React.Component<Props, State> {
    * 头部删除
    */
   HeadDeleteOnclick = () => {
-    console.log(1111)
+    // console.log(1111)
     if (this.state.allSupplierItemCheck) {
       // 全选状态下清空购物车,总计归0
       this.setState({ total: 0 })
@@ -372,6 +379,8 @@ class History extends React.Component<Props, State> {
    * 获取购物车数据
    */
   getShopCartData = () => {
+    this.props.updataAllSupplierItemCheck(false)
+    this.setState({ total: 0 })
     this.setState({
       fullscreen: true
     })
@@ -545,24 +554,29 @@ class History extends React.Component<Props, State> {
                   <span style={{ color: '#8c8c8c' }}>/500g</span>
                 </div>
                 <div style={{ display: 'flex', color: '#8c8c8c', fontSize: 14 }}>
-                  {/*<input type='number'/>*/}
                   <Stepper
                     ref='stepper'
                     className='Stepper'
                     showNumber
                     min={1}
-                    value={ item.product_weight }
+                    value={ this.state.data[index1].shoppingCartDetails[index].product_weight }
                     onChange={(v) => {
-                      // let data = this.props.shopCartData
-                      // data[index1].shoppingCartDetails[index].product_weight = v
-                      // this.props.updataShopCart(data)
-                      // // this.setState({ data: data })
-                      // this.smallAdd(item,index,index1)
-                      // // 计算一遍总计
-                      // this.count()
                       this.foodAddSub(v,item,index1,index)
                     }}
                   />
+                </div>
+                <div className={'stepperNumber'}>
+                  <InputItem
+                    type={'money'}
+                    defaultValue={ this.state.data[index1].shoppingCartDetails[index].product_weight.toString() }
+                    value={ this.state.data[index1].shoppingCartDetails[index].product_weight.toString() }
+                    prefixListCls={'inputList'}
+                    onBlur={ (v) => {
+                      this.foodAddSub(v,item,index1,index)
+                    }}
+                    moneyKeyboardAlign='left'
+                    moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                  ></InputItem>
                 </div>
               </div>
             </div>
@@ -612,6 +626,15 @@ class History extends React.Component<Props, State> {
             <div style={{ color: '#8C8C8C',marginLeft: 15 }}>{i.company_name}</div>
             <div style={{ flex: 1 }}></div>
             <div style={{ paddingRight: 15 }}><Icon type='right' onClick={ () => {
+              let cartIdArr = []
+              i.shoppingCartDetails.map(j => {
+                cartIdArr.push(j.cart_id)
+              })
+              let supplierReviseData = {
+                supplierId: i.supplier_id,
+                cartId: cartIdArr.join(',')
+              }
+              this.props.updateSupplierRevise(supplierReviseData)
               this.props.updatePageTab('HistoryPageTabBar')
               history().push('/supplierRevise')
             }} /></div>
@@ -688,6 +711,7 @@ const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updataBookingSheetFood,
   updataOrderId,
   updataToTal,
+  updateSupplierRevise,
   needReload
 }
 

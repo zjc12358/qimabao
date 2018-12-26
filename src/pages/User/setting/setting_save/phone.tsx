@@ -13,6 +13,7 @@ import Head from '@components/Head'
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
+  phone: string
   updatePageTab: (pageTab: PageTab) => void
   updateUserInfo: (userInfo: UserInfo) => void
 }
@@ -37,10 +38,11 @@ class User extends React.Component<Props, State> {
     return(
       <div>
         <div style={{ backgroundColor: '#ffffff' }}>
-          <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }}>
+          <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }}>
             <span style={{ fontSize: '16px', paddingLeft: 10 }}>当前手机号</span>
             <div className={'flex-center-row-center'}>
-              <span>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
+              <span>{this.props.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
+              <span style={{ color: '#0084e7',paddingLeft: 5 }}>已绑定</span>
             </div>
           </div>
         </div>
@@ -78,7 +80,8 @@ class User extends React.Component<Props, State> {
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
     pageTab: state.globalData.pageTab,
-    userInfo: state.globalData.userInfo
+    userInfo: state.globalData.userInfo,
+    phone: state.globalData.phone
   }
 }
 

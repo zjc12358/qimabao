@@ -14,6 +14,7 @@ import ReactSVG from 'react-svg'
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
+  phone: string
   updatePageTab: (pageTab: PageTab) => void
   updateUserInfo: (userInfo: UserInfo) => void
 }
@@ -37,15 +38,15 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.phoneOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }} onClick={this.phoneOnclick}>
           <span style={{ fontSize: '16px', paddingLeft: 10 }}>手机号</span>
           <div className={'flex-flex-end-row-center'}>
-            <span>{this.state.data.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
+            <span>{this.props.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-space-between-row-center'} style={{ padding: '10px 15px' }} onClick={this.payOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }} onClick={this.payOnclick}>
           <span style={{ fontSize: '16px', paddingTop: 7, paddingLeft: 10 }}>支付密码设置</span>
           <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
         </div>
@@ -76,7 +77,8 @@ class User extends React.Component<Props, State> {
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
     pageTab: state.globalData.pageTab,
-    userInfo: state.globalData.userInfo
+    userInfo: state.globalData.userInfo,
+    phone: state.globalData.phone
   }
 }
 

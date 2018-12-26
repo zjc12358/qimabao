@@ -19,6 +19,45 @@
     align-items: center;
     justify-content: center;
     background-color: #1f62b6;
+    z-index: 3;
+    .fileUpload{
+      width: 100%;
+      height: 136px;
+      background: yellow;
+      top: 0;
+      position: absolute;
+      left: 0;
+      opacity: 0;
+    }
+  }
+  .smallCamera{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 20px;
+    top: 70px;
+  }
+  .readImages{
+    width: 100vw;
+    height: 136px;
+    background: transparent;
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    .slider-list{
+      height: 136px!important;
+    }
+    .delectUp{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 20px;
+      height: 20px;
+      z-index: 4;
+    }
+    .delectUpNone{
+      display: none;
+    }
   }
 }
 .category{
@@ -114,3 +153,4 @@ html:not([data-scale]) .am-list-body:before {
   //  display: none;
   //}
 }
+

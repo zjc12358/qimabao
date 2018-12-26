@@ -3,6 +3,7 @@ import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { NavBar, Icon, Toast } from 'antd-mobile'
 import { updateUserInfo, updatePageTab, changeMode } from '@store/actions/global_data'
+import { changeTab } from '@store/actions/productOrder_data'
 import { UserInfo } from '@datasources/UserInfo'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
@@ -15,7 +16,7 @@ import * as dd from 'dingtalk-jsapi'
 export interface Props {
   pageTab: string
   userInfo: UserInfo
-  updatePageTab: (pageName: string) => void
+  changeTab: (index: number) => void
   updateUserInfo: (userInfo: UserInfo) => void
   changeMode: (model: 'supplier' | 'purchaser') => void
 }
@@ -236,7 +237,7 @@ class User extends React.Component<Props, State> {
         <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }}>
           <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>我的订单</span>
         </div>
-        <div className='Segment_line'></div>
+        <div className='Segment_line' />
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -252,7 +253,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'center'
-          }} onClick={this.orderOnclick}>
+          }} onClick={this.orderOnclick.bind(this,1)}>
             <div style={{ position: 'relative' }}>
               <Badge num={2} left={25}/>
               <ReactSVG path='./assets/images/User/pay.svg'
@@ -265,7 +266,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'center'
-          }} onClick={this.orderOnclick}>
+          }} onClick={this.orderOnclick.bind(this,2)}>
             <ReactSVG path='./assets/images/User/delivery.svg'
                       svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
             <span style={{ fontSize: '10px', color: '#828282', fontFamily: '黑体' }}>待配送</span>
@@ -275,7 +276,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'center'
-          }} onClick={this.orderOnclick}>
+          }} onClick={this.orderOnclick.bind(this,3)}>
             <ReactSVG path='./assets/images/User/get.svg'
                       svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
             <span style={{ fontSize: '10px', color: '#828282', fontFamily: '黑体' }}>待收货</span>
@@ -285,7 +286,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'center'
-          }} onClick={this.orderOnclick}>
+          }} onClick={this.orderOnclick.bind(this,4)}>
             <ReactSVG path='./assets/images/User/evaluation.svg'
                       svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
             <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '黑体' }}>待评价</span>
@@ -322,7 +323,7 @@ class User extends React.Component<Props, State> {
         </div>
         <div style={{ height: 'auto' }}>
           <div className='Segment_line2'/>
-          <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.orderOnclick}>
+          <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.orderOnclick.bind(this,0)}>
             <span style={{ fontSize: '16px' }}>我的购买</span>
             <ReactSVG path='./assets/images/User/right.svg'
                       svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
@@ -458,32 +459,27 @@ class User extends React.Component<Props, State> {
   }
 
   public messageOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
     history().push('/message')
   }
 
   public settingOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
     history().push('/setting')
   }
 
   public userInfoOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
     history().push('/userInfoEdit')
   }
 
   public couponOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
     history().push('/coupon')
   }
 
-  public orderOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
+  public orderOnclick = (type) => {
+    this.props.changeTab(type)
     history().push('/myOrder')
   }
 
   public afterSaleOnclick = () => {
-    this.props.updatePageTab('UserPageTabBar')
     history().push('/afterSale')
   }
 
@@ -532,7 +528,7 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updatePageTab,
+  changeTab,
   updateUserInfo,
   changeMode
 }
