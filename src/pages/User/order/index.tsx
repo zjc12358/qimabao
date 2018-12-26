@@ -3,7 +3,7 @@ import { Tabs, Button, Icon, Toast } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '../../../store/reducers/globalDataReducer'
-import { updateProductOrder } from '../../../store/actions/productOrder_data'
+import { changeTab, updateProductOrder } from '../../../store/actions/productOrder_data'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import '../master.css'
@@ -17,6 +17,7 @@ import { cloneDeep, get } from 'lodash'
 export interface Props {
   tab: number
   updateProductOrder: (productOrder: Array<ProductOrder>) => void
+  changeTab: (index: number) => void
 }
 
 interface State {
@@ -63,6 +64,7 @@ class User extends React.Component<Props, State> {
     this.tabOnClick(null,this.props.tab)
   }
   tabOnClick = (tab, index) => {
+    this.props.changeTab(index)
     this.setState({
       loading: true
     })
@@ -312,7 +314,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updateProductOrder
+  updateProductOrder,
+  changeTab
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

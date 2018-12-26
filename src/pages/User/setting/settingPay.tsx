@@ -11,6 +11,9 @@ import history from 'history/createHashHistory'
 import '../master.css'
 import Head from '@components/Head'
 import ReactSVG from 'react-svg'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
+import { cloneDeep, get } from 'lodash'
 
 export interface Props {
   pageTab: PageTab
@@ -48,35 +51,21 @@ class User extends React.Component<Props, State> {
       refresh: ''
     }
   }
-
-  public renderNav = () => {
-    return (
-      <div style={{
-        backgroundColor: '#ffffff',
-        width: '100%',
-        height: 40,
-        top: 0,
-        zIndex: 100,
-        position: 'fixed'
-      }}
-      >
-          <div style={{ float: 'left', position: 'absolute' }} onClick={() => history().goBack()}>
-            <Icon type='left' color='#000000' size='lg'/>
-          </div>
-        <div style={{
-          fontSize: 18,
-          paddingTop: 8,
-          color: '#000000',
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          <span>支付设置</span>
-        </div>
-        <div style={{ position: 'absolute',right: 10, top: 10,fontSize: 16,color: '#3e38ee' }} onClick={this.addOnclick}>
-          <span>+</span>
-        </div>
-      </div>
-    )
+  componentDidMount () {
+    let url = 'CanteenProcurementManager/returnPay/aliReturnPay?'
+    let query = 'openId=maoxiaoyan'
+    axios.get<MyResponse<UserInfo>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.props.updateUserInfo(cloneDeep(data.data.data))
+        } else {
+          Toast.info('获取用户信息失败,请重试', 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   addOnclick = () => {

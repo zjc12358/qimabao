@@ -7,7 +7,9 @@ export enum Type {
   ADD_PAGEINDEX = 'ADD_PAGEINDEX',
   DELETE_PAGEINDEX = 'DELETE_PAGEINDEX',
   CHANGE_MODE = 'CHANGE_MODE',
-  SET_ID = 'SET_ID'
+  SET_ID = 'SET_ID',
+  SET_PHONE = 'SET_PHONE',
+  SET_IPHONE = 'SET_IPHONE'
 }
 
 export interface GlobalDataAction extends Action {
@@ -15,6 +17,8 @@ export interface GlobalDataAction extends Action {
   type: Type
   mode: 'supplier' | 'purchaser'
   userInfo: UserInfo
+  phone: string
+  iphone: string
   pageIndex: number
   pageTab: string
   error?: any
@@ -38,3 +42,9 @@ export const updatePageTab = (pageTab: string) =>
 
 export const changeMode = (mode: 'supplier' | 'purchaser') =>
   (dispatch) => dispatch({ type: Type.CHANGE_MODE, mode })
+
+export const setPhone = (phone: string) =>
+  (dispatch) => dispatch({ type: Type.SET_PHONE, phone })
+
+export const setIPhone = (iphone: string) =>
+  (dispatch) => dispatch({ type: Type.SET_IPHONE, iphone })

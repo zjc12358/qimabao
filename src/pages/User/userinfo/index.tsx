@@ -49,9 +49,9 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className={'flex-space-between-row-center'} style={{ padding: '5px 15px' }}
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }}
              onClick={this.uploadPicturesOnClick}>
-          <span style={{ fontSize: '16px' }}>用户头像</span>
+          <span style={{ fontSize: '16px',color: '#333' }}>用户头像</span>
           <div className={'flex-center-row-center'}>
             <div style={{
               width: 50,
@@ -71,13 +71,13 @@ class User extends React.Component<Props, State> {
         </div>
         <div className='Segment_line2' />
         <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}>
-          <span style={{ fontSize: '16px' }}>账号</span>
+          <span style={{ fontSize: '16px',color: '#333' }}>账号</span>
           <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_class_name}</span>
         </div>
-        <div className='Segment_line2'/>
+        <div style={{ borderBottom: '10px solid #f3f3f3' }}/>
         <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}
              onClick={this.nameOnclick}>
-          <span style={{ fontSize: '16px' }}>昵称</span>
+          <span style={{ fontSize: '16px',color: '#333' }}>昵称</span>
           <div className={'flex-center-row-center'}>
             <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_name}</span>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
@@ -86,7 +86,7 @@ class User extends React.Component<Props, State> {
         <div className='Segment_line2'/>
         <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}
              onClick={this.phoneOnclick}>
-          <span style={{ fontSize: '16px' }}>手机号码</span>
+          <span style={{ fontSize: '16px',color: '#333' }}>手机号码</span>
           <div className={'flex-center-row-center'}>
             <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_phone}</span>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
@@ -94,7 +94,7 @@ class User extends React.Component<Props, State> {
         </div>
         <div className='Segment_line2'/>
         <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}>
-          <span style={{ fontSize: '16px' }}>我的二维码名片</span>
+          <span style={{ fontSize: '16px',color: '#333' }}>我的二维码名片</span>
           <div className={'flex-center-row-center'}>
             <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_qr_code}</span>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
@@ -103,7 +103,7 @@ class User extends React.Component<Props, State> {
         <div className='Segment_line2'/>
         <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}
              onClick={this.uploadSexOnClick}>
-          <span style={{ fontSize: '16px' }}>性别</span>
+          <span style={{ fontSize: '16px',color: '#333' }}>性别</span>
           <div className={'flex-center-row-center'}>
             <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_sex}</span>
             <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
