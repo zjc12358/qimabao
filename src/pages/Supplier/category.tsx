@@ -11,10 +11,11 @@ import Head from '../../components/Head'
 import { MyResponse } from '../../datasources/MyResponse'
 import { CategoryBean } from '@datasources/CategoryBean'
 import { SecondCategoryBean } from '@datasources/SecondCategoryBean'
-import { updataCategoryClassId } from '@store/actions/release_data'
+import { updataCategoryClassId, updataCategoryId } from '@store/actions/release_data'
 
 export interface Props {
   updataCategoryClassId: (categoryClassId: number, categoryName: string) => void
+  updataCategoryId: (categoryId: number) => void
 }
 
 interface State {
@@ -62,7 +63,7 @@ class Supplier extends React.Component<Props, State> {
           <div>{item.category_name}</div>
         </div>
         <span style={{ height: 1, width: '100%', backgroundColor: '#cccccc' }}></span>
-        {item.show && this.renderChildList(item.productCategoryClassList)}
+        {item.show && this.renderChildList(item.category_id, item.productCategoryClassList)}
       </div>
     )
   }
@@ -70,10 +71,10 @@ class Supplier extends React.Component<Props, State> {
   /**
    * 二级列表
    */
-  renderChildList = (item: Array<SecondCategoryBean>) => {
+  renderChildList = (categoryId: number, item: Array<SecondCategoryBean>) => {
     return (
       <div className='vertical' style={{ width: '100%' }}>
-        {item.map(item => this.renderChildListItem(item))}
+        {item.map(item => this.renderChildListItem(categoryId, item))}
       </div>
     )
   }
@@ -81,11 +82,11 @@ class Supplier extends React.Component<Props, State> {
   /**
    * 二级列表单列
    */
-  renderChildListItem = (item: SecondCategoryBean) => {
+  renderChildListItem = (categoryId: number, item: SecondCategoryBean) => {
     return (
       <div className='vertical' style={{ width: '100%' }}>
         <div className='vertical-center' style={{ width: '100%', height: 30, backgroundColor: 'white' }}
-             onClick={() => this.secondCategoryOnClick(item.category_class_id, item.category_class_name)}>
+             onClick={() => this.secondCategoryOnClick(categoryId, item.category_class_id, item.category_class_name)}>
           {item.category_class_name}
         </div>
         <span style={{ height: 1, width: '100%', backgroundColor: '#cccccc' }}></span>
@@ -107,7 +108,8 @@ class Supplier extends React.Component<Props, State> {
   /**
    * 点击二级类目
    */
-  secondCategoryOnClick = (categoryId: number, categoryName: string) => {
+  secondCategoryOnClick = (id: number, categoryId: number, categoryName: string) => {
+    this.props.updataCategoryId(id)
     this.props.updataCategoryClassId(categoryId, categoryName)
     history().goBack()
   }
@@ -152,7 +154,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updataCategoryClassId
+  updataCategoryClassId,
+  updataCategoryId
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)
