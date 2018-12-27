@@ -65,7 +65,7 @@ class App extends React.Component<Props, State> {
       return
     }
     this.setState({
-      isLoading: true
+      isLoading: false
     })
   }
   public getLogin = (res) => {
