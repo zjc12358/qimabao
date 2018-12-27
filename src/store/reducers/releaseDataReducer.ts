@@ -4,14 +4,21 @@ export interface ShopCartData {
   categoryId: number,
   categoryClassId: number,
   productDescription: string
-  categoryName: string
+  categoryName: string,
+  productMsg: any
 }
 
 const initialState: ShopCartData = {
   categoryId: null,
   categoryClassId: null,
   productDescription: '',
-  categoryName: ''
+  categoryName: '',
+  productMsg: {
+    productName: '',
+    productPrice: '',
+    productStock: '',
+    productLabel: ''
+  }
 }
 
 export default (state = initialState, action: ReleaseAction) => {
@@ -31,6 +38,11 @@ export default (state = initialState, action: ReleaseAction) => {
       return {
         ...state,
         productDescription: action.productDescription
+      }
+    case Type.SAVE_PRODUCTMSG:
+      return {
+        ...state,
+        productMsg: action.productMsg
       }
     default:
       return state

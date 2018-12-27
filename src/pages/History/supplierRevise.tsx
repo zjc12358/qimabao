@@ -11,6 +11,7 @@ import history from 'history/createHashHistory'
 import supplierReviseDataReducer from '@store/reducers/supplierReviseDataReducer'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
+import { needReload } from '@store/actions/shopCart_data'
 
 const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent)
 let moneyKeyboardWrapProps
@@ -21,7 +22,8 @@ if (isIPhone) {
 }
 
 export interface Props {
-  productMsg: any
+  productMsg: any,
+  needReload: (reload: boolean) => void
 }
 
 interface State {
@@ -71,46 +73,43 @@ class History extends React.Component<Props, State> {
    */
   otherSupplierOnClick = (i,foodListIndex,otherSupplierListIndex) => {
     let data = cloneDeep(this.state.foodList)
-    console.log(data[foodListIndex].shoppingCartList[otherSupplierListIndex].product_price * data[foodListIndex].product_weight)
     let data2 = {
       cartId: data[foodListIndex].cart_id,
       supplierId: data[foodListIndex].shoppingCartList[otherSupplierListIndex].supplier_id,
-      productTotalPrice: (data[foodListIndex].shoppingCartList[otherSupplierListIndex].product_price * data[foodListIndex].product_weight).toFixed(),
+      productPrice: data[foodListIndex].shoppingCartList[otherSupplierListIndex].product_price,
+      productTotalPrice: Number((data[foodListIndex].shoppingCartList[otherSupplierListIndex].product_price * data[foodListIndex].product_weight).toFixed(2)),
       productIcon: data[foodListIndex].shoppingCartList[otherSupplierListIndex].product_icon,
       companyName: data[foodListIndex].shoppingCartList[otherSupplierListIndex].company_name
     }
     console.log(data2)
     let ret = ''
-    for (let it in data) {
-      ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+    for (let it in data2) {
+      console.log(data2[it])
+      ret += encodeURIComponent(it) + '=' + data2[it] + '&'
     }
     console.log(ret)
-    // let url = 'CanteenProcurementManager/user/shoppingCart/findProductSupplier?'
-    // let query = 'supplierId=' + this.props.productMsg.supplierId + '&cartId=' + this.props.productMsg.cartId
-    // axios.get<MyResponse<any>>(url + query)
-    //   .then(data => {
-    //     console.log('--- 购物车data =', data)
-    //     if (data.data.code === 0) {
-    //       console.log(data.data.data)
-    //       this.setState({ foodList: data.data.data })
-    //     } else {
-    //       Toast.info(data.data.msg, 2, null, false)
-    //     }
-    //   })
-    //   .catch(() => {
-    //     Toast.info('请检查网络设置!')
-    //   })
-    // console.log(this.state.foodList[foodListIndex].shoppingCartList[otherSupplierListIndex].company_name)
-    // let foodList = cloneDeep(this.state.foodList)
-    // let other = cloneDeep(this.state.foodList[foodListIndex].shoppingCartList[otherSupplierListIndex])
-    // foodList[foodListIndex].id = other.foodMsg.id
-    // foodList[foodListIndex].name = other.foodMsg.name
-    // foodList[foodListIndex].price = other.foodMsg.price
-    // foodList[foodListIndex].img = other.foodMsg.img
-    // foodList[foodListIndex].unit = other.foodMsg.unit
-    // foodList[foodListIndex].nowSupplierMsg.id = other.id
-    // foodList[foodListIndex].nowSupplierMsg.name = other.name
-    // this.setState({ foodList: foodList })
+    let url = 'CanteenProcurementManager/user/shoppingCart/updateProductSupplier?'
+    let query = ret
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- 购物车data =', data)
+        if (data.data.code === 0) {
+          let reviseData = cloneDeep(this.state.foodList)
+          reviseData[foodListIndex].product_price = data2.productPrice
+          reviseData[foodListIndex].company_name = data2.companyName
+          reviseData[foodListIndex].product_icon = data2.productIcon
+          reviseData[foodListIndex].product_total_price = data2.productTotalPrice
+          this.setState({ foodList: reviseData })
+          this.props.needReload(true)
+          Toast.success(data.data.msg,2)
+          console.log(data.data.msg)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
   /**
    * 食物
@@ -187,10 +186,7 @@ class History extends React.Component<Props, State> {
           title='修改供应商'
           backgroundColor='#0084e7'
           leftIconColor='white'
-          rightIconContent={(<span style={{ color: 'white' }}>确认</span>)}
-          showRightIcon='true'
           showLeftIcon='true'
-          rightIconOnClick={ () => { console.log('确认修改') } }
         >
         </Head>
         <div className='touch_scroll bigContent'>
@@ -218,6 +214,7 @@ class History extends React.Component<Props, State> {
                 </div>
               </div>
               {i.shoppingCartList && i.shoppingCartList.length ? i.shoppingCartList.map((i,otherSupplierListIndex) => (
+                this.state.foodList[foodListIndex].company_name === this.state.foodList[foodListIndex].shoppingCartList[otherSupplierListIndex].company_name ? <div></div> :
                 this.renderOtherSupplier(i,otherSupplierListIndex,foodListIndex)
               )) : <div>该菜品暂无其他供应商</div>}
             </div>
@@ -234,6 +231,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  needReload
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)
