@@ -56,17 +56,49 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
-    dd.runtime.permission.requestAuthCode(
+/*    dd.runtime.permission.requestAuthCode(
       { corpId: 'dingff2af124327c79bd35c2f4657eb6378f' }
     )
       .then(res => this.getLogin(res))
-      .catch(err => console.log(err))
+      .catch(err => console.log(err))*/
+    this.jj()
     if (this.state.isLoading) {
       return
     }
     this.setState({
       isLoading: false
     })
+  }
+  public jj = () => {
+    let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
+    let query = 'openId=maoxiaoyan'
+    axios.get<MyResponse<LoginBean>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.props.setID(Number(data.data.data.userId))
+          url = 'CanteenProcurementManager/user/nail/selectMean?'
+          query = 'user_id=' + this.props.id
+          axios.get<MyResponse<UserInfo>>(url + query)
+            .then(data => {
+              console.log('--- data =', data)
+              if (data.data.code === 0) {
+                this.props.updateUserInfo(cloneDeep(data.data.data))
+                this.props.setPhone(data.data.data.user_phone)
+              } else {
+                Toast.info('获取用户信息失败,请重试', 2, null, false)
+              }
+            })
+            .catch(() => {
+              Toast.info('请检查网络设置!')
+            })
+        } else {
+          Toast.info('登录失败', 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
   public getLogin = (res) => {
     let url = 'CanteenProcurementManager/user/nail/tinkerFree?'

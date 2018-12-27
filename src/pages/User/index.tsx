@@ -28,10 +28,17 @@ interface State {
 }
 
 let OrderIconMaxSize: number = 35
-
+const order = [
+  { title: '待付款' },
+  { title: '待配送' },
+  { title: '待收货' },
+  { title: '待评价' },
+  { title: '已完成' }
+]
 class User extends React.Component<Props, State> {
   private RightIconMaxSize: number = 16
   private MenuMaxSize: number = 22
+  private time: NodeJS.Timeout
 
   constructor (props) {
     super(props)
@@ -44,14 +51,22 @@ class User extends React.Component<Props, State> {
   public componentDidMount () {
     this.getNewestOrder()
     if (this.state.NewestOrder.over_time !== 0) {
-      setInterval(
-        () => this.state.NewestOrder.over_time * 60 - 1,
-        this.state.NewestOrder.over_time * 60 * 1000
+      this.time = setInterval(
+        () => this.timeGo(),
+        1000
       )
     }
     window.console.log(window.navigator)
   }
-
+  public componentWillUnmount () {
+    clearInterval(this.time)
+  }
+  public timeGo = () => {
+    console.log(this.state.NewestOrder.over_time)
+    this.setState({
+      NewestOrder: Object.assign({}, this.state.NewestOrder, { over_time: this.state.NewestOrder.over_time - 1 })
+    })
+  }
   /**
    * 标题
    */
@@ -327,8 +342,8 @@ class User extends React.Component<Props, State> {
             flexDirection: 'column',
             paddingLeft: 10
           }} onClick={this.orderOnclick}>
-            <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '微软雅黑' }}>{this.state.NewestOrder.pay_status}</span>
-            <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>{this.state.NewestOrder.over_time}分钟后订单关闭</span>
+            <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '微软雅黑' }}>{order[this.state.NewestOrder.pay_status] === undefined ? '' : order[this.state.NewestOrder.pay_status].title}</span>
+            <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>{(this.state.NewestOrder.over_time / 60).toFixed(0)}分钟后订单关闭</span>
           </div>
         </div>
         <div style={{ height: 'auto' }}>
