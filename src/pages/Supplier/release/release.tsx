@@ -12,9 +12,12 @@ import ReactSVG from 'react-svg'
 import Head from '../../../components/Head/index'
 import './release.less'
 import { MyResponse } from '@datasources/MyResponse'
+import { saveProductMsg } from '@store/actions/release_data'
 
 export interface Props {
-
+  saveProductMsg: (productMsg: any) => void
+  productDescription: string,
+  productMsg: any
 }
 
 interface State {
@@ -42,12 +45,12 @@ class Release extends React.Component<Props, State> {
       files: [],
       multiple: false,
       productData: {},
-      productName: '',
+      productName: this.props.productMsg.productName,
       categoryId: null,
       categoryClassId: null,
-      productPrice: null,
-      productStock: null,
-      productLabel: '',
+      productPrice: this.props.productMsg.productPrice,
+      productStock: this.props.productMsg.productStock,
+      productLabel: this.props.productMsg.productLabel,
       productDescription: ''
     }
   }
@@ -58,37 +61,38 @@ class Release extends React.Component<Props, State> {
 
   submite = () => {
     let url = 'CanteenProcurementManager/user/ProductInfo/releaseProduct'
-    // let query = 'productName=大头鱼&categoryId=1&categoryClassId=1&productPrice=15&productStock=100&productLabel=有机&productDescription=dhsajdksadshas&files=' + this.state.files
     let data = {
-      productName: '大头鱼',
+      productName: this.state.productName,
       categoryId: 1,
       categoryClassId: 1,
-      productPrice: 15,
-      productStock: 100,
-      productLabel: '有机 ',
-      productDescription: 'dhsajdksadshas',
+      productPrice: this.state.productPrice,
+      productStock: this.state.productStock,
+      productLabel: this.state.productLabel,
+      productDescription: this.props.productDescription,
       files: this.state.files
     }
     // let data2 = JSON.stringify(data)
+    let files2 = { files: data.files }
     let ret = ''
     for (let it in data) {
       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
     }
     console.log(ret)
     let fd = new FormData()
-    fd.append('productName', JSON.stringify(data.productName))
+    fd.append('productName', data.productName)
     fd.append('categoryId', JSON.stringify(data.categoryId))
     fd.append('categoryClassId', JSON.stringify(data.categoryClassId))
     fd.append('productPrice', JSON.stringify(data.productPrice))
     fd.append('productStock', JSON.stringify(data.productStock))
     fd.append('productLabel', JSON.stringify(data.productLabel))
-    fd.append('productDescription', JSON.stringify(data.productDescription))
-    fd.append('files', JSON.stringify(data.files))
+    fd.append('productDescription', data.productDescription)
+    fd.append('files', JSON.stringify(files2))
+    console.log(fd.get('productName'))
     axios.post(url,fd,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
-          console.log(11111)
+          Toast.success(data.data.msg, 2, null, false)
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
@@ -96,11 +100,6 @@ class Release extends React.Component<Props, State> {
       .catch(() => {
         Toast.info('请检查网络设置!')
       })
-  }
-
-  deleteUp = () => {
-    let files = this.state.files
-    files.pop()
   }
 
   // convertImgToBase64 = (url, callback, outputFormat) => {
@@ -132,7 +131,15 @@ class Release extends React.Component<Props, State> {
           }} />
         </div>
         <div className={'readImages'}>
-          <ReactSVG svgClassName={'delectUp ' + (this.state.files.length > 0 ? '' : 'delectUpNone')} path={'./assets/images/Supplier/delete_white.svg'}/>
+          <ReactSVG
+            svgClassName={'delectUp ' + (this.state.files.length > 0 ? '' : 'delectUpNone')}
+            path={'./assets/images/Supplier/delete_white.svg'}
+            onClick={ () => {
+              let files = cloneDeep(this.state.files)
+              files.pop()
+              this.setState({ files: files })
+            }}
+          />
           <Carousel
             autoplay={true}
             autoplayInterval={300}
@@ -147,7 +154,7 @@ class Release extends React.Component<Props, State> {
               >
                 <img
                   src={val}
-                  style={{ width: '100%', verticalAlign: 'top' }}
+                  style={{ width: '100%', height: 136, verticalAlign: 'top' }}
                 />
               </a>
             ))}
@@ -170,16 +177,38 @@ class Release extends React.Component<Props, State> {
           <InputItem
             style={{ flex: 1 }}
             type={type}
+            defaultValue={this.props.productMsg[stateName]}
             onBlur={ (e) => {
               switch (stateName) {
                 case 'productPrice':
-                  this.setState({ productPrice: Number(e) })
+                  this.setState({ productPrice: Number(e) },() => {
+                    this.props.saveProductMsg({
+                      productPrice: this.state.productPrice,
+                      productStock: this.state.productStock,
+                      productLabel: this.state.productLabel,
+                      productName: this.state.productName
+                    })
+                  })
                   break
                 case 'productStock':
-                  this.setState({ productStock: Number(e) })
+                  this.setState({ productStock: Number(e) },() => {
+                    this.props.saveProductMsg({
+                      productPrice: this.state.productPrice,
+                      productStock: this.state.productStock,
+                      productLabel: this.state.productLabel,
+                      productName: this.state.productName
+                    })
+                  })
                   break
                 case 'productLabel':
-                  this.setState({ productLabel: e })
+                  this.setState({ productLabel: e }, () => {
+                    this.props.saveProductMsg({
+                      productPrice: this.state.productPrice,
+                      productStock: this.state.productStock,
+                      productLabel: this.state.productLabel,
+                      productName: this.state.productName
+                    })
+                  })
                   break
               }
             }}
@@ -270,8 +299,16 @@ class Release extends React.Component<Props, State> {
               placeholder='输入商品标题'
               rows={2}
               count={60}
+              defaultValue={this.state.productName}
               onBlur={ e => {
-                this.setState({ productName: e })
+                this.setState({ productName: e },() => {
+                  this.props.saveProductMsg({
+                    productPrice: this.state.productPrice,
+                    productStock: this.state.productStock,
+                    productLabel: this.state.productLabel,
+                    productName: this.state.productName
+                  })
+                })
               }}
             />
             {this.renderListItemGoTo('类目', '/category')}
@@ -282,6 +319,7 @@ class Release extends React.Component<Props, State> {
             {this.renderParameterInput('产品标签', 'text','productLabel')}
             {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
+          {this.props.productDescription}
           {this.renderBottomDrawer()}
 
           <div className='releaseFooter'>
@@ -295,9 +333,14 @@ class Release extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    productDescription: state.releaseData.productDescription,
+    productMsg: state.releaseData.productMsg
+  }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  saveProductMsg
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Release)

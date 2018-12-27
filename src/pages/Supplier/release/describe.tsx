@@ -17,6 +17,7 @@ import { updataProductDescription } from '@store/actions/release_data'
 
 export interface Props {
   updataProductDescription: (productDescription: string) => void
+  productDescription: string
 }
 
 interface State {
@@ -56,13 +57,13 @@ class Describe extends React.Component<Props, State> {
         <div className='describeContainer'>
           <TextareaItem
             rows={8}
+            defaultValue={ this.props.productDescription ? this.props.productDescription : '' }
             placeholder='请输入商品描述'
             onBlur={ e => {
               // console.log(e)
               this.setState({ data: e })
             }}
           />
-          <div onClick={() => { history().push('/orderDetail') } }>点我跳转</div>
         </div>
         <div className='describeFooter'>
           {/*<div></div>*/}
@@ -72,6 +73,8 @@ class Describe extends React.Component<Props, State> {
               onClick={ () => {
                 console.log(this.state.data)
                 this.props.updataProductDescription(this.state.data)
+                history().goBack()
+                Toast.success('', 2, null , false)
               }}
             >完成</Button>
           </div>
@@ -82,7 +85,9 @@ class Describe extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    productDescription: state.releaseData.productDescription
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
