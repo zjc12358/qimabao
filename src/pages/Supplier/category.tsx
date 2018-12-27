@@ -9,12 +9,16 @@ import history from 'history/createHashHistory'
 import { HomeCategoryItemBean } from '../../datasources/HomeCategoryItemBean'
 import Head from '../../components/Head'
 import { MyResponse } from '../../datasources/MyResponse'
+import { CategoryBean } from '@datasources/CategoryBean'
+import { SecondCategoryBean } from '@datasources/SecondCategoryBean'
+import { updataCategoryClassId } from '@store/actions/release_data'
 
 export interface Props {
+  updataCategoryClassId: (categoryClassId: number, categoryName: string) => void
 }
 
 interface State {
-  categoryItemData: Array<HomeCategoryItemBean>
+  allCategory: Array<CategoryBean>
 }
 
 class Supplier extends React.Component<Props, State> {
@@ -22,12 +26,12 @@ class Supplier extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      categoryItemData: []
+      allCategory: []
     }
   }
 
   componentWillMount () {
-    this.getHomeCategory()
+    this.getAllCategory()
   }
 
   /**
@@ -35,8 +39,8 @@ class Supplier extends React.Component<Props, State> {
    */
   renderList = () => {
     return (
-      <div className='vertical' style={{ marginTop: 40, flex: 1 }}>
-        {this.state.categoryItemData.map((item, index) => this.renderListItem(item, index))}
+      <div className='vertical' style={{ flex: 1, width: '100%' }}>
+        {this.state.allCategory.map((item, index) => this.renderListItem(item, index))}
       </div>
     )
   }
@@ -44,14 +48,12 @@ class Supplier extends React.Component<Props, State> {
   /**
    * 一级列表单列
    */
-  renderListItem = (item: HomeCategoryItemBean, index: number) => {
+  renderListItem = (item: CategoryBean, index: number) => {
     return (
-      <div className='vertical'>
-        <div className='horizontal' style={{
-          height: 40,
-          width: '100%'
-        }}>
-          <div>
+      <div className='vertical' style={{ width: '100%' }}>
+        <div className='horizontal' style={{ height: 60, width: '100%', backgroundColor: 'white' }}
+             onClick={() => this.categoryOnClick(index)}>
+          <div style={{ marginLeft: 20 }}>
             {item.show ?
               <ReactSVG path='./assets/images/ic_up_arrow.svg' svgStyle={{ width: 24, height: 24 }}/> :
               <ReactSVG path='./assets/images/ic_down_arrow.svg' svgStyle={{ width: 24, height: 24 }}/>
@@ -59,8 +61,8 @@ class Supplier extends React.Component<Props, State> {
           </div>
           <div>{item.category_name}</div>
         </div>
-        <div className='vertical' style={{ width: '100%' }}>
-        </div>
+        <span style={{ height: 1, width: '100%', backgroundColor: '#cccccc' }}></span>
+        {item.show && this.renderChildList(item.productCategoryClassList)}
       </div>
     )
   }
@@ -68,37 +70,60 @@ class Supplier extends React.Component<Props, State> {
   /**
    * 二级列表
    */
-  renderChildList = () => {
+  renderChildList = (item: Array<SecondCategoryBean>) => {
     return (
-      <div></div>
+      <div className='vertical' style={{ width: '100%' }}>
+        {item.map(item => this.renderChildListItem(item))}
+      </div>
     )
   }
 
   /**
    * 二级列表单列
    */
-  renderChildListItem = (index: number) => {
+  renderChildListItem = (item: SecondCategoryBean) => {
     return (
-      <div>
-        <div>
-          {}
+      <div className='vertical' style={{ width: '100%' }}>
+        <div className='vertical-center' style={{ width: '100%', height: 30, backgroundColor: 'white' }}
+             onClick={() => this.secondCategoryOnClick(item.category_class_id, item.category_class_name)}>
+          {item.category_class_name}
         </div>
+        <span style={{ height: 1, width: '100%', backgroundColor: '#cccccc' }}></span>
       </div>
     )
   }
 
   /**
-   * 获取首页分类
+   * 点击一级类目
    */
-  getHomeCategory = () => {
-    const url = 'CanteenProcurementManager/homepage/productCategory/firstPageList'
-    axios.get<MyResponse<Array<HomeCategoryItemBean>>>(url)
+  categoryOnClick = (index: number) => {
+    let all = this.state.allCategory
+    all.map((item, i) => index === i ? item.show = true : item.show = false)
+    this.setState({
+      allCategory: all
+    })
+  }
+
+  /**
+   * 点击二级类目
+   */
+  secondCategoryOnClick = (categoryId: number, categoryName: string) => {
+    this.props.updataCategoryClassId(categoryId, categoryName)
+    history().goBack()
+  }
+
+  /**
+   * 获取所有一,二级分类
+   */
+  getAllCategory = () => {
+    const url = 'CanteenProcurementManager/homepage/productCategory/productCategory'
+    axios.get<MyResponse<Array<CategoryBean>>>(url)
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
           data.data.data.map(item => item.show = false)
           this.setState({
-            categoryItemData: data.data.data
+            allCategory: data.data.data
           })
         } else {
           Toast.info(data.data.msg, 2, null, false)
@@ -126,6 +151,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  updataCategoryClassId
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)

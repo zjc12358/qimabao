@@ -10,6 +10,7 @@ export interface ReleaseAction extends Action {
   type: Type
   categoryId: number
   categoryClassId: number
+  categoryName: string
   productDescription: string
 }
 
@@ -19,10 +20,11 @@ export const updataCategoryId = (categoryId: number) =>
     categoryId: categoryId
   })
 
-export const updataCategoryClassId = (categoryClassId: number) =>
+export const updataCategoryClassId = (categoryClassId: number, categoryName: string) =>
   (dispatch) => dispatch({
     type: Type.UPDATA_CATEGORYCLASSID,
-    categoryClassId: categoryClassId
+    categoryClassId: categoryClassId,
+    categoryName: categoryName
   })
 
 export const updataProductDescription = (productDescription: string) =>
