@@ -14,7 +14,7 @@ import './release.less'
 import { MyResponse } from '@datasources/MyResponse'
 
 export interface Props {
-
+  productDescription: string
 }
 
 interface State {
@@ -70,6 +70,7 @@ class Release extends React.Component<Props, State> {
       files: this.state.files
     }
     // let data2 = JSON.stringify(data)
+    let files2 = { files: data.files }
     let ret = ''
     for (let it in data) {
       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
@@ -83,7 +84,7 @@ class Release extends React.Component<Props, State> {
     fd.append('productStock', JSON.stringify(data.productStock))
     fd.append('productLabel', JSON.stringify(data.productLabel))
     fd.append('productDescription', JSON.stringify(data.productDescription))
-    fd.append('files', JSON.stringify(data.files))
+    fd.append('files', JSON.stringify(files2))
     axios.post(url,fd,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
         console.log('--- 购物车data =', data)
@@ -132,7 +133,15 @@ class Release extends React.Component<Props, State> {
           }} />
         </div>
         <div className={'readImages'}>
-          <ReactSVG svgClassName={'delectUp ' + (this.state.files.length > 0 ? '' : 'delectUpNone')} path={'./assets/images/Supplier/delete_white.svg'}/>
+          <ReactSVG
+            svgClassName={'delectUp ' + (this.state.files.length > 0 ? '' : 'delectUpNone')}
+            path={'./assets/images/Supplier/delete_white.svg'}
+            onClick={ () => {
+              let files = cloneDeep(this.state.files)
+              files.pop()
+              this.setState({ files: files })
+            }}
+          />
           <Carousel
             autoplay={true}
             autoplayInterval={300}
@@ -147,7 +156,7 @@ class Release extends React.Component<Props, State> {
               >
                 <img
                   src={val}
-                  style={{ width: '100%', verticalAlign: 'top' }}
+                  style={{ width: '100%', height: 136, verticalAlign: 'top' }}
                 />
               </a>
             ))}
@@ -282,6 +291,7 @@ class Release extends React.Component<Props, State> {
             {this.renderParameterInput('产品标签', 'text','productLabel')}
             {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
+          {this.props.productDescription}
           {this.renderBottomDrawer()}
 
           <div className='releaseFooter'>
@@ -295,7 +305,9 @@ class Release extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    productDescription: state.releaseData.productDescription
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {}
