@@ -42,10 +42,13 @@ class User extends React.Component<Props, State> {
   }
 
   public componentDidMount () {
-    setInterval(
-      () => this.getNewestOrder(),
-      1000
-    )
+    this.getNewestOrder()
+    if (this.state.NewestOrder.over_time !== 0) {
+      setInterval(
+        () => this.state.NewestOrder.over_time * 60 - 1,
+        this.state.NewestOrder.over_time * 60 * 1000
+      )
+    }
     window.console.log(window.navigator)
   }
 
@@ -508,7 +511,7 @@ class User extends React.Component<Props, State> {
         }
       })
       .catch(() => {
-        Toast.info('请检查网络设置!')
+        console.log('未连接网络！')
       })
   }
 

@@ -36,7 +36,7 @@ const config = {
     proxy: {
       '/CanteenProcurementManager': {
         // target: 'http://192.168.1.147:9091'   // 本地测试地址朱
-        target: 'http://192.168.2.20:9092'   // 本地测试地址朱
+        target: 'http://192.168.2.20:9091'   // 本地测试地址朱
         // target: 'http://192.168.1.108:8080'  // 本地测试地址 江
         // target: 'http://47.100.177.41:9091' // 服务器测试地址
       }
