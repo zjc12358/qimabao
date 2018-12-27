@@ -23,6 +23,7 @@ import { MyResponse } from '@datasources/MyResponse'
 import { HomeCategoryItemBean } from '@datasources/HomeCategoryItemBean'
 import { number } from 'prop-types'
 import { needReload } from '@store/actions/shopCart_data'
+import { cloneDeep, isNil } from 'lodash'
 
 const NUM_ROWS = 20
 
@@ -55,6 +56,7 @@ interface State {
   maxPrice: number // 最高价
   categoryClassId: number
   pageNum: number
+  count: number // 商品总数
 }
 
 class Home extends React.Component<Props, State> {
@@ -79,7 +81,8 @@ class Home extends React.Component<Props, State> {
       minPrice: null,
       maxPrice: null,
       categoryClassId: 0,
-      pageNum: 1
+      pageNum: 1,
+      count: 0
     }
   }
 
@@ -103,6 +106,9 @@ class Home extends React.Component<Props, State> {
   }
 
   loadMore = () => {
+    if (!this.state.hasMore) {
+      return
+    }
     this.setState({
       pageNum: this.state.pageNum + 1
     }, () => this.getProductList())
@@ -478,10 +484,14 @@ class Home extends React.Component<Props, State> {
     let list = this.state.secondCategoryList
     for (let i = 0; i < this.state.secondCategoryList.length; i++) {
       if (index === i) {
-        list[i].check = true
-        this.setState({
-          categoryClassId: this.state.secondCategoryList[index].category_class_id
-        }, () => this.refresh())
+        if (list[i].check === true) {
+          return
+        } else {
+          list[i].check = true
+          this.setState({
+            categoryClassId: this.state.secondCategoryList[index].category_class_id
+          }, () => this.refresh())
+        }
       } else {
         list[i].check = false
       }
@@ -576,6 +586,7 @@ class Home extends React.Component<Props, State> {
    * 获取商品列表
    */
   getProductList () {
+    console.log(this.state.pageNum)
     if (this.state.isLoading) {
       return
     }
@@ -607,9 +618,23 @@ class Home extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          this.setState({
-            productList: data.data.data
-          })
+          if (this.state.pageNum === 1) {
+            if (!isNil(data.data.data)) {
+              this.setState({
+                productList: data.data.data,
+                count: data.data.data[0].count
+              }, () => this.state.count < this.state.pageNum * NUM_ROWS && this.setState({ hasMore: false }))
+            }
+          } else {
+            let list = this.state.productList
+            list.concat(data.data.data)
+            this.setState({
+              productList: list
+            })
+            if (this.state.count < this.state.pageNum * NUM_ROWS) {
+              this.setState({ hasMore: false })
+            }
+          }
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }

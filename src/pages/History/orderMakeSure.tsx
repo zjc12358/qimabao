@@ -242,7 +242,8 @@ class History extends React.Component<Props, State> {
             fullscreen: false
           })
           Toast.hide()
-          this.setState({ modal2: true })
+          // this.setState({ modal2: true })
+          history().push('/payOrder')
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }

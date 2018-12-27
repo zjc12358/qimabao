@@ -136,6 +136,9 @@ import index2 from './pages/History/index'
 /* 菜篮首页 */
 import orderMakeSure from './pages/History/orderMakeSure'
 /* 确认订单 */
+import payOrder from './pages/History/payOrder'
+/*支付订单*/
+
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter history={hashHistory}>
@@ -215,6 +218,7 @@ ReactDOM.render(
         <Route path='/index2' component={index2}/>
         <Route path='/orderMakeSure' component={orderMakeSure}/>
         <Route path='/settingAddress' component={SettingAddress}/>
+        <Route path='/payOrder' component={payOrder}/>
       </AnimatedRouter>
     </HashRouter>
   </Provider>,
