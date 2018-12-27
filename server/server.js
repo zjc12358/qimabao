@@ -17,7 +17,7 @@ const TIME_OUT = 30 * 1e3;
 // 设置超时 返回超时响应
 app.use(timeout(TIME_OUT));
 app.use((req, res, next) => {
-  if (!req.timedout) next();
+  if (!req.timeout) next();
 });
 
 
