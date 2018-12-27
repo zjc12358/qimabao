@@ -4,6 +4,7 @@ export interface ProductBean {
   product_description: string // 商品描述
   product_icon: string
   product_id: number
+  count: number // 商品总数
   product_label?: string // 商品标签
   product_name: string
   product_status?: number // 商品状态
