@@ -77,14 +77,15 @@ class Release extends React.Component<Props, State> {
     }
     console.log(ret)
     let fd = new FormData()
-    fd.append('productName', JSON.stringify(data.productName))
+    fd.append('productName', data.productName)
     fd.append('categoryId', JSON.stringify(data.categoryId))
     fd.append('categoryClassId', JSON.stringify(data.categoryClassId))
     fd.append('productPrice', JSON.stringify(data.productPrice))
     fd.append('productStock', JSON.stringify(data.productStock))
     fd.append('productLabel', JSON.stringify(data.productLabel))
-    fd.append('productDescription', JSON.stringify(data.productDescription))
+    fd.append('productDescription', data.productDescription)
     fd.append('files', JSON.stringify(files2))
+    console.log(fd.get('productName'))
     axios.post(url,fd,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
         console.log('--- 购物车data =', data)
