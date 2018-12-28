@@ -22,6 +22,7 @@ export interface Props {
 interface State {
   getEmpty: boolean
   loading: boolean
+  refresh: string
   supplierProductOrderAll: Array<SupplierProductOrder>
   supplierProductOrderFu: Array<SupplierProductOrder>
   supplierProductOrderPei: Array<SupplierProductOrder>
@@ -44,6 +45,7 @@ class Supplier extends React.Component<Props, State> {
     this.state = {
       loading: true,
       getEmpty: true,
+      refresh: 'refresh',
       supplierProductOrderAll: [],
       supplierProductOrderFu: [],
       supplierProductOrderPei: [],
@@ -126,12 +128,12 @@ class Supplier extends React.Component<Props, State> {
       <div className={'oBar'} style={{ color: '#858585' }}>
         <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.supplierProductOrderAll) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.supplierProductOrderFu) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.supplierProductOrderPei) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.supplierProductOrderShou) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.supplierProductOrderPing) : this.renderNone}
-          {this.state.getEmpty ? () => this.renderSwitch(this.state.supplierProductOrderWan) : this.renderNone}
+          {this.state.supplierProductOrderAll.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderAll) : this.renderNone}
+          {this.state.supplierProductOrderFu.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderFu) : this.renderNone}
+          {this.state.supplierProductOrderPei.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderPei) : this.renderNone}
+          {this.state.supplierProductOrderShou.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderShou) : this.renderNone}
+          {this.state.supplierProductOrderPing.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderPing) : this.renderNone}
+          {this.state.supplierProductOrderWan.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderWan) : this.renderNone}
         </Tabs>
         {this.loadingRender()}
       </div>
@@ -262,7 +264,10 @@ class Supplier extends React.Component<Props, State> {
       <div className={'flex-flex-end-row-center'}
            style={{ height: 40,backgroundColor: '#fafafa',padding: '0 5px' }}>
         <button className={'buttonViewDetail'} onClick={this.viewResultOnclick}>查看详情</button>
-        {showDeal === true ? <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.viewDetailOnclick}>立即发货</button> : ''}
+        {showDeal === true ? <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
+            onClick={() => this.deliveryOnclick(i.order_id,index)}>
+          立即发货
+        </button> : ''}
       </div>
     )
   }
@@ -277,7 +282,27 @@ class Supplier extends React.Component<Props, State> {
       </div>
     )
   }
-
+  public deliveryOnclick = (id,index) => {
+    let url = 'CanteenProcurementManager/user/productOrder/updatePyStates?'
+    let query = 'states=' + 3 + '&orderId=' + id
+    console.log(url + query)
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.state.supplierProductOrderPei.splice(index,1)
+          this.setState({
+            refresh: 'refresh'
+          })
+          Toast.info('发货成功', 1, null, false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+  }
   public viewDetailOnclick = () => {
     history().push('/afterSaleDetail')
   }
