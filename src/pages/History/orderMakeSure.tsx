@@ -382,9 +382,9 @@ class History extends React.Component<Props, State> {
           <div>
             <div
               className='address'
-              onClick={() => {
-                history().push('/setting-address')
-              }}
+              // onClick={() => {
+              //   history().push('/setting-address')
+              // }}
             >
               <div>
                 <img style={{ width: 20 }} src='../../assets/images/Cart/cart_location.svg'/>
@@ -488,7 +488,7 @@ class History extends React.Component<Props, State> {
         >
           <List renderHeader={'选择送达时间'} className='popup-list'>
             {this.renderSetTime()}
-            <List.Item>
+            <List.Item className={'dateSureBtn'}>
               <Button type='primary' onClick={() => {
                 this.onClose(1)
               }}>确定</Button>
