@@ -99,7 +99,7 @@ class User extends React.Component<Props, State> {
               fontSize: 12,
               paddingTop: 5,
               color: '#969696'
-            }}>{i.receiving_address}&nbsp;{i.receiving_address_detail}</span>
+            }}>{i.receiving_address}&nbsp;{i.receiving_address_detail.substr(0,30)}{i.receiving_address_detail.length > 30 ? '...' : ''}</span>
           </div>
           <div style={{
             padding: 20

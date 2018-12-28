@@ -355,6 +355,9 @@ class History extends React.Component<Props, State> {
         if (j.isChecked === true) cartId.push(j.cart_id)
       })
     })
+    if (cartId.length < 1) {
+      return
+    }
     cartId.join(',')
     this.deleteFoodAxios(cartId)
   }
