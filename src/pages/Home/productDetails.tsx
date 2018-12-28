@@ -140,24 +140,6 @@ class Home extends React.Component<Props, State> {
           {this.renderEvaluation()}
           <span style={{ height: 1, width: '100%', backgroundColor: '#e5e5e5' }}/>
           {this.renderBottomPic()}
-          <ul>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-          </ul>
         </div>
       </div>
     )
@@ -217,27 +199,29 @@ class Home extends React.Component<Props, State> {
           未获取到商品详细 {this.state.scrollY}
         </div>
         :
-        <div className='vertical'
+        <div className='horizontal'
              style={{ height: 125, backgroundColor: 'white', width: '100%' }}>
-          <div style={{ padding: 20 }}>
+          <div className='vertical' style={{ marginRight: 20, marginLeft: 20, flex: 1 }}>
             <div style={{ width: '100%' }}>
               <div>{this.state.productDetails.product_name}</div>
-              <div style={{ color: '#e5e5e5' }}>{this.state.productDetails.product_description}</div>
-              <div>
+              <div style={{ color: '#e5e5e5', marginTop: 5 }}>{this.state.productDetails.product_description}</div>
+              <div style={{ marginTop: 5 }}>
                 <span style={{ color: '#ff6161' }}>{this.state.productDetails.product_price}</span>
                 <span>/</span>
                 <span>500g</span>
               </div>
               <div className='horizontal'
                    style={{
-                     justifyContent: 'space-between'
+                     justifyContent: 'space-between',
+                     marginTop: 5
                    }}>
                 <div>4星</div>
                 <div>{this.state.productDetails.product_volume}人购买</div>
               </div>
               <div className='horizontal'
                    style={{
-                     color: '#e5e5e5'
+                     color: '#e5e5e5',
+                     marginTop: 5
                    }}>
                 <span style={{ flex: 1 }}>快递:免运费</span>
                 <span style={{ flex: 1 }}>库存:{this.state.productDetails.product_inventory}</span>
@@ -376,7 +360,7 @@ class Home extends React.Component<Props, State> {
     } else {
       Toast.info('加载未完成')
     }
-    history().push('/moreEvaluation')
+    // history().push('/moreEvaluation')
   }
 
   /**

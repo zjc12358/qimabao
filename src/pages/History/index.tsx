@@ -142,7 +142,7 @@ class History extends React.Component<Props, State> {
     data = encodeURI(data)
     url = url + '?json=' + data
     // this.setState({ fullscreen: true })
-    Toast.loading('loading',2)
+    Toast.loading('loading', 2)
     axios.post(url, data, { headers: { 'Content-Type': 'application/json' } })
       .then(data => {
         Toast.hide()
@@ -152,15 +152,16 @@ class History extends React.Component<Props, State> {
           this.props.updataOrderId(data.data.data)
           this.props.updataBookingSheetFood(this.getCheckedProductTwo())
           this.props.updataToTal(this.state.total)
-          // this.setState({ fullscreen: false })
           history().push('/orderMakeSure')
           this.props.updatePageTab('HistoryPageTabBar')
         } else {
           Toast.info(data.data.msg)
           console.log(data.data.msg)
         }
+        this.setState({ fullscreen: false })
       })
       .catch(() => {
+        this.setState({ fullscreen: false })
         Toast.hide()
         Toast.info('错误!')
       })
@@ -554,7 +555,8 @@ class History extends React.Component<Props, State> {
               display: 'flex',
               alignItems: 'center'
             }}>
-              <img style={{ display: 'block', width: 90, height: 90 }} src={'./assets/images/SupplierTest/vegetable.png'}/>
+              <img style={{ display: 'block', width: 90, height: 90 }}
+                   src={'./assets/images/SupplierTest/vegetable.png'}/>
               <div style={{
                 height: 105,
                 display: 'flex',
@@ -608,7 +610,7 @@ class History extends React.Component<Props, State> {
             borderTop: '1px solid #e5e5e5'
           }}>
             <div>小计: <span
-              style={{ color: 'red' }}>￥{item.product_total_price}</span>{console.log('dshafkdsa',item)}
+              style={{ color: 'red' }}>￥{item.product_total_price}</span>{console.log('dshafkdsa', item)}
             </div>
           </div>
           <div style={{ width: 30 }}></div>
