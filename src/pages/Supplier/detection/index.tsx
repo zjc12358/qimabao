@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { List,InputItem,Button,ImagePicker, TextareaItem, WingBlank, SegmentedControl } from 'antd-mobile'
+import { List, InputItem, Button, ImagePicker, TextareaItem, WingBlank, SegmentedControl, Toast } from 'antd-mobile'
 import axios from 'axios'
 import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
@@ -205,7 +205,7 @@ class Detection extends React.Component<Props, State> {
       <div className='bigContainer detection'>
         <Head
           showLeftIcon='true'
-          title='提现申请'
+          title='检测申请'
           backgroundColor='#0084e7'
           leftIconColor='white'
         />
@@ -224,7 +224,11 @@ class Detection extends React.Component<Props, State> {
           {this.renderAreaDetail()}
         </div>
         <div className='footerSubmite'>
-          <Button type='primary'>提交</Button>
+          <Button type='primary'
+            onClick={() => {
+              Toast.success('提交成功',2)
+            }}
+          >提交</Button>
         </div>
       </div>
     )

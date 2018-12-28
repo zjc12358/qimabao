@@ -47,7 +47,7 @@ export interface Props {
 interface State {
   num: any,
   data: Array<ShopCartSupplierBean>,
-  total: number,
+  total: any,
   allSupplierItemCheck: Boolean,
   isEmpty: boolean,
   yourLink: any,
@@ -141,16 +141,18 @@ class History extends React.Component<Props, State> {
     let data = JSON.stringify(data2)
     data = encodeURI(data)
     url = url + '?json=' + data
-    this.setState({ fullscreen: true })
+    // this.setState({ fullscreen: true })
+    Toast.loading('loading',2)
     axios.post(url, data, { headers: { 'Content-Type': 'application/json' } })
       .then(data => {
+        Toast.hide()
         if (data.data.code === 0) {
           console.log(data.data)
           console.log(this.getCheckedProductTwo())
           this.props.updataOrderId(data.data.data)
           this.props.updataBookingSheetFood(this.getCheckedProductTwo())
           this.props.updataToTal(this.state.total)
-          this.setState({ fullscreen: false })
+          // this.setState({ fullscreen: false })
           history().push('/orderMakeSure')
           this.props.updatePageTab('HistoryPageTabBar')
         } else {
@@ -159,6 +161,7 @@ class History extends React.Component<Props, State> {
         }
       })
       .catch(() => {
+        Toast.hide()
         Toast.info('错误!')
       })
   }
@@ -262,7 +265,7 @@ class History extends React.Component<Props, State> {
 
   smallAdd = (item, index, index1) => {
     let data = cloneDeep(this.state.data)
-    let subtotal = (item.product_weight * item.product_price).toFixed(2)
+    let subtotal = Number(item.product_weight * item.product_price).toFixed(2)
     data[index1].shoppingCartDetails[index].product_total_price = subtotal
     console.log(subtotal)
     this.props.updataShopCart(data)
@@ -309,7 +312,7 @@ class History extends React.Component<Props, State> {
     // let shopdata = cloneDeep(this.props.shopCartData)
     let productWeight = v
     console.log(v)
-    let subtotal = (v * item.product_price).toFixed(2)
+    let subtotal = Number(v * item.product_price).toFixed(2)
     console.log(subtotal)
     let cartId = item.cart_id
     this.setState({
@@ -607,6 +610,7 @@ class History extends React.Component<Props, State> {
                     }}
                     moneyKeyboardAlign='left'
                     moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                    editable={false}
                   ></InputItem>
                 </div>
               </div>
@@ -624,7 +628,7 @@ class History extends React.Component<Props, State> {
             borderTop: '1px solid #e5e5e5'
           }}>
             <div>小计: <span
-              style={{ color: 'red' }}>￥{item.product_total_price}</span>
+              style={{ color: 'red' }}>￥{item.product_total_price}</span>{console.log('dshafkdsa',item)}
             </div>
           </div>
           <div style={{ width: 30 }}></div>
