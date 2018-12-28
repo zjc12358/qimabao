@@ -327,8 +327,7 @@ class User extends React.Component<Props, State> {
         }}>
           <span style={{ fontSize: '16px', fontFamily: '微软雅黑', color: '#404040' }}>最新订单</span>
           <div style={{ paddingLeft: 20 }}/>
-          <div style={{ borderRadius: '50%', width: 35, height: 35, overflow: 'hidden', zIndex: 98 }}
-               onClick={this.orderOnclick}>
+          <div style={{ borderRadius: '50%', width: 35, height: 35, overflow: 'hidden', zIndex: 98 }}>
             <img style={{
               width: 'auto',
               height: 'auto',
@@ -340,14 +339,14 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'column',
             paddingLeft: 10
-          }} onClick={this.orderOnclick}>
+          }} onClick={this.orderOnclick.bind(this,0)}>
             <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '微软雅黑' }}>{this.state.NewestOrder.over_time <= 0 ? '尚无最新订单' : order[this.state.NewestOrder.pay_status] === undefined ? '' : order[this.state.NewestOrder.pay_status].title}</span>
             <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>{this.state.NewestOrder.over_time <= 0 ? '' : ((this.state.NewestOrder.over_time / 60).toFixed(0) + '分钟后订单关闭')}</span>
           </div>
         </div>
         <div style={{ height: 'auto' }}>
           <div className='Segment_line2'/>
-          <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.orderOnclick.bind(this,0)}>
+          <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.orderOnclick.bind(this,5)}>
             <span style={{ fontSize: '16px' }}>我的购买</span>
             <ReactSVG path='./assets/images/User/right.svg'
                       svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>

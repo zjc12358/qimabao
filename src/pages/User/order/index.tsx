@@ -161,7 +161,7 @@ class User extends React.Component<Props, State> {
   }
   public renderItem = (i, index) => {
     let font: any = null
-    switch (i.order_status) {
+    switch (i.pay_status) {
       case 0:
         font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
         break
@@ -187,7 +187,7 @@ class User extends React.Component<Props, State> {
         <div className={'Segment_line2'} />
         <div className={'flex-space-between-row-center'} style={{ height: 40,padding: 5 }}>
           <div className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：{i.order_id}</div>
-          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{tabs[i.order_status + 1].title}</div>
+          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{tabs[i.pay_status + 1].title}</div>
         </div>
         <div className={'Segment_line2'} />
         {i.orderDetailList.map((lI, lIndex) => (
@@ -250,7 +250,7 @@ class User extends React.Component<Props, State> {
    */
   public renderItemStatus = (i,index) => {
     let showDeal: any = false
-    switch (i.order_status) {
+    switch (i.pay_status) {
       case 0:
         showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即付款</button>
         break

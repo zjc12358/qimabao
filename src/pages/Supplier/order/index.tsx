@@ -157,7 +157,7 @@ class Supplier extends React.Component<Props, State> {
   }
   public renderItem = (i, index) => {
     let font: any = null
-    switch (i.order_status) {
+    switch (i.pay_status) {
       case 0:
         font = { borderRadius: 20,backgroundColor: '#cccccc',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }
         break
@@ -183,7 +183,7 @@ class Supplier extends React.Component<Props, State> {
         <div className={'Segment_line2'} />
         <div className={'flex-space-between-row-center'} style={{ height: 40,padding: 5 }}>
           <div className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：{i.order_id}</div>
-          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{tabs[i.order_status + 1].title}</div>
+          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{tabs[i.pay_status + 1].title}</div>
         </div>
         <div className={'Segment_line2'} />
         {i.orderDetailList.map((lI, lIndex) => (
@@ -246,17 +246,17 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderItemStatus = (i,index) => {
     let showDeal: boolean = false
-    switch (i.status) {
-      case '待付款':
+    switch (i.pay_status) {
+      case 0:
         showDeal = false
         break
-      case '待发货':
+      case 1:
         showDeal = true
         break
-      case '待收货':
+      case 2:
         showDeal = false
         break
-      case '待评价':
+      case 3:
         showDeal = false
         break
     }
@@ -284,7 +284,7 @@ class Supplier extends React.Component<Props, State> {
   }
   public deliveryOnclick = (id,index) => {
     let url = 'CanteenProcurementManager/user/productOrder/updatePyStates?'
-    let query = 'states=' + 3 + '&orderId=' + id
+    let query = 'states=' + 2 + '&orderId=' + id
     console.log(url + query)
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
