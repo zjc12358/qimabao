@@ -101,7 +101,8 @@ class Home extends React.Component<Props, State> {
 
   refresh () {
     this.setState({
-      pageNum: 1
+      pageNum: 1,
+      hasMore: true
     }, () => this.getProductList())
   }
 
@@ -285,7 +286,7 @@ class Home extends React.Component<Props, State> {
            onClick={() => this.productOnClick(item.product_id)}>
         <div className='horizontal'
              style={{ height: 90, width: '100%' }}>
-          <img className='product-img' src={item.product_icon}/>
+          <img className='product-img' src={'./assets/images/SupplierTest/vegetable.png'}/>
           <div className='vertical product-list-item-content'
                style={{ justifyContent: 'space-between' }}>
             <span className='text-nowrap' style={{ width: '100%', marginTop: 10 }}>{item.product_name}</span>
@@ -561,6 +562,7 @@ class Home extends React.Component<Props, State> {
    * 获取二级类目
    */
   getSecondCategory () {
+    console.log('获取二级类目')
     let url = 'CanteenProcurementManager/homepage/productCategory/productCategoryClass?'
     let query = 'categoryId=' + this.state.homeCategory[this.state.categoryIndex].category_id
     axios.get<MyResponse<Array<SecondCategoryBean>>>(url + query)
@@ -586,7 +588,7 @@ class Home extends React.Component<Props, State> {
    * 获取商品列表
    */
   getProductList () {
-    console.log(this.state.pageNum)
+    console.log('获取商品')
     if (this.state.isLoading) {
       return
     }
@@ -619,11 +621,17 @@ class Home extends React.Component<Props, State> {
         console.log('--- data =', data)
         if (data.data.code === 0) {
           if (this.state.pageNum === 1) {
-            if (!isNil(data.data.data)) {
+            if (!isNil(data.data.data) && data.data.data.length > 0) {
               this.setState({
                 productList: data.data.data,
                 count: data.data.data[0].count
               }, () => this.state.count < this.state.pageNum * NUM_ROWS && this.setState({ hasMore: false }))
+            } else if (data.data.data.length === 0) {
+              this.setState({
+                productList: data.data.data,
+                count: 0,
+                hasMore: false
+              })
             }
           } else {
             let list = this.state.productList

@@ -214,7 +214,7 @@ class Home extends React.Component<Props, State> {
                justifyContent: 'center',
                paddingTop: 20
              }}>
-          <img style={{ width: 70, height: 70 }} src={item.category_picture}/>
+          <img style={{ width: 70, height: 70 }} src={'./assets/images/ic_home' + index + '.png'}/>
           <div style={{ marginTop: 10 }}>
             {item.category_name}
           </div>

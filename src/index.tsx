@@ -136,8 +136,12 @@ import supplierRevise from './pages/History/supplierRevise'
 // /* 菜篮首页 */
 import orderMakeSure from './pages/History/orderMakeSure'
 /* 确认订单 */
+import OrderSelectAddress from './pages/History/selectAddress'
+/*订单选择收货地址*/
 import payOrder from './pages/History/payOrder'
 /*支付订单*/
+import Pay from './pages/History/pay'
+/*支付页面*/
 
 ReactDOM.render(
   <Provider store={store}>
@@ -218,7 +222,9 @@ ReactDOM.render(
         {/*<Route path='/index2' component={index2}/>*/}
         <Route path='/orderMakeSure' component={orderMakeSure}/>
         <Route path='/settingAddress' component={SettingAddress}/>
+        <Route path='/orderSelectAddress' component={OrderSelectAddress}/>
         <Route path='/payOrder' component={payOrder}/>
+        <Route path='/pay' component={Pay}/>
       </AnimatedRouter>
     </HashRouter>
   </Provider>,
