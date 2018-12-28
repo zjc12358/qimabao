@@ -8,72 +8,126 @@ import { GlobalData } from '../../../store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import Head from '../../../components/Head/index'
 import './master.css'
+import { MyResponse } from '@datasources/MyResponse'
+import { ProductList } from '@datasources/ProductList'
+import Loading from '@components/Loading'
+import { cloneDeep, get } from 'lodash'
+import { updateProductList } from '@store/actions/supplierProductList_data'
 
 export interface Props {
-
+  updateProductList: (ProductList: Array<ProductList>) => void
 }
 
 interface State {
-  inSale: any
-  soldOut: any
-  inStore: any
-  lowerShelf: any
-  getEmpty: boolean
   refresh: string
+  loading: boolean
+  supplierProductListCSZ: Array<ProductList>
+  supplierProductListYSW: Array<ProductList>
+  supplierProductListCKZ: Array<ProductList>
+  supplierProductListYXJ: Array<ProductList>
 }
-
+const tabs = [
+  { title: '出售中' },
+  { title: '已售完' },
+  { title: '仓库中' },
+  { title: '已下架' }
+]
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
     this.state = {
-      getEmpty: true,
-      inSale: [
-        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
-        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' },
-        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
-        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' },
-        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
-        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
-      ],
-      soldOut: [
-        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
-        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' },
-        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
-        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
-      ],
-      inStore: [
-        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
-        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
-      ],
-      lowerShelf: [
-        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
-        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' },
-        { code: 'SP057899444220', Commodity: '茴香根 根茎 蔬菜 新鲜 500克',stock: '585.6',value: '900' },
-        { code: 'SP057899444221', Commodity: '新鲜百合 食用鲜百合蔬菜 1000g',stock: '45.5',value: '220' }
-      ],
+      loading: true,
+      supplierProductListCSZ: [],
+      supplierProductListYSW: [],
+      supplierProductListCKZ: [],
+      supplierProductListYXJ: [],
       refresh: 'refresh'
+    }
+  }
+  componentDidMount () {
+    this.tabOnClick(null,0)
+  }
+  tabOnClick = (tab, index) => {
+    this.setState({
+      loading: true
+    })
+    let url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfo?'
+    let query = ''
+    switch (index) {
+      case 0:
+        query = 'status=' + 1
+        break
+      case 1:
+        url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfoStock'
+        break
+      case 2:
+        query = 'status=' + 0
+        break
+      case 3:
+        query = 'status=' + 2
+        break
+    }
+    console.log(url + query)
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data.data.data)
+        if (data.data.code === 0) {
+          switch (index) {
+            case 0:
+              this.setState({
+                supplierProductListCSZ: cloneDeep(data.data.data)
+              })
+              break
+            case 1:
+              this.setState({
+                supplierProductListYSW: cloneDeep(data.data.data)
+              })
+              break
+            case 2:
+              this.setState({
+                supplierProductListCKZ: cloneDeep(data.data.data)
+              })
+              break
+            case 3:
+              this.setState({
+                supplierProductListYXJ: cloneDeep(data.data.data)
+              })
+              break
+          }
+          this.setState({
+            loading: false
+          })
+          this.props.updateProductList(cloneDeep(data.data.data))
+        } else {
+          Toast.info('获取订单信息失败,请重试', 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+  }
+  loadingRender = () => {
+    if (this.state.loading) {
+      return (
+        <Loading/>
+      )
     }
   }
   /**
    * 内容
    */
   public renderContent = () => {
-    const tabs = [
-      { title: '出售中' },
-      { title: '已售完' },
-      { title: '仓库中' },
-      { title: '已下架' }
-    ]
     return(
       <div className={'gBar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
+        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
-          {this.state.getEmpty ? this.renderInSale : this.renderNone}
-          {this.state.getEmpty ? this.renderSoldOut : this.renderNone}
-          {this.state.getEmpty ? this.renderInStore : this.renderNone}
-          {this.state.getEmpty ? this.renderLowerShelf : this.renderNone}
+          {this.state.supplierProductListCSZ.length !== 0 ? this.renderInSale : this.renderNone}
+          {this.state.supplierProductListYSW.length !== 0 ? this.renderSoldOut : this.renderNone}
+          {this.state.supplierProductListCKZ.length !== 0 ? this.renderInStore : this.renderNone}
+          {this.state.supplierProductListYXJ.length !== 0 ? this.renderLowerShelf : this.renderNone}
         </Tabs>
+        {this.loadingRender()}
       </div>
     )
   }
@@ -81,75 +135,91 @@ class Supplier extends React.Component<Props, State> {
    * 出售中
    */
   public renderInSale = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.inSale.map((i, index) => (
-          <div>
-            {this.renderItem(i, index,'inSale')}
-          </div>
-        ))}
-      </div>
-    )
+    if (!this.state.loading) {
+      return (
+        <div style={{
+          paddingTop: 20
+        }}>
+          {this.state.supplierProductListCSZ.map((i, index) => (
+            <div>
+              {this.renderItem(i, index, 'inSale')}
+            </div>
+          ))}
+        </div>
+      )
+    }
   }
   /**
    * 已售完
    */
   public renderSoldOut = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.soldOut.map((i, index) => (
-          <div>
-            {this.renderSoldItem(i, index,'')}
-          </div>
-        ))}
-      </div>
-    )
+    if (!this.state.loading) {
+      return (
+        <div style={{
+          paddingTop: 20
+        }}>
+          {this.state.supplierProductListYSW.map((i, index) => (
+            <div>
+              {this.renderSoldItem(i, index, '')}
+            </div>
+          ))}
+        </div>
+      )
+    }
   }
   /**
    * 仓库中
    */
   public renderInStore = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.inStore.map((i, index) => (
-          <div>
-            {this.renderItem(i, index,'inStore')}
-          </div>
-        ))}
-      </div>
-    )
+    if (!this.state.loading) {
+      return (
+        <div style={{
+          paddingTop: 20
+        }}>
+          {this.state.supplierProductListCKZ.map((i, index) => (
+            <div>
+              {this.renderItem(i, index, 'inStore')}
+            </div>
+          ))}
+        </div>
+      )
+    }
   }
   /**
-   * 仓库中
+   * 已下架
    */
   public renderLowerShelf = () => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {this.state.lowerShelf.map((i, index) => (
-          <div>
-            {this.renderItem(i, index,'lowerShelf')}
-          </div>
-        ))}
-      </div>
-    )
+    if (!this.state.loading) {
+      return (
+        <div style={{
+          paddingTop: 20
+        }}>
+          {this.state.supplierProductListYXJ.map((i, index) => (
+            <div>
+              {this.renderItem(i, index, 'lowerShelf')}
+            </div>
+          ))}
+        </div>
+      )
+    }
   }
   /**
    * 空
    */
   public renderNone = () => {
-    return(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', backgroundColor: '#fff' }}>
-        空空如也
-      </div>
-    )
+    if (!this.state.loading) {
+      return (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '250px',
+          backgroundColor: '#fff'
+        }}>
+          空空如也
+        </div>
+      )
+    }
   }
   /**
    * 出售中，仓库中item
@@ -167,12 +237,16 @@ class Supplier extends React.Component<Props, State> {
           </div>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='../../../../assets/images/Supplier/lowerShelf.svg' svgStyle={{ width: 20, height: 20 }}/>
-            <span style={{ paddingLeft: 5 }}>{type === 'inSale' ? '下架' : '上架'}</span>
+            <span style={{ paddingLeft: 5 }} onClick={
+              type === 'inSale' ? () => this.LowerOrUpOnclick(i.product_id,index,this.state.supplierProductListCSZ,1) :
+                type === 'lowerShelf' ? () => this.LowerOrUpOnclick(i.product_id,index,this.state.supplierProductListYXJ,0) : () => this.LowerOrUpOnclick(i.product_id,index,this.state.supplierProductListCKZ,0)}>
+                {type === 'inSale' ? '下架' : '下架'}
+                </span>
           </div>
           <div className={'flex-center-row-center'}
                onClick={
-                 type === 'inSale' ? () => this.inSaleDeleteOnclick(index) :
-                 type === 'lowerShelf' ? () => this.lowerShelfDeleteOnclick(index) : () => this.inStoreDeleteOnclick(index)}>
+                 type === 'inSale' ? () => this.delete(i.product_id,index,this.state.supplierProductListCSZ) :
+                 type === 'lowerShelf' ? () => this.delete(i.product_id,index,this.state.supplierProductListYXJ) : () => this.delete(i.product_id,index,this.state.supplierProductListCKZ)}>
             <ReactSVG path='../../../../assets/images/Supplier/delete.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }}>删除</span>
           </div>
@@ -201,14 +275,14 @@ class Supplier extends React.Component<Props, State> {
         </div>
         <div className={'flex-space-between-column-flex-start'} style={{ position: 'absolute', left: 112, height: 70 }}>
           <div className={'commonFont'} style={{ fontSize: 14, color: '#000',height: 32,paddingRight: 10,whiteSpace: 'normal' }} >
-            现摘新鲜野生荠菜 蔬菜 1.5kg 现摘新鲜野生荠菜 蔬菜 1.5kg现摘新鲜野生
+            {i.product_name}
           </div>
           <div>
             <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }} >售价：</span>
-            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }} >￥<span style={{ color: 'red' }}>22.50</span></span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }} >￥<span style={{ color: 'red' }}>{i.product_price}</span></span>
           </div>
           <div>
-            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }} >库存：{i.stock}kg&nbsp;&nbsp;&nbsp;&nbsp;销量：{i.value}kg</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }} >库存：{i.product_stock}kg&nbsp;&nbsp;&nbsp;&nbsp;销量：{i.product_volume}kg</span>
           </div>
         </div>
       </div>
@@ -232,7 +306,7 @@ class Supplier extends React.Component<Props, State> {
           </div>
           <div className={'flex-space-between-column-flex-start'} style={{ position: 'absolute', left: 112, height: 70 }}>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#000',height: 32,paddingRight: 10,whiteSpace: 'normal' }} >
-              现摘新鲜野生荠菜 蔬菜 1.5kg 现摘新鲜野生荠菜 蔬菜 1.5kg现摘新鲜野生
+              {i.product_name}
             </div>
             <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }} >￥<span style={{ color: 'red' }}>12568.50</span></span>
             <div className={'flex-space-between-row-center'} style={{ width: '100%' }}>
@@ -248,31 +322,54 @@ class Supplier extends React.Component<Props, State> {
       </div>
     )
   }
-
+  public delete = (id,index,poi) => {
+    console.log(id,index,poi)
+    let url = 'CanteenProcurementManager/user/ProductInfo/deleteProductCommodity?'
+    let query = 'productId=' + id
+    console.log(url + query)
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          poi.splice(index,1)
+          this.setState({
+            refresh: 'refresh'
+          })
+          Toast.info('删除成功', 1, null, false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+  }
   public searchOnClick = () => {
     console.log(1)
   }
-
-  public inSaleDeleteOnclick = (index) => {
-    this.state.inSale.splice(index,1)
-    this.setState({
-      refresh: 'refresh'
-    })
+  public LowerOrUpOnclick = (id,index,poi,status) => {
+    console.log(id,index,poi)
+    let url = 'CanteenProcurementManager/user/ProductInfo/updateState?'
+    let query = 'productId=' + id + '&productStatus=' + status
+    console.log(url + query)
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          poi.splice(index,1)
+          this.setState({
+            refresh: 'refresh'
+          })
+          Toast.info('操作成功', 1, null, false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
-  public lowerShelfDeleteOnclick = (index) => {
-    this.state.lowerShelf.splice(index,1)
-    this.setState({
-      refresh: 'refresh'
-    })
-  }
-
-  public inStoreDeleteOnclick = (index) => {
-    this.state.inStore.splice(index,1)
-    this.setState({
-      refresh: 'refresh'
-    })
-  }
   public render () {
     return (
       <div style={{
@@ -292,6 +389,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {}
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  updateProductList
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)

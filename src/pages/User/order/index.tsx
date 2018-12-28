@@ -22,8 +22,8 @@ export interface Props {
 
 interface State {
   loading: boolean
-  data: any
   getEmpty: boolean
+  refresh: string
   productOrderAll: Array<ProductOrder>
   productOrderFu: Array<ProductOrder>
   productOrderPei: Array<ProductOrder>
@@ -46,11 +46,7 @@ class User extends React.Component<Props, State> {
     this.state = {
       loading: true,
       getEmpty: true,
-      data: [
-        { code: 'SP5685698754382', status: '待付款', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: 'SP4556856987543', status: '待发货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' },
-        { code: 'SP2899898754356', status: '待收货', business: '衢州炒菜软件有限公司',Commodity: '有机红洋葱',price: '15.5',weight: '1000',total: '55.2' }
-      ],
+      refresh: '',
       productOrderAll: [],
       productOrderFu: [],
       productOrderPei: [],
@@ -261,7 +257,7 @@ class User extends React.Component<Props, State> {
         showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即催货</button>
         break
       case 2:
-        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>确认收货</button>
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={() => this.confirmOnclick(i.order_id,index)}>确认收货</button>
         break
       case 3:
         showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }} onClick={this.payOnclick}>立即评价</button>
@@ -294,7 +290,27 @@ class User extends React.Component<Props, State> {
   public payOnclick = () => {
     history().push('/paySuccess')
   }
-
+  public confirmOnclick = (id,index) => {
+    let url = 'CanteenProcurementManager/user/productOrder/updatePyStates?'
+    let query = 'states=' + 4 + '&orderId=' + id
+    console.log(url + query)
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.state.productOrderShou.splice(index,1)
+          this.setState({
+            refresh: 'refresh'
+          })
+          Toast.info('确认成功!', 1, null, false)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+  }
   public render () {
     return (
       <div style={{
