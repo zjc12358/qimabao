@@ -9,11 +9,12 @@ import { GlobalData } from '@store/reducers/globalDataReducer'
 import history from 'history/createHashHistory'
 import { cloneDeep, get, isNil } from 'lodash'
 import Head from '@components/Head'
+import { setPayInfo } from '@store/actions/pay_data'
 
 const AgreeItem = Checkbox.AgreeItem
 
 export interface Props {
-
+  setPayInfo: (outTradeNo: string, totalAmount: string, subject: string, body: string) => void
 }
 
 interface State {
@@ -80,12 +81,28 @@ class History extends React.Component<Props, State> {
     )
   }
 
+  /**
+   * 点击确认支付
+   */
+  selectPayWayOnClick = () => {
+    history().push('/pay')
+  }
+
   public render () {
     return (
       <div className='vertical' style={{ width: '100%', height: '100%' }}>
         <Head titleColor={'black'} showLeftIcon={true} backgroundColor={'#0084e7'} title={'支付设置'}
               rightIconOnClick={false} showRightIcon={false} leftIconColor={'white'}/>
         {this.renderContent()}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ marginLeft: 30, marginRight: 30, height: 40 }}>
+            <div style={{ width: '100%', backgroundColor: '#0084e7' }}
+                 onClick={this.selectPayWayOnClick}>
+              确认支付
+            </div>
+          </div>
+
+        </div>
       </div>
     )
   }
@@ -95,6 +112,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {}
 }
 
-const mapDispatchToProps: MapDispatchToProps<any, any> = {}
+const mapDispatchToProps: MapDispatchToProps<any, any> = {
+  setPayInfo
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)

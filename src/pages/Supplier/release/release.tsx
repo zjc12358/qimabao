@@ -17,7 +17,9 @@ import { saveProductMsg } from '@store/actions/release_data'
 export interface Props {
   saveProductMsg: (productMsg: any) => void
   productDescription: string,
-  productMsg: any
+  productMsg: any,
+  categoryId: number,
+  categoryClassId: number
 }
 
 interface State {
@@ -63,8 +65,8 @@ class Release extends React.Component<Props, State> {
     let url = 'CanteenProcurementManager/user/ProductInfo/releaseProduct'
     let data = {
       productName: this.state.productName,
-      categoryId: 1,
-      categoryClassId: 1,
+      categoryId: this.props.categoryId,
+      categoryClassId: this.props.categoryClassId,
       productPrice: this.state.productPrice,
       productStock: this.state.productStock,
       productLabel: this.state.productLabel,
@@ -319,9 +321,7 @@ class Release extends React.Component<Props, State> {
             {this.renderParameterInput('产品标签', 'text','productLabel')}
             {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
-          {this.props.productDescription}
           {this.renderBottomDrawer()}
-
           <div className='releaseFooter'>
             <div>放入仓库</div>
             <div onClick={this.submite}>立即发布</div>
@@ -335,7 +335,9 @@ class Release extends React.Component<Props, State> {
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
     productDescription: state.releaseData.productDescription,
-    productMsg: state.releaseData.productMsg
+    productMsg: state.releaseData.productMsg,
+    categoryId: state.releaseData.categoryId,
+    categoryClassId: state.releaseData.categoryClassId
   }
 }
 

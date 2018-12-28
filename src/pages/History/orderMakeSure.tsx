@@ -13,6 +13,7 @@ import { OrderMakeSureBean } from '@datasources/OrderMakeSureBean'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { updatePageTab } from '@store/actions/global_data'
+import { setPayInfo } from '@store/actions/pay_data'
 
 const nowTimeStamp = Date.now()
 const now = new Date(nowTimeStamp)
@@ -27,6 +28,7 @@ export interface Props {
   orderData: any,
   needReloadData: boolean
   updatePageTab: (pageTab: string) => void
+  setPayInfo: (outTradeNo: string, totalAmount: string, subject: string, body: string) => void
 }
 
 interface State {
@@ -246,8 +248,9 @@ class History extends React.Component<Props, State> {
           Toast.hide()
           // this.setState({ modal2: true })
           this.props.updatePageTab('UserPageTabBar')
-          history().goBack()
-          history().push('/myOrder')
+          this.props.setPayInfo(this.props.orderId, this.props.total.toString(), '主题', '描述')
+          // history().goBack()
+          // history().push('/myOrder')
           history().push('/payOrder')
         } else {
           Toast.info(data.data.msg, 2, null, false)
@@ -308,7 +311,7 @@ class History extends React.Component<Props, State> {
           >
             <div className='foodDetail'>
               <img className='' style={{ width: 95, height: 95, borderRadius: '50%', display: 'block' }}
-                   src='http://img0.imgtn.bdimg.com/it/u=508694851,709788791&fm=200&gp=0.jpg'/>
+                   src='./assets/images/SupplierTest/vegetable.png'/>
               <div style={{ width: 180, paddingLeft: 15 }}>
                 <p>{i2.product_name}</p>
                 <p>单价：<span style={{ color: 'red' }}>￥{i2.product_price} </span><span
@@ -511,7 +514,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updataOrderMakeSure,
   needReload,
-  updatePageTab
+  updatePageTab,
+  setPayInfo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)
