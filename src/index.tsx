@@ -132,8 +132,8 @@ import PaySuccess from './pages/User/order/paySuccess'
 // 菜篮子
 import supplierRevise from './pages/History/supplierRevise'
 /* 修改供应商页面 */
-import index2 from './pages/History/index'
-/* 菜篮首页 */
+// import index2 from './pages/History/index'
+// /* 菜篮首页 */
 import orderMakeSure from './pages/History/orderMakeSure'
 /* 确认订单 */
 import payOrder from './pages/History/payOrder'
@@ -215,7 +215,7 @@ ReactDOM.render(
 
         {/*菜篮*/}
         <Route path='/supplierRevise' component={supplierRevise}/>
-        <Route path='/index2' component={index2}/>
+        {/*<Route path='/index2' component={index2}/>*/}
         <Route path='/orderMakeSure' component={orderMakeSure}/>
         <Route path='/settingAddress' component={SettingAddress}/>
         <Route path='/payOrder' component={payOrder}/>
