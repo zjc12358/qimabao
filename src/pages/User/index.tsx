@@ -221,7 +221,7 @@ class User extends React.Component<Props, State> {
               style={{
                 width: '100%',
                 height: '100%'
-              }} src={this.state.userInfo.user_head_portrait}/></div>
+              }} src={this.state.userInfo.user_head_portrait === '' ? 'assets/images/User/noProduct.svg' : this.state.userInfo.user_head_portrait}/></div>
           <div style={{ width: 110 }}>
             <span style={{
               overflow: 'hidden',
