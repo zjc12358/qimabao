@@ -355,7 +355,7 @@ class History extends React.Component<Props, State> {
       })
     })
     cartId.join(',')
-    console.log(cartId)
+    this.deleteFoodAxios(cartId)
   }
 
   /**

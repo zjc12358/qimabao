@@ -246,12 +246,12 @@ class History extends React.Component<Props, State> {
             fullscreen: false
           })
           Toast.hide()
-          // this.setState({ modal2: true })
-          this.props.updatePageTab('UserPageTabBar')
-          this.props.setPayInfo(this.props.orderId, this.props.total.toString(), '主题', '描述')
+          this.setState({ modal2: true })
+          // this.props.updatePageTab('UserPageTabBar')
+          // this.props.setPayInfo(this.props.orderId, this.props.total.toString(), '主题', '描述')
           // history().goBack()
           // history().push('/myOrder')
-          history().push('/payOrder')
+          // history().push('/payOrder')
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
@@ -342,7 +342,7 @@ class History extends React.Component<Props, State> {
         <List renderHeader={'确认付款'} className='popup-list'>
           <List.Item>
             <div className='account'>
-              <div className='accountPice'>￥31.0</div>
+              <div className='accountPice'>￥{this.props.total}</div>
               <div className='accountDetail'>
                 <div>支付宝账号</div>
                 <div style={{ flex: 1 }}></div>
