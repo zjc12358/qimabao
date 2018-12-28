@@ -308,7 +308,7 @@ class History extends React.Component<Props, State> {
           >
             <div className='foodDetail'>
               <img className='' style={{ width: 95, height: 95, borderRadius: '50%', display: 'block' }}
-                   src='http://img0.imgtn.bdimg.com/it/u=508694851,709788791&fm=200&gp=0.jpg'/>
+                   src='./assets/images/SupplierTest/vegetable.png'/>
               <div style={{ width: 180, paddingLeft: 15 }}>
                 <p>{i2.product_name}</p>
                 <p>单价：<span style={{ color: 'red' }}>￥{i2.product_price} </span><span

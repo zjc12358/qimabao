@@ -124,7 +124,7 @@ class History extends React.Component<Props, State> {
             alignItems: 'center',
             paddingLeft: 20
           }}>
-            <img style={{ display: 'block', width: 90, height: 90 }} src={j.product_icon}/>
+            <img style={{ display: 'block', width: 90, height: 90 }} src={'./assets/images/SupplierTest/vegetable.png'}/>
             <div style={{
               height: 105,
               display: 'flex',

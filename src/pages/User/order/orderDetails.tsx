@@ -1,22 +1,24 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox, TextareaItem } from 'antd-mobile'
+import { TabBar, Icon, DatePicker, List, Modal, Button, Radio, Checkbox, TextareaItem, Toast } from 'antd-mobile'
 import ReactSVG from 'react-svg'
 import Head from '../../../components/Head/index'
 import './orderDetail.less'
 import history from 'history/createHashHistory'
+import axios from 'axios'
+import { MyResponse } from '@datasources/MyResponse'
 
 const nowTimeStamp = Date.now()
 const now = new Date(nowTimeStamp)
 const RadioItem = Radio.RadioItem
 
 export interface Props {
-
+  orderId: string
 }
 
 interface State {
-
+  data: any
 }
 
 class User extends React.Component<Props, State> {
@@ -24,12 +26,27 @@ class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-
+      data: null
     }
   }
 
   componentDidMount () {
     console.log(1)
+    let url = 'CanteenProcurementManager/user/productOrder/findProductOrderDetail?'
+    let query = 'orderId=' + this.props.orderId
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- 购物车data =', data)
+        if (data.data.code === 0) {
+          // console.log(data.data.data)
+          this.setState({ data: data.data.data },() => { console.log(this.state.data) })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -46,8 +63,8 @@ class User extends React.Component<Props, State> {
           <ReactSVG svgClassName='location_icon' path='./assets/images/address_location.svg' />
         </div>
         <div className='addressMsg' style={{ fontSize: 14 }}>
-          <div>何静建</div>
-          <div>浙江省 衢州市 柯城区 荷花街道 兴化苑 35幢2单元</div>
+          {/*<div>何静建</div>*/}
+          <div onClick={ () => { console.log(this.state.data[0].buyer_address) }}>{this.state.data ? this.state.data[0].buyer_address : console.log(1) }</div>
         </div>
       </div>
     )
@@ -59,29 +76,31 @@ class User extends React.Component<Props, State> {
   renderOrderItem = () => {
     return (
       <div className='orderDetail'>
-        <div className='orderNum' style={{ fontSize: 12 }}>订单号: SP057899444221</div>
+        <div className='orderNum' style={{ fontSize: 12 }}>订单号: {this.state.data ? this.state.data[0].order_id : console.log(1) }</div>
         <div className='supplier'>
           <ReactSVG svgClassName='ordericon' path='./assets/images/Cart/merchant.svg' />
           <div>衢州超彩软件开发有限公司</div>
           <div style={{ flex: 1 }}></div>
           <Icon style={{ marginRight: 20 }} type='right' />
         </div>
-        <List className='foodList'>
-          <List.Item onClick={ () => { console.log(1111) } }>
-            <div className='foodItem'>
-              <img className='foodImg' src='https://mockplus.oss-cn-hangzhou.aliyuncs.com/html2/bDWlS8I1MNrES9q6/202/0EDCD3EB-42DB-412B-9411-E5DD751EB4BA/5C72C7F0B6CEC0C39104B6421FA5EF71.jpg?Expires=1542784455&OSSAccessKeyId=8Z8chL8RsuW2Ju4s&Signature=qwqGDuTn%2B6cJ3xIQB0vThz%2FW51I%3D' alt=''/>
-              <div className='foodText'>
-                <div className='foodName'>我问IE为沃尔沃问偶尔哦为IE问问</div>
-                <div>2018-10-10 15:11:08</div>
+        {this.state.data ? this.state.data[0].orderDetailList.map(i => (
+          <List className='foodList'>
+            <List.Item onClick={ () => { console.log(1111) } }>
+              <div className='foodItem'>
+                <img className='foodImg' src={'./assets/images/SupplierTest/vegetable.png'} alt=''/>
+                <div className='foodText'>
+                  <div className='foodName'>{i.product_name}</div>
+                  <div>2018-10-10 15:11:08</div>
+                </div>
+                <div style={{ flex: 1 }}></div>
+                <div>
+                  <div>￥{i.product_price}</div>
+                  <div style={{ display: 'flex',justifyContent: 'flex-end' }}>×{i.product_quantity}</div>
+                </div>
               </div>
-              <div style={{ flex: 1 }}></div>
-              <div>
-                <div>￥22.50</div>
-                <div style={{ display: 'flex',justifyContent: 'flex-end' }}>×2</div>
-              </div>
-            </div>
-          </List.Item>
-        </List>
+            </List.Item>
+          </List>
+        )) : console.log(1)}
       </div>
     )
   }
@@ -96,7 +115,7 @@ class User extends React.Component<Props, State> {
           <div className='foodTotal'>
             <div>商品总价</div>
             <div style={{ flex: 1 }}></div>
-            <div>￥90.00</div>
+            <div>￥{this.state.data ? this.state.data[0].order_amount : console.log(1)}</div>
           </div>
           <div className='express'>
             <div>运费</div>
@@ -106,13 +125,13 @@ class User extends React.Component<Props, State> {
           <div className='orderTotal'>
             <div>订单总价</div>
             <div style={{ flex: 1 }}></div>
-            <div>￥90.00</div>
+            <div>￥{this.state.data ? this.state.data[0].order_amount : console.log(1)}</div>
           </div>
         </div>
         <div className='realPayment'>
           <div>实付款</div>
           <div style={{ flex: 1 }}></div>
-          <div style={{ color: 'red' }}>￥90.00</div>
+          <div style={{ color: 'red' }}>￥{this.state.data ? this.state.data[0].order_amount : console.log(1)}</div>
         </div>
       </div>
     )
@@ -158,9 +177,6 @@ class User extends React.Component<Props, State> {
   }
 
   public render () {
-    let styles = {
-
-    }
     return (
       <div>
         <div>
@@ -173,7 +189,7 @@ class User extends React.Component<Props, State> {
         </div>
         <div className='stateBox'>
           <div>
-            <div style={{ fontSize: 18 }}>交易关闭</div>
+            <div style={{ fontSize: 18 }}>{this.state.data ? this.state.data[0].pay_china_status : console.log(1) }</div>
             <div style={{ marginTop: 5 }}>超市关闭</div>
           </div>
           <div style={{ flex: 1 }}></div>
@@ -192,7 +208,7 @@ class User extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-
+    orderId: state.productOrderData.index
   }
 }
 

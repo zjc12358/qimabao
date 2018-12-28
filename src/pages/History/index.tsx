@@ -348,34 +348,14 @@ class History extends React.Component<Props, State> {
    */
   HeadDeleteOnclick = () => {
     // console.log(1111)
-    if (this.state.allSupplierItemCheck) {
-      // 全选状态下清空购物车,总计归0
-      this.setState({ total: 0 })
-      this.props.updataShopCart([])
-    } else {
-      // console.log('我被组织了')
-      let data = this.state.data
-      for (let i = 0; i < this.state.data.length; i++) {
-        if (data[i].allChecked) {
-          data.splice(i, 1)
-          this.setState({ data: data })
-          this.props.updataShopCart(data)
-        } else {
-          let foodList = data[i].shoppingCartDetails
-          for (let j = 0; j < foodList.length; j++) {
-            if (foodList[j].isChecked) {
-              foodList.splice(j, 1)
-              if (foodList.length === 0) {
-                data.splice(i, 1)
-              }
-              data[i].shoppingCartDetails = foodList
-              this.setState({ data: data })
-              this.props.updataShopCart(data)
-            }
-          }
-        }
-      }
-    }
+    let cartId = []
+    this.state.data.map(i => {
+      i.shoppingCartDetails.map(j => {
+        if (j.isChecked === true) cartId.push(j.cart_id)
+      })
+    })
+    cartId.join(',')
+    console.log(cartId)
   }
 
   /**
@@ -574,7 +554,7 @@ class History extends React.Component<Props, State> {
               display: 'flex',
               alignItems: 'center'
             }}>
-              <img style={{ display: 'block', width: 90, height: 90 }} src={item.product_icon}/>
+              <img style={{ display: 'block', width: 90, height: 90 }} src={'./assets/images/SupplierTest/vegetable.png'}/>
               <div style={{
                 height: 105,
                 display: 'flex',
