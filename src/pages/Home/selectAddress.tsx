@@ -207,8 +207,8 @@ class Home extends React.Component<Props, State> {
                  style={{ width: '100%' }}>{item.receiving_address + item.receiving_address_detail}</div>
           </div>
         </div>
-        {/*{item.default &&*/}
-        <ReactSVG path='./assets/images/ic_check_0084.svg' svgStyle={{ width: 20, height: 20, marginRight: 15 }}/>
+        {item.defaultId === item.receiving_id.toString() &&
+        <ReactSVG path='./assets/images/ic_check_0084.svg' svgStyle={{ width: 20, height: 20, marginRight: 15 }}/>}
       </div>
     )
   }
@@ -263,7 +263,7 @@ class Home extends React.Component<Props, State> {
         </div>
         <div>
           <Map amapkey={'e062e2a80c3e0e1c31a588faa9822dcb'}
-               // events={events}
+            // events={events}
                plugins={['Scale', 'ToolBar']}
                zoom={16}>
           </Map>

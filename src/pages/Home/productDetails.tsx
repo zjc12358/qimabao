@@ -296,14 +296,14 @@ class Home extends React.Component<Props, State> {
     return (
       <div className='horizontal'
            style={{ height: 50, width: '100%', backgroundColor: 'white' }}>
-        <div className='horizontal-center left-btn' onClick={this.collectionOnClick}>
-          {this.state.productDetails === null ?
-            <ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/> :
-            this.state.productDetails.product_collect ?
-              <ReactSVG path='./assets/images/collect.svg' svgStyle={{ width: 24, height: 24 }}/> :
-              <ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/>
-          }
-        </div>
+        {/*<div className='horizontal-center left-btn' onClick={this.collectionOnClick}>*/}
+          {/*{this.state.productDetails === null ?*/}
+            {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/> :*/}
+            {/*this.state.productDetails.product_collect ?*/}
+              {/*<ReactSVG path='./assets/images/collect.svg' svgStyle={{ width: 24, height: 24 }}/> :*/}
+              {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/>*/}
+          {/*}*/}
+        {/*</div>*/}
         <div className='horizontal-center left-btn' onClick={this.goCartOnClick}>
           <ReactSVG path='./assets/images/shop_cart_grey.svg' svgStyle={{ width: 24, height: 24 }}/>
         </div>

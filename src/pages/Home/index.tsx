@@ -130,18 +130,18 @@ class Home extends React.Component<Props, State> {
             <ReactSVG path='./assets/images/message.svg' svgStyle={{ width: 24, height: 24 }}/>
           </div>
         </div>
-        <div style={{ width: '100%' }} className='horizontal'>
-          <span style={{
-            borderStyle: 'solid',
-            borderWidth: 0,
-            borderRadius: 20,
-            backgroundColor: 'white',
-            padding: '5px 20px',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis'
-          }} onClick={this.locationOnclick}>送至朝晖社区111111111</span>
-        </div>
+        {/*<div style={{ width: '100%' }} className='horizontal'>*/}
+          {/*<span style={{*/}
+            {/*borderStyle: 'solid',*/}
+            {/*borderWidth: 0,*/}
+            {/*borderRadius: 20,*/}
+            {/*backgroundColor: 'white',*/}
+            {/*padding: '5px 20px',*/}
+            {/*overflow: 'hidden',*/}
+            {/*whiteSpace: 'nowrap',*/}
+            {/*textOverflow: 'ellipsis'*/}
+          {/*}} onClick={this.locationOnclick}>送至朝晖社区111111111</span>*/}
+        {/*</div>*/}
       </div>
     )
   }
@@ -261,8 +261,9 @@ class Home extends React.Component<Props, State> {
    * 点击类别
    */
   iconItemOnclick = (index) => {
-    // TODO 2018/10/25 点击单个类别
-    console.log('打开商品列表')
+    if (index === 6) {
+      Toast.info('该分类暂未开放', 2, null, false)
+    }
     this.props.updateCategoryItem(this.state.homeCategoryItemData, index)
     // this.state.commodityListState.index = index
     this.props.updatePageTab('HomePageTabBar')

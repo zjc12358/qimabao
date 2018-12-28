@@ -11,6 +11,7 @@ import { SearchData } from '@store/reducers/searchDataReducer'
 import { MyResponse } from '@datasources/MyResponse'
 import { SearchHistoryBean } from '@datasources/SearchHistoryBean'
 import { cloneDeep, isNil } from 'lodash'
+import ReactSVG from 'react-svg'
 
 export interface Props {
   searchData: SearchData
@@ -60,7 +61,9 @@ class Home extends React.Component<Props, State> {
                borderRadius: 10,
                backgroundColor: '#f5f5f5'
              }}>
-          <span style={{ paddingLeft: 10 }}>搜索</span>
+          <span style={{ paddingLeft: 8 }}>
+            <ReactSVG path='./assets/images/search.svg' svgStyle={{ width: 16, height: 16, marginTop: 2 }}/>
+          </span>
           <input style={{
             backgroundColor: '#f5f5f5', borderStyle: 'solid', paddingLeft: 10,
             borderWidth: 0

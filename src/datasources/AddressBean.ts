@@ -7,4 +7,5 @@ export interface AddressBean {
   receiving_name: string // 收货人名称
   update_time: string  // 收货信息修改时间
   user_id: number // 收货信息ID
+  defaultId: string // 默认地址id
 }

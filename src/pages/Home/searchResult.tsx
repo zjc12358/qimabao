@@ -174,7 +174,7 @@ class Home extends React.Component<Props, State> {
   renderContentItem = (item: ProductBean) => {
     return (
       <div className='vertical' style={{ width: '49%', height: 220, backgroundColor: 'white', marginTop: 5 }}>
-        <img style={{ height: 140, width: '100%' }} src={item.product_icon}/>
+        <img style={{ height: 140, width: '100%' }} src={'./assets/images/SupplierTest/vegetable.png'}/>
         <div className='vertical' style={{ flex: 1, justifyContent: 'space-between', width: '100%' }}>
           <span style={{ marginTop: 10, width: '100%' }}>
             <span style={{ marginLeft: 10 }}>{item.product_name}</span>

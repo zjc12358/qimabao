@@ -483,7 +483,7 @@ class Home extends React.Component<Props, State> {
    */
   secondItemOnClick = (index: number) => {
     if (index === 6) {
-      Toast.info('该分类暂未开放')
+      Toast.info('该分类暂未开放', 2, null, false)
     }
     let list = this.state.secondCategoryList
     for (let i = 0; i < this.state.secondCategoryList.length; i++) {
@@ -591,7 +591,7 @@ class Home extends React.Component<Props, State> {
    * 获取商品列表
    */
   getProductList () {
-    console.log('获取商品')
+    console.log(this.getMode(this.state.sortIndex))
     if (this.state.isLoading) {
       return
     }
