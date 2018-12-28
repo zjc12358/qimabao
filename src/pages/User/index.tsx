@@ -62,7 +62,6 @@ class User extends React.Component<Props, State> {
     clearInterval(this.time)
   }
   public timeGo = () => {
-    console.log(this.state.NewestOrder.over_time)
     this.setState({
       NewestOrder: Object.assign({}, this.state.NewestOrder, { over_time: this.state.NewestOrder.over_time - 1 })
     })
@@ -335,15 +334,15 @@ class User extends React.Component<Props, State> {
               height: 'auto',
               maxWidth: '100%',
               maxHeight: '100%'
-            }} src='http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg'/></div>
+            }} src={this.state.NewestOrder.over_time <= 0 ? 'assets/images/User/noProduct.svg' : 'http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg'}/></div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
             paddingLeft: 10
           }} onClick={this.orderOnclick}>
-            <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '微软雅黑' }}>{order[this.state.NewestOrder.pay_status] === undefined ? '' : order[this.state.NewestOrder.pay_status].title}</span>
-            <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>{(this.state.NewestOrder.over_time / 60).toFixed(0)}分钟后订单关闭</span>
+            <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '微软雅黑' }}>{this.state.NewestOrder.over_time <= 0 ? '尚无最新订单' : order[this.state.NewestOrder.pay_status] === undefined ? '' : order[this.state.NewestOrder.pay_status].title}</span>
+            <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>{this.state.NewestOrder.over_time <= 0 ? '' : ((this.state.NewestOrder.over_time / 60).toFixed(0) + '分钟后订单关闭')}</span>
           </div>
         </div>
         <div style={{ height: 'auto' }}>
@@ -377,6 +376,7 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
+
   /**
    * 内容尾部
    */

@@ -3,7 +3,7 @@ import { Tabs, Button, Icon, Toast } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '../../../store/reducers/globalDataReducer'
-import { changeTab, updateProductOrder } from '../../../store/actions/productOrder_data'
+import { changeTab,changeIndex, updateProductOrder } from '../../../store/actions/productOrder_data'
 import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import '../master.css'
@@ -18,6 +18,7 @@ export interface Props {
   tab: number
   updateProductOrder: (productOrder: Array<ProductOrder>) => void
   changeTab: (index: number) => void
+  changeIndex: (index: number) => void
 }
 
 interface State {
@@ -266,7 +267,7 @@ class User extends React.Component<Props, State> {
     return(
       <div className={'flex-flex-end-row-center'}
            style={{ height: 40,backgroundColor: '#fafafa',padding: '0 5px' }}>
-        <button className={'buttonViewDetail'} onClick={this.viewDetailOnclick}>查看详情</button>
+        <button className={'buttonViewDetail'} onClick={() => this.viewDetailOnclick(i.order_id)}>查看详情</button>
         {showDeal}
       </div>
     )
@@ -283,7 +284,8 @@ class User extends React.Component<Props, State> {
     )
   }
 
-  public viewDetailOnclick = () => {
+  public viewDetailOnclick = (id) => {
+    this.props.changeIndex(id)
     history().push('/orderDetail')
   }
 
@@ -331,7 +333,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updateProductOrder,
-  changeTab
+  changeTab,
+  changeIndex
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
