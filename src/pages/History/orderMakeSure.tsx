@@ -336,7 +336,7 @@ class History extends React.Component<Props, State> {
         animationType='slide-up'
         className='paySure'
       >
-        <List renderHeader={() => '确认付款'} className='popup-list'>
+        <List renderHeader={'确认付款'} className='popup-list'>
           <List.Item>
             <div className='account'>
               <div className='accountPice'>￥31.0</div>
@@ -483,7 +483,7 @@ class History extends React.Component<Props, State> {
           onClose={() => this.onClose(1)}
           animationType='slide-up'
         >
-          <List renderHeader={() => '选择送达时间'} className='popup-list'>
+          <List renderHeader={'选择送达时间'} className='popup-list'>
             {this.renderSetTime()}
             <List.Item>
               <Button type='primary' onClick={() => {

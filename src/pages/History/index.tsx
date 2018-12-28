@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon , Toast, InputItem } from 'antd-mobile'
-import { Loading,Button } from 'element-react'
+import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon, Toast, InputItem } from 'antd-mobile'
+import { Loading, Button } from 'element-react'
 import ReactSVG from 'react-svg'
 import { cloneDeep, get } from 'lodash'
 import { GlobalData } from '@store/reducers/globalDataReducer'
@@ -65,8 +65,8 @@ class History extends React.Component<Props, State> {
       allSupplierItemCheck: cloneDeep(this.props.allSupplierItemCheck),
       total: 0,
       isEmpty: false,
-      yourLink: [1,2,3,4,5,6,7,8,9 ],
-      data:  cloneDeep(this.props.shopCartData),
+      yourLink: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      data: cloneDeep(this.props.shopCartData),
       shopCartData: cloneDeep(this.props.shopCartData),
       bodyWidth: document.querySelector('body').offsetWidth,
       fullscreen: false
@@ -78,7 +78,7 @@ class History extends React.Component<Props, State> {
    * @param data
    * @param allSupplierItemCheck
    */
-  updata = (data,allSupplierItemCheck) => {
+  updata = (data, allSupplierItemCheck) => {
     this.props.updataShopCart(data)
     this.props.updataAllSupplierItemCheck(allSupplierItemCheck)
   }
@@ -142,7 +142,7 @@ class History extends React.Component<Props, State> {
     data = encodeURI(data)
     url = url + '?json=' + data
     this.setState({ fullscreen: true })
-    axios.post(url,data,{ headers: { 'Content-Type': 'application/json' } })
+    axios.post(url, data, { headers: { 'Content-Type': 'application/json' } })
       .then(data => {
         if (data.data.code === 0) {
           console.log(data.data)
@@ -167,7 +167,7 @@ class History extends React.Component<Props, State> {
    * 购物车尾部全选事件
    */
   allSupplierItemCheckOnChange = () => {
-    this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck },function () {
+    this.setState({ allSupplierItemCheck: !this.state.allSupplierItemCheck }, function () {
       for (let i = 0; i < this.state.data.length; i++) {
         let data = this.state.data
         data[i].allChecked = this.state.allSupplierItemCheck
@@ -176,7 +176,7 @@ class History extends React.Component<Props, State> {
           data2[j].isChecked = this.state.allSupplierItemCheck
         }
         data[i].shoppingCartDetails = data2
-        this.updata(data,this.state.allSupplierItemCheck)
+        this.updata(data, this.state.allSupplierItemCheck)
       }
       // 计算一遍总计
       this.count()
@@ -188,7 +188,7 @@ class History extends React.Component<Props, State> {
    * @param index1 供应商数组下标
    * @param index  菜品数组下标
    */
-  isCheckedOnChange = (index1,index) => {
+  isCheckedOnChange = (index1, index) => {
     let data = this.state.data
     let len = 0
     let len2 = 0
@@ -260,7 +260,7 @@ class History extends React.Component<Props, State> {
     }
   }
 
-  smallAdd = (item,index,index1) => {
+  smallAdd = (item, index, index1) => {
     let data = cloneDeep(this.state.data)
     let subtotal = (item.product_weight * item.product_price).toFixed(2)
     data[index1].shoppingCartDetails[index].product_total_price = subtotal
@@ -271,7 +271,7 @@ class History extends React.Component<Props, State> {
   /**
    * 右滑删除( index1:供应商下标,  index:该食物下标  )
    */
-  SlipRightDeleteOnClick = (index1,index) => {
+  SlipRightDeleteOnClick = (index1, index) => {
     let data = this.state.data
     console.log('1289u732oiuewiofcjudskfdusalksfjdkslajfdsklaoajfdskl')
     this.deleteFoodAxios(data[index1].shoppingCartDetails[index].cart_id)
@@ -305,7 +305,7 @@ class History extends React.Component<Props, State> {
       })
   }
 
-  foodAddSub = (v,item,index1,index) => {
+  foodAddSub = (v, item, index1, index) => {
     // let shopdata = cloneDeep(this.props.shopCartData)
     let productWeight = v
     console.log(v)
@@ -354,16 +354,16 @@ class History extends React.Component<Props, State> {
       let data = this.state.data
       for (let i = 0; i < this.state.data.length; i++) {
         if (data[i].allChecked) {
-          data.splice(i,1)
+          data.splice(i, 1)
           this.setState({ data: data })
           this.props.updataShopCart(data)
         } else {
           let foodList = data[i].shoppingCartDetails
           for (let j = 0; j < foodList.length; j++) {
             if (foodList[j].isChecked) {
-              foodList.splice(j,1)
+              foodList.splice(j, 1)
               if (foodList.length === 0) {
-                data.splice(i,1)
+                data.splice(i, 1)
               }
               data[i].shoppingCartDetails = foodList
               this.setState({ data: data })
@@ -417,7 +417,7 @@ class History extends React.Component<Props, State> {
     //   Toast.hide()
     //   return
     // }
-    this.setState({ data: nextProps.shopCartData,allSupplierItemCheck: nextProps.allSupplierItemCheck },() => {
+    this.setState({ data: nextProps.shopCartData, allSupplierItemCheck: nextProps.allSupplierItemCheck }, () => {
       Toast.hide()
     })
   }
@@ -437,13 +437,28 @@ class History extends React.Component<Props, State> {
   renderEmptyCart = () => {
     return (
       <div>
-        <div style={{ display: 'flex',justifyContent: 'center', paddingTop: 20 }}>
-          <div style={{ width: 135,height: 135,borderRadius: '50%',backgroundColor: '#cccccc',display: 'flex',alignItems: 'center',justifyContent: 'center' }}>
-            <img style={{ width: 80 }} src='./assets/images/Cart/cartEmpty.svg' />
+        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 20 }}>
+          <div style={{
+            width: 135,
+            height: 135,
+            borderRadius: '50%',
+            backgroundColor: '#cccccc',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <img style={{ width: 80 }} src='./assets/images/Cart/cartEmpty.svg'/>
           </div>
         </div>
-        <div style={{ display: 'flex',justifyContent: 'center', fontSize: 18, marginTop: 12 }}>菜篮为空</div>
-        <div style={{ display: 'flex',justifyContent: 'center', fontSize: 13, color: 'rgb(140, 140, 140)', marginTop: 12 }}>“赶紧去采购吧”</div>
+        <div style={{ display: 'flex', justifyContent: 'center', fontSize: 18, marginTop: 12 }}>菜篮为空</div>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          fontSize: 13,
+          color: 'rgb(140, 140, 140)',
+          marginTop: 12
+        }}>“赶紧去采购吧”
+        </div>
       </div>
     )
   }
@@ -462,8 +477,9 @@ class History extends React.Component<Props, State> {
         <div className='yourLikeContent'>
           <div>
             {this.state.yourLink.map((i, key) => (
-              <div key={ key } className='yourLikeFood'>
-                <img src='http://m.qpic.cn/psb?/V11NnB0x3puSTE/0qT7u8b2fvvv6T9h*KmCax84SEhccXRrMy5fORJt0VM!/b/dLYAAAAAAAAA&bo=WAJUAQAAAAARBz8!&rf=viewer_4' />
+              <div key={key} className='yourLikeFood'>
+                <img
+                  src='http://m.qpic.cn/psb?/V11NnB0x3puSTE/0qT7u8b2fvvv6T9h*KmCax84SEhccXRrMy5fORJt0VM!/b/dLYAAAAAAAAA&bo=WAJUAQAAAAARBz8!&rf=viewer_4'/>
                 <div className='yourLikeFoodName'>北海道原味吐司</div>
                 <div className='yourLikeFoodPrice'>
                   <div>
@@ -474,7 +490,7 @@ class History extends React.Component<Props, State> {
                 </div>
               </div>
             ))}
-            { this.state.yourLink.length % 2 !== 0 ? <div style={{ width: 200 }}></div> : console.log(1)}
+            {this.state.yourLink.length % 2 !== 0 ? <div style={{ width: 200 }}></div> : console.log(1)}
           </div>
         </div>
       </div>
@@ -486,7 +502,7 @@ class History extends React.Component<Props, State> {
    */
   renderCartFooter = () => {
     return (
-      <div className= 'settlement' style={{
+      <div className='settlement' style={{
         // position: 'absolute',
         // bottom: 50,
         height: 50,
@@ -495,27 +511,42 @@ class History extends React.Component<Props, State> {
         width: '100%'
       }}>
         <AgreeItem
-          checked={ this.state.allSupplierItemCheck }
-          onChange={ () => {
+          checked={this.state.allSupplierItemCheck}
+          onChange={() => {
             this.allSupplierItemCheckOnChange()
           }}
         >
-          <div style={{ display: 'flex',alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <span>全选</span>
           </div>
         </AgreeItem>
-        <div style={{ flex: 1,display: 'flex' }}>
-          <div style={{ flex: 1,display: 'flex',alignItems: 'center',justifyContent: 'center',color: 'rgb(140, 140, 140)' }}>
+        <div style={{ flex: 1, display: 'flex' }}>
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'rgb(140, 140, 140)'
+          }}>
             合计：
-            <span style={{ color: 'red',fontSize: 18 }}>
+            <span style={{ color: 'red', fontSize: 18 }}>
                 ￥{this.state.total}
               </span>
             （免运费）
           </div>
           <div
-            style={{ display: 'flex', alignItems: 'center',justifyContent: 'center',backgroundColor: '#0084e7',height: 50,width: 90,color: 'white' }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#0084e7',
+              height: 50,
+              width: 90,
+              color: 'white'
+            }}
             onClick={this.goPay}
-          >去结算</div>
+          >去结算
+          </div>
         </div>
       </div>
     )
@@ -530,9 +561,9 @@ class History extends React.Component<Props, State> {
       <div key={item.value}>
         <div className='food' style={{ display: 'flex', alignItems: 'center' }}>
           <CheckboxItem
-            checked={ item.isChecked }
+            checked={item.isChecked}
             onChange={() => {
-              this.isCheckedOnChange(index1,index)
+              this.isCheckedOnChange(index1, index)
             }}
             style={{ width: '100%', background: 'transparent', height: 125 }}
           >
@@ -559,20 +590,20 @@ class History extends React.Component<Props, State> {
                     className='Stepper'
                     showNumber
                     min={1}
-                    value={ this.state.data[index1].shoppingCartDetails[index].product_weight }
+                    value={this.state.data[index1].shoppingCartDetails[index].product_weight}
                     onChange={(v) => {
-                      this.foodAddSub(v,item,index1,index)
+                      this.foodAddSub(v, item, index1, index)
                     }}
                   />
                 </div>
                 <div className={'stepperNumber'}>
                   <InputItem
                     type={'money'}
-                    defaultValue={ this.state.data[index1].shoppingCartDetails[index].product_weight.toString() }
-                    value={ this.state.data[index1].shoppingCartDetails[index].product_weight.toString() }
+                    defaultValue={this.state.data[index1].shoppingCartDetails[index].product_weight.toString()}
+                    value={this.state.data[index1].shoppingCartDetails[index].product_weight.toString()}
                     prefixListCls={'inputList'}
-                    onBlur={ (v) => {
-                      this.foodAddSub(v,item,index1,index)
+                    onBlur={(v) => {
+                      this.foodAddSub(v, item, index1, index)
                     }}
                     moneyKeyboardAlign='left'
                     moneyKeyboardWrapProps={moneyKeyboardWrapProps}
@@ -618,14 +649,16 @@ class History extends React.Component<Props, State> {
             height: 40
           }}>
             <div className='checkBox'>
-              <AgreeItem defaultChecked={this.state.data[index1].allChecked} checked={this.state.data[index1].allChecked} onChange={() => {
-                this.allCheckedOnChange(index1)
-              }} />
+              <AgreeItem defaultChecked={this.state.data[index1].allChecked}
+                         checked={this.state.data[index1].allChecked}
+                         onChange={() => {
+                           this.allCheckedOnChange(index1)
+                         }}/>
             </div>
             <img style={{ width: 15 }} src='../../assets/images/Cart/merchant.svg' alt=''/>
-            <div style={{ color: '#8C8C8C',marginLeft: 15 }}>{i.company_name}</div>
+            <div style={{ color: '#8C8C8C', marginLeft: 15 }}>{i.company_name}</div>
             <div style={{ flex: 1 }}></div>
-            <div style={{ paddingRight: 15 }}><Icon type='right' onClick={ () => {
+            <div style={{ paddingRight: 15 }}><Icon type='right' onClick={() => {
               let cartIdArr = []
               i.shoppingCartDetails.map(j => {
                 cartIdArr.push(j.cart_id)
@@ -637,7 +670,7 @@ class History extends React.Component<Props, State> {
               this.props.updateSupplierRevise(supplierReviseData)
               this.props.updatePageTab('HistoryPageTabBar')
               history().push('/supplierRevise')
-            }} /></div>
+            }}/></div>
           </div>
           <div style={{
             display: 'flex',
@@ -652,7 +685,7 @@ class History extends React.Component<Props, State> {
                 {
                   text: '删除',
                   onPress: () => {
-                    this.SlipRightDeleteOnClick(index1,index)
+                    this.SlipRightDeleteOnClick(index1, index)
                   },
                   style: { backgroundColor: '#F4333C', color: 'white' }
                 }
@@ -674,7 +707,7 @@ class History extends React.Component<Props, State> {
         <Head title='菜篮子' backgroundColor='#0084e7'
               rightIconContent={(<span style={{ color: 'white' }}>删除</span>)}
               showRightIcon='true'
-              rightIconOnClick={ this.HeadDeleteOnclick }>
+              rightIconOnClick={this.HeadDeleteOnclick}>
         </Head>
         <div className='touch_scroll bigContent'>
           {this.state.data && this.state.data.length ? this.state.data.map((i, index1) => (
@@ -684,7 +717,7 @@ class History extends React.Component<Props, State> {
           )) : this.renderEmptyCart()}
           <div>
             {
-              this.state.fullscreen && <Loading fullscreen={true} />
+              this.state.fullscreen && <Loading fullscreen={true}/>
             }
           </div>
           {/*{this.renderYourLike()}*/}
