@@ -12,6 +12,8 @@ import ReactSVG from 'react-svg'
 import './productDetailCss.css'
 import { MyResponse } from '@datasources/MyResponse'
 import { cloneDeep, get, isNil } from 'lodash'
+import { ProductBean } from '@datasources/ProductBean'
+import { needReload } from '@store/actions/shopCart_data'
 
 let topPic = ['http://file4.youboy.com/e/2015/3/14/73/541738.jpg',
   'http://files.b2b.cn/product/ProductImages/2015_03/13/110/13110252636_b.jpg',
@@ -23,6 +25,7 @@ export interface Props {
   }
   chooseProduct: (id: number) => void
   updatePageTab: (pageIndex: string) => void
+  needReload: (needReload: boolean) => void
 }
 
 interface State {
@@ -297,12 +300,12 @@ class Home extends React.Component<Props, State> {
       <div className='horizontal'
            style={{ height: 50, width: '100%', backgroundColor: 'white' }}>
         {/*<div className='horizontal-center left-btn' onClick={this.collectionOnClick}>*/}
-          {/*{this.state.productDetails === null ?*/}
-            {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/> :*/}
-            {/*this.state.productDetails.product_collect ?*/}
-              {/*<ReactSVG path='./assets/images/collect.svg' svgStyle={{ width: 24, height: 24 }}/> :*/}
-              {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/>*/}
-          {/*}*/}
+        {/*{this.state.productDetails === null ?*/}
+        {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/> :*/}
+        {/*this.state.productDetails.product_collect ?*/}
+        {/*<ReactSVG path='./assets/images/collect.svg' svgStyle={{ width: 24, height: 24 }}/> :*/}
+        {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/>*/}
+        {/*}*/}
         {/*</div>*/}
         <div className='horizontal-center left-btn' onClick={this.goCartOnClick}>
           <ReactSVG path='./assets/images/shop_cart_grey.svg' svgStyle={{ width: 24, height: 24 }}/>
@@ -383,7 +386,7 @@ class Home extends React.Component<Props, State> {
    * 加入购物车
    */
   addCartOnClick = () => {
-    // TODO 2018/11/2 加入购物车
+    this.addToCart(this.state.productDetails)
   }
 
   /**
@@ -427,6 +430,29 @@ class Home extends React.Component<Props, State> {
       })
   }
 
+  /**
+   * 添加商品到购物车
+   */
+  addToCart (item: ProductDetailBean) {
+    let url = 'CanteenProcurementManager/user/shoppingCart/saveShoppingCart?'
+    let query = 'productName=' + item.product_name + '&productPrice=' + item.product_price + '&productWeight=' + 1 +
+      '&productTotalPrice=' + item.product_price * 1 + '&productIcon=' + item.product_icon + '&productId=' + item.product_id +
+      '&supplierId=' + item.supplier_id
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          Toast.info('添加商品成功', 2, null, false)
+          this.props.needReload(true)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
+  }
+
   public render () {
     return (
       <div className='vertical'
@@ -447,7 +473,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   chooseProduct,
-  updatePageTab
+  updatePageTab,
+  needReload
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
