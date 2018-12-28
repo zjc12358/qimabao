@@ -346,7 +346,7 @@ class Home extends React.Component<Props, State> {
           </div>
         </div>
         <div className='vertical-center' onClick={this.drawerSure}
-             style={{ fontSize: 20, width: '100%', height: 40, backgroundColor: '#d66b67' }}>
+             style={{ fontSize: 20, width: '100%', height: 40, backgroundColor: '#0084e7', color: 'white' }}>
           确定搜索
         </div>
       </div>
@@ -482,6 +482,9 @@ class Home extends React.Component<Props, State> {
    * 左边子菜单点击
    */
   secondItemOnClick = (index: number) => {
+    if (index === 6) {
+      Toast.info('该分类暂未开放')
+    }
     let list = this.state.secondCategoryList
     for (let i = 0; i < this.state.secondCategoryList.length; i++) {
       if (index === i) {

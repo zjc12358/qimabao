@@ -10,11 +10,13 @@ import history from 'history/createHashHistory'
 import { cloneDeep, get, isNil } from 'lodash'
 import Head from '@components/Head'
 import { setPayInfo } from '@store/actions/pay_data'
+import { PayData } from '@store/reducers/payDataReducer'
 
 const AgreeItem = Checkbox.AgreeItem
 
 export interface Props {
   setPayInfo: (outTradeNo: string, totalAmount: string, subject: string, body: string) => void
+  payData: PayData
 }
 
 interface State {
@@ -44,8 +46,8 @@ class History extends React.Component<Props, State> {
     return (
       <div className='vertical'>
         <div style={{ marginTop: 10 }}>支付剩余时间</div>
-        <div style={{ fontSize: 24, color: 'black', marginTop: 10 }}>¥1</div>
-        <div style={{ marginTop: 10 }}>供应商名 -订单号</div>
+        <div style={{ fontSize: 24, color: 'black', marginTop: 10 }}>¥{this.props.payData.totalAmount}</div>
+        <div style={{ marginTop: 10 }}>供应商名 {this.props.payData.outTradeNo}</div>
       </div>
     )
   }
@@ -66,12 +68,12 @@ class History extends React.Component<Props, State> {
    */
   renderPayChooseItem = () => {
     return (
-      <div className='horizontal-center' style={{ width: '100%' }}>
+      <div className='horizontal-center' style={{ width: '100%', height: 40 }}>
         <div className='horizontal' style={{ flex: 1, marginLeft: 20 }}>
           <span>图片</span>
           <span>支付宝支付</span>
         </div>
-        <div style={{ marginRight: 20 }}>
+        <div className='horizontal-center' style={{ marginRight: 20, height: 40 }}>
           <AgreeItem
             checked={true}
             onChange={false}>
@@ -96,8 +98,13 @@ class History extends React.Component<Props, State> {
         {this.renderContent()}
         <div style={{ marginBottom: 20 }}>
           <div style={{ marginLeft: 30, marginRight: 30, height: 40 }}>
-            <div style={{ width: '100%', backgroundColor: '#0084e7' }}
-                 onClick={this.selectPayWayOnClick}>
+            <div style={{
+              width: '100%',
+              backgroundColor: '#0084e7',
+              borderStyle: 'solid',
+              borderWidth: 0,
+              borderRadius: 10
+            }} onClick={this.selectPayWayOnClick}>
               确认支付
             </div>
           </div>
@@ -109,7 +116,9 @@ class History extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    payData: state.payData
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
