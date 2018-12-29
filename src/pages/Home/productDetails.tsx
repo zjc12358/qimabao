@@ -259,7 +259,7 @@ class Home extends React.Component<Props, State> {
         }
         <div className='horizontal-center'
              style={{ width: '100%', height: 60 }}>
-          <div className='more-evaluation' onClick={this.moreEvaOnClick}>
+          <div className='more-evaluation'>
             查看更多评论+
           </div>
         </div>

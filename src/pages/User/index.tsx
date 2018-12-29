@@ -50,7 +50,7 @@ class User extends React.Component<Props, State> {
 
   public componentDidMount () {
     this.getNewestOrder()
-    if (this.state.NewestOrder.over_time !== 0) {
+    if (this.state.NewestOrder.over_time ! <= 0) {
       this.time = setInterval(
         () => this.timeGo(),
         1000
