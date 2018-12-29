@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { Toast, Tabs, Badge } from 'antd-mobile'
+import { Modal, Button, WhiteSpace,Toast, Tabs, Badge } from 'antd-mobile'
 import axios from 'axios'
 import ReactSVG from 'react-svg'
 import { GlobalData } from '../../../store/reducers/globalDataReducer'
@@ -11,6 +11,7 @@ import './master.css'
 import { MyResponse } from '@datasources/MyResponse'
 import { ProductList } from '@datasources/ProductList'
 import Loading from '@components/Loading'
+import Result from '@components/Result'
 import { cloneDeep, get } from 'lodash'
 import { updateProductList } from '@store/actions/supplierProductList_data'
 
@@ -25,6 +26,8 @@ interface State {
   supplierProductListYSW: Array<ProductList>
   supplierProductListCKZ: Array<ProductList>
   supplierProductListYXJ: Array<ProductList>
+  modal: boolean
+  result: string
 }
 const tabs = [
   { title: '出售中' },
@@ -32,6 +35,8 @@ const tabs = [
   { title: '仓库中' },
   { title: '已下架' }
 ]
+const alert = Modal.alert
+
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
@@ -42,7 +47,9 @@ class Supplier extends React.Component<Props, State> {
       supplierProductListYSW: [],
       supplierProductListCKZ: [],
       supplierProductListYXJ: [],
-      refresh: 'refresh'
+      refresh: 'refresh',
+      modal: false,
+      result: ''
     }
   }
   componentDidMount () {
@@ -238,9 +245,9 @@ class Supplier extends React.Component<Props, State> {
           <div className={'flex-center-row-center'}>
             <ReactSVG path='../../../../assets/images/Supplier/lowerShelf.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }} onClick={
-              type === 'inSale' ? () => this.LowerOrUpOnclick(i.product_id,index,this.state.supplierProductListCSZ,1) :
-                type === 'lowerShelf' ? () => this.LowerOrUpOnclick(i.product_id,index,this.state.supplierProductListYXJ,0) : () => this.LowerOrUpOnclick(i.product_id,index,this.state.supplierProductListCKZ,0)}>
-                {type === 'inSale' ? '下架' : '下架'}
+              type === 'inSale' ? () => this.showAlert('商品管理','是否下架？',i,index,type) :
+                type === 'lowerShelf' ? () => this.showAlert('商品管理','是否上架？',i,index,type) : () => this.showAlert('商品管理','是否下上架？',i,index,type)}>
+                {type === 'inSale' ? '下架' : '上架'}
                 </span>
           </div>
           <div className={'flex-center-row-center'}
@@ -322,6 +329,27 @@ class Supplier extends React.Component<Props, State> {
       </div>
     )
   }
+  public func = (i,index,type) => {
+    switch (type) {
+      case 'inSale': this.LowerOrUpOnclick(i.product_id,index,this.state.supplierProductListCSZ,2)
+        break
+      case 'lowerShelf': this.LowerOrUpOnclick(i.product_id,index,this.state.supplierProductListYXJ,1)
+        break
+      case 'inStore': this.LowerOrUpOnclick(i.product_id,index,this.state.supplierProductListCKZ,1)
+        break
+    }
+  }
+  public showAlert = (title,msg,i,index,type) => {
+    const alertInstance = alert(title, msg, [
+      { text: '取消', onPress: () => console.log('cancel'), style: 'default' },
+      { text: '确认', onPress: () => this.func(i,index,type) }
+    ])
+    setTimeout(() => {
+      // 可以调用close方法以在外部close
+      console.log('auto close')
+      alertInstance.close()
+    }, 500000)
+  }
   public delete = (id,index,poi) => {
     console.log(id,index,poi)
     let url = 'CanteenProcurementManager/user/ProductInfo/deleteProductCommodity?'
@@ -333,9 +361,9 @@ class Supplier extends React.Component<Props, State> {
         if (data.data.code === 0) {
           poi.splice(index,1)
           this.setState({
-            refresh: 'refresh'
+            result: '删除成功',
+            modal: true
           })
-          Toast.info('删除成功', 1, null, false)
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
@@ -349,7 +377,7 @@ class Supplier extends React.Component<Props, State> {
   }
   public LowerOrUpOnclick = (id,index,poi,status) => {
     console.log(id,index,poi)
-    let url = 'CanteenProcurementManager/user/ProductInfo/updateState?'
+    let url = 'CanteenProcurementManager/user/ProductInfo/updateProductState?'
     let query = 'productId=' + id + '&productStatus=' + status
     console.log(url + query)
     axios.get<MyResponse<any>>(url + query)
@@ -380,6 +408,7 @@ class Supplier extends React.Component<Props, State> {
               title={'商品管理'} rightIconOnClick={this.searchOnClick.bind(this)}
               showRightIcon={true} leftIconColor={'white'}/>
         {this.renderContent()}
+        <Result modal={this.state.modal} result={this.state.result} onClose={() => this.setState({ modal: false })}/>
       </div>
     )
   }
