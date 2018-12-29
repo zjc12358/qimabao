@@ -156,7 +156,7 @@ class Release extends React.Component<Props, State> {
               >
                 <img
                   src={val}
-                  style={{ width: '100%', height: 136, verticalAlign: 'top' }}
+                  style={{ width: '100%', verticalAlign: 'top' }}
                 />
               </a>
             ))}
