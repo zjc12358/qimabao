@@ -56,6 +56,10 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
+    dd.ui.webViewBounce.disable({ name: 0 }).catch()
+    dd.biz.navigation.hideBar({
+      hidden: true  // true：隐藏，false：显示
+    }).catch()
 /*    dd.runtime.permission.requestAuthCode(
       { corpId: 'dingff2af124327c79bd35c2f4657eb6378f' }
     )
