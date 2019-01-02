@@ -64,7 +64,7 @@ class Release extends React.Component<Props, State> {
     this.setState({ openDrawer: open })
   }
 
-  submite = () => {
+  submite = (productStatus) => {
     let url = 'CanteenProcurementManager/user/ProductInfo/releaseProduct'
     let data = {
       productName: this.state.productName,
@@ -92,6 +92,10 @@ class Release extends React.Component<Props, State> {
     fd.append('productLabel', JSON.stringify(data.productLabel))
     fd.append('productDescription', data.productDescription)
     fd.append('files', JSON.stringify(files2))
+    fd.append('productStatus', JSON.stringify(productStatus))
+    /**
+     * 状态 1
+     */
     console.log(fd.get('productName'))
     axios.post(url,fd,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
@@ -156,31 +160,6 @@ class Release extends React.Component<Props, State> {
             src={this.state.files.length > 0 ? this.state.files[this.state.files.length - 1] : ''}
             style={{ width: '100%', verticalAlign: 'top' }}
           />
-          {/*<Carousel*/}
-            {/*autoplay={true}*/}
-            {/*autoplayInterval={300}*/}
-            {/*infinite*/}
-            {/*beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}*/}
-            {/*afterChange={index => console.log('slide to', index)}*/}
-          {/*>*/}
-            {/*{this.state.files.map(val => (*/}
-              {/*<a*/}
-                {/*key={val}*/}
-                {/*style={{ display: 'inline-block', width: '100%', height: 136 }}*/}
-              {/*>*/}
-                {/*<img*/}
-                  {/*src={val}*/}
-                  {/*onClick={ () => {*/}
-                    {/*dd.biz.util.previewImage({*/}
-                      {/*urls: this.state.files,*/}
-                      {/*current: val*/}
-                    {/*}).catch()*/}
-                  {/*} }*/}
-                  {/*style={{ width: '100%', verticalAlign: 'top' }}*/}
-                {/*/>*/}
-              {/*</a>*/}
-            {/*))}*/}
-          {/*</Carousel>*/}
         </div>
       </div>
     )
@@ -351,8 +330,12 @@ class Release extends React.Component<Props, State> {
           >123456</div>
           {this.renderBottomDrawer()}
           <div className='releaseFooter'>
-            <div>放入仓库</div>
-            <div onClick={this.submite}>立即发布</div>
+            <div onClick={() => {
+              this.submite(0)
+            }}>放入仓库</div>
+            <div onClick={() => {
+              this.submite(1)
+            }}>立即发布</div>
           </div>
         </div>
       </div>

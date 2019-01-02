@@ -35,6 +35,7 @@ const tabs = [
   { title: '仓库中' },
   { title: '已下架' }
 ]
+const operation = ['','上架','下架']
 const alert = Modal.alert
 
 class Supplier extends React.Component<Props, State> {
@@ -235,7 +236,7 @@ class Supplier extends React.Component<Props, State> {
     return(
       <div style={{ backgroundColor: '#ffffff', width: '100%', float: 'right' }}>
         <div className={'Segment_line2'} />
-        {this.renderItemDetail(i,index)}
+        {this.renderItemDetail(i,index,type)}
         <div className={'flex-space-between-row-center'}
              style={{ padding: '5px 16px', borderTop: '1px solid #e5e5e5',borderBottom: '1px solid #e5e5e5' }}>
           <div className={'flex-center-row-center'}>
@@ -245,15 +246,15 @@ class Supplier extends React.Component<Props, State> {
           <div className={'flex-center-row-center'}>
             <ReactSVG path='../../../../assets/images/Supplier/lowerShelf.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }} onClick={
-              type === 'inSale' ? () => this.showAlert('商品管理','是否下架？',i,index,type) :
-                type === 'lowerShelf' ? () => this.showAlert('商品管理','是否上架？',i,index,type) : () => this.showAlert('商品管理','是否下上架？',i,index,type)}>
+              type === 'inSale' ? () => this.showAlert('商品管理','是否下架？',i,index,this.LowerOrUpOnclick,this.state.supplierProductListCSZ,2) :
+                type === 'lowerShelf' ? () => this.showAlert('商品管理','是否上架？',i,index,this.LowerOrUpOnclick,this.state.supplierProductListYXJ,1) : () => this.showAlert('商品管理','是否上架？',i,index,this.LowerOrUpOnclick,this.state.supplierProductListCKZ,1)}>
                 {type === 'inSale' ? '下架' : '上架'}
                 </span>
           </div>
           <div className={'flex-center-row-center'}
                onClick={
-                 type === 'inSale' ? () => this.delete(i.product_id,index,this.state.supplierProductListCSZ) :
-                 type === 'lowerShelf' ? () => this.delete(i.product_id,index,this.state.supplierProductListYXJ) : () => this.delete(i.product_id,index,this.state.supplierProductListCKZ)}>
+                 type === 'inSale' ? () => this.showAlert('商品管理','是否删除？',i,index,this.delete,this.state.supplierProductListCSZ,0) :
+                 type === 'lowerShelf' ? () => this.showAlert('商品管理','是否删除？',i,index,this.delete,this.state.supplierProductListYXJ,0) : () => this.showAlert('商品管理','是否删除？',i,index,this.delete,this.state.supplierProductListCKZ,0)}>
             <ReactSVG path='../../../../assets/images/Supplier/delete.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }}>删除</span>
           </div>
@@ -269,7 +270,7 @@ class Supplier extends React.Component<Props, State> {
   /**
    * 出售中，仓库中详情
    */
-  public renderItemDetail = (i,index) => {
+  public renderItemDetail = (i,index,type) => {
     return(
       <div style={{ padding: 16, height: 100, position: 'relative' }}>
         <div style={{ position: 'absolute', zIndex: 98 }}>
@@ -289,7 +290,8 @@ class Supplier extends React.Component<Props, State> {
             <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }} >￥<span style={{ color: 'red' }}>{i.product_price}</span></span>
           </div>
           <div>
-            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }} >库存：{i.product_stock}kg&nbsp;&nbsp;&nbsp;&nbsp;销量：{i.product_volume}kg</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }} >库存：{i.product_stock}kg
+              {type === 'inSale' ? <span>&nbsp;&nbsp;&nbsp;&nbsp;销量：{i.product_volume}kg</span> : ''}</span>
           </div>
         </div>
       </div>
@@ -339,10 +341,10 @@ class Supplier extends React.Component<Props, State> {
         break
     }
   }
-  public showAlert = (title,msg,i,index,type) => {
+  public showAlert = (title,msg,i,index,func,data,type) => {
     const alertInstance = alert(title, msg, [
       { text: '取消', onPress: () => console.log('cancel'), style: 'default' },
-      { text: '确认', onPress: () => this.func(i,index,type) }
+      { text: '确认', onPress: () => func(i.product_id,index,data,type) }
     ])
     setTimeout(() => {
       // 可以调用close方法以在外部close
@@ -350,8 +352,7 @@ class Supplier extends React.Component<Props, State> {
       alertInstance.close()
     }, 500000)
   }
-  public delete = (id,index,poi) => {
-    console.log(id,index,poi)
+  public delete = (id,index,poi,obj) => {
     let url = 'CanteenProcurementManager/user/ProductInfo/deleteProductCommodity?'
     let query = 'productId=' + id
     console.log(url + query)
@@ -388,7 +389,10 @@ class Supplier extends React.Component<Props, State> {
           this.setState({
             refresh: 'refresh'
           })
-          Toast.info('操作成功', 1, null, false)
+          this.setState({
+            result: operation[status] + '成功',
+            modal: true
+          })
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
