@@ -11,7 +11,8 @@ export enum Type {
   SET_PHONE = 'SET_PHONE',
   SET_IPHONE = 'SET_IPHONE',
   UPDATEUSERNAME = 'UPDATEUSERNAME',
-  UPDATEUSERSEX = 'UPDATEUSERSEX'
+  UPDATEUSERSEX = 'UPDATEUSERSEX',
+  SET_DD_CONFIG = 'SET_DD_CONFIG'
 }
 
 export interface GlobalDataAction extends Action {
@@ -27,6 +28,11 @@ export interface GlobalDataAction extends Action {
   pageTab: string
   error?: any
   fetchFlag?: boolean // 传递是否loading状态
+  agentId: string
+  corpId: string
+  timeStamp: string
+  nonceStr: string
+  signature: string
 }
 
 export const setID = (id: number) =>
@@ -58,3 +64,22 @@ export const setPhone = (phone: string) =>
 
 export const setIPhone = (iphone: string) =>
   (dispatch) => dispatch({ type: Type.SET_IPHONE, iphone })
+
+/**
+ * 保存钉钉鉴权信息
+ * @param agentId
+ * @param corpId
+ * @param timeStamp
+ * @param nonceStr
+ * @param signature
+ */
+export const setDDConfig = (agentId: string, corpId: string, timeStamp: string,
+                            nonceStr: string, signature: string) =>
+  (dispatch) => dispatch({
+    type: Type.SET_DD_CONFIG,
+    agentId: agentId,
+    corpId: corpId,
+    timeStamp: timeStamp,
+    nonceStr: nonceStr,
+    signature: signature
+  })

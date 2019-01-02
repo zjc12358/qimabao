@@ -25,6 +25,7 @@ export interface Props {
   supplierStateInfo: SupplierStateInfoBean
   updateBusinessState: (state: 'Y' | 'N') => void
   updateAppointmentState: (state: 'Y' | 'N') => void
+  mode: string
 }
 
 interface State {
@@ -143,7 +144,7 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderNav = () => {
     return (
-      <div className={'navWrap'}>
+      <div className='navWrap' style={{ position: this.props.mode === 'supplier' ? 'fixed' : 'static' }}>
         <div style={{ width: '20%' }} onClick={() => this.toggleDrawer(true)}>图标</div>
         <div style={{ width: '50%', textAlign: 'center' }}>
           <span className={'commonFont'} style={{ fontSize: 18, color: '#fff' }}>食堂采购商家平台</span>
@@ -460,7 +461,8 @@ class Supplier extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-    supplierStateInfo: state.SupplierInfoDate.supplierStateInfo
+    supplierStateInfo: state.SupplierInfoDate.supplierStateInfo,
+    mode: state.globalData.mode
   }
 }
 
