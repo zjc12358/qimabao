@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { TextareaItem, List, InputItem, Button, ImagePicker, Carousel, Toast } from 'antd-mobile'
 // import { Carousel } from 'element-react'
+import * as dd from 'dingtalk-jsapi'
 import Drawer from '@material-ui/core/Drawer'
 import axios from 'axios'
 import { cloneDeep, get } from 'lodash'
@@ -34,7 +35,8 @@ interface State {
   productPrice: number,
   productStock: number,
   productLabel: string,
-  productDescription: string
+  productDescription: string,
+  msg: string
 }
 let IconMaxSize: number = 30
 class Release extends React.Component<Props, State> {
@@ -53,7 +55,8 @@ class Release extends React.Component<Props, State> {
       productPrice: this.props.productMsg.productPrice,
       productStock: this.props.productMsg.productStock,
       productLabel: this.props.productMsg.productLabel,
-      productDescription: ''
+      productDescription: '',
+      msg: ''
     }
   }
 
@@ -132,7 +135,14 @@ class Release extends React.Component<Props, State> {
             }
           }} />
         </div>
-        <div className={'readImages'}>
+        <div className={'readImages'}
+          onClick={ () => {
+            dd.biz.util.previewImage({
+              urls: this.state.files,
+              current: this.state.files[0]
+            }).catch()
+          } }
+        >
           <ReactSVG
             svgClassName={'delectUp ' + (this.state.files.length > 0 ? '' : 'delectUpNone')}
             path={'./assets/images/Supplier/delete_white.svg'}
@@ -142,25 +152,35 @@ class Release extends React.Component<Props, State> {
               this.setState({ files: files })
             }}
           />
-          <Carousel
-            autoplay={true}
-            autoplayInterval={300}
-            infinite
-            beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
-            afterChange={index => console.log('slide to', index)}
-          >
-            {this.state.files.map(val => (
-              <a
-                key={val}
-                style={{ display: 'inline-block', width: '100%', height: 136 }}
-              >
-                <img
-                  src={val}
-                  style={{ width: '100%', height: 136, verticalAlign: 'top' }}
-                />
-              </a>
-            ))}
-          </Carousel>
+          <img
+            src={this.state.files.length > 0 ? this.state.files[this.state.files.length - 1] : ''}
+            style={{ width: '100%', verticalAlign: 'top' }}
+          />
+          {/*<Carousel*/}
+            {/*autoplay={true}*/}
+            {/*autoplayInterval={300}*/}
+            {/*infinite*/}
+            {/*beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}*/}
+            {/*afterChange={index => console.log('slide to', index)}*/}
+          {/*>*/}
+            {/*{this.state.files.map(val => (*/}
+              {/*<a*/}
+                {/*key={val}*/}
+                {/*style={{ display: 'inline-block', width: '100%', height: 136 }}*/}
+              {/*>*/}
+                {/*<img*/}
+                  {/*src={val}*/}
+                  {/*onClick={ () => {*/}
+                    {/*dd.biz.util.previewImage({*/}
+                      {/*urls: this.state.files,*/}
+                      {/*current: val*/}
+                    {/*}).catch()*/}
+                  {/*} }*/}
+                  {/*style={{ width: '100%', verticalAlign: 'top' }}*/}
+                {/*/>*/}
+              {/*</a>*/}
+            {/*))}*/}
+          {/*</Carousel>*/}
         </div>
       </div>
     )
@@ -321,6 +341,14 @@ class Release extends React.Component<Props, State> {
             {this.renderParameterInput('产品标签', 'text','productLabel')}
             {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
+          <div
+            onClick={ () => {
+              dd.biz.util.previewImage({
+                urls: ['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546078875596&di=514f8ede623115f992b4d343e7ebc54c&imgtype=0&src=http%3A%2F%2Fpic1.cxtuku.com%2F00%2F00%2F44%2Fb2828daad3ec.jpg','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546078875596&di=2b0dec8c294d67bd6b14c6c9c3294249&imgtype=0&src=http%3A%2F%2Fimg1.qunarzz.com%2Ftravel%2Fd3%2F1602%2F39%2F78964dbd8ae207f7.jpg_r_720x480x95_c6e89ce3.jpg'],
+                current: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546078875596&di=2b0dec8c294d67bd6b14c6c9c3294249&imgtype=0&src=http%3A%2F%2Fimg1.qunarzz.com%2Ftravel%2Fd3%2F1602%2F39%2F78964dbd8ae207f7.jpg_r_720x480x95_c6e89ce3.jpg'
+              }).catch()
+            } }
+          >123456</div>
           {this.renderBottomDrawer()}
           <div className='releaseFooter'>
             <div>放入仓库</div>

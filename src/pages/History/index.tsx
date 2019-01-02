@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon, Toast, InputItem } from 'antd-mobile'
+import { TabBar, List, Checkbox, Stepper, SwipeAction, Icon, Toast, InputItem, Modal } from 'antd-mobile'
 import { Loading, Button } from 'element-react'
 import ReactSVG from 'react-svg'
 import { cloneDeep, get } from 'lodash'
@@ -18,6 +18,7 @@ import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
 import { updataBookingSheetFood, updataOrderId, updataToTal } from '@store/actions/bookingSheet_data'
 import { updateSupplierRevise } from '@store/actions/supplierRevise_data'
+import * as dd from 'dingtalk-jsapi'
 
 const CheckboxItem = Checkbox.CheckboxItem
 const AgreeItem = Checkbox.AgreeItem
@@ -28,6 +29,7 @@ if (isIPhone) {
     onTouchStart: e => e.preventDefault()
   }
 }
+const alert = Modal.alert
 
 export interface Props {
   updatePageTab: (pageTab: string) => void,
@@ -276,13 +278,13 @@ class History extends React.Component<Props, State> {
    * 右滑删除( index1:供应商下标,  index:该食物下标  )
    */
   SlipRightDeleteOnClick = (index1, index) => {
-    let data = this.state.data
-    console.log('1289u732oiuewiofcjudskfdusalksfjdkslajfdsklaoajfdskl')
-    this.deleteFoodAxios(data[index1].shoppingCartDetails[index].cart_id)
-    // data[index1].shoppingCartDetails.splice(index, 1)
-    // if (data[index1].shoppingCartDetails.length === 0) data.splice(index,1)
-    // this.setState({ data: data })
-    // this.props.updataShopCart(data)
+    alert('删除商品', '是否删除选中的商品', [
+      { text: '取消', onPress: () => console.log('cancel') },
+      { text: '确定', onPress: () => {
+        let data = cloneDeep(this.state.data)
+        this.deleteFoodAxios(data[index1].shoppingCartDetails[index].cart_id)
+      }}
+    ])
   }
 
   deleteFoodAxios = (cartId) => {
@@ -349,17 +351,29 @@ class History extends React.Component<Props, State> {
    */
   HeadDeleteOnclick = () => {
     // console.log(1111)
-    let cartId = []
-    this.state.data.map(i => {
-      i.shoppingCartDetails.map(j => {
-        if (j.isChecked === true) cartId.push(j.cart_id)
-      })
-    })
-    if (cartId.length < 1) {
-      return
-    }
-    cartId.join(',')
-    this.deleteFoodAxios(cartId)
+    alert('删除商品', '是否删除选中的商品', [
+      { text: '取消', onPress: () => console.log('cancel') },
+      { text: '确定', onPress: () => {
+        let cartId = []
+        this.state.data.map(i => {
+          i.shoppingCartDetails.map(j => {
+            if (j.isChecked === true) cartId.push(j.cart_id)
+          })
+        })
+        if (cartId.length < 1) {
+          return
+        }
+        cartId.join(',')
+        this.deleteFoodAxios(cartId)
+      } }
+    ])
+  }
+
+  makeSureModal = () => {
+    alert('删除商品', '是否删除选中的商品', [
+      { text: '确定', onPress: () => console.log('cancel') },
+      { text: '取消', onPress: () => console.log('ok') }
+    ])
   }
 
   /**
@@ -413,6 +427,10 @@ class History extends React.Component<Props, State> {
    * 页面加载时判断选中项计算合计
    */
   componentDidMount () {
+    dd.biz.navigation.setTitle({
+      title : '菜篮子'
+    })
+      .catch(err => console.log(err))
     this.count()
     if (this.props.needReloadData === false) return
     this.getShopCartData()
