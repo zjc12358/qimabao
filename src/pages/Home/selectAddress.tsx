@@ -19,32 +19,7 @@ import Geolocation from 'react-amap-plugin-geolocation'
 import { MyResponse } from '@datasources/MyResponse'
 import { AddressBean } from '@datasources/AddressBean'
 import { Loading } from 'element-react'
-
-function getL () {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition)
-  } else {
-    alert('定位有问题')
-  }
-}
-
-function showPosition (position) {
-  alert('lat' + position.coords.latitude + 'log' + position.coords.longitude)
-}
-
-const pluginProps = {
-  enableHighAccuracy: true,// 是否使用高精度定位，默认:true
-  timeout: 100,          // 超过10秒后停止定位，默认：无穷大
-  maximumAge: 0,           // 定位结果缓存0毫秒，默认：0
-  convert: true,           // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-  showButton: true,        // 显示定位按钮，默认：true
-  buttonPosition: 'RB',    // 定位按钮停靠位置，默认：'LB'，左下角
-  showMarker: true,        // 定位成功后在定位到的位置显示点标记，默认：true
-  showCircle: true,        // 定位成功后用圆圈表示定位精度范围，默认：true
-  panToLocation: true,     // 定位成功后将定位到的位置作为地图中心点，默认：true
-  zoomToAccuracy: true,// 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：f
-  extensions: 'all'
-}
+import * as dd from 'dingtalk-jsapi'
 
 export interface Props {
 
@@ -81,7 +56,6 @@ class Home extends React.Component<Props, State> {
 
   componentWillMount () {
     this.getAddressList()
-    getL()
   }
 
   /**
@@ -255,7 +229,8 @@ class Home extends React.Component<Props, State> {
     // }
     return (
       <div className='vertical' style={{ justifyContent: 'space-between', width: '100%' }}>
-        <div className='horizontal' style={{ height: 40, width: '100%' }}>
+        <div className='horizontal' style={{ height: 40, width: '100%' }}
+             onClick={this.getLocation}>
           <div style={{ paddingLeft: 20 }}>附近地址</div>
         </div>
         <div>
@@ -302,7 +277,8 @@ class Home extends React.Component<Props, State> {
    */
   renderMoreAddress = () => {
     return (
-      <div style={{ width: '100%' }}>
+      <div style={{ width: '100%' }}
+           onClick={this.moreAddressOnClick}>
         <div className='horizontal more-address'>
           <span>更多地址</span>
           <ReactSVG path=''/>
@@ -375,10 +351,19 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
-   * 获取定位
+   * 更多地址
    */
-  getLocation = () => {
-    console.log(1)
+  moreAddressOnClick = () => {
+    dd.biz.map.locate({
+      latitude: this.state.position[0],
+      longitude: this.state.position[1]
+    })
+      .then(result => {
+        alert('成功' + result)
+      })
+      .catch(err => {
+        alert('失败' + err.errorMessage)
+      })
   }
 
   /**
@@ -444,33 +429,25 @@ class Home extends React.Component<Props, State> {
       })
   }
 
-  fun = (status, result) => {
-    if (status === 'complete') {
-      this.onComplete(result)
-    } else {
-      this.onError(result)
-    }
-  }
-
-  onComplete = (result) => {
-    console.log('定位成功')
-    let str = []
-    str.push('定位结果：' + result.position)
-    str.push('定位类别：' + result.location_type)
-    if (result.accuracy) {
-      str.push('精度：' + result.accuracy + ' 米')
-    }
-    // 如为IP精确定位结果则没有精度信息
-    str.push('是否经过偏移：' + (result.isConverted ? '是' : '否'))
-    console.log(str)
-    // document.getElementById('result').innerHTML = str.join('<br>')
-  }
-
-  onError = (result) => {
-    console.log('定位失败')
-    console.log('失败原因排查信息' + result.meaage)
-    // document.getElementById('status').innerHTML='定位失败'
-    // document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
+  /**
+   * 获取位置信息
+   */
+  getLocation = () => {
+    dd.device.geolocation.get({
+      targetAccuracy: 200,
+      coordinate: 1,
+      withReGeocode: false,
+      useCache: true // 默认是true，如果需要频繁获取地理位置，请设置false
+    })
+      .then((result) => {
+        // this.onComplete(result)
+        this.setState({
+          position: [result.latitude, result.longitude]
+        })
+      })
+      .catch((err) => {
+        alert('失败' + err.errorMessage)
+      })
   }
 
   public render () {
