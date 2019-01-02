@@ -33,6 +33,7 @@ interface State {
 let offsetY: number = 0
 let layer: number = 0
 let top: number = 170
+let lock: boolean = false
 class User extends React.Component<Props, State> {
 
   constructor (props) {
@@ -42,10 +43,7 @@ class User extends React.Component<Props, State> {
       orderChecked: false,
       data: [
         { id: '1', name: '账户余额', order: 1 },
-        { id: '2', name: '微信', order: 2 },
-        { id: '3', name: '支付宝', order: 3 },
-        { id: '4', name: '工商银行', order: 4 },
-        { id: '5', name: '建设银行', order: 5 }
+        { id: '2', name: '支付宝', order: 2 }
       ],
       ssTt: 0,
       refresh: ''
@@ -131,11 +129,7 @@ class User extends React.Component<Props, State> {
   **/
   public renderItem = (i,index) => {
     return(
-      <div id={'main' + index} style={{ position: 'absolute', top: top + i.order * 40,width: '100%',height: 40 }}
-           onTouchMove={this.touch.bind(this,i.order,index)}
-           onTouchStart={this.touchStart.bind(this,i.order,index)}
-           onTouchEnd={this.touchEnd.bind(this,i.order,index)}
-      >
+      <div id={'main' + index} style={{ position: 'absolute', top: top + i.order * 40,width: '100%',height: 40 }}>
         <div className={'Segment_line4'} />
         <div style={{
           display: 'flex',
@@ -151,68 +145,7 @@ class User extends React.Component<Props, State> {
       </div>
     )
   }
-  /*
-  主要功能： 列表拖拽（无动画）
-  核心思想：
-  1.通过order属性进行排序
-  2.当前项移动到的层赋值给当前项的order
-  3.找到目标层的索引
-  4.通过索引将当前项的原本所在层赋值给目标层的order
-  **/
-  public touch = (order,index,event) => { // 根据当前项的区间判断目标层
-    let currentTop: number = parseInt(document.getElementById('main' + index).style.top.substr(0,document.getElementById('main' + index).style.top.length - 2),0)
-    for (let i = 1;i <= this.state.data.length;i++) {  /* 遍历n次*/
-      if (currentTop < ((i + 1) * 40 + top - 20) && currentTop >= ((i) * 40 + top - 20)) {
-        layer = i
-      }
-    }
-    document.getElementById('main' + index).style.top = (event.touches[0].pageY - 20) + 'px'
-  }
-  public touchStart = (name,index,event) => {
-    let target: any = document.getElementById('main' + index)
-    let currentTop: number = parseInt(target.style.top.substr(0,target.style.top.length - 2),0)
-    target.style.zIndex = 20
-    offsetY = event.touches[0].pageY
-    target.style.height = 40
-    target.children[0].className = ''
-    for (let i = 1;i <= this.state.data.length;i++) {  /* 遍历n次*/
-      if (currentTop < ((i + 1) * 40 + top - 20) && currentTop >= ((i) * 40 + top - 20)) {
-        layer = i
-      }
-    }
-  }
-  public touchEnd = (order,index,event) => {
-    let target: any = document.getElementById('main' + index)
-    target.children[0].className = 'Segment_line4'
-    target.style.zIndex = 5
-    let currentTop: number = parseInt(target.style.top.substr(0,target.style.top.length - 2),0)
-    if (layer !== this.state.data[index].order && layer !== 0) {
-      for (let i = 0;i < this.state.data.length;i++) {  /* 遍历n次*/
-        if (this.state.data[i].order === layer) {
-          this.state.data[i].order = order
-        }
-      }
-      this.state.data[index].order = layer  // 拿着的正确
-      this.setState({
-        refresh: 'refresh'
-      })
-    }
-    if (currentTop <= top + 40) {
-      target.style.top = (top + 40) + 'px'
-      layer = 0
-      offsetY = 0
-      return
-    }
-    if (currentTop >= this.state.data.length * 40 + top) {
-      target.style.top = (this.state.data.length * 40 + top) + 'px'
-      layer = 0
-      offsetY = 0
-      return
-    }
-    target.style.top = (layer) * 40 + top + 'px'
-    layer = 0
-    offsetY = 0
-  }
+
   public headIcon = () => {
     return(
       <ReactSVG path='./assets/images/User/addnoborder.svg' svgStyle={{ width: 22, height: 22 }}/>
