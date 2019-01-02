@@ -350,7 +350,6 @@ class History extends React.Component<Props, State> {
    * 头部删除
    */
   HeadDeleteOnclick = () => {
-    // console.log(1111)
     alert('删除商品', '是否删除选中的商品', [
       { text: '取消', onPress: () => console.log('cancel') },
       { text: '确定', onPress: () => {
