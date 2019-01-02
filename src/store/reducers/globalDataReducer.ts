@@ -11,6 +11,11 @@ export interface GlobalData {
   pageIndex: number
   mode: 'supplier' | 'purchaser'
   errMsg?: string // update form date error message
+  agentId: string
+  corpId: string
+  timeStamp: string
+  nonceStr: string
+  signature: string
 }
 
 const initialState: GlobalData = {
@@ -22,7 +27,12 @@ const initialState: GlobalData = {
   pageTab: 'HomePageTabBar',
   isFetching: false,
   pageIndex: 0,
-  errMsg: ''
+  errMsg: '',
+  agentId: '',
+  corpId: '',
+  timeStamp: '',
+  nonceStr: '',
+  signature: ''
 }
 
 export default (state = initialState, action: GlobalDataAction) => {
@@ -78,6 +88,15 @@ export default (state = initialState, action: GlobalDataAction) => {
       return {
         ...state,
         userInfo: Object.assign({}, state.userInfo, { user_sex: action.sex })
+      }
+    case Type.SET_DD_CONFIG:
+      return {
+        ...state,
+        agentId: action.agentId,
+        corpId: action.corpId,
+        timeStamp: action.timeStamp,
+        nonceStr: action.nonceStr,
+        signature: action.signature
       }
     default:
       return state
