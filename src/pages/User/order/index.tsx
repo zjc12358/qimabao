@@ -13,6 +13,7 @@ import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { ProductOrder } from '@datasources/ProductOrder'
 import { cloneDeep, get } from 'lodash'
+import LoadMore from '@components/LoadMore'
 
 export interface Props {
   tab: number
@@ -25,6 +26,10 @@ interface State {
   loading: boolean
   getEmpty: boolean
   refresh: string
+  pageNum: number
+  isLoading: boolean
+  count: number
+  hasMore: boolean // 是否还有更多
   productOrderAll: Array<ProductOrder>
   productOrderFu: Array<ProductOrder>
   productOrderPei: Array<ProductOrder>
@@ -40,6 +45,7 @@ const tabs = [
   { title: '待评价' },
   { title: '已完成' }
 ]
+const NUM_ROWS = 5
 class User extends React.Component<Props, State> {
 
   constructor (props) {
@@ -48,6 +54,10 @@ class User extends React.Component<Props, State> {
       loading: true,
       getEmpty: true,
       refresh: '',
+      pageNum: 1,
+      hasMore: true,
+      isLoading: false,
+      count: 0,
       productOrderAll: [],
       productOrderFu: [],
       productOrderPei: [],
@@ -60,50 +70,87 @@ class User extends React.Component<Props, State> {
   componentDidMount () {
     this.tabOnClick(null,this.props.tab)
   }
-  tabOnClick = (tab, index) => {
+  tabOnClick = (tab, index,code?) => {
     this.props.changeTab(index)
     this.setState({
       loading: true
     })
-    let url = 'CanteenProcurementManager/user/productOrder/findProductOrder'
-    let query = ''
-    if (index === 0) query = ''
-    else query = '?payStatus=' + (index - 1)
+    let url = 'CanteenProcurementManager/user/productOrder/findProductOrder?'
+    let query = 'pageNum=' + this.state.pageNum
+    query += '&pageSize=' + NUM_ROWS
+    if (index === 0) query += ''
+    else query += '&payStatus=' + (index - 1)
+    console.log(url + query)
     axios.get<MyResponse<ProductOrder>>(url + query)
       .then(data => {
         console.log('--- data =', data.data.data)
         if (data.data.code === 0) {
-          switch (index) {
-            case 0:
-              this.setState({
-                productOrderAll: cloneDeep(data.data.data)
-              })
-              break
-            case 1:
-              this.setState({
-                productOrderFu: cloneDeep(data.data.data)
-              })
-              break
-            case 2:
-              this.setState({
-                productOrderPei: cloneDeep(data.data.data)
-              })
-              break
-            case 3:
-              this.setState({
-                productOrderShou: cloneDeep(data.data.data)
-              })
-              break
-            case 4:
-              this.setState({
-                productOrderPing: cloneDeep(data.data.data)
-              })
-              break
-            case 5:
-              this.setState({
-                productOrderWan: cloneDeep(data.data.data)
-              })
-              break
+          if (this.state.pageNum === 1) {
+            switch (index) {
+              case 0:
+                this.setState({
+                  productOrderAll: cloneDeep(data.data.data)
+                })
+                break
+              case 1:
+                this.setState({
+                  productOrderFu: cloneDeep(data.data.data)
+                })
+                break
+              case 2:
+                this.setState({
+                  productOrderPei: cloneDeep(data.data.data)
+                })
+                break
+              case 3:
+                this.setState({
+                  productOrderShou: cloneDeep(data.data.data)
+                })
+                break
+              case 4:
+                this.setState({
+                  productOrderPing: cloneDeep(data.data.data)
+                })
+                break
+              case 5:
+                this.setState({
+                  productOrderWan: cloneDeep(data.data.data)
+                })
+                break
+            }
+          } else {
+            switch (code) {
+              case 0:
+                this.setState({
+                  productOrderAll: this.state.productOrderAll.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 1:
+                this.setState({
+                  productOrderFu: this.state.productOrderAll.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 2:
+                this.setState({
+                  productOrderPei: this.state.productOrderPei.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 3:
+                this.setState({
+                  productOrderShou: this.state.productOrderShou.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 4:
+                this.setState({
+                  productOrderPing: this.state.productOrderPing.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 5:
+                this.setState({
+                  productOrderWan: this.state.productOrderWan.concat(cloneDeep(data.data.data))
+                })
+                break
+            }
           }
           this.setState({
             loading: false
@@ -132,12 +179,12 @@ class User extends React.Component<Props, State> {
       <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
         <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
-          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
-          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei) : this.renderNone}
-          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou) : this.renderNone}
-          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing) : this.renderNone}
-          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan) : this.renderNone}
+          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll,0) : this.renderNone}
+          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu,1) : this.renderNone}
+          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei,2) : this.renderNone}
+          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou,3) : this.renderNone}
+          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing,4) : this.renderNone}
+          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan,5) : this.renderNone}
         </Tabs>
         {this.loadingRender()}
       </div>
@@ -146,18 +193,24 @@ class User extends React.Component<Props, State> {
   /**
    * 全部
    */
-  public renderSwitch = (poi) => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {poi.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
+  public renderSwitch = (poi,code) => {
+    let list = poi.map((i, index) => this.renderItem(i, index))
+    return (
+      <div id={'list'} className='touch_scroll scroll product-list'
+           style={{ backgroundColor: 'white',paddingTop: 20 }}>
+        <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this,code)}
+                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
+                  hasMore={this.state.hasMore}/>
       </div>
     )
+  }
+  loadMore = (code) => {
+    if (!this.state.hasMore) {
+      return
+    }
+    this.setState({
+      pageNum: this.state.pageNum + 1
+    }, () => this.tabOnClick(null,this.props.tab,code))
   }
   public renderItem = (i, index) => {
     let font: any = null
@@ -290,7 +343,8 @@ class User extends React.Component<Props, State> {
   }
 
   public payOnclick = () => {
-    history().push('/paySuccess')
+    console.log(document.getElementById('list').scrollHeight)
+
   }
   public confirmOnclick = (id,index) => {
     let url = 'CanteenProcurementManager/user/productOrder/updatePyStates?'
