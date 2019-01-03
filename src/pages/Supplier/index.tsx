@@ -322,7 +322,7 @@ class Supplier extends React.Component<Props, State> {
     return (
       <div className={'flex-space-between-column-stretch'} style={{ width: '100%', height: '100%' }}>
         <div className={'flex-space-between-row-center'} style={{ padding: '10px 10px 0', height: '44%' }}>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#3333cc' }}>
@@ -330,7 +330,7 @@ class Supplier extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>商品管理</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#6633ff' }}>
@@ -338,7 +338,7 @@ class Supplier extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>分类设置</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#009966' }}>
@@ -346,7 +346,7 @@ class Supplier extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>配送设置</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('detection')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#0066ff' }}>
@@ -356,7 +356,7 @@ class Supplier extends React.Component<Props, State> {
           </div>
         </div>
         <div className={'flex-space-between-row-center'} style={{ padding: '0 10px 10px 10px', height: '44%' }}>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#3399cc' }}>
@@ -364,7 +364,7 @@ class Supplier extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>商品发布</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#ff6600' }}>
@@ -372,7 +372,7 @@ class Supplier extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>评价管理</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('/supplierAfterSale')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#0099ff' }}>
@@ -380,7 +380,7 @@ class Supplier extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>退款售后</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('/supplierAfterSale')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#ff9900' }}>

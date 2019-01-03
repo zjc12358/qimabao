@@ -68,9 +68,9 @@ class User extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    this.tabOnClick(null,this.props.tab)
+    this.getData(null,this.props.tab)
   }
-  tabOnClick = (tab, index,code?) => {
+  getData = (tab, index) => {
     this.props.changeTab(index)
     this.setState({
       loading: true
@@ -119,7 +119,7 @@ class User extends React.Component<Props, State> {
                 break
             }
           } else {
-            switch (code) {
+            switch (index) {
               case 0:
                 this.setState({
                   productOrderAll: this.state.productOrderAll.concat(cloneDeep(data.data.data))
@@ -164,6 +164,12 @@ class User extends React.Component<Props, State> {
         Toast.info('请检查网络设置!')
       })
   }
+  tabOnClick = (tab, index,pageNum) => {
+    this.setState({
+      pageNum: pageNum
+    })
+    this.getData(tab, index)
+  }
   loadingRender = () => {
     if (this.state.loading) {
       return (
@@ -177,14 +183,14 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
-        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll,0) : this.renderNone}
-          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu,1) : this.renderNone}
-          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei,2) : this.renderNone}
-          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou,3) : this.renderNone}
-          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing,4) : this.renderNone}
-          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan,5) : this.renderNone}
+          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
+          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
+          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei) : this.renderNone}
+          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou) : this.renderNone}
+          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing) : this.renderNone}
+          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan) : this.renderNone}
         </Tabs>
         {this.loadingRender()}
       </div>
@@ -193,24 +199,24 @@ class User extends React.Component<Props, State> {
   /**
    * 全部
    */
-  public renderSwitch = (poi,code) => {
+  public renderSwitch = (poi) => {
     let list = poi.map((i, index) => this.renderItem(i, index))
     return (
       <div id={'list'} className='touch_scroll scroll product-list'
            style={{ backgroundColor: 'white',paddingTop: 20 }}>
-        <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this,code)}
+        <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
                   hasMore={this.state.hasMore}/>
       </div>
     )
   }
-  loadMore = (code) => {
+  loadMore = () => {
     if (!this.state.hasMore) {
       return
     }
     this.setState({
       pageNum: this.state.pageNum + 1
-    }, () => this.tabOnClick(null,this.props.tab,code))
+    }, () => this.getData(null,this.props.tab))
   }
   public renderItem = (i, index) => {
     let font: any = null

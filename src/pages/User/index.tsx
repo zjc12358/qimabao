@@ -221,7 +221,7 @@ class User extends React.Component<Props, State> {
               style={{
                 width: '100%',
                 height: '100%'
-              }} src={this.state.userInfo.user_head_portrait === '' ? 'assets/images/User/noProduct.svg' : this.state.userInfo.user_head_portrait}/></div>
+              }} src={this.state.userInfo.user_head_portrait === '' ? 'assets/images/User/noPic.svg' : this.state.userInfo.user_head_portrait}/></div>
           <div style={{ width: 110 }}>
             <span style={{
               overflow: 'hidden',
@@ -408,7 +408,7 @@ class User extends React.Component<Props, State> {
     return (
       <div className={'flex-space-between-column-stretch'} style={{ width: '100%', height: '100%' }}>
         <div className={'flex-space-between-row-center'} style={{ padding: '10px 10px 0', height: '44%' }}>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#3333cc' }}>
@@ -417,7 +417,7 @@ class User extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>所有账单</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#6633ff' }}>
@@ -426,7 +426,7 @@ class User extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>我的账户</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#009966' }}>
@@ -435,7 +435,7 @@ class User extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>收货地址</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('detection')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#0066ff' }}>
@@ -445,7 +445,7 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className={'flex-space-between-row-center'} style={{ padding: '20px 10px 10px 10px', height: '44%' }}>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#3399cc' }}>
@@ -453,7 +453,7 @@ class User extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>我的评价</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('sProductList')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#ff6600' }}>
@@ -461,7 +461,7 @@ class User extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>联系客服</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('/supplierAfterSale')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#0099ff' }}>
@@ -469,7 +469,7 @@ class User extends React.Component<Props, State> {
             </div>
             <div className={'commonFont'} style={{ fontSize: 14, color: '#333' }}>尽请期待</div>
           </div>
-          <div className={'flex-space-between-column-center'} style={{ height: 60 }}
+          <div className={'flex-space-between-column-center'} style={{ height: 65 }}
                onClick={() => history().push('/supplierAfterSale')}>
             <div className={'flex-center-row-center'}
                  style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#ff9900' }}>
