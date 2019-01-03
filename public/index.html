@@ -17,21 +17,6 @@
   <div id="root"></div>
 </body>
 <script>
-  function plusReady() {
-    // 设置系统状态栏背景为红色
-    var type = plus.os.name;
-    if(type == "iOS") {
-      plus.navigator.setStatusBarBackground("#368CBD");
-    } else {
-      plus.navigator.setStatusBarBackground("#ddd");
-    }
-
-
-  }
-  if(window.plus) {
-    plusReady();
-  } else {
-    document.addEventListener("plusready", plusReady, false)
   // var overscroll = function(el) {
   //   el.addEventListener('touchstart', function() {
   //     var top = el.scrollTop

@@ -38,7 +38,8 @@ interface State {
   productStock: number,
   productLabel: string,
   productDescription: string,
-  msg: string
+  msg: string,
+  carouselIndex: number
 }
 let IconMaxSize: number = 30
 class Release extends React.Component<Props, State> {
@@ -58,7 +59,8 @@ class Release extends React.Component<Props, State> {
       productStock: this.props.productMsg.productStock,
       productLabel: this.props.productMsg.productLabel,
       productDescription: '',
-      msg: ''
+      msg: '',
+      carouselIndex: 0
     }
   }
 
@@ -126,8 +128,15 @@ class Release extends React.Component<Props, State> {
     })
   }
 
+  /**
+   * 删除轮播图当前下标图片
+   */
   deleteChooseImagesClick = () => {
-    alert('删除商品', '是否删除选中的商品', [
+    if (this.state.files.length === 0) {
+      Toast.fail('当前未选择任何图片！',1)
+      return
+    }
+    alert('删除图片', '是否删除该图片', [
       { text: '取消', onPress: () => console.log('cancel') },
       { text: '确定', onPress: () => {
         let files = cloneDeep(this.state.files)
@@ -155,8 +164,6 @@ class Release extends React.Component<Props, State> {
             // if (e.target.files[0])
             let file = e.target.files[0]
             let fileLen = e.target.files.length
-            let fileSize = (file.size / 1024).toFixed(0)
-            console.log(fileSize)
             // if (Number(fileSize) >= 2048) {
             //   Toast.fail('图片过大')
             //   return
@@ -171,24 +178,17 @@ class Release extends React.Component<Props, State> {
               // console.log(base64)
               this.setState({ files: files },() => {
                 this.updataSaveProductMsg()
-                // console.log(this.props.productMsg)
+                if (this.state.files.length > 0) {
+                  this.setState({ carouselIndex: this.state.files.length - 1 },() => {
+                    console.log(this.state.carouselIndex)
+                  })
+                }
               })
             })
-            // let reader = new FileReader()
-            // reader.readAsDataURL(file)
-            // reader.onload = (e) => {
-            //   let base64 = reader.result
-            //   let files = cloneDeep(this.state.files)
-            //   files.push(base64)
-            //   // console.log(base64)
-            //   this.setState({ files: files },() => {
-            //     this.updataSaveProductMsg()
-            //     // console.log(this.props.productMsg)
-            //   })
-            // }
           }} />
         </div>
         <div className={'readImages'}
+             style={{ display: (this.state.files.length ? 'block' : 'none') }}
           onClick={ () => {
             dd.biz.util.previewImage({
               urls: this.state.files,
@@ -196,10 +196,17 @@ class Release extends React.Component<Props, State> {
             }).catch(err => console.log(err))
           } }
         >
-          <img
-            src={this.state.files.length > 0 ? this.state.files[this.state.files.length - 1] : ''}
-            style={{ width: '100%', verticalAlign: 'top' }}
-          />
+          <Carousel height='204px' autoplay={false} arrow='always'>
+            {
+              this.state.files.map((item, index) => {
+                return (
+                  <Carousel.Item key={index}>
+                    <img src={item} style={{ width: '100%' }} />
+                  </Carousel.Item>
+                )
+              })
+            }
+          </Carousel>
         </div>
       </div>
     )
@@ -338,40 +345,6 @@ class Release extends React.Component<Props, State> {
             />
             {this.renderListItemGoTo('类目', '/category')}
           </div>
-          {/*<Carousel*/}
-            {/*autoplay={false}*/}
-            {/*infinite*/}
-            {/*beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}*/}
-            {/*afterChange={index => console.log('slide to', index)}*/}
-          {/*>*/}
-            {/*{this.state.files.map(val => (*/}
-              {/*<a*/}
-                {/*key={val}*/}
-                {/*style={{ display: 'inline-block', width: '100%', height: 136 }}*/}
-              {/*>*/}
-                {/*<img*/}
-                  {/*src={val}*/}
-                  {/*alt=''*/}
-                  {/*style={{ width: '100%', verticalAlign: 'top' }}*/}
-                  {/*onLoad={() => {*/}
-                    {/*// fire window resize event to change height*/}
-                    {/*window.dispatchEvent(new Event('resize'))*/}
-                  {/*}}*/}
-                {/*/>*/}
-              {/*</a>*/}
-            {/*))}*/}
-          {/*</Carousel>*/}
-          <Carousel height='150px' autoplay={false} arrow='always'>
-            {
-              this.state.files.map((item, index) => {
-                return (
-                  <Carousel.Item key={index}>
-                    <img src={item} style={{ width: '100%' }} />
-                  </Carousel.Item>
-                )
-              })
-            }
-          </Carousel>
           <div className='paramContent' style={{ marginTop: 15, backgroundColor: 'white' }}>
             {this.renderParameterInput('价格', 'number','productPrice')}
             {this.renderParameterInput('库存', 'number','productStock')}
@@ -381,10 +354,10 @@ class Release extends React.Component<Props, State> {
           {this.renderBottomDrawer()}
           <div className='releaseFooter'>
             <div onClick={() => {
-              this.submite(0)
+              this.submite(2)
             }}>放入仓库</div>
             <div onClick={() => {
-              this.submite(1)
+              this.submite(0)
             }}>立即发布</div>
           </div>
         </div>
