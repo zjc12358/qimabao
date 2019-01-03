@@ -60,12 +60,12 @@ class App extends React.Component<Props, State> {
     dd.biz.navigation.hideBar({
       hidden: true  // true：隐藏，false：显示
     }).catch(err => console.log(err))
-/*    dd.runtime.permission.requestAuthCode(
+    dd.runtime.permission.requestAuthCode(
       { corpId: 'dingff2af124327c79bd35c2f4657eb6378f' }
     )
       .then(res => this.getLogin(res))
-      .catch(err => console.log(err))*/
-    this.jj()
+      .catch(err => console.log(err))
+//     this.jj()
     if (this.state.isLoading) {
       return
     }
@@ -112,6 +112,8 @@ class App extends React.Component<Props, State> {
         console.log('--- data =', data)
         if (data.data.code === 0) {
           this.props.setID(Number(data.data.data.userId))
+          this.getPower(data.data.data.agentId, data.data.data.corpId, data.data.data.timeStamp, data.data.data.nonceStr, data.data.data.signature)
+          alert(JSON.stringify(data.data.data))
           url = 'CanteenProcurementManager/user/nail/selectMean?'
           query = 'user_id=' + this.props.id
           axios.get<MyResponse<UserInfo>>(url + query)
@@ -289,6 +291,31 @@ class App extends React.Component<Props, State> {
         </TabBar.Item>
       </TabBar>
     )
+  }
+
+  /**
+   * 获取钉钉权限
+   * @param agentId
+   * @param corpId
+   * @param timeStamp
+   * @param nonceStr
+   * @param signature
+   */
+  getPower = (agentId: string, corpId: string, timeStamp: string,
+              nonceStr: string, signature: string) => {
+    alert('鉴权')
+    dd.config({
+      agentId: agentId, // 必填，微应用ID
+      corpId: corpId,// 必填，企业ID
+      timeStamp: timeStamp, // 必填，生成签名的时间戳
+      nonceStr: nonceStr, // 必填，生成签名的随机串
+      signature: signature, // 必填，签名
+      type: 0, // 选填，0表示微应用的jsapi，1表示服务窗的jsapi，不填默认为0。该参数从dingtalk.js的0.8.3版本开始支持
+      jsApiList: ['runtime.info', 'biz.contact.choose', 'device.geolocation.get',
+        'device.notification.confirm', 'device.notification.alert',
+        'device.notification.prompt', 'biz.ding.post',
+        'biz.util.openLink'] // 必填，需要使用的jsapi列表，注意：不要带dd。
+    })
   }
 
   public render () {

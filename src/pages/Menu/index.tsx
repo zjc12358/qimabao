@@ -51,7 +51,7 @@ class Order extends React.Component<Props, State> {
     return (
       this.props.selectMenu === true ?
         <ReactSVG path='./assets/images/ic_go_take_pic.svg' svgStyle={{ width: 30, height: 30 }}/> :
-        <span>确定</span>
+        <span style={{ color: 'white' }}>确定</span>
     )
   }
 

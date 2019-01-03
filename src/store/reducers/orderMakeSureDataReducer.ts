@@ -4,6 +4,7 @@ import { OrderMakeSureBean } from '../../datasources/OrderMakeSureBean'
 export interface OrderMakeSureData {
   OrderMakeSureData: OrderMakeSureBean,
   reload: boolean
+  update: boolean
 }
 
 const initialState: OrderMakeSureData = {
@@ -13,7 +14,8 @@ const initialState: OrderMakeSureData = {
     addressData: null,
     supplier: []
   },
-  reload: true
+  reload: true,
+  update: true
 }
 
 export default (state = initialState, action: OrderMakeSureAction) => {
@@ -29,6 +31,11 @@ export default (state = initialState, action: OrderMakeSureAction) => {
       return {
         ...state,
         reload: action.reload
+      }
+    case Type.UPDATE_ADDRESS:
+      return{
+        ...state,
+        update: action.updateAddress
       }
     default:
       return state
