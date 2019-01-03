@@ -64,16 +64,16 @@ class Supplier extends React.Component<Props, State> {
     let query = ''
     switch (index) {
       case 0:
-        query = 'status=' + 1
+        query = 'status=' + 0
         break
       case 1:
         url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfoStock'
         break
       case 2:
-        query = 'status=' + 0
+        query = 'status=' + 2
         break
       case 3:
-        query = 'status=' + 2
+        query = 'status=' + 1
         break
     }
     query += '&pageNum=1&pageSize=20'
@@ -247,8 +247,8 @@ class Supplier extends React.Component<Props, State> {
           <div className={'flex-center-row-center'}>
             <ReactSVG path='../../../../assets/images/Supplier/lowerShelf.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }} onClick={
-              type === 'inSale' ? () => this.showAlert('商品管理','是否下架？',i,index,this.LowerOrUpOnclick,this.state.supplierProductListCSZ,2) :
-                type === 'lowerShelf' ? () => this.showAlert('商品管理','是否上架？',i,index,this.LowerOrUpOnclick,this.state.supplierProductListYXJ,1) : () => this.showAlert('商品管理','是否上架？',i,index,this.LowerOrUpOnclick,this.state.supplierProductListCKZ,1)}>
+              type === 'inSale' ? () => this.showAlert('商品管理','是否下架？',i,index,this.LowerOrUpOnclick,this.state.supplierProductListCSZ,1) :
+                type === 'lowerShelf' ? () => this.showAlert('商品管理','是否上架？',i,index,this.LowerOrUpOnclick,this.state.supplierProductListYXJ,0) : () => this.showAlert('商品管理','是否上架？',i,index,this.LowerOrUpOnclick,this.state.supplierProductListCKZ,0)}>
                 {type === 'inSale' ? '下架' : '上架'}
                 </span>
           </div>
