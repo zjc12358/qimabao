@@ -13,10 +13,11 @@ import { ProductList } from '@datasources/ProductList'
 import Loading from '@components/Loading'
 import Result from '@components/Result'
 import { cloneDeep, get } from 'lodash'
-import { updateProductList } from '@store/actions/supplierProductList_data'
+import { updateProductList,updateProductListDetail } from '@store/actions/supplierProductList_data'
 
 export interface Props {
   updateProductList: (ProductList: Array<ProductList>) => void
+  updateProductListDetail: (ProductListDetail: ProductList) => void
 }
 
 interface State {
@@ -61,22 +62,22 @@ class Supplier extends React.Component<Props, State> {
       loading: true
     })
     let url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfo?'
-    let query = ''
+    let query = 'pageNum=1&pageSize=20&'
     switch (index) {
       case 0:
-        query = 'status=' + 0
+        query += 'status=' + 0
         break
       case 1:
         url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfoStock'
+        query = ''
         break
       case 2:
-        query = 'status=' + 2
+        query += 'status=' + 2
         break
       case 3:
-        query = 'status=' + 1
+        query += 'status=' + 1
         break
     }
-    query += '&pageNum=1&pageSize=20'
     console.log(url + query)
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
@@ -240,7 +241,7 @@ class Supplier extends React.Component<Props, State> {
         {this.renderItemDetail(i,index,type)}
         <div className={'flex-space-between-row-center'}
              style={{ padding: '5px 16px', borderTop: '1px solid #e5e5e5',borderBottom: '1px solid #e5e5e5' }}>
-          <div className={'flex-center-row-center'}>
+          <div className={'flex-center-row-center'} onClick={() => this.editOnclick(i)}>
             <ReactSVG path='../../../../assets/images/Supplier/edit.svg' svgStyle={{ width: 20, height: 20 }}/>
             <span style={{ paddingLeft: 5 }}>编辑</span>
           </div>
@@ -377,6 +378,9 @@ class Supplier extends React.Component<Props, State> {
   public searchOnClick = () => {
     console.log(1)
   }
+  public editOnclick = (i) => {
+    this.props.updateProductListDetail(i)
+  }
   public LowerOrUpOnclick = (id,index,poi,status) => {
     console.log(id,index,poi)
     let url = 'CanteenProcurementManager/user/ProductInfo/updateProductState?'
@@ -424,7 +428,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updateProductList
+  updateProductList,
+  updateProductListDetail
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)

@@ -3,12 +3,14 @@ import { ProductList } from '../../datasources/ProductList'
 
 export interface ProductListData {
   ProductListData: Array<ProductList>
+  ProductListDetailData: ProductList
   index: number
   tab: number
 }
 
 const initialState: ProductListData = {
   ProductListData: [],
+  ProductListDetailData: {} as ProductList,
   index: 0,
   tab: 0
 }
@@ -19,6 +21,11 @@ export default (state = initialState, action: ProductListAction) => {
       return {
         ...state,
         ProductListData: action.ProductListData
+      }
+    case Type.UPDATE_PRODUCTLISTDETAIL:
+      return {
+        ...state,
+        ProductListDetailData: action.ProductListDetailData
       }
     case Type.CHANGE_TAB:
       return{
