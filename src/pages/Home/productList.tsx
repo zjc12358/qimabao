@@ -638,9 +638,9 @@ class Home extends React.Component<Props, State> {
             }
           } else {
             let list = this.state.productList
-            list.concat(data.data.data)
+            let newList = list.concat(data.data.data)
             this.setState({
-              productList: list
+              productList: newList
             })
             if (this.state.count < this.state.pageNum * NUM_ROWS) {
               this.setState({ hasMore: false })
