@@ -303,6 +303,7 @@ class App extends React.Component<Props, State> {
    */
   getPower = (agentId: string, corpId: string, timeStamp: string,
               nonceStr: string, signature: string) => {
+    alert('鉴权')
     dd.config({
       agentId: agentId, // 必填，微应用ID
       corpId: corpId,// 必填，企业ID

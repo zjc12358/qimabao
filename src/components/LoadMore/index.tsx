@@ -16,29 +16,7 @@ export interface Props {
   bodyName: string // 父级div className  传入以获取高度
   hasMore: boolean // 是否有更多数据
 }
-function ScollPostion () {
-  let t
-  let l
-  let w
-  let h
-  if (document.documentElement && document.documentElement.scrollTop) {
-    t = document.documentElement.scrollTop
-    l = document.documentElement.scrollLeft
-    w = document.documentElement.scrollWidth
-    h = document.documentElement.scrollHeight
-  } else if (document.body) {
-    t = document.body.scrollTop
-    l = document.body.scrollLeft
-    w = document.body.scrollWidth
-    h = document.body.scrollHeight
-  }
-  return {
-    top: t,
-    left: l,
-    width: w,
-    height: h
-  }
-}
+
 /**
  * 加载更多组件
  * 获取数据在原页面设置,这里只需要传入布局和list数据
@@ -101,6 +79,8 @@ class LoadMore extends React.Component<Props, State> {
   touchMove (e) {
     console.log('移动了屏幕')
     let moveX = e.changedTouches[0]
+    console.log(moveX)
+    // document.getElementById('').scrollHeight
   }
 
   // 离开屏幕 ([e.changedTouches][2])
@@ -135,12 +115,13 @@ class LoadMore extends React.Component<Props, State> {
   // 向上滑动时 (这里真正判断是否到最底部)
   loadData () {
     // 数据高度
-    let dataHeight = document.getElementById('list').scrollHeight
+    let dataHeight = this.props.listData.length * this.props.itemHeight
     // 滚动高度
-    let scrollHeight = ScollPostion().top
-    console.log(dataHeight - scrollHeight)
+    let scrollHeight = document.getElementsByClassName(this.props.bodyName)[0].scrollTop || document.getElementsByClassName(this.props.bodyName)[0].scrollTop
+    // 控件高度
+    let screenHeight = document.getElementsByClassName(this.props.bodyName)[0].clientHeight
     // 达到指定位置后 请求数据
-    if (dataHeight - scrollHeight < 1583 && !this.props.isLoading) {
+    if (dataHeight - scrollHeight - this.props.loadHeight < screenHeight && !this.props.isLoading) {
       this.props.getData()
     }
   }
