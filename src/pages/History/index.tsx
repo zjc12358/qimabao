@@ -289,18 +289,18 @@ class History extends React.Component<Props, State> {
 
   deleteFoodAxios = (cartId) => {
     console.log(cartId)
-    this.setState({
-      fullscreen: true
-    })
+    Toast.loading('请稍等...',1)
     let url = 'CanteenProcurementManager/user/shoppingCart/deleteSwitchCart?'
     let query = 'cartId=' + cartId
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
         console.log(data)
+        Toast.hide()
         if (data.data.code === 0) {
           this.setState({
             fullscreen: false
           })
+          Toast.success('删除成功',1)
           this.getShopCartData()
         } else {
           Toast.info(data.data.msg, 2, null, false)
@@ -318,18 +318,14 @@ class History extends React.Component<Props, State> {
     let subtotal = Number(v * item.product_price).toFixed(2)
     console.log(subtotal)
     let cartId = item.cart_id
-    this.setState({
-      fullscreen: true
-    })
+    Toast.loading('请稍等...')
     let url = 'CanteenProcurementManager/user/shoppingCart/increaseAndDecreaseCart?'
     let query = 'cartId=' + cartId + '&productWeight=' + productWeight + '&productTotalPrice=' + subtotal
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
         console.log(data)
         if (data.data.code === 0) {
-          this.setState({
-            fullscreen: false
-          })
+          Toast.hide()
           let shopdata = cloneDeep(this.state.data)
           shopdata[index1].shoppingCartDetails[index].product_weight = v
           shopdata[index1].shoppingCartDetails[index].product_total_price = subtotal
@@ -360,6 +356,7 @@ class History extends React.Component<Props, State> {
           })
         })
         if (cartId.length < 1) {
+          Toast.fail('无选中商品',1)
           return
         }
         cartId.join(',')
@@ -381,18 +378,20 @@ class History extends React.Component<Props, State> {
   getShopCartData = () => {
     this.props.updataAllSupplierItemCheck(false)
     this.setState({ total: 0 })
-    this.setState({
-      fullscreen: true
-    })
+    // this.setState({
+    //   fullscreen: true
+    // })
+    Toast.loading('请稍等...')
     let url = 'CanteenProcurementManager/user/shoppingCart/findShoppingCart?'
     let query = ''
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
-          this.setState({
-            fullscreen: false
-          })
+          // this.setState({
+          //   fullscreen: false
+          // })
+          Toast.hide()
           let cartData = cloneDeep(data.data.data)
           cartData.map((item) => {
             item.allChecked = false

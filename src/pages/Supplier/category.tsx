@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { Toast } from 'antd-mobile'
+import { Toast,Accordion,List } from 'antd-mobile'
 import axios from 'axios'
 import ReactSVG from 'react-svg'
 import { GlobalData } from '@store/reducers/globalDataReducer'
@@ -41,7 +41,9 @@ class Supplier extends React.Component<Props, State> {
   renderList = () => {
     return (
       <div className='vertical' style={{ flex: 1, width: '100%' }}>
-        {this.state.allCategory.map((item, index) => this.renderListItem(item, index))}
+        <Accordion className='my-accordion' style={{ width: '100%' }}>
+          {this.state.allCategory.map((item, index) => this.renderListItem(item, index))}
+        </Accordion>
       </div>
     )
   }
@@ -51,20 +53,11 @@ class Supplier extends React.Component<Props, State> {
    */
   renderListItem = (item: CategoryBean, index: number) => {
     return (
-      <div className='vertical' style={{ width: '100%' }}>
-        <div className='horizontal' style={{ height: 60, width: '100%', backgroundColor: 'white' }}
-             onClick={() => this.categoryOnClick(index)}>
-          <div style={{ marginLeft: 20 }}>
-            {item.show ?
-              <ReactSVG path='./assets/images/ic_up_arrow.svg' svgStyle={{ width: 24, height: 24 }}/> :
-              <ReactSVG path='./assets/images/ic_down_arrow.svg' svgStyle={{ width: 24, height: 24 }}/>
-            }
-          </div>
-          <div>{item.category_name}</div>
-        </div>
-        <span style={{ height: 1, width: '100%', backgroundColor: '#cccccc' }}></span>
-        {item.show && this.renderChildList(item.category_id, item.productCategoryClassList)}
-      </div>
+      <Accordion.Panel header={item.category_name}>
+        <List className='my-list'>
+          {this.renderChildList(item.category_id, item.productCategoryClassList)}
+        </List>
+      </Accordion.Panel>
     )
   }
 
@@ -73,36 +66,19 @@ class Supplier extends React.Component<Props, State> {
    */
   renderChildList = (categoryId: number, item: Array<SecondCategoryBean>) => {
     return (
-      <div className='vertical' style={{ width: '100%' }}>
-        {item.map(item => this.renderChildListItem(categoryId, item))}
+      <div>
+        {item.map(item => (
+          <List.Item
+            style={{ textIndent: '20px' }}
+            onClick={ () => {
+              this.secondCategoryOnClick(categoryId, item.category_class_id, item.category_class_name)
+            }}
+          >
+            <span>{item.category_class_name}</span>
+          </List.Item>
+        ))}
       </div>
     )
-  }
-
-  /**
-   * 二级列表单列
-   */
-  renderChildListItem = (categoryId: number, item: SecondCategoryBean) => {
-    return (
-      <div className='vertical' style={{ width: '100%' }}>
-        <div className='vertical-center' style={{ width: '100%', height: 30, backgroundColor: 'white' }}
-             onClick={() => this.secondCategoryOnClick(categoryId, item.category_class_id, item.category_class_name)}>
-          {item.category_class_name}
-        </div>
-        <span style={{ height: 1, width: '100%', backgroundColor: '#cccccc' }}></span>
-      </div>
-    )
-  }
-
-  /**
-   * 点击一级类目
-   */
-  categoryOnClick = (index: number) => {
-    let all = this.state.allCategory
-    all.map((item, i) => index === i ? item.show = true : item.show = false)
-    this.setState({
-      allCategory: all
-    })
   }
 
   /**
@@ -140,7 +116,7 @@ class Supplier extends React.Component<Props, State> {
     return (
       <div className='vertical'>
         <Head titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'} title={'分类设置'}
-              rightIconOnClick={null} showRightIcon={false}/>
+              rightIconOnClick={null} showRightIcon={false} leftIconColor='white'/>
         {this.renderList()}
       </div>
     )
