@@ -14,15 +14,24 @@ import ReactSVG from 'react-svg'
 import Head from '../../../components/Head/index'
 import './release.less'
 import { MyResponse } from '@datasources/MyResponse'
-import { saveProductMsg } from '@store/actions/release_data'
+import {
+  saveProductMsg,
+  updataCategoryClassId,
+  updataCategoryId,
+  updataProductDescription
+} from '@store/actions/release_data'
 const alert = Modal.alert
 
 export interface Props {
-  saveProductMsg: (productMsg: any) => void
+  saveProductMsg: (productMsg: any) => void,
+  updataCategoryId: (categoryId: number) => void,
+  updataCategoryClassId: (categoryClassId: number,categoryName: string) => void,
+  updataProductDescription: (productDescription: string) => void,
   productDescription: string,
   productMsg: any,
   categoryId: number,
-  categoryClassId: number
+  categoryClassId: number,
+  categoryName: string
 }
 
 interface State {
@@ -43,6 +52,7 @@ interface State {
 }
 let IconMaxSize: number = 30
 class Release extends React.Component<Props, State> {
+  private inputInstance: any
 
   constructor (props) {
     super(props)
@@ -105,7 +115,19 @@ class Release extends React.Component<Props, State> {
       .then(data => {
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
-          Toast.success(data.data.msg, 2, null, false)
+          Toast.success(data.data.msg, 2, () => {
+            this.props.updataCategoryId(null)
+            this.props.updataCategoryClassId(null,'')
+            this.props.updataProductDescription('')
+            this.props.saveProductMsg({
+              productName: '',
+              productPrice: null,
+              productStock: '',
+              productLabel: '',
+              productImg: []
+            })
+            history().goBack()
+          }, false)
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
@@ -140,10 +162,11 @@ class Release extends React.Component<Props, State> {
       { text: '取消', onPress: () => console.log('cancel') },
       { text: '确定', onPress: () => {
         let files = cloneDeep(this.state.files)
-        files.pop()
+        files.splice(this.state.carouselIndex - 1,1)
         this.setState({ files: files },() => {
           this.updataSaveProductMsg()
           console.log(this.state.files)
+          Toast.success('删除成功',1)
         })
       }}
     ])
@@ -180,7 +203,7 @@ class Release extends React.Component<Props, State> {
                 this.updataSaveProductMsg()
                 if (this.state.files.length > 0) {
                   this.setState({ carouselIndex: this.state.files.length - 1 },() => {
-                    console.log(this.state.carouselIndex)
+                    this.inputInstance.setActiveItem(this.state.carouselIndex)
                   })
                 }
               })
@@ -189,24 +212,30 @@ class Release extends React.Component<Props, State> {
         </div>
         <div className={'readImages'}
              style={{ display: (this.state.files.length ? 'block' : 'none') }}
-          onClick={ () => {
+          onClick={ (e) => {
+            e.stopPropagation()
             dd.biz.util.previewImage({
               urls: this.state.files,
               current: this.state.files[0]
             }).catch(err => console.log(err))
           } }
         >
-          <Carousel height='204px' autoplay={false} arrow='always'>
-            {
-              this.state.files.map((item, index) => {
-                return (
-                  <Carousel.Item key={index}>
-                    <img src={item} style={{ width: '100%' }} />
-                  </Carousel.Item>
-                )
-              })
-            }
-          </Carousel>
+          <div onClick={ (e) => { e.stopPropagation() }}>
+            <Carousel height='204px' autoplay={false} arrow='always'
+              // ref = {(input) => this.inputInstance = this.state.files}
+                      ref={(input) => { this.inputInstance = input }}
+            >
+              {
+                this.state.files.map((item, index) => {
+                  return (
+                    <Carousel.Item key={index}>
+                      <img src={item} style={{ width: '100%' }} />
+                    </Carousel.Item>
+                  )
+                })
+              }
+            </Carousel>
+          </div>
         </div>
       </div>
     )
@@ -262,6 +291,7 @@ class Release extends React.Component<Props, State> {
         className='category'
         onClick={() => { history().push(path) }}
         arrow='horizontal'
+        extra={ param === '类目' ? this.props.categoryName : this.props.productDescription}
       >
         {param}
       </List.Item>
@@ -317,6 +347,7 @@ class Release extends React.Component<Props, State> {
       </div>
     )
   }
+
   public render () {
     return (
       <div style={{ height: '100vh' }}>
@@ -371,12 +402,16 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
     productDescription: state.releaseData.productDescription,
     productMsg: state.releaseData.productMsg,
     categoryId: state.releaseData.categoryId,
-    categoryClassId: state.releaseData.categoryClassId
+    categoryClassId: state.releaseData.categoryClassId,
+    categoryName: state.releaseData.categoryName
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  saveProductMsg
+  saveProductMsg,
+  updataCategoryId,
+  updataCategoryClassId,
+  updataProductDescription
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Release)
