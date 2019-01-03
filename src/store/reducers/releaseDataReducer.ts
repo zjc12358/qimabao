@@ -15,9 +15,10 @@ const initialState: ShopCartData = {
   categoryName: '',
   productMsg: {
     productName: '',
-    productPrice: '',
+    productPrice: null,
     productStock: '',
-    productLabel: ''
+    productLabel: '',
+    productImg: []
   }
 }
 

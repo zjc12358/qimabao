@@ -30,6 +30,7 @@
     "koa-static": "^5.0.0",
     "lodash": "^4.17.11",
     "lodash-decorators": "^6.0.0",
+    "lrz": "^4.9.40",
     "numeral": "^2.0.6",
     "rc-form": "^2.3.0",
     "react": "^16.4.1",

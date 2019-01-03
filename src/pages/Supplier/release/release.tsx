@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { TextareaItem, List, InputItem, Button, ImagePicker, Carousel, Toast } from 'antd-mobile'
-// import { Carousel } from 'element-react'
+import { TextareaItem, List, InputItem, Button, ImagePicker, Toast, Modal } from 'antd-mobile'
+import lrz from 'lrz'
+import { Carousel } from 'element-react'
 import * as dd from 'dingtalk-jsapi'
 import Drawer from '@material-ui/core/Drawer'
 import axios from 'axios'
@@ -13,14 +14,24 @@ import ReactSVG from 'react-svg'
 import Head from '../../../components/Head/index'
 import './release.less'
 import { MyResponse } from '@datasources/MyResponse'
-import { saveProductMsg } from '@store/actions/release_data'
+import {
+  saveProductMsg,
+  updataCategoryClassId,
+  updataCategoryId,
+  updataProductDescription
+} from '@store/actions/release_data'
+const alert = Modal.alert
 
 export interface Props {
-  saveProductMsg: (productMsg: any) => void
+  saveProductMsg: (productMsg: any) => void,
+  updataCategoryId: (categoryId: number) => void,
+  updataCategoryClassId: (categoryClassId: number,categoryName: string) => void,
+  updataProductDescription: (productDescription: string) => void,
   productDescription: string,
   productMsg: any,
   categoryId: number,
-  categoryClassId: number
+  categoryClassId: number,
+  categoryName: string
 }
 
 interface State {
@@ -36,17 +47,19 @@ interface State {
   productStock: number,
   productLabel: string,
   productDescription: string,
-  msg: string
+  msg: string,
+  carouselIndex: number
 }
 let IconMaxSize: number = 30
 class Release extends React.Component<Props, State> {
+  private inputInstance: any
 
   constructor (props) {
     super(props)
     this.state = {
       data: {},
       openDrawer: false,
-      files: [],
+      files: this.props.productMsg.productImg,
       multiple: false,
       productData: {},
       productName: this.props.productMsg.productName,
@@ -56,7 +69,8 @@ class Release extends React.Component<Props, State> {
       productStock: this.props.productMsg.productStock,
       productLabel: this.props.productMsg.productLabel,
       productDescription: '',
-      msg: ''
+      msg: '',
+      carouselIndex: 0
     }
   }
 
@@ -101,7 +115,19 @@ class Release extends React.Component<Props, State> {
       .then(data => {
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
-          Toast.success(data.data.msg, 2, null, false)
+          Toast.success(data.data.msg, 2, () => {
+            this.props.updataCategoryId(null)
+            this.props.updataCategoryClassId(null,'')
+            this.props.updataProductDescription('')
+            this.props.saveProductMsg({
+              productName: '',
+              productPrice: null,
+              productStock: '',
+              productLabel: '',
+              productImg: []
+            })
+            history().goBack()
+          }, false)
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
@@ -111,8 +137,40 @@ class Release extends React.Component<Props, State> {
       })
   }
 
-  // convertImgToBase64 = (url, callback, outputFormat) => {
-  // }
+  /**
+   * 更新productMsg的action
+   */
+  updataSaveProductMsg = () => {
+    this.props.saveProductMsg({
+      productPrice: this.state.productPrice,
+      productStock: this.state.productStock,
+      productLabel: this.state.productLabel,
+      productName: this.state.productName,
+      productImg: this.state.files
+    })
+  }
+
+  /**
+   * 删除轮播图当前下标图片
+   */
+  deleteChooseImagesClick = () => {
+    if (this.state.files.length === 0) {
+      Toast.fail('当前未选择任何图片！',1)
+      return
+    }
+    alert('删除图片', '是否删除该图片', [
+      { text: '取消', onPress: () => console.log('cancel') },
+      { text: '确定', onPress: () => {
+        let files = cloneDeep(this.state.files)
+        files.splice(this.state.carouselIndex - 1,1)
+        this.setState({ files: files },() => {
+          this.updataSaveProductMsg()
+          console.log(this.state.files)
+          Toast.success('删除成功',1)
+        })
+      }}
+    ])
+  }
 
   /**
    * 图片选择器
@@ -125,41 +183,59 @@ class Release extends React.Component<Props, State> {
         <div className={'camera' + ' ' + (this.state.files.length > 0 ? 'smallCamera' : '')}>
           <ReactSVG svgClassName='cameraIcon' path='./assets/images/Supplier/camera.svg'/>
           <input className={'fileUpload'} type={'file'} onChange={ e => {
+            console.log(this.state.files)
+            // if (e.target.files[0])
             let file = e.target.files[0]
+            let fileLen = e.target.files.length
+            // if (Number(fileSize) >= 2048) {
+            //   Toast.fail('图片过大')
+            //   return
+            // }
+            if (file === undefined) return
             console.log(file)
-            // this.setState({ files: files })
-            let reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onload = (e) => {
-              let base64 = reader.result
+            lrz(file).then((rst) => {
+              console.log(rst)
+              let base64 = rst.base64
               let files = cloneDeep(this.state.files)
               files.push(base64)
-              console.log(base64)
-              this.setState({ files: files })
-            }
+              // console.log(base64)
+              this.setState({ files: files },() => {
+                this.updataSaveProductMsg()
+                if (this.state.files.length > 0) {
+                  this.setState({ carouselIndex: this.state.files.length - 1 },() => {
+                    this.inputInstance.setActiveItem(this.state.carouselIndex)
+                  })
+                }
+              })
+            })
           }} />
         </div>
         <div className={'readImages'}
-          onClick={ () => {
+             style={{ display: (this.state.files.length ? 'block' : 'none') }}
+          onClick={ (e) => {
+            e.stopPropagation()
             dd.biz.util.previewImage({
               urls: this.state.files,
               current: this.state.files[0]
-            }).catch()
+            }).catch(err => console.log(err))
           } }
         >
-          <ReactSVG
-            svgClassName={'delectUp ' + (this.state.files.length > 0 ? '' : 'delectUpNone')}
-            path={'./assets/images/Supplier/delete_white.svg'}
-            onClick={ () => {
-              let files = cloneDeep(this.state.files)
-              files.pop()
-              this.setState({ files: files })
-            }}
-          />
-          <img
-            src={this.state.files.length > 0 ? this.state.files[this.state.files.length - 1] : ''}
-            style={{ width: '100%', verticalAlign: 'top' }}
-          />
+          <div onClick={ (e) => { e.stopPropagation() }}>
+            <Carousel height='204px' autoplay={false} arrow='always'
+              // ref = {(input) => this.inputInstance = this.state.files}
+                      ref={(input) => { this.inputInstance = input }}
+            >
+              {
+                this.state.files.map((item, index) => {
+                  return (
+                    <Carousel.Item key={index}>
+                      <img src={item} style={{ width: '100%' }} />
+                    </Carousel.Item>
+                  )
+                })
+              }
+            </Carousel>
+          </div>
         </div>
       </div>
     )
@@ -183,32 +259,18 @@ class Release extends React.Component<Props, State> {
               switch (stateName) {
                 case 'productPrice':
                   this.setState({ productPrice: Number(e) },() => {
-                    this.props.saveProductMsg({
-                      productPrice: this.state.productPrice,
-                      productStock: this.state.productStock,
-                      productLabel: this.state.productLabel,
-                      productName: this.state.productName
-                    })
+                    this.updataSaveProductMsg()
+                    console.log(this.props.productMsg)
                   })
                   break
                 case 'productStock':
                   this.setState({ productStock: Number(e) },() => {
-                    this.props.saveProductMsg({
-                      productPrice: this.state.productPrice,
-                      productStock: this.state.productStock,
-                      productLabel: this.state.productLabel,
-                      productName: this.state.productName
-                    })
+                    this.updataSaveProductMsg()
                   })
                   break
                 case 'productLabel':
                   this.setState({ productLabel: e }, () => {
-                    this.props.saveProductMsg({
-                      productPrice: this.state.productPrice,
-                      productStock: this.state.productStock,
-                      productLabel: this.state.productLabel,
-                      productName: this.state.productName
-                    })
+                    this.updataSaveProductMsg()
                   })
                   break
               }
@@ -229,6 +291,7 @@ class Release extends React.Component<Props, State> {
         className='category'
         onClick={() => { history().push(path) }}
         arrow='horizontal'
+        extra={ param === '类目' ? this.props.categoryName : this.props.productDescription}
       >
         {param}
       </List.Item>
@@ -284,14 +347,18 @@ class Release extends React.Component<Props, State> {
       </div>
     )
   }
+
   public render () {
     return (
-      <div>
+      <div style={{ height: '100vh' }}>
         <Head
           showLeftIcon='true'
           title='发布商品'
           backgroundColor='#0084e7'
           leftIconColor='white'
+          rightIconContent={(<span style={{ color: 'white' }}>删除</span>)}
+          showRightIcon='true'
+          rightIconOnClick={this.deleteChooseImagesClick}
         />
         <div className='releaseContainer'>
           {this.renderImagePicker()}
@@ -303,12 +370,7 @@ class Release extends React.Component<Props, State> {
               defaultValue={this.state.productName}
               onBlur={ e => {
                 this.setState({ productName: e },() => {
-                  this.props.saveProductMsg({
-                    productPrice: this.state.productPrice,
-                    productStock: this.state.productStock,
-                    productLabel: this.state.productLabel,
-                    productName: this.state.productName
-                  })
+                  this.updataSaveProductMsg()
                 })
               }}
             />
@@ -320,21 +382,13 @@ class Release extends React.Component<Props, State> {
             {this.renderParameterInput('产品标签', 'text','productLabel')}
             {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
-          <div
-            onClick={ () => {
-              dd.biz.util.previewImage({
-                urls: ['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546078875596&di=514f8ede623115f992b4d343e7ebc54c&imgtype=0&src=http%3A%2F%2Fpic1.cxtuku.com%2F00%2F00%2F44%2Fb2828daad3ec.jpg','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546078875596&di=2b0dec8c294d67bd6b14c6c9c3294249&imgtype=0&src=http%3A%2F%2Fimg1.qunarzz.com%2Ftravel%2Fd3%2F1602%2F39%2F78964dbd8ae207f7.jpg_r_720x480x95_c6e89ce3.jpg'],
-                current: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546078875596&di=2b0dec8c294d67bd6b14c6c9c3294249&imgtype=0&src=http%3A%2F%2Fimg1.qunarzz.com%2Ftravel%2Fd3%2F1602%2F39%2F78964dbd8ae207f7.jpg_r_720x480x95_c6e89ce3.jpg'
-              }).catch()
-            } }
-          >123456</div>
           {this.renderBottomDrawer()}
           <div className='releaseFooter'>
             <div onClick={() => {
-              this.submite(0)
+              this.submite(2)
             }}>放入仓库</div>
             <div onClick={() => {
-              this.submite(1)
+              this.submite(0)
             }}>立即发布</div>
           </div>
         </div>
@@ -348,12 +402,16 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
     productDescription: state.releaseData.productDescription,
     productMsg: state.releaseData.productMsg,
     categoryId: state.releaseData.categoryId,
-    categoryClassId: state.releaseData.categoryClassId
+    categoryClassId: state.releaseData.categoryClassId,
+    categoryName: state.releaseData.categoryName
   }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  saveProductMsg
+  saveProductMsg,
+  updataCategoryId,
+  updataCategoryClassId,
+  updataProductDescription
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Release)
