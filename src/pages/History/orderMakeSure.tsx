@@ -14,10 +14,17 @@ import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { updatePageTab } from '@store/actions/global_data'
 import { setPayInfo } from '@store/actions/pay_data'
+import * as dd from 'dingtalk-jsapi'
+import { AddressBean } from '@datasources/AddressBean'
 
 const nowTimeStamp = Date.now()
 const now = new Date(nowTimeStamp)
 const RadioItem = Radio.RadioItem
+const SERVICE: string = 'mobile.securitypay.pay' // 接口名称，固定值
+const _INPUT_CHARSET = 'utf-8' // 商户网站使用的编码格式，固定为UTF-8
+const SIGN_TYPE = 'RSA' // 签名类型，目前仅支持RSA
+const NOTIFY_URL: string = 'http://notify.msp.hk/notify.htm' // 支付宝服务器主动通知商户网站里指定的页面http路径
+const PAYMENT_TYPE: string = '1' // 支付类型。默认值为：1（商品购买）
 
 export interface Props {
   updataOrderMakeSure: (orderMakeSure: OrderMakeSureBean) => void,
@@ -29,6 +36,7 @@ export interface Props {
   needReloadData: boolean
   updatePageTab: (pageTab: string) => void
   setPayInfo: (outTradeNo: string, totalAmount: string, subject: string, body: string) => void
+  updateAddress: boolean
 }
 
 interface State {
@@ -44,7 +52,8 @@ interface State {
   modal2: boolean,
   dateChooseData: any,
   buyMsg: any,
-  fullscreen: boolean
+  fullscreen: boolean,
+  addressInfo: AddressBean
 }
 
 function closest (el, selector) {
@@ -78,7 +87,14 @@ class History extends React.Component<Props, State> {
       dateValue2: '',
       orderData: this.props.orderData,
       buyMsg: '',
-      fullscreen: false
+      fullscreen: false,
+      addressInfo: null
+    }
+  }
+
+  componentWillMount () {
+    if (this.props.updateAddress) {
+      this.getDefaultAddress()
     }
   }
 
@@ -247,9 +263,9 @@ class History extends React.Component<Props, State> {
           })
           Toast.hide()
           this.setState({ modal2: true })
-          // this.props.updatePageTab('UserPageTabBar')
+          this.props.updatePageTab('UserPageTabBar')
           // this.props.setPayInfo(this.props.orderId, this.props.total.toString(), '主题', '描述')
-          // history().goBack()
+          history().goBack()
           // history().push('/myOrder')
           // history().push('/payOrder')
         } else {
@@ -367,6 +383,75 @@ class History extends React.Component<Props, State> {
     )
   }
 
+  /**
+   * 获取用户默认信息
+   */
+  getDefaultAddress = () => {
+    let url = 'CanteenProcurementManager/user/receivingAddress/defaultAddress'
+    let query = ''
+    axios.get<MyResponse<AddressBean>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            addressInfo: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+      })
+  }
+
+  // partner="2088101568358171"
+  // &seller_id="xxx@alipay.com"
+  // &out_trade_no="0819145412-6177"
+  // &subject="测试"&body="测试测试"
+  // &total_fee="0.01"
+  // &notify_url="http://notify.msp.hk/notify.htm"
+  // &service="mobile.securitypay.pay"
+  // &payment_type="1"
+  // &_input_charset="utf-8"&it_b_pay="30m"
+  // &sign="lBBK%2F0w5LOajrMrji7DUgEqNjIhQbidR13GovA5r3TgIbNqv231yC1NksLdw%2Ba3JnfHXoXuet6XNNHtn7VE%2BeCoRO1O%2BR1KugLrQEZMtG5jmJIe2pbjm%2F3kb%2FuGkpG%2BwYQYI51%2BhA3YBbvZHVQBYveBqK%2Bh8mUyb7GM1HxWs9k4%3D"
+  // &sign_type="RSA"
+  /**
+   * 组装支付请求信息
+   * @param partner 签约的支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。
+   * @param sign 签名
+   * @param outTradeNo 支付宝合作商户网站唯一订单号。
+   * @param subject 商品的标题/交易标题/订单标题/订单关键字等。该参数最长为128个汉字。
+   * @param sellerId 卖家支付宝账号（邮箱或手机号码格式）或其对应的支付宝唯一用户号（以2088开头的纯16位数字）。
+   * @param totalFee 该笔订单的资金总额，单位为RMB-Yuan。取值范围为[0.01，100000000.00]，精确到小数点后两位。
+   * @param body 对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body
+   * @return payJSON 组装好的支付信息
+   */
+  getPayInfo = (partner: string, sign: string, outTradeNo: string, subject: string,
+                sellerId: string, totalFee: string, body: string): string => {
+    let payJSON: string = 'service="' + SERVICE + '"&partner="' + partner +
+      '"&_input_charset="' + _INPUT_CHARSET + '"&sign_type="' + SIGN_TYPE + '"&sign="' + sign +
+      '"&notify_url' + NOTIFY_URL + '"&out_trade_no="' + outTradeNo + '"&subject="' + subject +
+      '"&payment_type' + PAYMENT_TYPE + '"&seller_id="' + sellerId + '"&total_fee="' + totalFee +
+      '"&body="' + body
+    return payJSON
+  }
+
+  /**
+   * 调用钉钉sdk支付
+   */
+  ddPay = (info: string) => {
+    dd.biz.alipay.pay({
+      info: info
+    })
+      .then(result => {
+        alert(JSON.stringify(result))
+      })
+      .catch(err => {
+        alert(JSON.stringify(err))
+      })
+  }
+
   public render () {
     let iconStyle = { width: 20, height: 20, display: 'flex', alignItems: 'center', marginRight: 16, marginLeft: 18 }
     return (
@@ -389,14 +474,20 @@ class History extends React.Component<Props, State> {
               <div>
                 <img style={{ width: 20 }} src='../../assets/images/Cart/cart_location.svg'/>
               </div>
-              <div style={{ flex: 1, paddingLeft: 12, paddingRight: 10 }}>
-                <div style={{ display: 'flex' }}>
-                  <div>收货人：何静</div>
-                  <div style={{ flex: 1 }}></div>
-                  <div>15657076868</div>
+              {isNil(this.state.addressInfo) ?
+                // TODO 2019/1/3 改一下布局
+                <div>
+                  请选择收货地址
+                </div> : <div style={{ flex: 1, paddingLeft: 12, paddingRight: 10 }}>
+                  <div style={{ display: 'flex' }}>
+                    <div>收货人：{this.state.addressInfo.receiving_name}</div>
+                    <div style={{ flex: 1 }}></div>
+                    <div>{this.state.addressInfo.receiving_iphone}</div>
+                  </div>
+                  <div style={{ marginTop: 3 }}>
+                    收货地址：{this.state.addressInfo.receiving_address + this.state.addressInfo.receiving_address_detail}</div>
                 </div>
-                <div style={{ marginTop: 3 }}>收货地址：阿里巴巴集团某某事业部123</div>
-              </div>
+              }
               <div><Icon type='right'/></div>
             </div>
             <div style={{ height: 5, background: 'url(./assets/images/Cart/border_bg.jpg)', marginBottom: 15 }}></div>
@@ -507,7 +598,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
     BookingSheetFood: state.BookingSheetFood.BookingSheetFood,
     orderId: state.BookingSheetFood.orderId,
     needReloadData: state.orderMakeSure.reload,
-    total: state.BookingSheetFood.total
+    total: state.BookingSheetFood.total,
+    updateAddress: state.orderMakeSure.update
   }
 }
 
