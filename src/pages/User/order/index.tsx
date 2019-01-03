@@ -70,7 +70,7 @@ class User extends React.Component<Props, State> {
   componentDidMount () {
     this.tabOnClick(null,this.props.tab)
   }
-  tabOnClick = (tab, index,poi?) => {
+  tabOnClick = (tab, index,code?) => {
     this.props.changeTab(index)
     this.setState({
       loading: true
@@ -119,13 +119,38 @@ class User extends React.Component<Props, State> {
                 break
             }
           } else {
-            let list = poi
-            list.concat(data.data.data)
-            console.log(list)
-            this.setState({
-              productOrderAll: list
-            })
-            console.log(this.state.productOrderAll)
+            switch (code) {
+              case 0:
+                this.setState({
+                  productOrderAll: this.state.productOrderAll.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 1:
+                this.setState({
+                  productOrderFu: this.state.productOrderAll.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 2:
+                this.setState({
+                  productOrderPei: this.state.productOrderPei.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 3:
+                this.setState({
+                  productOrderShou: this.state.productOrderShou.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 4:
+                this.setState({
+                  productOrderPing: this.state.productOrderPing.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 5:
+                this.setState({
+                  productOrderWan: this.state.productOrderWan.concat(cloneDeep(data.data.data))
+                })
+                break
+            }
           }
           this.setState({
             loading: false
@@ -154,12 +179,12 @@ class User extends React.Component<Props, State> {
       <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
         <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
-          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
-          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei) : this.renderNone}
-          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou) : this.renderNone}
-          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing) : this.renderNone}
-          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan) : this.renderNone}
+          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll,0) : this.renderNone}
+          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu,1) : this.renderNone}
+          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei,2) : this.renderNone}
+          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou,3) : this.renderNone}
+          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing,4) : this.renderNone}
+          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan,5) : this.renderNone}
         </Tabs>
         {this.loadingRender()}
       </div>
@@ -168,24 +193,24 @@ class User extends React.Component<Props, State> {
   /**
    * 全部
    */
-  public renderSwitch = (poi) => {
+  public renderSwitch = (poi,code) => {
     let list = poi.map((i, index) => this.renderItem(i, index))
     return (
       <div id={'list'} className='touch_scroll scroll product-list'
            style={{ backgroundColor: 'white',paddingTop: 20 }}>
-        <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this,poi)}
+        <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this,code)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
                   hasMore={this.state.hasMore}/>
       </div>
     )
   }
-  loadMore = (poi) => {
+  loadMore = (code) => {
     if (!this.state.hasMore) {
       return
     }
     this.setState({
       pageNum: this.state.pageNum + 1
-    }, () => this.tabOnClick(null,this.props.tab,poi))
+    }, () => this.tabOnClick(null,this.props.tab,code))
   }
   public renderItem = (i, index) => {
     let font: any = null

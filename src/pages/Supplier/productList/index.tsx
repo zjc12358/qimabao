@@ -76,6 +76,7 @@ class Supplier extends React.Component<Props, State> {
         query = 'status=' + 2
         break
     }
+    query += '&pageNum=1&pageSize=20'
     console.log(url + query)
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
