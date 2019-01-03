@@ -127,7 +127,7 @@ class User extends React.Component<Props, State> {
                 break
               case 1:
                 this.setState({
-                  productOrderFu: this.state.productOrderAll.concat(cloneDeep(data.data.data))
+                  productOrderFu: this.state.productOrderFu.concat(cloneDeep(data.data.data))
                 })
                 break
               case 2:
