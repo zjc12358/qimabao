@@ -177,7 +177,7 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
-        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
           {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll,0) : this.renderNone}
           {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu,1) : this.renderNone}
