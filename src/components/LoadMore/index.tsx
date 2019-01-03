@@ -80,7 +80,7 @@ class LoadMore extends React.Component<Props, State> {
     console.log('移动了屏幕')
     let moveX = e.changedTouches[0]
     console.log(moveX)
-    document.getElementById('').scrollHeight
+    // document.getElementById('').scrollHeight
   }
 
   // 离开屏幕 ([e.changedTouches][2])

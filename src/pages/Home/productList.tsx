@@ -266,7 +266,7 @@ class Home extends React.Component<Props, State> {
   renderRightProductList = () => {
     let list = this.state.productList.map((item) => this.renderRightProductListItem(item))
     return (
-      <div className='touch_scroll scroll product-list'
+      <div className='touch_scroll scroll product-list' id='list'
            style={{ backgroundColor: 'white' }}>
         <LoadMore itemHeight={91} list={list} listData={this.state.productList} getData={this.loadMore.bind(this)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
