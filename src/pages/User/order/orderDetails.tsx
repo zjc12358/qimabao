@@ -18,7 +18,8 @@ export interface Props {
 }
 
 interface State {
-  data: any
+  data: any,
+  address: any
 }
 
 class User extends React.Component<Props, State> {
@@ -26,7 +27,8 @@ class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      data: null
+      data: null,
+      address: {}
     }
   }
 
@@ -39,7 +41,10 @@ class User extends React.Component<Props, State> {
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
           // console.log(data.data.data)
-          this.setState({ data: data.data.data },() => { console.log(this.state.data) })
+          this.setState({ data: data.data.data },() => {
+            console.log(this.state.data)
+            this.setState({ address: JSON.parse(this.state.data[0].buyer_address) })
+          })
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
@@ -62,9 +67,9 @@ class User extends React.Component<Props, State> {
         <div className='location'>
           <ReactSVG svgClassName='location_icon' path='./assets/images/address_location.svg' />
         </div>
-        <div className='addressMsg' style={{ fontSize: 14 }}>
-          {/*<div>何静建</div>*/}
-          <div onClick={ () => { console.log(this.state.data[0].buyer_address) }}>{this.state.data ? this.state.data[0].buyer_address : console.log(1) }</div>
+        <div className='addressMsg' style={{ fontSize: 16 }}>
+          <div style={{ marginBottom: 5 }}>{this.state.address.receiving_name}&nbsp;&nbsp;<span>{this.state.address.receiving_iphone}</span></div>
+          <div onClick={ () => { console.log(12) }}>{ this.state.address.receiving_address }&nbsp;&nbsp;{ this.state.address.receiving_address_detail }</div>
         </div>
       </div>
     )
@@ -76,7 +81,7 @@ class User extends React.Component<Props, State> {
   renderOrderItem = () => {
     return (
       <div className='orderDetail'>
-        <div className='orderNum' style={{ fontSize: 12 }}>订单号: {this.state.data ? this.state.data[0].order_id : console.log(1) }</div>
+        <div className='orderNum' style={{ fontSize: 12 }}>订单号: {this.state.data ? this.state.data[0].order_id : null }</div>
         <div className='supplier'>
           <ReactSVG svgClassName='ordericon' path='./assets/images/Cart/merchant.svg' />
           <div>衢州超彩软件开发有限公司</div>
@@ -115,7 +120,7 @@ class User extends React.Component<Props, State> {
           <div className='foodTotal'>
             <div>商品总价</div>
             <div style={{ flex: 1 }}></div>
-            <div>￥{this.state.data ? this.state.data[0].order_amount : console.log(1)}</div>
+            <div>￥{this.state.data ? this.state.data[0].order_amount : null}</div>
           </div>
           <div className='express'>
             <div>运费</div>
@@ -125,13 +130,13 @@ class User extends React.Component<Props, State> {
           <div className='orderTotal'>
             <div>订单总价</div>
             <div style={{ flex: 1 }}></div>
-            <div>￥{this.state.data ? this.state.data[0].order_amount : console.log(1)}</div>
+            <div>￥{this.state.data ? this.state.data[0].order_amount : null}</div>
           </div>
         </div>
         <div className='realPayment'>
           <div>实付款</div>
           <div style={{ flex: 1 }}></div>
-          <div style={{ color: 'red' }}>￥{this.state.data ? this.state.data[0].order_amount : console.log(1)}</div>
+          <div style={{ color: 'red' }}>￥{this.state.data ? this.state.data[0].order_amount : null}</div>
         </div>
       </div>
     )
@@ -148,24 +153,24 @@ class User extends React.Component<Props, State> {
           <div className='orderMsgMore'>
             <div>
               <div>订单编号：</div>
-              <div>2018-10-10 15：11：08</div>
+              <div>{this.state.data ? this.state.data[0].order_id : null}</div>
             </div>
             <div>
               <div>交易号：</div>
-              <div>2018-10-10 15：11：08</div>
+              <div>{this.state.data ? this.state.data[0].order_id : null}</div>
             </div>
             <div>
               <div>创建时间：</div>
-              <div>2018-10-10 15：11：08</div>
+              <div>{this.state.data ? this.state.data[0].create_time : null}</div>
             </div>
-            <div>
-              <div>付款时间：</div>
-              <div>2018-10-10 15：11：08</div>
-            </div>
-            <div>
-              <div>成交时间：</div>
-              <div>2018-10-10 15：11：08</div>
-            </div>
+            {/*<div>*/}
+              {/*<div>付款时间：</div>*/}
+              {/*<div>2018-10-10 15：11：08</div>*/}
+            {/*</div>*/}
+            {/*<div>*/}
+              {/*<div>成交时间：</div>*/}
+              {/*<div>2018-10-10 15：11：08</div>*/}
+            {/*</div>*/}
           </div>
         </div>
         <div className='contact'>
@@ -189,7 +194,7 @@ class User extends React.Component<Props, State> {
         </div>
         <div className='stateBox'>
           <div>
-            <div style={{ fontSize: 18 }}>{this.state.data ? this.state.data[0].pay_china_status : console.log(1) }</div>
+            <div style={{ fontSize: 18 }}>{this.state.data ? this.state.data[0].pay_china_status : null }</div>
             <div style={{ marginTop: 5 }}>超市关闭</div>
           </div>
           <div style={{ flex: 1 }}></div>

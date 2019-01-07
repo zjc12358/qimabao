@@ -55,14 +55,14 @@ class SupplierInfo extends React.Component<Props, State> {
       <div className='vertical bigContent' style={{ width: '100%' }}>
         <div className='horizontal' style={{ width: '100%', marginTop: 20 }}>
           <span style={{ marginLeft: 20, width: 50, height: 50 }}>
-            <img src={this.props.supplierStateInfo.supplier_icon}/>
+            <img className='user_head' src={this.props.supplierStateInfo.supplier_icon}/>
           </span>
-          <div className='vertical' style={{ marginLeft: 20 }}>
+          <div className='vertical' style={{ marginLeft: 20,height: 50,justifyContent: 'space-around' }}>
             <span className='text-nowrap info-name'>{this.props.supplierStateInfo.supplier_user_name}</span>
-            <span className='text-nowrap company'>{this.props.supplierStateInfo.supplier_name}</span>
+            <span className='text-nowrap company' style={{ fontSize: '12px' }}>{this.props.supplierStateInfo.supplier_name}</span>
           </div>
         </div>
-        <div style={{ width: '100%' }}>
+        <div style={{ width: '100%',marginTop: 10,borderTop: '1px solid #70baf2' }}>
           <div className='vertical score' style={{ alignItems: 'flex-start' }}>
             <span>描述符合{this.props.supplierStateInfo.supplier_description_service},高于同行100%</span>
             <span>服务态度{this.props.supplierStateInfo.supplier_service_attitude},高于同行100%</span>
@@ -80,13 +80,14 @@ class SupplierInfo extends React.Component<Props, State> {
     return (
       <div className='vertical-center bigContent' style={{ width: '100%' }}>
         <div className='horizontal' style={{ width: '100%' }}>
-          <span style={{ marginLeft: 20 }}>店铺状态</span>
-          <ReactSVG path='./assets/images/ic_what.svg' svgStyle={{ width: 15, height: 15, marginLeft: 10 }}/>
+          <span style={{ margin: '0 5px 0 20px',color: 'white',fontSize: '16px' }}>店铺状态</span>
+          <ReactSVG style={{ width: 18,height: 18 }} path='./assets/images/ic_what.svg' svgStyle={{ width: 18, height: 18 }}/>
         </div>
         <div className='horizontal open-state'>
             <span style={{
               flex: 1,
               marginLeft: 40,
+              fontSize: '16px',
               color: this.state.businessState === 'Y' ? 'white' : '#ffffff80'
             }}>{this.state.businessState === 'Y' ? '正常营业' : '暂停营业'}</span>
           <Switch

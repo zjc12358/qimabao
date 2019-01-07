@@ -60,12 +60,12 @@ class App extends React.Component<Props, State> {
     dd.biz.navigation.hideBar({
       hidden: true  // true：隐藏，false：显示
     }).catch(err => console.log(err))
-    dd.runtime.permission.requestAuthCode(
-      { corpId: 'dingff2af124327c79bd35c2f4657eb6378f' }
-    )
-      .then(res => this.getLogin(res))
-      .catch(err => console.log(err))
-//     this.jj()
+    // dd.runtime.permission.requestAuthCode(
+    //   { corpId: 'dingff2af124327c79bd35c2f4657eb6378f' }
+    // )
+    //   .then(res => this.getLogin(res))
+    //   .catch(err => console.log(err))
+    this.jj()
     if (this.state.isLoading) {
       return
     }

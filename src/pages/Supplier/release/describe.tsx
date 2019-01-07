@@ -46,7 +46,7 @@ class Describe extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div>
+      <div className={'describeWrap'}>
         <div className='describeHead'>
           <div onClick={() => { history().goBack() }}>
             <ReactSVG svgClassName='ic' path='./assets/images/ic_back-grey.svg'/>
