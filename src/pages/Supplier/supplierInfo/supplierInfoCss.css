@@ -16,6 +16,10 @@
   margin-left: 20px;
   color: #ffffff80;
 }
+.score>span{
+  font-size: 16px;
+  margin-bottom: 20px;
+}
 
 .open-state {
   width: 100%;
@@ -35,3 +39,7 @@
 /*.am-switch .checkbox:before{*/
   /**/
 /*}*/
+.open-state>span,.make-appointment-state>span{
+  display: flex;
+  justify-content: flex-end;
+}

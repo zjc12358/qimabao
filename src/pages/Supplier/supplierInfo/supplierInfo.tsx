@@ -86,7 +86,7 @@ class SupplierInfo extends React.Component<Props, State> {
         <div className='horizontal open-state'>
             <span style={{
               flex: 1,
-              marginLeft: 40,
+              paddingRight: 40,
               fontSize: '16px',
               color: this.state.businessState === 'Y' ? 'white' : '#ffffff80'
             }}>{this.state.businessState === 'Y' ? '正常营业' : '暂停营业'}</span>
@@ -102,7 +102,8 @@ class SupplierInfo extends React.Component<Props, State> {
           <span
             style={{
               flex: 1,
-              marginLeft: 40,
+              paddingRight: 40,
+              fontSize: '16px',
               color: this.state.appointmentState === 'Y' ? 'white' : '#ffffff80'
             }}>{this.state.appointmentState === 'Y' ? '接受预约' : '不接受预约'}
             </span>
