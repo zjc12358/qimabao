@@ -79,6 +79,7 @@ class Release extends React.Component<Props, State> {
   }
 
   submite = (productStatus) => {
+    Toast.loading('请稍等...')
     let url = 'CanteenProcurementManager/user/ProductInfo/releaseProduct'
     let data = {
       productName: this.state.productName,
@@ -90,7 +91,6 @@ class Release extends React.Component<Props, State> {
       productDescription: this.props.productDescription,
       files: this.state.files
     }
-    // let data2 = JSON.stringify(data)
     let files2 = { files: data.files }
     let ret = ''
     for (let it in data) {
@@ -110,9 +110,9 @@ class Release extends React.Component<Props, State> {
     /**
      * 状态 1
      */
-    console.log(fd.get('productName'))
     axios.post(url,fd,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
+        Toast.hide()
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
           Toast.success(data.data.msg, 2, () => {
@@ -127,12 +127,13 @@ class Release extends React.Component<Props, State> {
               productImg: []
             })
             history().goBack()
-          }, false)
+          }, true)
         } else {
-          Toast.info(data.data.msg, 2, null, false)
+          Toast.info(data.data.msg, 2, null, true)
         }
       })
       .catch(() => {
+        Toast.hide()
         Toast.info('请检查网络设置!')
       })
   }
@@ -222,7 +223,6 @@ class Release extends React.Component<Props, State> {
         >
           <div onClick={ (e) => { e.stopPropagation() }}>
             <Carousel height='204px' autoplay={false} arrow='always'
-              // ref = {(input) => this.inputInstance = this.state.files}
                       ref={(input) => { this.inputInstance = input }}
             >
               {

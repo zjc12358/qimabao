@@ -100,7 +100,7 @@ class Shop extends React.Component<Props, State> {
     return (
       <div className='shopState'>
         <div>店铺状态</div>
-        {this.state.shopState ?
+        {this.state.businessState === 'Y' ?
           (<div className='fontBlue' style={{ flex: 1 }}>正常营业</div>) : (
             <div className='fontGray' style={{ flex: 1 }}>暂停营业</div>)
         }
@@ -121,7 +121,7 @@ class Shop extends React.Component<Props, State> {
     return (
       <div className='shopState'>
         <div>预约开关</div>
-        {this.state.MakeAppointmentState ?
+        {this.state.appointmentState === 'Y' ?
           (<div className='fontBlue' style={{ flex: 1 }}>接受预约</div>) : (
             <div className='fontGray' style={{ flex: 1 }}>不接受预约</div>)
         }

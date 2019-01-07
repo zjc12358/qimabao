@@ -56,16 +56,15 @@ class App extends React.Component<Props, State> {
    * 测试模拟用户登录
    */
   componentWillMount () {
-
     dd.ui.webViewBounce.disable({ name: 0 }).catch(err => console.log(err))
     dd.biz.navigation.hideBar({
       hidden: true  // true：隐藏，false：显示
     }).catch(err => console.log(err))
-/*    dd.runtime.permission.requestAuthCode(
-      { corpId: 'dingff2af124327c79bd35c2f4657eb6378f' }
-    )
-      .then(res => this.getLogin(res))
-      .catch(err => console.log(err))*/
+    // dd.runtime.permission.requestAuthCode(
+    //   { corpId: 'dingff2af124327c79bd35c2f4657eb6378f' }
+    // )
+    //   .then(res => this.getLogin(res))
+    //   .catch(err => console.log(err))
     this.jj()
     if (this.state.isLoading) {
       return
@@ -106,7 +105,6 @@ class App extends React.Component<Props, State> {
       })
   }
   public getLogin = (res) => {
-
     let url = 'CanteenProcurementManager/user/nail/tinkerFree?'
     let query = 'AuthCode=' + res.code
     axios.get<MyResponse<LoginBean>>(url + query)
@@ -132,7 +130,7 @@ class App extends React.Component<Props, State> {
               })
             })
             .catch(() => {
-              Toast.info('请检查网络设置2!')
+              Toast.info('请检查网络设置!')
               this.setState({
                 isLoading: false
               })
@@ -305,6 +303,7 @@ class App extends React.Component<Props, State> {
    */
   getPower = (agentId: string, corpId: string, timeStamp: string,
               nonceStr: string, signature: string) => {
+    alert('鉴权')
     dd.config({
       agentId: agentId, // 必填，微应用ID
       corpId: corpId,// 必填，企业ID
@@ -317,12 +316,6 @@ class App extends React.Component<Props, State> {
         'device.notification.prompt', 'biz.ding.post',
         'biz.util.openLink'] // 必填，需要使用的jsapi列表，注意：不要带dd。
     })
-/*    dd.biz.alipay.pay({
-      info: 'partner="2088101568358171"&seller_id="xxx@alipay.com"&out_trade_no="0819145412-6177"&subject="测试"&body="测试测试"&total_fee="0.01"&notify_url="http://notify.msp.hk/notify.htm"&service="mobile.securitypay.pay"&payment_type="1"&_input_charset="utf-8"&it_b_pay="30m"&sign="lBBK%2F0w5LOajrMrji7DUgEqNjIhQbidR13GovA5r3TgIbNqv231yC1NksLdw%2Ba3JnfHXoXuet6XNNHtn7VE%2BeCoRO1O%2BR1KugLrQEZMtG5jmJIe2pbjm%2F3kb%2FuGkpG%2BwYQYI51%2BhA3YBbvZHVQBYveBqK%2Bh8mUyb7GM1HxWs9k4%3D"&sign_type="RSA"'
-    })
-      .then(res => alert(JSON.stringify(res)))
-      .catch(err => alert(JSON.stringify(err)))*/
-
   }
 
   public render () {
