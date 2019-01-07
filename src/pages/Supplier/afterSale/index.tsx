@@ -14,6 +14,7 @@ import { ProductAfterSale } from '@datasources/ProductAfterSale'
 import Loading from '@components/Loading'
 import { cloneDeep, get } from 'lodash'
 import { updateProductAfterSale } from '../../../store/actions/productAfterSale_data'
+import LoadMore from '@components/LoadMoreTwo'
 
 export interface Props {
   updateProductAfterSale: (ProductAfterSale: Array<ProductAfterSale>) => void
@@ -25,6 +26,10 @@ interface State {
   afterSaleDCL: any
   afterSaleYCL: any
   afterSaleYGB: any
+  pageNum: number
+  isLoading: boolean
+  count: number
+  hasMore: boolean // 是否还有更多
 }
 const tabs = [
   { title: '全部退款' },
@@ -38,6 +43,7 @@ const status = [
   { title: 'PD' },
   { title: 'BC' }
 ]
+const NUM_ROWS = 5
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
@@ -47,43 +53,76 @@ class Supplier extends React.Component<Props, State> {
       afterSaleAll: [],
       afterSaleDCL: [],
       afterSaleYCL: [],
-      afterSaleYGB: []
+      afterSaleYGB: [],
+      pageNum: 1,
+      hasMore: true,
+      isLoading: false,
+      count: 0
     }
   }
   componentDidMount () {
-    this.tabOnClick(null,0)
+    this.getData(null,0)
   }
-  tabOnClick = (tab, index) => {
+  getData = (tab, index) => {
+/*    this.props.changeTab(index)*/
     this.setState({
       loading: true
     })
-    let url = 'CanteenProcurementManager/user/orderDetailController/selectAfterSale'
-    let query = '?start=' + status[index].title
+    let url = 'CanteenProcurementManager/user/orderDetailController/selectAfterSale?'
+    let query = 'pageNum=' + this.state.pageNum
+    query += '&pageSize=' + NUM_ROWS
+    query += '&start=' + status[index].title
+    console.log(url + query)
     axios.get<MyResponse<ProductAfterSale>>(url + query)
       .then(data => {
         console.log('--- data =', data.data.data)
         if (data.data.code === 0) {
-          switch (index) {
-            case 0:
-              this.setState({
-                afterSaleAll: cloneDeep(data.data.data)
-              })
-              break
-            case 1:
-              this.setState({
-                afterSaleDCL: cloneDeep(data.data.data)
-              })
-              break
-            case 2:
-              this.setState({
-                afterSaleYCL: cloneDeep(data.data.data)
-              })
-              break
-            case 3:
-              this.setState({
-                afterSaleYGB: cloneDeep(data.data.data)
-              })
-              break
+          if (this.state.pageNum === 1) {
+            switch (index) {
+              case 0:
+                this.setState({
+                  afterSaleAll: cloneDeep(data.data.data)
+                })
+                break
+              case 1:
+                this.setState({
+                  afterSaleDCL: cloneDeep(data.data.data)
+                })
+                break
+              case 2:
+                this.setState({
+                  afterSaleYCL: cloneDeep(data.data.data)
+                })
+                break
+              case 3:
+                this.setState({
+                  afterSaleYGB: cloneDeep(data.data.data)
+                })
+                break
+            }
+          } else {
+            switch (index) {
+              case 0:
+                this.setState({
+                  afterSaleAll: this.state.afterSaleAll.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 1:
+                this.setState({
+                  afterSaleDCL: this.state.afterSaleDCL.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 2:
+                this.setState({
+                  afterSaleYCL: this.state.afterSaleYCL.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 3:
+                this.setState({
+                  afterSaleYGB: this.state.afterSaleYGB.concat(cloneDeep(data.data.data))
+                })
+                break
+            }
           }
           this.setState({
             loading: false
@@ -96,6 +135,12 @@ class Supplier extends React.Component<Props, State> {
       .catch(() => {
         Toast.info('请检查网络设置!')
       })
+  }
+  tabOnClick = (tab, index,pageNum) => {
+    this.setState({
+      pageNum: pageNum
+    })
+    this.getData(tab, index)
   }
   loadingRender = () => {
     if (this.state.loading) {
@@ -111,7 +156,7 @@ class Supplier extends React.Component<Props, State> {
 
     return(
       <div className={'bar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
+        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
           {this.state.afterSaleAll.length !== 0 ? () => this.renderSwitch(this.state.afterSaleAll) : this.renderNone}
           {this.state.afterSaleDCL.length !== 0 ? () => this.renderSwitch(this.state.afterSaleDCL) : this.renderNone}
@@ -126,17 +171,23 @@ class Supplier extends React.Component<Props, State> {
    * 全部
    */
   public renderSwitch = (poi) => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {poi.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
+    let list = poi.map((i, index) => this.renderItem(i, index))
+    return (
+      <div id={'list'} className='touch_scroll scroll product-list'
+           style={{ backgroundColor: 'white',paddingTop: 20 }}>
+        <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this)}
+                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
+                  hasMore={this.state.hasMore}/>
       </div>
     )
+  }
+  loadMore = () => {
+    if (!this.state.hasMore) {
+      return
+    }
+    this.setState({
+      pageNum: this.state.pageNum + 1
+    }, () => this.getData(null,0))
   }
   public renderItem = (i, index) => {
     let font: any = null
@@ -251,6 +302,7 @@ class Supplier extends React.Component<Props, State> {
    * 空
    */
   public renderNone = () => {
+    if (!this.state.loading) return
     return(
       <div className={'flex-center-row-center'} style={{ height: '250px', backgroundColor: '#fff' }}>
         空空如也

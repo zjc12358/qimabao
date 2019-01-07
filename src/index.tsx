@@ -32,9 +32,11 @@ import AfterSaleDetail from './pages/Supplier/afterSale/afterSaleDetail'
 import AfterSaleResult from './pages/Supplier/afterSale/afterSaleResult'
 /*售后退款查询结果页面*/
 import SupplierOrder from './pages/Supplier/order/index'
-/*供应商商品管理*/
+/*供应商订单管理*/
 import SProductList from './pages/Supplier/productList/index'
 /*供应商商品管理*/
+import SProductListEdit from './pages/Supplier/productList/edit'
+/*供应商商品编辑管理*/
 import AfterSaleSuccess from './pages/Supplier/afterSale/afterSaleSuccess'
 /*售后退款查询结果页面*/
 /* 采购商
@@ -161,6 +163,7 @@ ReactDOM.render(
         <Route path='/withdrawal' component={Withdrawal}/>
         <Route path='/addBankCard' component={AddBankCard}/>
         <Route path='/sProductList' component={SProductList}/>
+        <Route path='/sProductListEdit' component={SProductListEdit}/>
         <Route path='/supplierOrder' component={SupplierOrder}/>
         <Route path='/detection' component={Detection}/>
         /* 采购商

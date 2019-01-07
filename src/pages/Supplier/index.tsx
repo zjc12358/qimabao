@@ -18,6 +18,7 @@ import SupplierInfo from '@pages/Supplier/supplierInfo/supplierInfo'
 import { MyResponse } from '@datasources/MyResponse'
 import { SupplierStateInfoBean } from '@datasources/SupplierStateInfoBean'
 import { updateAppointmentState, updateBusinessState, updateSupplierInfo } from '@store/actions/supplier_info_data'
+import { changeTab } from '@store/actions/supplierProductOrder_data'
 
 export interface Props {
   changeMode: (model: 'supplier' | 'purchaser') => void
@@ -25,6 +26,7 @@ export interface Props {
   supplierStateInfo: SupplierStateInfoBean
   updateBusinessState: (state: 'Y' | 'N') => void
   updateAppointmentState: (state: 'Y' | 'N') => void
+  changeTab: (index: number) => void
   mode: string
 }
 
@@ -178,7 +180,7 @@ class Supplier extends React.Component<Props, State> {
           <div className={'flex-space-around-row-center'} style={{ padding: '60px 9% 0', width: '82%' }}>
             {this.state.data.map((i, index) => (
               <div className={'flex-space-around-column-center'} style={{ height: 50 }}
-                   onClick={() => this.orderOnclick(dataViewTitle[index])}>
+                   onClick={() => this.orderOnclick(index)}>
                 <span className={'commonFont'} style={{ fontSize: 20, color: '#fff' }}>{this.state.data[index]}</span>
                 <label className={'commonFont'} style={{ fontSize: 12, color: '#fff' }}>{dataViewTitle[index]}</label>
               </div>
@@ -393,8 +395,9 @@ class Supplier extends React.Component<Props, State> {
     )
   }
 
-  public orderOnclick = (name) => {
-    console.log(name)
+  public orderOnclick = (index) => {
+    console.log(index)
+    this.props.changeTab(index)
     history().push('supplierOrder')
   }
 
@@ -470,7 +473,8 @@ const mapDispatchToProps: MapDispatchToProps<any, any> = {
   changeMode,
   updateSupplierInfo,
   updateBusinessState,
-  updateAppointmentState
+  updateAppointmentState,
+  changeTab
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)
