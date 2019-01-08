@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '@store/reducers/globalDataReducer'
-import { Toast, Modal, List, Button, WhiteSpace, WingBlank, Icon, InputItem } from 'antd-mobile'
+import { Toast, Modal, List, WhiteSpace, WingBlank, Icon, InputItem } from 'antd-mobile'
 import { PageTab } from '@datasources/PageTab'
 import { UserInfo } from '@datasources/UserInfo'
 import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
@@ -11,9 +11,11 @@ import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import axios from 'axios'
 import Head from '@components/Head'
+import { Loading, Button } from 'element-react'
 import { AddressBean } from '@datasources/AddressBean'
 import { MyResponse } from '@datasources/MyResponse'
 import { setId } from '@store/actions/address_detail_data'
+import { updateAddress } from '@store/actions/oderMakeSure_data'
 
 export interface Props {
   pageTab: PageTab
@@ -21,6 +23,7 @@ export interface Props {
   updatePageTab: (pageTab: PageTab) => void
   updateUserInfo: (userInfo: UserInfo) => void
   setId: (receivingId: number) => void
+  updateAddress: (update: boolean) => void
 }
 
 interface State {
@@ -116,8 +119,7 @@ class History extends React.Component<Props, State> {
    * @constructor
    */
   ItemOnclick = (receivingId) => {
-    this.props.setId(receivingId)
-    history().push('/settingAddressEdit')
+    this.updateDefaultAddress(receivingId)
   }
 
   /**
@@ -161,14 +163,51 @@ class History extends React.Component<Props, State> {
       })
   }
 
+  /**
+   * 修改默认收货地址
+   */
+  updateDefaultAddress = (receivingId: number) => {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    let url = 'CanteenProcurementManager/user/nail/updateDefaultMessage?'
+    let query = 'receivingId=' + receivingId
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
+        if (data.data.code === 0) {
+          Toast.info('更改地址成功', 2, null, false)
+          this.props.setId(receivingId)
+          this.props.updateAddress(true)
+          history().goBack()
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+        this.setState({
+          isLoading: false
+        })
+      })
+  }
+
   public render () {
     return (
       <div style={{
         height: '100vh'
       }}>
-        <Head title={'选择收货地址'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'}
+        <Head title={'选择收货地址'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'}
+              leftIconColor={'grey'}
               showLine={true}/>
         {this.renderContent()}
+        {this.state.isLoading && <Loading fullscreen={true}/>}
       </div>
     )
   }
@@ -184,7 +223,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updatePageTab,
   updateUserInfo,
-  setId
+  setId,
+  updateAddress
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)

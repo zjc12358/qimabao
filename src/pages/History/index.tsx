@@ -141,6 +141,7 @@ class History extends React.Component<Props, State> {
       productDetails: this.getCheckedProduct()
     }
     let data = JSON.stringify(data2)
+    console.log('包装数据' + url + data)
     data = encodeURI(data)
     url = url + '?json=' + data
     // this.setState({ fullscreen: true })
@@ -280,16 +281,18 @@ class History extends React.Component<Props, State> {
   SlipRightDeleteOnClick = (index1, index) => {
     alert('删除商品', '是否删除选中的商品', [
       { text: '取消', onPress: () => console.log('cancel') },
-      { text: '确定', onPress: () => {
-        let data = cloneDeep(this.state.data)
-        this.deleteFoodAxios(data[index1].shoppingCartDetails[index].cart_id)
-      }}
+      {
+        text: '确定', onPress: () => {
+          let data = cloneDeep(this.state.data)
+          this.deleteFoodAxios(data[index1].shoppingCartDetails[index].cart_id)
+        }
+      }
     ])
   }
 
   deleteFoodAxios = (cartId) => {
     console.log(cartId)
-    Toast.loading('请稍等...',1)
+    Toast.loading('请稍等...', 1)
     let url = 'CanteenProcurementManager/user/shoppingCart/deleteSwitchCart?'
     let query = 'cartId=' + cartId
     axios.get<MyResponse<any>>(url + query)
@@ -300,7 +303,7 @@ class History extends React.Component<Props, State> {
           this.setState({
             fullscreen: false
           })
-          Toast.success('删除成功',1)
+          Toast.success('删除成功', 1)
           this.getShopCartData()
         } else {
           Toast.info(data.data.msg, 2, null, false)
@@ -348,20 +351,22 @@ class History extends React.Component<Props, State> {
   HeadDeleteOnclick = () => {
     alert('删除商品', '是否删除选中的商品', [
       { text: '取消', onPress: () => console.log('cancel') },
-      { text: '确定', onPress: () => {
-        let cartId = []
-        this.state.data.map(i => {
-          i.shoppingCartDetails.map(j => {
-            if (j.isChecked === true) cartId.push(j.cart_id)
+      {
+        text: '确定', onPress: () => {
+          let cartId = []
+          this.state.data.map(i => {
+            i.shoppingCartDetails.map(j => {
+              if (j.isChecked === true) cartId.push(j.cart_id)
+            })
           })
-        })
-        if (cartId.length < 1) {
-          Toast.fail('无选中商品',1)
-          return
+          if (cartId.length < 1) {
+            Toast.fail('无选中商品', 1)
+            return
+          }
+          cartId.join(',')
+          this.deleteFoodAxios(cartId)
         }
-        cartId.join(',')
-        this.deleteFoodAxios(cartId)
-      } }
+      }
     ])
   }
 
@@ -426,7 +431,7 @@ class History extends React.Component<Props, State> {
    */
   componentDidMount () {
     dd.biz.navigation.setTitle({
-      title : '菜篮子'
+      title: '菜篮子'
     })
       .catch(err => console.log(err))
     this.count()

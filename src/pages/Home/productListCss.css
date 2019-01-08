@@ -49,7 +49,7 @@
 .left-choose-item {
   height: 40px;
   width: 100%;
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .product-list {
@@ -114,4 +114,34 @@
   background-color: #0084e7;
   border: 0 solid;
   border-radius: 50%;
+}
+.goToCart{
+  position: relative;
+}
+.goToCart .cartNumber{
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 10px;
+  color: white;
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.foodListItem{
+  position: relative;
+}
+.foodListItem .redCart{
+  position: absolute;
+  top: 50%;
+  left: 32px;
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+  transition: all 1s;
 }

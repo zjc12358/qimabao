@@ -246,7 +246,7 @@ class Release extends React.Component<Props, State> {
    * @param param 参数名
    * @param type  input类型
    */
-  renderParameterInput = (param,type,stateName) => {
+  renderParameterInput = (param,type,stateName,placeholder) => {
     return (
       <List.Item>
         <div className='parameter'>
@@ -254,6 +254,7 @@ class Release extends React.Component<Props, State> {
           <InputItem
             style={{ flex: 1 }}
             type={type}
+            placeholder={placeholder}
             defaultValue={this.props.productMsg[stateName]}
             onBlur={ (e) => {
               switch (stateName) {
@@ -377,9 +378,9 @@ class Release extends React.Component<Props, State> {
             {this.renderListItemGoTo('类目', '/category')}
           </div>
           <div className='paramContent' style={{ marginTop: 15, backgroundColor: 'white' }}>
-            {this.renderParameterInput('价格', 'number','productPrice')}
-            {this.renderParameterInput('库存', 'number','productStock')}
-            {this.renderParameterInput('产品标签', 'text','productLabel')}
+            {this.renderParameterInput('价格', 'number','productPrice','￥')}
+            {this.renderParameterInput('库存', 'number','productStock',null)}
+            {this.renderParameterInput('产品标签', 'text','productLabel',null)}
             {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
           {this.renderBottomDrawer()}

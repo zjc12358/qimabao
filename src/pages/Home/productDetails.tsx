@@ -6,6 +6,7 @@ import axios from 'axios'
 import { ProductDetailBean } from '@datasources/ProductDetailBean'
 import history from 'history/createHashHistory'
 import { PicBean } from '@datasources/PicBean'
+import { Loading, Button } from 'element-react'
 import { chooseProduct } from '@store/actions/productDetails_data'
 import { updatePageTab } from '@store/actions/global_data'
 import ReactSVG from 'react-svg'
@@ -34,7 +35,8 @@ interface State {
   imgHeight: any
   scrollY: number
   current: number
-  isLoading: boolean
+  isLoading: boolean,
+  cartNumber: number
 }
 
 class Home extends React.Component<Props, State> {
@@ -47,7 +49,8 @@ class Home extends React.Component<Props, State> {
       imgHeight: 176,
       scrollY: 0,
       current: 0,
-      isLoading: false
+      isLoading: false,
+      cartNumber: null
     }
   }
 
@@ -101,28 +104,44 @@ class Home extends React.Component<Props, State> {
              fontSize: 18,
              width: '100%',
              height: 40,
-             backgroundColor: 'white',
-             zIndex: 100,
-             opacity: (this.state.scrollY / 350)
+             backgroundColor: 'transparent',
+             zIndex: 100
            }}>
-        默认名{this.state.productDetails !== null && this.state.productDetails!!.product_name}
+        {/*{this.state.productDetails !== null && this.state.productDetails!!.product_name}*/}
         <div className='horizontal-center'
              style={{
                position: 'fixed',
                top: 5,
-               left: 0,
+               left: 10,
                height: 30
              }} onClick={() => history().goBack()}>
-          <ReactSVG path='./assets/images/circle_back.svg' svgStyle={{ width: 30, height: 30 }}/>
+          <img src='./assets/images/prev.png' style={{ width: 32, height: 32 }}/>
         </div>
         <div className='horizontal-center'
              style={{
                position: 'fixed',
                top: 5,
-               right: 0,
+               right: 10,
                height: 30
-             }} onClick={() => this.goHomeOnClick()}>
-          <ReactSVG path='./assets/images/go_home.svg' svgStyle={{ width: 28, height: 28 }}/>
+             }} onClick={() => this.goCartOnClick()}>
+          {/*<img src='./assets/images/home.png' style={{ width: 32, height: 32 }} />*/}
+          <div className='center' style={{
+            borderStyle: 'solid',
+            borderWidth: 0,
+            borderRadius: '50%'
+          }}>
+            <ReactSVG className='center'
+                      path='./assets/images/ic_shop_cart_white.svg'
+                      svgStyle={{
+                        width: 24, height: 24,
+                        padding: 2,
+                        backgroundColor: '#bfbfbf',
+                        borderStyle: 'solid',
+                        borderWidth: 0,
+                        borderRadius: '50%'
+                      }}
+            />
+          </div>
         </div>
       </div>
     )
@@ -135,6 +154,7 @@ class Home extends React.Component<Props, State> {
     return (
       // FIXME：滑动有问题
       <div className='bigContent scroll touch_scroll'
+           style={{ flex: 1 }}
            onScroll={this.touchMove.bind(this)}>
         <div className='vertical detail-content'>
           {this.renderTopPic()}
@@ -187,6 +207,16 @@ class Home extends React.Component<Props, State> {
     )
   }
 
+  renderStarts = () => {
+    let starts = []
+    for (let i = 0; i < 5; i++) {
+      starts.push(
+        <ReactSVG path={'./assets/images/Supplier/star.svg'} svgStyle={{ width: 15,height: 15 }} />
+      )
+    }
+    return starts
+  }
+
   /**
    * 商品详细信息
    */
@@ -206,29 +236,33 @@ class Home extends React.Component<Props, State> {
              style={{ height: 125, backgroundColor: 'white', width: '100%' }}>
           <div className='vertical' style={{ marginRight: 20, marginLeft: 20, flex: 1 }}>
             <div style={{ width: '100%' }}>
-              <div>{this.state.productDetails.product_name}</div>
-              <div style={{ color: '#e5e5e5', marginTop: 5 }}>{this.state.productDetails.product_description}</div>
+              <div style={{ fontSize: '18px' }}>{this.state.productDetails.product_name}</div>
+              <div style={{
+                color: 'rgb(153, 153, 153)',
+                marginTop: 5
+              }}>{this.state.productDetails.product_description}</div>
               <div style={{ marginTop: 5 }}>
-                <span style={{ color: '#ff6161' }}>{this.state.productDetails.product_price}</span>
-                <span>/</span>
-                <span>500g</span>
+                <span style={{ fontSize: '18px', color: '#ff6161' }}>￥{this.state.productDetails.product_price}</span>
+                <span style={{ color: 'rgb(153, 153, 153)' }}>/500g</span>
               </div>
               <div className='horizontal'
                    style={{
                      justifyContent: 'space-between',
                      marginTop: 5
                    }}>
-                <div>4星</div>
+                <div style={{ display: 'flex' }}>
+                  {this.renderStarts()}
+                </div>
                 <div>{this.state.productDetails.product_volume}人购买</div>
               </div>
               <div className='horizontal'
                    style={{
-                     color: '#e5e5e5',
+                     color: 'rgb(153, 153, 153)',
                      marginTop: 5
                    }}>
                 <span style={{ flex: 1 }}>快递:免运费</span>
-                <span style={{ flex: 1 }}>库存:{this.state.productDetails.product_inventory}</span>
-                <span style={{ flex: 1 }}>产地:{this.state.productDetails.product_origin}</span>
+                <span style={{ flex: 1 }}>库存:{this.state.productDetails.product_stock}</span>
+                <span style={{ flex: 1 }}>产地:衢州</span>
               </div>
             </div>
           </div>
@@ -298,7 +332,7 @@ class Home extends React.Component<Props, State> {
   renderButton = () => {
     return (
       <div className='horizontal'
-           style={{ height: 50, width: '100%', backgroundColor: 'white' }}>
+           style={{ height: 40, width: '100%', backgroundColor: 'white' }}>
         {/*<div className='horizontal-center left-btn' onClick={this.collectionOnClick}>*/}
         {/*{this.state.productDetails === null ?*/}
         {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/> :*/}
@@ -307,17 +341,17 @@ class Home extends React.Component<Props, State> {
         {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/>*/}
         {/*}*/}
         {/*</div>*/}
-        <div className='horizontal-center left-btn' onClick={this.goCartOnClick}>
-          <ReactSVG path='./assets/images/shop_cart_grey.svg' svgStyle={{ width: 24, height: 24 }}/>
-        </div>
+        {/*<div className='horizontal-center left-btn' onClick={this.goCartOnClick}>*/}
+        {/*<ReactSVG path='./assets/images/shop_cart_grey.svg' svgStyle={{ width: 24, height: 24 }}/>*/}
+        {/*</div>*/}
         <div className='vertical-center fill-btn'
              onClick={this.addCartOnClick}>
           加入购物车
         </div>
-        <div className='horizontal-center fill-btn-buy'
-             onClick={this.buyOnClick}>
-          立即购买
-        </div>
+        {/*<div className='horizontal-center fill-btn-buy'*/}
+        {/*onClick={this.buyOnClick}>*/}
+        {/*立即购买*/}
+        {/*</div>*/}
       </div>
     )
   }
@@ -460,6 +494,7 @@ class Home extends React.Component<Props, State> {
         {this.renderHead()}
         {this.renderContent()}
         {this.renderButton()}
+        {this.state.isLoading && <Loading fullscreen={true}/>}
       </div>
     )
   }
