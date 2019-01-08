@@ -6,6 +6,7 @@ import axios from 'axios'
 import { ProductDetailBean } from '@datasources/ProductDetailBean'
 import history from 'history/createHashHistory'
 import { PicBean } from '@datasources/PicBean'
+import { Loading, Button } from 'element-react'
 import { chooseProduct } from '@store/actions/productDetails_data'
 import { updatePageTab } from '@store/actions/global_data'
 import ReactSVG from 'react-svg'
@@ -472,6 +473,7 @@ class Home extends React.Component<Props, State> {
         {this.renderHead()}
         {this.renderContent()}
         {this.renderButton()}
+        {this.state.isLoading && <Loading fullscreen={true}/>}
       </div>
     )
   }

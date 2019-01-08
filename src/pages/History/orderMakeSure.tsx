@@ -384,7 +384,14 @@ class History extends React.Component<Props, State> {
   }
 
   /**
-   * 获取用户默认信息
+   * 选择收货地址
+   */
+  selectAddressOnClick = () => {
+    history().push('/orderSelectAddress')
+  }
+
+  /**
+   * 获取用户默认地址信息
    */
   getDefaultAddress = () => {
     let url = 'CanteenProcurementManager/user/receivingAddress/defaultAddress'
@@ -476,9 +483,10 @@ class History extends React.Component<Props, State> {
               </div>
               {isNil(this.state.addressInfo) ?
                 // TODO 2019/1/3 改一下布局
-                <div>
+                <div onClick={this.selectAddressOnClick}>
                   请选择收货地址
-                </div> : <div style={{ flex: 1, paddingLeft: 12, paddingRight: 10 }}>
+                </div> : <div style={{ flex: 1, paddingLeft: 12, paddingRight: 10 }}
+                              onClick={this.selectAddressOnClick}>
                   <div style={{ display: 'flex' }}>
                     <div>收货人：{this.state.addressInfo.receiving_name}</div>
                     <div style={{ flex: 1 }}></div>
