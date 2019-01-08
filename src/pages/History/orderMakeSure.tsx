@@ -93,12 +93,14 @@ class History extends React.Component<Props, State> {
   }
 
   componentWillMount () {
+    console.log('componentWillMount')
     if (this.props.updateAddress) {
       this.getDefaultAddress()
     }
   }
 
   componentDidMount () {
+    console.log('componentDidMount')
     console.log(this.props.BookingSheetFood)
     if (this.props.needReloadData === false) return
     let orderData = {
@@ -134,7 +136,9 @@ class History extends React.Component<Props, State> {
   componentWillReceiveProps (nextProps) {
     console.log('componentWillReceiveProps')
     if (nextProps !== this.props) {
-      console.log(nextProps)
+      if (nextProps.updateAddress === true) {
+        this.getDefaultAddress()
+      }
     }
   }
 

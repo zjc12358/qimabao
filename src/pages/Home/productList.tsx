@@ -692,7 +692,7 @@ class Home extends React.Component<Props, State> {
   addToCart (item: ProductBean) {
     let url = 'CanteenProcurementManager/user/shoppingCart/saveShoppingCart?'
     let query = 'productName=' + item.product_name + '&productPrice=' + item.product_price + '&productWeight=' + 1 +
-      '&productTotalPrice=' + item.product_price * 1 + '&productIcon=' + item.product_icon + '&productId=' + item.product_id +
+      '&productTotalPrice=' + Number((item.product_price * 1).toFixed(2)) + '&productIcon=' + item.product_icon + '&productId=' + item.product_id +
       '&supplierId=' + item.supplier_id
     axios.get<MyResponse<any>>(url + query)
       .then(data => {

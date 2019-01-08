@@ -102,7 +102,7 @@ class Home extends React.Component<Props, State> {
              fontSize: 18,
              width: '100%',
              height: 40,
-             backgroundColor: 'white',
+             backgroundColor: 'transparent',
              zIndex: 100
            }}>
         {/*{this.state.productDetails !== null && this.state.productDetails!!.product_name}*/}
@@ -113,7 +113,7 @@ class Home extends React.Component<Props, State> {
                left: 10,
                height: 30
              }} onClick={() => history().goBack()}>
-          <img src='./assets/images/prev.png' style={{ width: 32, height: 32 }} />
+          <img src='./assets/images/prev.png' style={{ width: 32, height: 32 }}/>
         </div>
         <div className='horizontal-center'
              style={{
@@ -121,8 +121,25 @@ class Home extends React.Component<Props, State> {
                top: 5,
                right: 10,
                height: 30
-             }} onClick={() => this.goHomeOnClick()}>
-          <img src='./assets/images/home.png' style={{ width: 32, height: 32 }} />
+             }} onClick={() => this.goCartOnClick()}>
+          {/*<img src='./assets/images/home.png' style={{ width: 32, height: 32 }} />*/}
+          <div className='center' style={{
+            borderStyle: 'solid',
+            borderWidth: 0,
+            borderRadius: '50%'
+          }}>
+            <ReactSVG className='center'
+                      path='./assets/images/ic_shop_cart_white.svg'
+                      svgStyle={{
+                        width: 24, height: 24,
+                        padding: 2,
+                        backgroundColor: '#bfbfbf',
+                        borderStyle: 'solid',
+                        borderWidth: 0,
+                        borderRadius: '50%'
+                      }}
+            />
+          </div>
         </div>
       </div>
     )
@@ -135,6 +152,7 @@ class Home extends React.Component<Props, State> {
     return (
       // FIXME：滑动有问题
       <div className='bigContent scroll touch_scroll'
+           style={{ flex: 1 }}
            onScroll={this.touchMove.bind(this)}>
         <div className='vertical detail-content'>
           {this.renderTopPic()}
@@ -207,9 +225,12 @@ class Home extends React.Component<Props, State> {
           <div className='vertical' style={{ marginRight: 20, marginLeft: 20, flex: 1 }}>
             <div style={{ width: '100%' }}>
               <div style={{ fontSize: '18px' }}>{this.state.productDetails.product_name}</div>
-              <div style={{ color: 'rgb(153, 153, 153)', marginTop: 5 }}>{this.state.productDetails.product_description}</div>
+              <div style={{
+                color: 'rgb(153, 153, 153)',
+                marginTop: 5
+              }}>{this.state.productDetails.product_description}</div>
               <div style={{ marginTop: 5 }}>
-                <span style={{ fontSize: '18px',color: '#ff6161' }}>￥{this.state.productDetails.product_price}</span>
+                <span style={{ fontSize: '18px', color: '#ff6161' }}>￥{this.state.productDetails.product_price}</span>
                 <span style={{ color: 'rgb(153, 153, 153)' }}>/500g</span>
               </div>
               <div className='horizontal'
@@ -299,7 +320,7 @@ class Home extends React.Component<Props, State> {
   renderButton = () => {
     return (
       <div className='horizontal'
-           style={{ height: 50, width: '100%', backgroundColor: 'white' }}>
+           style={{ height: 40, width: '100%', backgroundColor: 'white' }}>
         {/*<div className='horizontal-center left-btn' onClick={this.collectionOnClick}>*/}
         {/*{this.state.productDetails === null ?*/}
         {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/> :*/}
@@ -308,17 +329,17 @@ class Home extends React.Component<Props, State> {
         {/*<ReactSVG path='./assets/images/un_collect.svg' svgStyle={{ width: 24, height: 24 }}/>*/}
         {/*}*/}
         {/*</div>*/}
-        <div className='horizontal-center left-btn' onClick={this.goCartOnClick}>
-          <ReactSVG path='./assets/images/shop_cart_grey.svg' svgStyle={{ width: 24, height: 24 }}/>
-        </div>
+        {/*<div className='horizontal-center left-btn' onClick={this.goCartOnClick}>*/}
+        {/*<ReactSVG path='./assets/images/shop_cart_grey.svg' svgStyle={{ width: 24, height: 24 }}/>*/}
+        {/*</div>*/}
         <div className='vertical-center fill-btn'
              onClick={this.addCartOnClick}>
           加入购物车
         </div>
-        <div className='horizontal-center fill-btn-buy'
-             onClick={this.buyOnClick}>
-          立即购买
-        </div>
+        {/*<div className='horizontal-center fill-btn-buy'*/}
+        {/*onClick={this.buyOnClick}>*/}
+        {/*立即购买*/}
+        {/*</div>*/}
       </div>
     )
   }
