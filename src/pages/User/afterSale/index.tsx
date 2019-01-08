@@ -44,7 +44,7 @@ class User extends React.Component<Props, State> {
     ]
     return(
       <div className={'bar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
+        <Tabs swipeable={false} tabs={tabs} animated={true} initialPage={2} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
           {this.state.getEmpty ? this.renderAll : this.renderNone}
           {this.state.getEmpty ? this.renderObligation : this.renderNone}

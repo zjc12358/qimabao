@@ -13,7 +13,7 @@ import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { ProductOrder } from '@datasources/ProductOrder'
 import { cloneDeep, get } from 'lodash'
-import LoadMore from '@components/LoadMore'
+import LoadMore from '@components/LoadMoreTwo'
 import { AliPayBean } from '@datasources/aliPayBean'
 import * as dd from 'dingtalk-jsapi'
 

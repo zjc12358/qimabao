@@ -103,27 +103,26 @@ class Home extends React.Component<Props, State> {
              width: '100%',
              height: 40,
              backgroundColor: 'white',
-             zIndex: 100,
-             opacity: (this.state.scrollY / 350)
+             zIndex: 100
            }}>
-        默认名{this.state.productDetails !== null && this.state.productDetails!!.product_name}
+        {/*{this.state.productDetails !== null && this.state.productDetails!!.product_name}*/}
         <div className='horizontal-center'
              style={{
                position: 'fixed',
                top: 5,
-               left: 0,
+               left: 10,
                height: 30
              }} onClick={() => history().goBack()}>
-          <ReactSVG path='./assets/images/circle_back.svg' svgStyle={{ width: 30, height: 30 }}/>
+          <img src='./assets/images/prev.png' style={{ width: 32, height: 32 }} />
         </div>
         <div className='horizontal-center'
              style={{
                position: 'fixed',
                top: 5,
-               right: 0,
+               right: 10,
                height: 30
              }} onClick={() => this.goHomeOnClick()}>
-          <ReactSVG path='./assets/images/go_home.svg' svgStyle={{ width: 28, height: 28 }}/>
+          <img src='./assets/images/home.png' style={{ width: 32, height: 32 }} />
         </div>
       </div>
     )
@@ -207,24 +206,25 @@ class Home extends React.Component<Props, State> {
              style={{ height: 125, backgroundColor: 'white', width: '100%' }}>
           <div className='vertical' style={{ marginRight: 20, marginLeft: 20, flex: 1 }}>
             <div style={{ width: '100%' }}>
-              <div>{this.state.productDetails.product_name}</div>
-              <div style={{ color: '#e5e5e5', marginTop: 5 }}>{this.state.productDetails.product_description}</div>
+              <div style={{ fontSize: '18px' }}>{this.state.productDetails.product_name}</div>
+              <div style={{ color: 'rgb(153, 153, 153)', marginTop: 5 }}>{this.state.productDetails.product_description}</div>
               <div style={{ marginTop: 5 }}>
-                <span style={{ color: '#ff6161' }}>{this.state.productDetails.product_price}</span>
-                <span>/</span>
-                <span>500g</span>
+                <span style={{ fontSize: '18px',color: '#ff6161' }}>￥{this.state.productDetails.product_price}</span>
+                <span style={{ color: 'rgb(153, 153, 153)' }}>/500g</span>
               </div>
               <div className='horizontal'
                    style={{
                      justifyContent: 'space-between',
                      marginTop: 5
                    }}>
-                <div>4星</div>
+                <div>
+                  {/*4星*/}
+                </div>
                 <div>{this.state.productDetails.product_volume}人购买</div>
               </div>
               <div className='horizontal'
                    style={{
-                     color: '#e5e5e5',
+                     color: 'rgb(153, 153, 153)',
                      marginTop: 5
                    }}>
                 <span style={{ flex: 1 }}>快递:免运费</span>

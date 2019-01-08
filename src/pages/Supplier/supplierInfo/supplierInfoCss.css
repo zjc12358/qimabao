@@ -16,15 +16,30 @@
   margin-left: 20px;
   color: #ffffff80;
 }
+.score>span{
+  font-size: 16px;
+  margin-bottom: 20px;
+}
 
 .open-state {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 18px;
 }
 
 .make-appointment-state {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 18px;
+}
+.user_head{
+  width: 50px;
+  height: 50px;
+}
+/*.am-switch .checkbox:before{*/
+  /**/
+/*}*/
+.open-state>span,.make-appointment-state>span{
+  display: flex;
+  justify-content: flex-end;
 }

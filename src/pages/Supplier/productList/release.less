@@ -1,0 +1,163 @@
+@import '../../../assets/css/GeneralStyle';
+.releaseContainer{
+  //margin-top: 40px;
+}
+.cameraIcon{
+  width: 45px;
+  height: 35px;
+}
+.img_picker{
+  position: relative;
+  height: 204px;
+  background-color: #eeeeee;
+  .flex(row,center,center);
+  .camera{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1f62b6;
+    z-index: 3;
+    .fileUpload{
+      width: 100%;
+      height: 204px;
+      background: yellow;
+      top: 0;
+      position: absolute;
+      left: 0;
+      opacity: 0;
+    }
+  }
+  .smallCamera{
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    position: absolute;
+    left: 20px;
+    top: 150px;
+  }
+  .readImages{
+    width: 100vw;
+    height: 204px;
+    overflow: hidden;
+    background: transparent;
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    .slider-list{
+      height: 204px!important;
+    }
+    .delectUp{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 20px;
+      height: 20px;
+      z-index: 4;
+    }
+    .delectUpNone{
+      display: none;
+    }
+  }
+}
+.category{
+  height: 48px;
+}
+.category .am-list-line{
+  border-top: 1px solid @borderColor;
+}
+.am-list-item .am-input-control input{
+  text-align: right;
+}
+.am-list-item .am-list-line .am-list-content{
+  padding-top: 0;
+}
+.parameter{
+  display: flex;
+  align-items: center;
+  .am-list-item.am-input-item{
+    flex: 1;
+  }
+}
+.paramContent .category .am-list-line{
+  border-top: none;
+}
+.releaseFooter{
+  display: flex;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  &>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    font-size: 16px;
+  }
+  &>div:nth-child(1){
+    border-sizing: border-box;
+    border-top: 1px solid @borderColor;
+    border-bottom: 1px solid @borderColor;
+  }
+  &>div:nth-child(2){
+    background-color: #1f62b6;
+    color: white;
+    height: 46px;
+  }
+}
+.releaseBottomDrawer{
+  background-color: transparent;
+  padding: 0 20px;
+}
+.MuiDrawer-paperAnchorBottom-7{
+  background-color: transparent!important
+}
+.am-list-body{
+  background-color: transparent;
+}
+.drawerTop{
+  border-radius: 15px;
+
+}
+.picker_tab{
+  text-align: center;
+  color: @fontBlue;
+}
+html:not([data-scale]) .am-list-body:before {
+  background-color: transparent!important;
+}
+.camera .imagePicker{
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  .am-image-picker-list{
+    margin: 0;
+    padding: 0;
+  }
+  .am-flexbox .am-flexbox-item{
+    width: 100vw;
+    height: 204px;
+    flex: none;
+  }
+  .am-image-picker-list .am-image-picker-upload-btn{
+    background-color: transparent;
+    border: none;
+  }
+  .am-image-picker-list .am-image-picker-upload-btn input{
+    width: 100vw;
+  }
+  .am-image-picker-list .am-image-picker-upload-btn:before, .am-image-picker-list .am-image-picker-upload-btn:after{
+   content: none;
+  }
+  //.am-image-picker-list .am-image-picker-item{
+  //  display: none;
+  //}
+}
+.releaseContainer{
+  .el-carousel__item{
+    display: inline-block!important;
+  }
+}
+

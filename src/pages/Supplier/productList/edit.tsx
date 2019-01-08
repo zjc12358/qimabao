@@ -20,6 +20,7 @@ import {
   updataCategoryId,
   updataProductDescription
 } from '@store/actions/release_data'
+import { ProductList } from '@datasources/ProductList'
 const alert = Modal.alert
 
 export interface Props {
@@ -31,7 +32,8 @@ export interface Props {
   productMsg: any,
   categoryId: number,
   categoryClassId: number,
-  categoryName: string
+  categoryName: string,
+  productListDetail: ProductList
 }
 
 interface State {
@@ -73,13 +75,14 @@ class Release extends React.Component<Props, State> {
       carouselIndex: 0
     }
   }
-
+  componentDidMount () {
+    console.log(this.props.productListDetail)
+  }
   toggleDrawer = (side, open) => () => {
     this.setState({ openDrawer: open })
   }
 
   submite = (productStatus) => {
-    Toast.loading('请稍等...')
     let url = 'CanteenProcurementManager/user/ProductInfo/releaseProduct'
     let data = {
       productName: this.state.productName,
@@ -91,6 +94,7 @@ class Release extends React.Component<Props, State> {
       productDescription: this.props.productDescription,
       files: this.state.files
     }
+    // let data2 = JSON.stringify(data)
     let files2 = { files: data.files }
     let ret = ''
     for (let it in data) {
@@ -110,9 +114,9 @@ class Release extends React.Component<Props, State> {
     /**
      * 状态 1
      */
+    console.log(fd.get('productName'))
     axios.post(url,fd,{ headers: { 'Content-Type': 'application/json' } })
       .then(data => {
-        Toast.hide()
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {
           Toast.success(data.data.msg, 2, () => {
@@ -127,13 +131,12 @@ class Release extends React.Component<Props, State> {
               productImg: []
             })
             history().goBack()
-          }, true)
+          }, false)
         } else {
-          Toast.info(data.data.msg, 2, null, true)
+          Toast.info(data.data.msg, 2, null, false)
         }
       })
       .catch(() => {
-        Toast.hide()
         Toast.info('请检查网络设置!')
       })
   }
@@ -223,6 +226,7 @@ class Release extends React.Component<Props, State> {
         >
           <div onClick={ (e) => { e.stopPropagation() }}>
             <Carousel height='204px' autoplay={false} arrow='always'
+              // ref = {(input) => this.inputInstance = this.state.files}
                       ref={(input) => { this.inputInstance = input }}
             >
               {
@@ -265,11 +269,6 @@ class Release extends React.Component<Props, State> {
                   break
                 case 'productStock':
                   this.setState({ productStock: Number(e) },() => {
-                    this.updataSaveProductMsg()
-                  })
-                  break
-                case 'productLabel':
-                  this.setState({ productLabel: e }, () => {
                     this.updataSaveProductMsg()
                   })
                   break
@@ -353,7 +352,7 @@ class Release extends React.Component<Props, State> {
       <div style={{ height: '100vh' }}>
         <Head
           showLeftIcon='true'
-          title='发布商品'
+          title='编辑商品'
           backgroundColor='#0084e7'
           leftIconColor='white'
           rightIconContent={(<span style={{ color: 'white' }}>删除</span>)}
@@ -386,10 +385,10 @@ class Release extends React.Component<Props, State> {
           <div className='releaseFooter'>
             <div onClick={() => {
               this.submite(2)
-            }}>放入仓库</div>
+            }}>取消</div>
             <div onClick={() => {
               this.submite(0)
-            }}>立即发布</div>
+            }}>保存</div>
           </div>
         </div>
       </div>
@@ -403,7 +402,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
     productMsg: state.releaseData.productMsg,
     categoryId: state.releaseData.categoryId,
     categoryClassId: state.releaseData.categoryClassId,
-    categoryName: state.releaseData.categoryName
+    categoryName: state.releaseData.categoryName,
+    productListDetail: state.supplierProductListData.ProductListDetailData
   }
 }
 

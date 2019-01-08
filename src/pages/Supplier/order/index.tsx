@@ -12,16 +12,18 @@ import Loading from '@components/Loading'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { SupplierProductOrder } from '@datasources/SupplierProductOrder'
-import { cloneDeep, get } from 'lodash'
-import { updateSupplierProductOrder } from '@store/actions/supplierProductOrder_data'
+import { cloneDeep, isNil } from 'lodash'
+import { updateSupplierProductOrder,changeTab } from '@store/actions/supplierProductOrder_data'
+import LoadMore from '@components/LoadMoreTwo'
 
 export interface Props {
   updateSupplierProductOrder: (SupplierProductOrder: Array<SupplierProductOrder>) => void
+  changeTab: (index: number) => void
+  tab: number
 }
 
 interface State {
   getEmpty: boolean
-  loading: boolean
   refresh: string
   supplierProductOrderAll: Array<SupplierProductOrder>
   supplierProductOrderFu: Array<SupplierProductOrder>
@@ -29,21 +31,25 @@ interface State {
   supplierProductOrderShou: Array<SupplierProductOrder>
   supplierProductOrderPing: Array<SupplierProductOrder>
   supplierProductOrderWan: Array<SupplierProductOrder>
+  pageNum: number
+  isLoading: boolean
+  count: number
+  hasMore: Array<boolean> // 是否还有更多
 }
 const tabs = [
   { title: '全部' },
   { title: '待付款' },
-  { title: '待发货' },
   { title: '待收货' },
+  { title: '待发货' },
   { title: '待评价' },
   { title: '已完成' }
 ]
+const NUM_ROWS = 10
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
     this.state = {
-      loading: true,
       getEmpty: true,
       refresh: 'refresh',
       supplierProductOrderAll: [],
@@ -51,59 +57,115 @@ class Supplier extends React.Component<Props, State> {
       supplierProductOrderPei: [],
       supplierProductOrderShou: [],
       supplierProductOrderPing: [],
-      supplierProductOrderWan: []
+      supplierProductOrderWan: [],
+      pageNum: 1,
+      hasMore: [true,true,true,true,true,true],
+      isLoading: false,
+      count: 0
     }
   }
   componentDidMount () {
-    this.tabOnClick(null,0)
+    this.getData(this.props.tab,this.props.tab)
   }
-  tabOnClick = (tab, index) => {
-    this.setState({
-      loading: true
-    })
-    let url = 'CanteenProcurementManager/user/productOrder/findSupplierProductOrder'
-    let query = '?payStatus=' + (index - 1)
-    if (index === 0) query = ''
-    axios.get<MyResponse<SupplierProductOrder>>(url + query)
+  getData = (tab, index) => {
+    let url = 'CanteenProcurementManager/user/productOrder/findSupplierProductOrder?'
+    let query = 'pageNum=' + this.state.pageNum
+    query += '&pageSize=' + NUM_ROWS
+    if (index === 0) query += ''
+    else query += '&payStatus=' + (index - 1)
+    console.log(url + query)
+    axios.get<any>(url + query)
       .then(data => {
-        console.log('--- data =', data.data.data)
+        console.log('--- data =', data)
         if (data.data.code === 0) {
-          switch (index) {
-            case 0:
+          if (this.state.pageNum === 1) {
+            switch (index) {
+              case 0:
+                this.setState({
+                  supplierProductOrderAll: cloneDeep(data.data.data)
+                })
+                break
+              case 1:
+                this.setState({
+                  supplierProductOrderFu: cloneDeep(data.data.data)
+                })
+                break
+              case 2:
+                this.setState({
+                  supplierProductOrderPei: cloneDeep(data.data.data)
+                })
+                break
+              case 3:
+                this.setState({
+                  supplierProductOrderShou: cloneDeep(data.data.data)
+                })
+                break
+              case 4:
+                this.setState({
+                  supplierProductOrderPing: cloneDeep(data.data.data)
+                })
+                break
+              case 5:
+                this.setState({
+                  supplierProductOrderWan: cloneDeep(data.data.data)
+                })
+                break
+            }
+            if (isNil(data.data.data) || data.data.data.length === 0) {
+              let hasMore = this.state.hasMore
+              hasMore[index] = false
               this.setState({
-                supplierProductOrderAll: cloneDeep(data.data.data)
+                count: 0,
+                hasMore: hasMore
               })
-              break
-            case 1:
+            } else {
               this.setState({
-                supplierProductOrderFu: cloneDeep(data.data.data)
+                count: data.data.count
               })
-              break
-            case 2:
+            }
+          } else {
+            switch (index) {
+              case 0:
+                this.setState({
+                  supplierProductOrderAll: this.state.supplierProductOrderAll.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 1:
+                this.setState({
+                  supplierProductOrderFu: this.state.supplierProductOrderFu.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 2:
+                this.setState({
+                  supplierProductOrderPei: this.state.supplierProductOrderPei.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 3:
+                this.setState({
+                  supplierProductOrderShou: this.state.supplierProductOrderShou.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 4:
+                this.setState({
+                  supplierProductOrderPing: this.state.supplierProductOrderPing.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 5:
+                this.setState({
+                  supplierProductOrderWan: this.state.supplierProductOrderWan.concat(cloneDeep(data.data.data))
+                })
+                break
+            }
+            if (this.state.count < this.state.pageNum * NUM_ROWS) {
+              let hasMore = this.state.hasMore
+              hasMore[index] = false
               this.setState({
-                supplierProductOrderPei: cloneDeep(data.data.data)
+                hasMore: hasMore
               })
-              break
-            case 3:
-              this.setState({
-                supplierProductOrderShou: cloneDeep(data.data.data)
-              })
-              break
-            case 4:
-              this.setState({
-                supplierProductOrderPing: cloneDeep(data.data.data)
-              })
-              break
-            case 5:
-              this.setState({
-                supplierProductOrderWan: cloneDeep(data.data.data)
-              })
-              break
+            }
           }
-          this.setState({
-            loading: false
-          })
           this.props.updateSupplierProductOrder(cloneDeep(data.data.data))
+
         } else {
           Toast.info('获取订单信息失败,请重试', 2, null, false)
         }
@@ -112,12 +174,19 @@ class Supplier extends React.Component<Props, State> {
         Toast.info('请检查网络设置!')
       })
   }
-  loadingRender = () => {
-    if (this.state.loading) {
-      return (
-        <Loading/>
-      )
+  tabOnClick = (tab, index,pageNum) => {
+    if (!isNil(document.getElementById(index))) {
+      document.getElementById(index).scrollTop = 0
     }
+    let hasMore = this.state.hasMore
+    hasMore[index] = true
+    this.setState({
+      pageNum: pageNum,
+      hasMore: hasMore
+    }, () => {
+      this.props.changeTab(index)
+      this.getData(tab, index)
+    })
   }
   /**
    * 内容
@@ -125,35 +194,40 @@ class Supplier extends React.Component<Props, State> {
   public renderContent = () => {
 
     return(
-      <div className={'oBar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+      <div className={'oBar'} style={{ color: '#858585',height: '100vh' }}>
+        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.supplierProductOrderAll.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderAll) : this.renderNone}
-          {this.state.supplierProductOrderFu.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderFu) : this.renderNone}
-          {this.state.supplierProductOrderPei.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderPei) : this.renderNone}
-          {this.state.supplierProductOrderShou.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderShou) : this.renderNone}
-          {this.state.supplierProductOrderPing.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderPing) : this.renderNone}
-          {this.state.supplierProductOrderWan.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderWan) : this.renderNone}
+          {this.state.supplierProductOrderAll.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderAll,'0') : this.renderNone}
+          {this.state.supplierProductOrderFu.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderFu,'1') : this.renderNone}
+          {this.state.supplierProductOrderPei.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderPei,'2') : this.renderNone}
+          {this.state.supplierProductOrderShou.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderShou,'3') : this.renderNone}
+          {this.state.supplierProductOrderPing.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderPing,'4') : this.renderNone}
+          {this.state.supplierProductOrderWan.length !== 0 ? () => this.renderSwitch(this.state.supplierProductOrderWan,'5') : this.renderNone}
         </Tabs>
-        {this.loadingRender()}
       </div>
     )
   }
   /**
    * 全部
    */
-  public renderSwitch = (data) => {
-    return(
-      <div style={{
-        paddingTop: 20
-      }}>
-        {data.map((i, index) => (
-          <div>
-            {this.renderItem(i, index)}
-          </div>
-        ))}
+  public renderSwitch = (poi,id) => {
+    let list = poi.map((i, index) => this.renderItem(i, index))
+    return (
+      <div id={id} className='touch_scroll scroll product-list'
+           style={{ paddingTop: 20 }}>
+        <LoadMore id={id} itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this,id)}
+                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
+                  hasMore={this.state.hasMore}/>
       </div>
     )
+  }
+  loadMore = (index) => {
+    if (!this.state.hasMore[index]) {
+      return
+    }
+    this.setState({
+      pageNum: this.state.pageNum + 1
+    }, () => this.getData(null,this.props.tab))
   }
   public renderItem = (i, index) => {
     let font: any = null
@@ -314,7 +388,8 @@ class Supplier extends React.Component<Props, State> {
   public render () {
     return (
       <div style={{
-        height: '100vh'
+        overflow: 'hidden',
+        height: '100%'
       }}>
         <Head title={'订单管理'} titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'} leftIconColor={'white'}/>
         {this.renderContent()}
@@ -324,11 +399,14 @@ class Supplier extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    tab: state.productOrderData.tab
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
-  updateSupplierProductOrder
+  updateSupplierProductOrder,
+  changeTab
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)

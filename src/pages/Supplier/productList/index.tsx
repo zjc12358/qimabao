@@ -13,11 +13,14 @@ import { ProductList } from '@datasources/ProductList'
 import Loading from '@components/Loading'
 import Result from '@components/Result'
 import { cloneDeep, get } from 'lodash'
-import { updateProductList,updateProductListDetail } from '@store/actions/supplierProductList_data'
+import { updateProductList,updateProductListDetail,changeTab } from '@store/actions/supplierProductList_data'
+import LoadMore from '@components/LoadMoreTwo'
 
 export interface Props {
   updateProductList: (ProductList: Array<ProductList>) => void
   updateProductListDetail: (ProductListDetail: ProductList) => void
+  changeTab: (index: number) => void
+  tab: number
 }
 
 interface State {
@@ -29,6 +32,10 @@ interface State {
   supplierProductListYXJ: Array<ProductList>
   modal: boolean
   result: string
+  pageNum: number
+  isLoading: boolean
+  count: number
+  hasMore: boolean // 是否还有更多
 }
 const tabs = [
   { title: '出售中' },
@@ -38,7 +45,7 @@ const tabs = [
 ]
 const operation = ['','上架','下架']
 const alert = Modal.alert
-
+const NUM_ROWS = 5
 class Supplier extends React.Component<Props, State> {
 
   constructor (props) {
@@ -51,31 +58,37 @@ class Supplier extends React.Component<Props, State> {
       supplierProductListYXJ: [],
       refresh: 'refresh',
       modal: false,
-      result: ''
+      result: '',
+      pageNum: 1,
+      hasMore: true,
+      isLoading: false,
+      count: 0
     }
   }
   componentDidMount () {
-    this.tabOnClick(null,0)
+    this.getData(null,this.props.tab)
   }
-  tabOnClick = (tab, index) => {
+  getData = (tab, index) => {
+    this.props.changeTab(index)
     this.setState({
       loading: true
     })
     let url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfo?'
-    let query = 'pageNum=1&pageSize=20&'
+    let query = 'pageNum=' + this.state.pageNum
+    query += '&pageSize=' + NUM_ROWS
     switch (index) {
       case 0:
-        query += 'status=' + 0
+        query += '&status=' + 0
         break
       case 1:
         url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfoStock'
         query = ''
         break
       case 2:
-        query += 'status=' + 2
+        query += '&status=' + 2
         break
       case 3:
-        query += 'status=' + 1
+        query += '&status=' + 1
         break
     }
     console.log(url + query)
@@ -83,27 +96,52 @@ class Supplier extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data.data.data)
         if (data.data.code === 0) {
-          switch (index) {
-            case 0:
-              this.setState({
-                supplierProductListCSZ: cloneDeep(data.data.data)
-              })
-              break
-            case 1:
-              this.setState({
-                supplierProductListYSW: cloneDeep(data.data.data)
-              })
-              break
-            case 2:
-              this.setState({
-                supplierProductListCKZ: cloneDeep(data.data.data)
-              })
-              break
-            case 3:
-              this.setState({
-                supplierProductListYXJ: cloneDeep(data.data.data)
-              })
-              break
+          if (this.state.pageNum === 1) {
+            switch (index) {
+              case 0:
+                this.setState({
+                  supplierProductListCSZ: cloneDeep(data.data.data)
+                })
+                break
+              case 1:
+                this.setState({
+                  supplierProductListYSW: cloneDeep(data.data.data)
+                })
+                break
+              case 2:
+                this.setState({
+                  supplierProductListCKZ: cloneDeep(data.data.data)
+                })
+                break
+              case 3:
+                this.setState({
+                  supplierProductListYXJ: cloneDeep(data.data.data)
+                })
+                break
+            }
+          } else {
+            switch (index) {
+              case 0:
+                this.setState({
+                  supplierProductListCSZ: this.state.supplierProductListCSZ.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 1:
+                this.setState({
+                  supplierProductListYSW: this.state.supplierProductListYSW.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 2:
+                this.setState({
+                  supplierProductListCKZ: this.state.supplierProductListCKZ.concat(cloneDeep(data.data.data))
+                })
+                break
+              case 3:
+                this.setState({
+                  supplierProductListYXJ: this.state.supplierProductListYXJ.concat(cloneDeep(data.data.data))
+                })
+                break
+            }
           }
           this.setState({
             loading: false
@@ -117,6 +155,13 @@ class Supplier extends React.Component<Props, State> {
         Toast.info('请检查网络设置!')
       })
   }
+  tabOnClick = (tab, index,pageNum) => {
+    this.setState({
+      pageNum: pageNum
+    })
+    this.getData(tab, index)
+  }
+
   loadingRender = () => {
     if (this.state.loading) {
       return (
@@ -130,34 +175,38 @@ class Supplier extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div className={'gBar'} style={{ color: '#858585' }}>
-        <Tabs tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index)} animated={true} initialPage={0} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
+        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
-          {this.state.supplierProductListCSZ.length !== 0 ? this.renderInSale : this.renderNone}
+          {this.state.supplierProductListCSZ.length !== 0 ? this.renderSwitch(this.state.supplierProductListCSZ,'inSale') : this.renderNone}
           {this.state.supplierProductListYSW.length !== 0 ? this.renderSoldOut : this.renderNone}
-          {this.state.supplierProductListCKZ.length !== 0 ? this.renderInStore : this.renderNone}
-          {this.state.supplierProductListYXJ.length !== 0 ? this.renderLowerShelf : this.renderNone}
+          {this.state.supplierProductListCKZ.length !== 0 ? this.renderSwitch(this.state.supplierProductListCKZ,'inStore') : this.renderNone}
+          {this.state.supplierProductListYXJ.length !== 0 ? this.renderSwitch(this.state.supplierProductListYXJ,'lowerShelf') : this.renderNone}
         </Tabs>
         {this.loadingRender()}
       </div>
     )
   }
   /**
-   * 出售中
+   * 全部
    */
-  public renderInSale = () => {
-    if (!this.state.loading) {
-      return (
-        <div style={{
-          paddingTop: 20
-        }}>
-          {this.state.supplierProductListCSZ.map((i, index) => (
-            <div>
-              {this.renderItem(i, index, 'inSale')}
-            </div>
-          ))}
-        </div>
-      )
+  public renderSwitch = (poi,type) => {
+    let list = poi.map((i, index) => this.renderItem(i, index, type))
+    return (
+      <div id={'list'} className='touch_scroll scroll product-list'
+           style={{ backgroundColor: 'white', paddingTop: 20 }}>
+        <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this)}
+                  isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
+                  hasMore={this.state.hasMore}/>
+      </div>
+    )
+  }
+  loadMore = () => {
+    if (!this.state.hasMore) {
+      return
     }
+    this.setState({
+      pageNum: this.state.pageNum + 1
+    }, () => this.getData(null,this.props.tab))
   }
   /**
    * 已售完
@@ -171,42 +220,6 @@ class Supplier extends React.Component<Props, State> {
           {this.state.supplierProductListYSW.map((i, index) => (
             <div>
               {this.renderSoldItem(i, index, '')}
-            </div>
-          ))}
-        </div>
-      )
-    }
-  }
-  /**
-   * 仓库中
-   */
-  public renderInStore = () => {
-    if (!this.state.loading) {
-      return (
-        <div style={{
-          paddingTop: 20
-        }}>
-          {this.state.supplierProductListCKZ.map((i, index) => (
-            <div>
-              {this.renderItem(i, index, 'inStore')}
-            </div>
-          ))}
-        </div>
-      )
-    }
-  }
-  /**
-   * 已下架
-   */
-  public renderLowerShelf = () => {
-    if (!this.state.loading) {
-      return (
-        <div style={{
-          paddingTop: 20
-        }}>
-          {this.state.supplierProductListYXJ.map((i, index) => (
-            <div>
-              {this.renderItem(i, index, 'lowerShelf')}
             </div>
           ))}
         </div>
@@ -380,6 +393,7 @@ class Supplier extends React.Component<Props, State> {
   }
   public editOnclick = (i) => {
     this.props.updateProductListDetail(i)
+    history().push('/sProductListEdit')
   }
   public LowerOrUpOnclick = (id,index,poi,status) => {
     console.log(id,index,poi)
@@ -424,11 +438,14 @@ class Supplier extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
-  return {}
+  return {
+    tab: state.productOrderData.tab
+  }
 }
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updateProductList,
+  changeTab,
   updateProductListDetail
 }
 

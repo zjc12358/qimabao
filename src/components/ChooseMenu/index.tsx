@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
-import { Toast } from 'antd-mobile'
+import { Toast,List,Radio } from 'antd-mobile'
 import axios from 'axios'
+const RadioItem = Radio.RadioItem
 
 export interface Props {
   data: Array<string>
@@ -22,6 +23,13 @@ class ChooseMenu extends React.Component<Props, State> {
     this.state = {}
   }
 
+  onChange = (value) => {
+    console.log('checkbox')
+    this.setState({
+      value
+    })
+  }
+
   renderContent = () => {
     return (
       <div style={{
@@ -31,21 +39,13 @@ class ChooseMenu extends React.Component<Props, State> {
         alignItems: 'center',
         width: '100%'
       }}>
-        {this.props.data.map((item, index) =>
-          <div style={{
-            height: 50,
-            fontSize: 19,
-            backgroundColor: 'white',
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            color: (index === this.props.chooseIndex ? '#0084e7' : 'black')
-          }} onClick={() => this.handClick(index)}>
-            <span style={{
-              paddingLeft: 30
-            }}>{item} </span>
-            {index === this.props.chooseIndex ? <span> √</span> : <span></span>}
-          </div>)}
+        <List style={{ width: '100vw',backgroundColor: '#f5f5f5' }}>
+          {this.props.data.map((i,index) => (
+            <RadioItem activeStyle={{ color: 'white' }} key={i} checked={index === this.props.chooseIndex} onChange={() => this.handClick(index)}>
+              {i}
+            </RadioItem>
+          ))}
+        </List>
       </div>
     )
   }
