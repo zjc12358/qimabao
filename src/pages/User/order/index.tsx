@@ -28,6 +28,11 @@ export interface Props {
   updateProductOrder: (productOrder: Array<ProductOrder>) => void
   changeTab: (index: number) => void
   changeIndex: (index: number) => void
+  agentId: string
+  corpId: string
+  timeStamp: string
+  nonceStr: string
+  signature: string
 }
 
 interface State {
@@ -78,8 +83,10 @@ class User extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    this.getData(null,this.props.tab)
+    // this.getPower()
+    this.getData(null, this.props.tab)
   }
+
   getData = (tab, index) => {
     this.props.changeTab(index)
     this.setState({
@@ -174,7 +181,7 @@ class User extends React.Component<Props, State> {
         Toast.info('请检查网络设置!')
       })
   }
-  tabOnClick = (tab, index,pageNum) => {
+  tabOnClick = (tab, index, pageNum) => {
     this.setState({
       pageNum: pageNum
     })
@@ -191,9 +198,11 @@ class User extends React.Component<Props, State> {
    * 内容
    */
   public renderContent = () => {
-    return(
-      <div className={'moBar'} style={{ color: '#858585',position: 'relative' }}>
-        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+    return (
+      <div className={'moBar'} style={{ color: '#858585', position: 'relative' }}>
+        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab, index, 1)}
+              animated={true} initialPage={this.props.tab}
+              renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6}/>}
         >
           {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
           {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
@@ -213,7 +222,7 @@ class User extends React.Component<Props, State> {
     let list = poi.map((i, index) => this.renderItem(i, index))
     return (
       <div id={'list'} className='touch_scroll scroll product-list'
-           style={{ backgroundColor: 'white',paddingTop: 20 }}>
+           style={{ backgroundColor: 'white', paddingTop: 20 }}>
         <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
                   hasMore={this.state.hasMore}/>
@@ -226,7 +235,7 @@ class User extends React.Component<Props, State> {
     }
     this.setState({
       pageNum: this.state.pageNum + 1
-    }, () => this.getData(null,this.props.tab))
+    }, () => this.getData(null, this.props.tab))
   }
   public renderItem = (i: ProductOrder, index) => {
     let font: any = null
@@ -537,6 +546,24 @@ class User extends React.Component<Props, State> {
       })
   }
 
+  /**
+   * 钉钉鉴权
+   */
+  getPower = () => {
+    dd.config({
+      agentId: this.props.agentId, // 必填，微应用ID
+      corpId: this.props.corpId,// 必填，企业ID
+      timeStamp: this.props.timeStamp, // 必填，生成签名的时间戳
+      nonceStr: this.props.nonceStr, // 必填，生成签名的随机串
+      signature: this.props.signature, // 必填，签名
+      type: 0, // 选填，0表示微应用的jsapi，1表示服务窗的jsapi，不填默认为0。该参数从dingtalk.js的0.8.3版本开始支持
+      jsApiList: ['biz.alipay.pay', 'biz.util.open'] // 必填，需要使用的jsapi列表，注意：不要带dd。
+    })
+    dd.error(err => {
+      alert(JSON.stringify(err))
+    })
+  }
+
   public confirmOnclick = (id, index) => {
     let url = 'CanteenProcurementManager/user/productOrder/updatePyStates?'
     let query = 'states=' + 4 + '&orderId=' + id
@@ -574,7 +601,12 @@ class User extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-    tab: state.productOrderData.tab
+    tab: state.productOrderData.tab,
+    agentId: state.globalData.agentId,
+    corpId: state.globalData.corpId,
+    timeStamp: state.globalData.timeStamp,
+    nonceStr: state.globalData.nonceStr,
+    signature: state.globalData.signature
   }
 }
 

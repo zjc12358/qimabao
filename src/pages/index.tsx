@@ -15,7 +15,7 @@ import { PageTab } from '@datasources/PageTab'
 
 import { cloneDeep, get } from 'lodash'
 import '../assets/css/GeneralStyle.less'
-import { updatePageTab, updateUserInfo, setID, setPhone } from '@store/actions/global_data'
+import { updatePageTab, updateUserInfo, setID, setPhone, setDDConfig } from '@store/actions/global_data'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { LoginBean } from '@datasources/LoginBean'
@@ -31,6 +31,8 @@ export interface Props {
   updateUserInfo: (userInfo: UserInfo) => void
   setID: (id: number) => void
   setPhone: (phone: string) => void
+  setDDConfig: (agentId: string, corpId: string, timeStamp: string,
+                nonceStr: string, signature: string) => void
 }
 
 interface State {
@@ -60,12 +62,12 @@ class App extends React.Component<Props, State> {
     dd.biz.navigation.hideBar({
       hidden: true  // true：隐藏，false：显示
     }).catch(err => console.log(err))
-    dd.runtime.permission.requestAuthCode(
-      { corpId: 'dingff2af124327c79bd35c2f4657eb6378f' }
-    )
-      .then(res => this.getLogin(res))
-      .catch(err => console.log(err))
-//     this.jj()
+    // dd.runtime.permission.requestAuthCode({
+    //   corpId: 'dingff2af124327c79bd35c2f4657eb6378f'
+    // })
+    //   .then(res => this.getLogin(res))
+    //   .catch(err => alert(JSON.stringify(err)))
+    this.jj()
     if (this.state.isLoading) {
       return
     }
@@ -73,6 +75,7 @@ class App extends React.Component<Props, State> {
       isLoading: false
     })
   }
+
   public jj = () => {
     let url = 'CanteenProcurementManager/user/nail/findNailOpenId?'
     let query = 'openId=maoxiaoyan'
@@ -112,8 +115,9 @@ class App extends React.Component<Props, State> {
         console.log('--- data =', data)
         if (data.data.code === 0) {
           this.props.setID(Number(data.data.data.userId))
-          this.getPower(data.data.data.agentId, data.data.data.corpId, data.data.data.timeStamp, data.data.data.nonceStr, data.data.data.signature)
           alert(JSON.stringify(data.data.data))
+          this.getPower(data.data.data.agentId, data.data.data.corpId, data.data.data.timeStamp, data.data.data.nonceStr, data.data.data.signature)
+          this.props.setDDConfig(data.data.data.agentId, data.data.data.corpId, data.data.data.timeStamp, data.data.data.nonceStr, data.data.data.signature)
           url = 'CanteenProcurementManager/user/nail/selectMean?'
           query = 'user_id=' + this.props.id
           axios.get<MyResponse<UserInfo>>(url + query)
@@ -130,7 +134,7 @@ class App extends React.Component<Props, State> {
               })
             })
             .catch(() => {
-              Toast.info('请检查网络设置!')
+              Toast.info('selectMean请检查网络设置!')
               this.setState({
                 isLoading: false
               })
@@ -143,12 +147,13 @@ class App extends React.Component<Props, State> {
         }
       })
       .catch(() => {
-        Toast.info('请检查网络设置!')
+        Toast.info('tinkerFree请检查网络设置!')
         this.setState({
           isLoading: false
         })
       })
   }
+
   componentDidMount () {
     console.log(this.props.pageTab)
     this.onTabBarSelectChange(this.props.pageTab)
@@ -303,7 +308,6 @@ class App extends React.Component<Props, State> {
    */
   getPower = (agentId: string, corpId: string, timeStamp: string,
               nonceStr: string, signature: string) => {
-    alert('鉴权')
     dd.config({
       agentId: agentId, // 必填，微应用ID
       corpId: corpId,// 必填，企业ID
@@ -313,8 +317,14 @@ class App extends React.Component<Props, State> {
       type: 0, // 选填，0表示微应用的jsapi，1表示服务窗的jsapi，不填默认为0。该参数从dingtalk.js的0.8.3版本开始支持
       jsApiList: ['runtime.info', 'biz.contact.choose', 'device.geolocation.get',
         'device.notification.confirm', 'device.notification.alert',
-        'device.notification.prompt', 'biz.ding.post',
+        'device.notification.prompt', 'biz.ding.post', 'biz.alipay.pay',
         'biz.util.openLink'] // 必填，需要使用的jsapi列表，注意：不要带dd。
+    })
+    dd.ready(() => {
+      alert(JSON.stringify('ok'))
+    })
+    dd.error(err => {
+      alert(JSON.stringify(err))
     })
   }
 
@@ -335,7 +345,8 @@ const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updateUserInfo,
   updatePageTab,
   setID,
-  setPhone
+  setPhone,
+  setDDConfig
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
