@@ -34,7 +34,8 @@ interface State {
   imgHeight: any
   scrollY: number
   current: number
-  isLoading: boolean
+  isLoading: boolean,
+  cartNumber: number
 }
 
 class Home extends React.Component<Props, State> {
@@ -47,7 +48,8 @@ class Home extends React.Component<Props, State> {
       imgHeight: 176,
       scrollY: 0,
       current: 0,
-      isLoading: false
+      isLoading: false,
+      cartNumber: null
     }
   }
 
@@ -101,7 +103,7 @@ class Home extends React.Component<Props, State> {
              fontSize: 18,
              width: '100%',
              height: 40,
-             backgroundColor: 'white',
+             backgroundColor: '#ffffff99',
              zIndex: 100
            }}>
         {/*{this.state.productDetails !== null && this.state.productDetails!!.product_name}*/}
@@ -186,6 +188,16 @@ class Home extends React.Component<Props, State> {
     )
   }
 
+  renderStarts = () => {
+    let starts = []
+    for (let i = 0; i < 5; i++) {
+      starts.push(
+        <ReactSVG path={'./assets/images/Supplier/star.svg'} svgStyle={{ width: 15,height: 15 }} />
+      )
+    }
+    return starts
+  }
+
   /**
    * 商品详细信息
    */
@@ -216,8 +228,8 @@ class Home extends React.Component<Props, State> {
                      justifyContent: 'space-between',
                      marginTop: 5
                    }}>
-                <div>
-                  {/*4星*/}
+                <div style={{ display: 'flex' }}>
+                  {this.renderStarts()}
                 </div>
                 <div>{this.state.productDetails.product_volume}人购买</div>
               </div>
