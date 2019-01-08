@@ -57,6 +57,7 @@ interface State {
   categoryClassId: number
   pageNum: number
   count: number // 商品总数
+  cartNumber: number
 }
 
 class Home extends React.Component<Props, State> {
@@ -82,7 +83,8 @@ class Home extends React.Component<Props, State> {
       maxPrice: null,
       categoryClassId: 0,
       pageNum: 1,
-      count: 0
+      count: 0,
+      cartNumber: 0
     }
   }
 
@@ -159,8 +161,9 @@ class Home extends React.Component<Props, State> {
           <span className='center' style={{ height: 40, width: 40 }} onClick={this.searchOnClick}>
             <ReactSVG path='./assets/images/search.svg' svgStyle={{ width: 22, height: 22 }}/>
           </span>
-            <span className='center' style={{ height: 40, width: 50 }} onClick={this.goCartOnClick}>
-            <ReactSVG path='./assets/images/shop_cart.svg' svgStyle={{ width: 22, height: 22 }}/>
+          <span className='center goToCart' style={{ height: 40, width: 50 }} onClick={this.goCartOnClick}>
+            <ReactSVG path='./assets/images/shop_cart.svg' svgClassName='cartLogo' svgStyle={{ width: 22, height: 22 }}/>
+            <span className='cartNumber'>{this.state.cartNumber}</span>
           </span>
           </div>
         </div>
@@ -284,8 +287,9 @@ class Home extends React.Component<Props, State> {
       <div className='vertical'
            style={{ height: 91, width: '100%', backgroundColor: 'white' }}
            onClick={() => this.productOnClick(item.product_id)}>
-        <div className='horizontal'
+        <div className='horizontal foodListItem'
              style={{ height: 90, width: '100%' }}>
+          <span className='redCart'></span>
           <img className='product-img' src={'./assets/images/SupplierTest/vegetable.png'}/>
           <div className='vertical product-list-item-content'
                style={{ justifyContent: 'space-between' }}>
@@ -302,7 +306,7 @@ class Home extends React.Component<Props, State> {
               <div className='cart-circle' onClick={(e) => this.addCartOnClick(e, item)}>
                 <div className='center'>
                   <ReactSVG path='./assets/images/shop_cart_white.svg'
-                            svgStyle={{ marginTop: 4, width: 12, height: 12 }}/>
+                    svgStyle={{ marginTop: 4, width: 12, height: 12 }}/>
                 </div>
               </div>
             </div>
@@ -698,8 +702,11 @@ class Home extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          Toast.info('添加商品成功', 2, null, false)
+          // Toast.info('添加商品成功', 2, null, false)
+          this.setState({ cartNumber: this.state.cartNumber + 1 })
           this.props.needReload(true)
+          let redCart = document.getElementsByClassName('redCart')[0]
+          console.log(redCart)
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
