@@ -16,7 +16,7 @@ export interface Props {
   bodyName: string // 父级div className  传入以获取高度
   hasMore: Array<boolean> // 是否有更多数据
   id: string
-  index: number
+  index: string
 }
 function ScollPostion () {
   let t
@@ -146,8 +146,11 @@ class LoadMoreTwo extends React.Component<Props, State> {
     let screenHeight = document.getElementById(this.props.id).clientHeight
     console.log(screenHeight)
     // 达到指定位置后 请求数据
-    if (dataHeight - scrollHeight < 2500 && !this.props.isLoading) {
+    if (dataHeight - scrollHeight - screenHeight < 2 * screenHeight && !this.props.isLoading) {
       this.props.getData()
+    }
+    if (!this.props.hasMore[parseInt(this.props.index,10)] && dataHeight - scrollHeight - screenHeight < 50) {
+      Toast.info('没有更多了！', 1, null, false)
     }
   }
 
@@ -163,7 +166,7 @@ class LoadMoreTwo extends React.Component<Props, State> {
           <span className='horizontal-center' style={{ width: '100%', height: '100%' }}>
           {
             this.props.listData !== null && this.props.listData !== undefined &&
-            !this.props.hasMore[this.props.index] ? '到底了' :
+            !this.props.hasMore[parseInt(this.props.index,10)] ? '到底了' :
               this.props.listData.length > 0 ? !this.props.isLoading ? '上拉加载更多' :
                 '加载中...' : '暂无数据'
           }

@@ -56,7 +56,7 @@ class User extends React.Component<Props, State> {
           <span style={{ fontSize: 16 }}> 到您的手机</span>
           <br/>
           <br/>
-          <span style={{ fontSize: 20,color: '#000000' }}>{this.props.iphone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
+          <span style={{ fontSize: 20,color: '#000000' }}>{this.props.phone.replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
         </div>
         <div className='Segment_line2'></div>
         <div style={{ backgroundColor: 'transparent',textAlign: 'center' }}>

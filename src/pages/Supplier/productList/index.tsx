@@ -12,7 +12,7 @@ import { MyResponse } from '@datasources/MyResponse'
 import { ProductList } from '@datasources/ProductList'
 import Loading from '@components/Loading'
 import Result from '@components/Result'
-import { cloneDeep, get } from 'lodash'
+import { cloneDeep, isNil } from 'lodash'
 import { updateProductList,updateProductListDetail,changeTab } from '@store/actions/supplierProductList_data'
 import LoadMore from '@components/LoadMoreTwo'
 
@@ -25,7 +25,6 @@ export interface Props {
 
 interface State {
   refresh: string
-  loading: boolean
   supplierProductListCSZ: Array<ProductList>
   supplierProductListYSW: Array<ProductList>
   supplierProductListCKZ: Array<ProductList>
@@ -35,7 +34,7 @@ interface State {
   pageNum: number
   isLoading: boolean
   count: number
-  hasMore: boolean // 是否还有更多
+  hasMore: Array<boolean> // 是否还有更多
 }
 const tabs = [
   { title: '出售中' },
@@ -51,7 +50,6 @@ class Supplier extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      loading: true,
       supplierProductListCSZ: [],
       supplierProductListYSW: [],
       supplierProductListCKZ: [],
@@ -60,7 +58,7 @@ class Supplier extends React.Component<Props, State> {
       modal: false,
       result: '',
       pageNum: 1,
-      hasMore: true,
+      hasMore: [true,true,true,true],
       isLoading: false,
       count: 0
     }
@@ -70,9 +68,6 @@ class Supplier extends React.Component<Props, State> {
   }
   getData = (tab, index) => {
     this.props.changeTab(index)
-    this.setState({
-      loading: true
-    })
     let url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfo?'
     let query = 'pageNum=' + this.state.pageNum
     query += '&pageSize=' + NUM_ROWS
@@ -92,7 +87,7 @@ class Supplier extends React.Component<Props, State> {
         break
     }
     console.log(url + query)
-    axios.get<MyResponse<any>>(url + query)
+    axios.get<any>(url + query)
       .then(data => {
         console.log('--- data =', data.data.data)
         if (data.data.code === 0) {
@@ -119,6 +114,18 @@ class Supplier extends React.Component<Props, State> {
                 })
                 break
             }
+            if (isNil(data.data.data) || data.data.data.length === 0) {
+              let hasMore = this.state.hasMore
+              hasMore[index] = false
+              this.setState({
+                count: 0,
+                hasMore: hasMore
+              })
+            } else {
+              this.setState({
+                count: data.data.count
+              })
+            }
           } else {
             switch (index) {
               case 0:
@@ -142,10 +149,14 @@ class Supplier extends React.Component<Props, State> {
                 })
                 break
             }
+            if (this.state.count < this.state.pageNum * NUM_ROWS) {
+              let hasMore = this.state.hasMore
+              hasMore[index] = false
+              this.setState({
+                hasMore: hasMore
+              })
+            }
           }
-          this.setState({
-            loading: false
-          })
           this.props.updateProductList(cloneDeep(data.data.data))
         } else {
           Toast.info('获取订单信息失败,请重试', 2, null, false)
@@ -156,52 +167,52 @@ class Supplier extends React.Component<Props, State> {
       })
   }
   tabOnClick = (tab, index,pageNum) => {
+    if (!isNil(document.getElementById(index))) {
+      document.getElementById(index).scrollTop = 0
+    }
+    let hasMore = this.state.hasMore
+    hasMore[index] = true
     this.setState({
-      pageNum: pageNum
+      pageNum: pageNum,
+      hasMore: hasMore
+    }, () => {
+      this.getData(tab, index)
     })
-    this.getData(tab, index)
   }
 
-  loadingRender = () => {
-    if (this.state.loading) {
-      return (
-        <Loading/>
-      )
-    }
-  }
   /**
    * 内容
    */
   public renderContent = () => {
     return(
-      <div className={'gBar'} style={{ color: '#858585' }}>
+      <div className={'gBar'} style={{ color: '#858585',height: '100vh' }}>
         <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
-          {this.state.supplierProductListCSZ.length !== 0 ? this.renderSwitch(this.state.supplierProductListCSZ,'inSale') : this.renderNone}
-          {this.state.supplierProductListYSW.length !== 0 ? this.renderSoldOut : this.renderNone}
-          {this.state.supplierProductListCKZ.length !== 0 ? this.renderSwitch(this.state.supplierProductListCKZ,'inStore') : this.renderNone}
-          {this.state.supplierProductListYXJ.length !== 0 ? this.renderSwitch(this.state.supplierProductListYXJ,'lowerShelf') : this.renderNone}
+          {this.state.supplierProductListCSZ.length !== 0 ? this.renderSwitch(this.state.supplierProductListCSZ,'inSale',0) : this.renderNone}
+          {this.state.supplierProductListYSW.length !== 0 ? this.renderSwitch(this.state.supplierProductListCSZ,'soldOut',1) : this.renderNone}
+          {this.state.supplierProductListCKZ.length !== 0 ? this.renderSwitch(this.state.supplierProductListCKZ,'inStore',2) : this.renderNone}
+          {this.state.supplierProductListYXJ.length !== 0 ? this.renderSwitch(this.state.supplierProductListYXJ,'lowerShelf',3) : this.renderNone}
         </Tabs>
-        {this.loadingRender()}
       </div>
     )
   }
   /**
    * 全部
    */
-  public renderSwitch = (poi,type) => {
+  public renderSwitch = (poi,type,id) => {
     let list = poi.map((i, index) => this.renderItem(i, index, type))
+    let list2 = poi.map((i, index) => this.renderSoldItem(i, index, ''))
     return (
-      <div id={'list'} className='touch_scroll scroll product-list'
-           style={{ backgroundColor: 'white', paddingTop: 20 }}>
-        <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this)}
+      <div id={id} className='touch_scroll scroll product-list'
+           style={{ paddingTop: 20 }}>
+        <LoadMore id={id} itemHeight={91} list={type === 'soldOut' ? list2 : list} listData={poi} getData={this.loadMore.bind(this,id)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
-                  hasMore={this.state.hasMore}/>
+                  hasMore={this.state.hasMore} index={id}/>
       </div>
     )
   }
-  loadMore = () => {
-    if (!this.state.hasMore) {
+  loadMore = (index) => {
+    if (!this.state.hasMore[index]) {
       return
     }
     this.setState({
@@ -212,37 +223,33 @@ class Supplier extends React.Component<Props, State> {
    * 已售完
    */
   public renderSoldOut = () => {
-    if (!this.state.loading) {
-      return (
-        <div style={{
-          paddingTop: 20
-        }}>
-          {this.state.supplierProductListYSW.map((i, index) => (
-            <div>
-              {this.renderSoldItem(i, index, '')}
-            </div>
-          ))}
-        </div>
-      )
-    }
+    return (
+      <div style={{
+        paddingTop: 20
+      }}>
+        {this.state.supplierProductListYSW.map((i, index) => (
+          <div>
+            {this.renderSoldItem(i, index, '')}
+          </div>
+        ))}
+      </div>
+    )
   }
   /**
    * 空
    */
   public renderNone = () => {
-    if (!this.state.loading) {
-      return (
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '250px',
-          backgroundColor: '#fff'
-        }}>
-          空空如也
-        </div>
-      )
-    }
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '250px',
+        backgroundColor: '#fff'
+      }}>
+        空空如也
+      </div>
+    )
   }
   /**
    * 出售中，仓库中item
@@ -424,8 +431,8 @@ class Supplier extends React.Component<Props, State> {
   public render () {
     return (
       <div style={{
-        width: '100%',
-        height: '100vh'
+        overflow: 'hidden',
+        height: '100%'
       }}>
         <Head titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'}
               title={'商品管理'} rightIconOnClick={this.searchOnClick.bind(this)}
