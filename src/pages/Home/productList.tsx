@@ -702,7 +702,7 @@ class Home extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          // Toast.info('添加商品成功', 2, null, false)
+          Toast.info('添加商品成功', 2, null, false)
           this.setState({ cartNumber: this.state.cartNumber + 1 })
           this.props.needReload(true)
           let redCart = document.getElementsByClassName('redCart')[0]

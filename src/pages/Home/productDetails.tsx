@@ -261,8 +261,8 @@ class Home extends React.Component<Props, State> {
                      marginTop: 5
                    }}>
                 <span style={{ flex: 1 }}>快递:免运费</span>
-                <span style={{ flex: 1 }}>库存:{this.state.productDetails.product_inventory}</span>
-                <span style={{ flex: 1 }}>产地:{this.state.productDetails.product_origin}</span>
+                <span style={{ flex: 1 }}>库存:{this.state.productDetails.product_stock}</span>
+                <span style={{ flex: 1 }}>产地:衢州</span>
               </div>
             </div>
           </div>
