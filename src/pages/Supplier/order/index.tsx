@@ -351,8 +351,10 @@ class Supplier extends React.Component<Props, State> {
    */
   public renderNone = () => {
     return(
-      <div className={'flex-center-row-center'} style={{ height: '250px', backgroundColor: '#fff' }}>
-        空空如也
+      <div className={'flex-center-column-center'} style={{ height: '90vh',backgroundColor: '#fff' }}>
+        <ReactSVG path='./assets/images/noOrder.svg'
+                  svgStyle={{ width: '100%' }}/>
+        <span>当前没有订单</span>
       </div>
     )
   }

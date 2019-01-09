@@ -76,8 +76,7 @@ class Supplier extends React.Component<Props, State> {
         query += '&status=' + 0
         break
       case 1:
-        url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfoStock'
-        query = ''
+        url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfoStock?'
         break
       case 2:
         query += '&status=' + 2
@@ -89,7 +88,7 @@ class Supplier extends React.Component<Props, State> {
     console.log(url + query)
     axios.get<any>(url + query)
       .then(data => {
-        console.log('--- data =', data.data.data)
+        console.log('--- data =', data)
         if (data.data.code === 0) {
           if (this.state.pageNum === 1) {
             switch (index) {
@@ -189,7 +188,7 @@ class Supplier extends React.Component<Props, State> {
         <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
         >
           {this.state.supplierProductListCSZ.length !== 0 ? this.renderSwitch(this.state.supplierProductListCSZ,'inSale',0) : this.renderNone}
-          {this.state.supplierProductListYSW.length !== 0 ? this.renderSwitch(this.state.supplierProductListCSZ,'soldOut',1) : this.renderNone}
+          {this.state.supplierProductListYSW.length !== 0 ? this.renderSwitch(this.state.supplierProductListYSW,'soldOut',1) : this.renderNone}
           {this.state.supplierProductListCKZ.length !== 0 ? this.renderSwitch(this.state.supplierProductListCKZ,'inStore',2) : this.renderNone}
           {this.state.supplierProductListYXJ.length !== 0 ? this.renderSwitch(this.state.supplierProductListYXJ,'lowerShelf',3) : this.renderNone}
         </Tabs>
@@ -239,15 +238,11 @@ class Supplier extends React.Component<Props, State> {
    * 空
    */
   public renderNone = () => {
-    return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '250px',
-        backgroundColor: '#fff'
-      }}>
-        空空如也
+    return(
+      <div className={'flex-center-column-center'} style={{ height: '90vh',backgroundColor: '#fff' }}>
+        <ReactSVG path='./assets/images/noOrder.svg'
+                  svgStyle={{ width: '100%' }}/>
+        <span>当前没有商品</span>
       </div>
     )
   }
@@ -339,10 +334,10 @@ class Supplier extends React.Component<Props, State> {
             <div className={'commonFont'} style={{ fontSize: 14, color: '#000',height: 32,paddingRight: 10,whiteSpace: 'normal' }} >
               {i.product_name}
             </div>
-            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }} >￥<span style={{ color: 'red' }}>12568.50</span></span>
+            <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }} >￥<span style={{ color: 'red' }}>{i.product_price * i.product_volume}</span></span>
             <div className={'flex-space-between-row-center'} style={{ width: '100%' }}>
               <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }} >
-                总量：{i.stock}kg&nbsp;&nbsp;&nbsp;&nbsp;单价：{i.value}元/kg
+                总量：{i.product_volume}kg&nbsp;&nbsp;&nbsp;&nbsp;单价：{i.product_price}元/kg
               </span>
               <ReactSVG path='../../../../assets/images/Supplier/right.svg' svgStyle={{ width: 15, height: 15 }}/>
             </div>

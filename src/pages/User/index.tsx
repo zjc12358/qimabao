@@ -56,7 +56,6 @@ class User extends React.Component<Props, State> {
         1000
       )
     }
-    window.console.log(window.navigator)
   }
   public componentWillUnmount () {
     clearInterval(this.time)
