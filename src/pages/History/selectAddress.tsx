@@ -106,7 +106,8 @@ class History extends React.Component<Props, State> {
           <div style={{
             padding: 20
           }}>
-            <ReactSVG path='../assets/images/User/edit.svg' svgStyle={{ width: 18, height: 18 }}/>
+            {i.defaultId === i.receiving_id.toString() &&
+            <ReactSVG path='./assets/images/ic_check_0084.svg' svgStyle={{ width: 20, height: 20, marginRight: 15 }}/>}
           </div>
         </div>
       </div>

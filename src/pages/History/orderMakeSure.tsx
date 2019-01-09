@@ -135,11 +135,11 @@ class History extends React.Component<Props, State> {
 
   componentWillReceiveProps (nextProps) {
     console.log('componentWillReceiveProps')
-    if (nextProps !== this.props) {
-      if (nextProps.updateAddress === true) {
-        this.getDefaultAddress()
-      }
-    }
+    // if (nextProps !== this.props) {
+    //   if (nextProps.updateAddress === true) {
+    //     this.getDefaultAddress()
+    //   }
+    // }
   }
 
   /**
@@ -252,6 +252,9 @@ class History extends React.Component<Props, State> {
     }
   }
 
+  /**
+   * 提交接口
+   */
   submite = () => {
     let dateValue1 = this.foramatteDateYDH(this.state.dateValue1)
     let dateValue2 = this.foramatteDateYDH(this.state.dateValue2)
@@ -268,8 +271,8 @@ class History extends React.Component<Props, State> {
           Toast.hide()
           this.setState({ modal2: true })
           this.props.updatePageTab('UserPageTabBar')
+          // history().goBack()
           // this.props.setPayInfo(this.props.orderId, this.props.total.toString(), '主题', '描述')
-          history().goBack()
           // history().push('/myOrder')
           // history().push('/payOrder')
         } else {

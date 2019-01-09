@@ -115,7 +115,14 @@ class Home extends React.Component<Props, State> {
                left: 10,
                height: 30
              }} onClick={() => history().goBack()}>
-          <img src='./assets/images/prev.png' style={{ width: 32, height: 32 }}/>
+          <ReactSVG className='center' path='./assets/images/ic_back_white.svg' svgStyle={{
+            width: 24, height: 24,
+            padding: 2,
+            backgroundColor: '#b2b2b2',
+            borderStyle: 'solid',
+            borderWidth: 0,
+            borderRadius: '50%'
+          }}/>
         </div>
         <div className='horizontal-center'
              style={{
@@ -135,7 +142,7 @@ class Home extends React.Component<Props, State> {
                       svgStyle={{
                         width: 24, height: 24,
                         padding: 2,
-                        backgroundColor: '#bfbfbf',
+                        backgroundColor: '#b2b2b2',
                         borderStyle: 'solid',
                         borderWidth: 0,
                         borderRadius: '50%'
@@ -211,7 +218,7 @@ class Home extends React.Component<Props, State> {
     let starts = []
     for (let i = 0; i < 5; i++) {
       starts.push(
-        <ReactSVG path={'./assets/images/Supplier/star.svg'} svgStyle={{ width: 15,height: 15 }} />
+        <ReactSVG path={'./assets/images/Supplier/star.svg'} svgStyle={{ width: 15, height: 15 }}/>
       )
     }
     return starts
@@ -275,6 +282,7 @@ class Home extends React.Component<Props, State> {
    */
   renderEvaluation = () => {
     return (
+      (this.state.productDetails === null || isNil(this.state.productDetails.product_evaluation_item)) &&
       <div className='vertical'
            style={{ width: '100%', backgroundColor: 'white', color: 'black' }}>
         <div className='horizontal evaluation-head'>
