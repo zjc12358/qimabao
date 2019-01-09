@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Tabs, Button, Icon, Toast } from 'antd-mobile'
+import { Tabs, Button, Icon, Toast, Modal, List } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '../../../store/reducers/globalDataReducer'
@@ -16,6 +16,8 @@ import { cloneDeep, isNil } from 'lodash'
 import LoadMore from '@components/LoadMoreTwo'
 import { AliPayBean } from '@datasources/aliPayBean'
 import * as dd from 'dingtalk-jsapi'
+import Drawer from '@material-ui/core/Drawer/Drawer'
+import Input from '@material-ui/core/Input/Input'
 
 const SERVICE: string = 'mobile.securitypay.pay' // 接口名称，固定值
 const _INPUT_CHARSET = 'utf-8' // 商户网站使用的编码格式，固定为UTF-8
@@ -43,6 +45,11 @@ interface State {
   productOrderShou: Array<ProductOrder>
   productOrderPing: Array<ProductOrder>
   productOrderWan: Array<ProductOrder>
+  modal1: boolean
+  modal2: boolean
+  modal3: boolean
+  payPassword: number
+  orderInfo: ProductOrder
 }
 
 const tabs = [
@@ -63,7 +70,7 @@ class User extends React.Component<Props, State> {
       getEmpty: true,
       refresh: '',
       pageNum: 1,
-      hasMore: [true,true,true,true,true,true],
+      hasMore: [true, true, true, true, true, true],
       isLoading: false,
       count: 0,
       productOrderAll: [],
@@ -71,13 +78,19 @@ class User extends React.Component<Props, State> {
       productOrderPei: [],
       productOrderShou: [],
       productOrderPing: [],
-      productOrderWan: []
+      productOrderWan: [],
+      modal1: false,
+      modal2: false,
+      modal3: false,
+      payPassword: null,
+      orderInfo: null
     }
   }
 
   componentDidMount () {
-    this.getData(null,this.props.tab)
+    this.getData(null, this.props.tab)
   }
+
   getData = (tab, index) => {
     this.props.changeTab(index)
     let url = 'CanteenProcurementManager/user/productOrder/findProductOrder?'
@@ -185,7 +198,7 @@ class User extends React.Component<Props, State> {
         Toast.info('请检查网络设置!')
       })
   }
-  tabOnClick = (tab, index,pageNum) => {
+  tabOnClick = (tab, index, pageNum) => {
     if (!isNil(document.getElementById(index))) {
       document.getElementById(index).scrollTop = 0
     }
@@ -203,16 +216,18 @@ class User extends React.Component<Props, State> {
    * 内容
    */
   public renderContent = () => {
-    return(
-      <div className={'moBar'} style={{ color: '#858585',height: '100vh' }}>
-        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
+    return (
+      <div className={'moBar'} style={{ color: '#858585', height: '100vh' }}>
+        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab, index, 1)}
+              animated={true} initialPage={this.props.tab}
+              renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6}/>}
         >
-          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll,0) : this.renderNone}
-          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu,1) : this.renderNone}
-          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei,2) : this.renderNone}
-          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou,3) : this.renderNone}
-          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing,4) : this.renderNone}
-          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan,5) : this.renderNone}
+          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll, 0) : this.renderNone}
+          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu, 1) : this.renderNone}
+          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei, 2) : this.renderNone}
+          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou, 3) : this.renderNone}
+          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing, 4) : this.renderNone}
+          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan, 5) : this.renderNone}
         </Tabs>
       </div>
     )
@@ -220,12 +235,12 @@ class User extends React.Component<Props, State> {
   /**
    * 全部
    */
-  public renderSwitch = (poi,id) => {
+  public renderSwitch = (poi, id) => {
     let list = poi.map((i, index) => this.renderItem(i, index))
     return (
       <div id={id} className='touch_scroll scroll product-list'
            style={{ paddingTop: 20 }}>
-        <LoadMore id={id} itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this,id)}
+        <LoadMore id={id} itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this, id)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
                   hasMore={this.state.hasMore} index={id}/>
       </div>
@@ -237,7 +252,7 @@ class User extends React.Component<Props, State> {
     }
     this.setState({
       pageNum: this.state.pageNum + 1
-    }, () => this.getData(null,this.props.tab))
+    }, () => this.getData(null, this.props.tab))
   }
   public renderItem = (i: ProductOrder, index) => {
     let font: any = null
@@ -349,7 +364,7 @@ class User extends React.Component<Props, State> {
             height: 'auto',
             maxWidth: '100%',
             maxHeight: '100%'
-          }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
+          }} src='../../../../assets/images/SupplierTest/vegetable.png'/></div>
         </div>
         <div className={'flex-space-between-column-flex-start'}
              style={{ width: window.innerWidth - 116, position: 'absolute', left: 100, height: 70 }}>
@@ -402,7 +417,12 @@ class User extends React.Component<Props, State> {
       case 0:
         showDeal =
           <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
-                  onClick={() => this.payOnclick(i.order_id)}>立即付款</button>
+                  onClick={(e) => {
+                    this.showModal(e, 2)
+                    this.setState({
+                      orderInfo: i
+                    })
+                  }}>立即付款</button>
         break
       case 1:
         showDeal =
@@ -572,6 +592,179 @@ class User extends React.Component<Props, State> {
       })
   }
 
+  onClose = (n) => {
+    if (n === 1) {
+      this.setState({ modal1: false })
+    } else if (n === 2) {
+      this.setState({ modal2: false })
+    } else if (n === 3) {
+      this.setState({ modal3: false })
+    }
+  }
+
+  /**
+   * 打开modal
+   * @param e
+   * @param n  1:选择时间,  2:确认付款
+   */
+  showModal = (e, n) => {
+    e.preventDefault() // 修复 Android 上点击穿透
+    if (n === 1) {
+      this.setState({ modal1: true })
+    } else if (n === 2) {
+      this.setState({ modal2: true })
+    } else if (n === 3) {
+      this.setState({ modal3: true })
+    }
+  }
+
+  /**
+   * 确认付款
+   */
+  renderPayConfirm = () => {
+    return (
+      <Modal
+        popup
+        visible={this.state.modal2}
+        onClose={() => this.onClose(2)}
+        animationType='slide-up'
+        className='paySure'
+      >
+        <List renderHeader={'选择付款方式'} className='popup-list'>
+          {/*<List.Item>*/}
+          {/*<div className='account'>*/}
+          {/*<div className='accountPice'>￥{this.props.total}</div>*/}
+          {/*<div className='accountDetail'>*/}
+          {/*<div>支付宝账号</div>*/}
+          {/*<div style={{ flex: 1 }}></div>*/}
+          {/*<div>156666666</div>*/}
+          {/*</div>*/}
+          {/*</div>*/}
+          {/*</List.Item>*/}
+          <List.Item>
+            <div className='balance'>
+              <div>付款方式</div>
+              <div style={{ flex: 1 }}></div>
+              <div>账户余额</div>
+              <Icon type='right'/>
+            </div>
+          </List.Item>
+          <div style={{ height: 210 }}></div>
+          <List.Item>
+            <Button type='primary' onClick={(e) => {
+              this.onClose(2)
+              this.showModal(e, 3)
+            }}>下一步</Button>
+          </List.Item>
+        </List>
+      </Modal>
+    )
+  }
+
+  /**
+   * 输入支付密码
+   * @param event
+   */
+  payChange = (event) => {
+    console.log('p' + event.target.value)
+    this.setState({
+      payPassword: event.target.value
+    })
+  }
+
+  /**
+   * 输入支付密码支付
+   */
+  passwordPay = () => {
+    return (
+      <Drawer anchor={'bottom'} open={this.state.modal3} onClose={() => this.onClose(3)}
+              style={{
+                width: '100%', height: '60%'
+              }}>
+        <List renderHeader={'请输入支付密码'} style={{
+          width: '100%', height: '60%', backgroundColor: 'white',
+          color: 'black'
+        }}>
+          <List.Item>
+            <div className='balance'>
+              {/*<div>付款方式</div>*/}
+              {/*<div style={{ flex: 1 }}></div>*/}
+              {/*<div>账户余额</div>*/}
+              {/*<Icon type='right'/>*/}
+              <Input className='center' onChange={this.payChange}
+                     placeholder={'请输入支付密码'}
+                     type={'numberPassword'} disableUnderline={true}
+                     value={this.state.payPassword === null ? null : this.state.payPassword.toString()}>
+                {this.state.payPassword === null ? '' : this.state.payPassword}
+              </Input>
+            </div>
+          </List.Item>
+          <div style={{ height: 210, backgroundColor: 'white' }}></div>
+          <List.Item>
+            <Button style={{ width: '100%' }} type='primary'
+                    onClick={() => this.checkPayPassword(this.state.payPassword)}>立即付款</Button>
+          </List.Item>
+        </List>
+      </Drawer>
+    )
+  }
+
+  /**
+   * 验证用户支付密码
+   */
+  checkPayPassword = (password: number) => {
+    let url = 'CanteenProcurementManager/user/nail/checkSamePassword?'
+    let query = 'password=' + password
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.balancePay(this.state.orderInfo.order_amount, this.state.orderInfo.order_id)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+      })
+  }
+
+  /**
+   * 余额支付
+   */
+  balancePay = (payMoney: number, orderId: string) => {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    Toast.loading('支付中', 0)
+    let url = 'CanteenProcurementManager/user/nail/updatePayMoney?'
+    let query = 'payMoney=' + payMoney + '&orderId=' + orderId
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
+        if (data.data.code === 0) {
+          Toast.hide()
+          Toast.info('支付成功!', 2, null, false)
+          this.onClose(3)
+          // TODO 2019/1/9 重新获取下待付款列表
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+        this.setState({
+          isLoading: false
+        })
+      })
+  }
+
   public render () {
     return (
       <div style={{
@@ -581,6 +774,8 @@ class User extends React.Component<Props, State> {
         <Head title={'订单管理'} titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'}
               leftIconColor={'white'}/>
         {this.renderContent()}
+        {this.renderPayConfirm()}
+        {this.passwordPay()}
       </div>
     )
   }

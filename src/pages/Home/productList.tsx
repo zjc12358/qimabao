@@ -99,6 +99,7 @@ class Home extends React.Component<Props, State> {
   componentWillMount () {
     this.getSecondCategory()
     this.getTagList()
+    this.getCartNumber()
   }
 
   refresh () {
@@ -161,9 +162,10 @@ class Home extends React.Component<Props, State> {
           <span className='center' style={{ height: 40, width: 40 }} onClick={this.searchOnClick}>
             <ReactSVG path='./assets/images/search.svg' svgStyle={{ width: 22, height: 22 }}/>
           </span>
-          <span className='center goToCart' style={{ height: 40, width: 50 }} onClick={this.goCartOnClick}>
-            <ReactSVG path='./assets/images/shop_cart.svg' svgClassName='cartLogo' svgStyle={{ width: 22, height: 22 }}/>
-            <span className='cartNumber'>{this.state.cartNumber}</span>
+            <span className='center goToCart' style={{ height: 40, width: 50 }} onClick={this.goCartOnClick}>
+            <ReactSVG path='./assets/images/shop_cart.svg' svgClassName='cartLogo'
+                      svgStyle={{ width: 22, height: 22 }}/>
+              {this.state.cartNumber > 0 && <span className='cartNumber'>{this.state.cartNumber}</span>}
           </span>
           </div>
         </div>
@@ -259,7 +261,6 @@ class Home extends React.Component<Props, State> {
         </div>
         <span style={{ width: '100%', height: 1, backgroundColor: '#e5e5e5' }}/>
       </div>
-
     )
   }
 
@@ -303,10 +304,10 @@ class Home extends React.Component<Props, State> {
                 <span style={{ color: '#ff0000', fontSize: 12 }}>{item.product_price}</span>
                 <span style={{ color: '#e5e5e5', fontSize: 12 }}>/500g</span>
               </div>
-              <div className='cart-circle' onClick={(e) => this.addCartOnClick(e, item)}>
+              <div className='cart-circle' style={{ marginRight: 5 }} onClick={(e) => this.addCartOnClick(e, item)}>
                 <div className='center'>
                   <ReactSVG path='./assets/images/shop_cart_white.svg'
-                    svgStyle={{ marginTop: 4, width: 12, height: 12 }}/>
+                            svgStyle={{ marginTop: 4, width: 15, height: 15 }}/>
                 </div>
               </div>
             </div>
@@ -628,12 +629,12 @@ class Home extends React.Component<Props, State> {
         console.log('--- data =', data)
         if (data.data.code === 0) {
           if (this.state.pageNum === 1) {
-            if (!isNil(data.data.data) && data.data.data.length > 0) {
+            if (data.data.count > 0) {
               this.setState({
                 productList: data.data.data,
-                count: data.data.data[0].count
+                count: data.data.count
               }, () => this.state.count < this.state.pageNum * NUM_ROWS && this.setState({ hasMore: false }))
-            } else if (data.data.data.length === 0) {
+            } else if (data.data.count === 0) {
               this.setState({
                 productList: data.data.data,
                 count: 0,
@@ -691,6 +692,28 @@ class Home extends React.Component<Props, State> {
   }
 
   /**
+   * 获取购物车总数
+   */
+  getCartNumber = () => {
+    let url = 'CanteenProcurementManager/user/shoppingCart/findCartCount'
+    let query = ''
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            cartNumber: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+      })
+  }
+
+  /**
    * 添加商品到购物车
    */
   addToCart (item: ProductBean) {
@@ -703,10 +726,11 @@ class Home extends React.Component<Props, State> {
         console.log('--- data =', data)
         if (data.data.code === 0) {
           Toast.info('添加商品成功', 2, null, false)
-          this.setState({ cartNumber: this.state.cartNumber + 1 })
           this.props.needReload(true)
-          let redCart = document.getElementsByClassName('redCart')[0]
-          console.log(redCart)
+          this.getCartNumber()
+          // this.setState({ cartNumber: this.state.cartNumber + 1 })
+          // let redCart = document.getElementsByClassName('redCart')[0]
+          // console.log(redCart)
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }

@@ -19,6 +19,8 @@ import { MyResponse } from '@datasources/MyResponse'
 import { SupplierStateInfoBean } from '@datasources/SupplierStateInfoBean'
 import { updateAppointmentState, updateBusinessState, updateSupplierInfo } from '@store/actions/supplier_info_data'
 import { changeTab } from '@store/actions/supplierProductOrder_data'
+import { SOrderNumberBean } from '@datasources/SOrderNumberBean'
+import { cloneDeep, isNil } from 'lodash'
 
 export interface Props {
   changeMode: (model: 'supplier' | 'purchaser') => void
@@ -35,6 +37,7 @@ interface State {
   dataShop: any
   isLoading: boolean
   drawerOpen: boolean
+  SOrderNumber: SOrderNumberBean
 }
 
 let IconMaxSize: number = 30
@@ -51,11 +54,13 @@ class Supplier extends React.Component<Props, State> {
       isLoading: false,
       data: [1, 17, 143, 5, 0],
       dataShop: [3, 10, 5, 0],
-      drawerOpen: false
+      drawerOpen: false,
+      SOrderNumber: null
     }
   }
 
   componentDidMount () {
+    this.getSOrderNumber()
     // 获取供应商详情
     this.getSupplierInfo()
     // 基于准备好的dom，初始化echarts实例
@@ -178,13 +183,7 @@ class Supplier extends React.Component<Props, State> {
       <div className={'flex-space-between-column-stretch'}>
         <div style={{ height: 180, backgroundColor: '#0084E7', position: 'relative' }}>
           <div className={'flex-space-around-row-center'} style={{ padding: '60px 9% 0', width: '82%' }}>
-            {this.state.data.map((i, index) => (
-              <div className={'flex-space-around-column-center'} style={{ height: 50 }}
-                   onClick={() => this.orderOnclick(index)}>
-                <span className={'commonFont'} style={{ fontSize: 20, color: '#fff' }}>{this.state.data[index]}</span>
-                <label className={'commonFont'} style={{ fontSize: 12, color: '#fff' }}>{dataViewTitle[index]}</label>
-              </div>
-            ))}
+            {this.state.data.map((item, i) => this.orderNumberItem(i))}
           </div>
         </div>
         <div className={'headMenuWrap'}>
@@ -224,6 +223,43 @@ class Supplier extends React.Component<Props, State> {
       </div>
     )
   }
+
+  /**
+   * 订单数量单项
+   * @param i
+   */
+  orderNumberItem = (i: number) => {
+    return (
+      <div className={'flex-space-around-column-center'} style={{ height: 50 }}
+           onClick={() => this.orderOnclick(i)}>
+        <span className={'commonFont'}
+              style={{ fontSize: 20, color: '#fff' }}>{!isNil(this.state.SOrderNumber) && this.getOrderNumber(i)}</span>
+        <label className={'commonFont'} style={{ fontSize: 12, color: '#fff' }}>{dataViewTitle[i]}</label>
+      </div>
+    )
+  }
+
+  /**
+   * 获取订单数
+   * @param i
+   */
+  getOrderNumber = (i: number): number => {
+    switch (i) {
+      case 0:
+        return this.state.SOrderNumber.unpaid
+      case 1:
+        return this.state.SOrderNumber.received
+      case 2:
+        return this.state.SOrderNumber.shipped
+      case 3:
+        return this.state.SOrderNumber.commented
+      case 4:
+        return this.state.SOrderNumber.tqCount
+      default:
+        return 0
+    }
+  }
+
   /**
    * 内容
    */
@@ -443,7 +479,28 @@ class Supplier extends React.Component<Props, State> {
           isLoading: false
         })
       })
+  }
 
+  /**
+   * 获取供应商 订单信息
+   */
+  getSOrderNumber = () => {
+    let url = 'CanteenProcurementManager/supplier/info/findSupplierTable'
+    let query = ''
+    axios.get<MyResponse<SOrderNumberBean>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            SOrderNumber: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+      })
   }
 
   public render () {
