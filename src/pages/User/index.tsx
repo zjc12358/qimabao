@@ -61,7 +61,7 @@ class User extends React.Component<Props, State> {
     window.console.log(window.navigator)
     // if (this.props.jumpOrder) {
     //   this.props.changeTab(1)
-    //   history().push('/myOrder')
+    //   history().push( '/myOrder')
     // }
   }
 

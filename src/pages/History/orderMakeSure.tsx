@@ -191,7 +191,7 @@ class History extends React.Component<Props, State> {
    */
   subOnChange = (e) => {
     if (this.state.timeIsSet === true) {
-      this.setState({ modal2: true })
+      this.submite()
     } else {
       Toast.info('请选择配送时间!', 2, null, false)
       this.showModal(e, 1)
@@ -283,9 +283,8 @@ class History extends React.Component<Props, State> {
             fullscreen: false
           })
           Toast.hide()
-          this.props.updatePageTab('UserPageTabBar')
-          this.props.jumpToOrder(true)
-          history().goBack()
+          this.setState({ modal2: true })
+          this.props.needReload(true)
           // this.props.setPayInfo(this.props.orderId, this.props.total.toString(), '主题', '描述')
           // history().push('/myOrder')
           // history().push('/payOrder')
@@ -295,6 +294,26 @@ class History extends React.Component<Props, State> {
       })
       .catch(() => {
         Toast.info('请检查网络设置!')
+      })
+  }
+
+  /**
+   * 验证用户支付密码
+   */
+  checkPayPassword = (password: number) => {
+    let url = 'CanteenProcurementManager/user/nail/checkSamePassword?'
+    let query = 'password=' + password
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.balancePay(this.props.total, this.props.orderId)
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
       })
   }
 
@@ -400,7 +419,7 @@ class History extends React.Component<Props, State> {
             <Button type='primary' onClick={(e) => {
               this.onClose(2)
               this.showModal(e, 3)
-            }}>立即付款</Button>
+            }}>下一步</Button>
           </List.Item>
         </List>
       </Modal>
@@ -436,7 +455,8 @@ class History extends React.Component<Props, State> {
           </List.Item>
           <div style={{ height: 210, backgroundColor: 'white' }}></div>
           <List.Item>
-            <Button style={{ width: '100%' }} type='primary' onClick={() => this.submite()}>立即付款</Button>
+            <Button style={{ width: '100%' }} type='primary'
+                    onClick={() => this.checkPayPassword(this.state.payPassword)}>立即付款</Button>
           </List.Item>
         </List>
       </Drawer>
@@ -533,15 +553,16 @@ class History extends React.Component<Props, State> {
   /**
    * 余额支付
    */
-  balancePay = (payMoney: number) => {
+  balancePay = (payMoney: number, orderId: string) => {
     if (this.state.isLoading) {
       return
     }
     this.setState({
       isLoading: true
     })
+    Toast.loading('支付中', 0)
     let url = 'CanteenProcurementManager/user/nail/updatePayMoney?'
-    let query = 'pay_money' + payMoney
+    let query = 'payMoney=' + payMoney + '&orderId=' + orderId
     axios.get<MyResponse<any>>(url + query)
       .then(data => {
         console.log('--- data =', data)
@@ -549,7 +570,10 @@ class History extends React.Component<Props, State> {
           isLoading: false
         })
         if (data.data.code === 0) {
+          Toast.hide()
           Toast.info('支付成功!', 2, null, false)
+          this.props.updatePageTab('UserPageTabBar')
+          this.props.jumpToOrder(true)
           history().goBack()
         } else {
           Toast.info(data.data.msg, 2, null, false)
