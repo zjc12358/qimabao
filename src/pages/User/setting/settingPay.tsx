@@ -28,6 +28,8 @@ interface State {
   data: any
   ssTt: number
   refresh: any
+  bgColor: Array<string>
+  num: Array<string>
 }
 
 let offsetY: number = 0
@@ -46,17 +48,19 @@ class User extends React.Component<Props, State> {
         { id: '2', name: '支付宝', order: 2 }
       ],
       ssTt: 0,
-      refresh: ''
+      refresh: '',
+      bgColor: ['#eee','#eee'],
+      num: ['','']
     }
   }
   componentDidMount () {
-    let url = 'CanteenProcurementManager/returnPay/aliReturnPay?'
-    let query = 'openId=maoxiaoyan'
-    axios.get<MyResponse<UserInfo>>(url + query)
+    let url = 'CanteenProcurementManager/returnPay/aliReturnPay'
+    let query = ''
+    axios.post<any>(url + query)
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          this.props.updateUserInfo(cloneDeep(data.data.data))
+          Toast.info('1', 2, null, false)
         } else {
           Toast.info('获取用户信息失败,请重试', 2, null, false)
         }
@@ -128,24 +132,79 @@ class User extends React.Component<Props, State> {
   列表项的渲染
   **/
   public renderItem = (i,index) => {
+
     return(
-      <div id={'main' + index} style={{ position: 'absolute', top: top + i.order * 40,width: '100%',height: 40 }}>
+      <div id={'main' + index} style={{ position: 'absolute', top: top + i.order * 40,width: '100%',height: 40,backgroundColor: '#fff' }}>
         <div className={'Segment_line4'} />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          padding: 10,
-          backgroundColor: '#ffffff',
-          height: 19
-        }}>
-          <span style={{ fontSize: '16px', marginLeft: 10 }}>{i.name}</span>
-          <img src='../../assets/images/User/drag.svg' width='20' height='20' />
+        <div className={'flex-space-between-row-center'} style={{ height: 40 }}>
+          <span style={{ fontSize: '16px',marginLeft: 20 }}>{i.name}</span>
+          <div className={'flex-center-row-center'}
+               onClick={() => {
+                 this.setNum(index)
+               }}
+               style={{ width: 30,height: 30,borderRadius: '50%',backgroundColor: this.state.bgColor[index],marginRight: 10 }}>
+            <span style={{ fontWeight: 'bold',fontSize: 20,color: '#fff' }}>{this.state.num[index]}</span>
+          </div>
         </div>
       </div>
     )
   }
-
+  public setNum = (index) => {
+    let bgColor = this.state.bgColor
+    if (bgColor[index] === '#eee') {
+      bgColor[index] = '#49b1e7'
+    } else {
+      bgColor[index] = '#eee'
+    }
+    let num: any = this.calculateNum(index)
+    console.log(num)
+    this.setState({
+      bgColor: bgColor,
+      num: num
+    })
+  }
+  public calculateNum = (index) => {
+    let num = this.state.num
+    if (num[0] === '' && num[1] === '') {
+      num[index] = '1'
+      return num
+    }
+    if (num[0] === '1' && num[1] === '') {
+      if (index === 1) {
+        num[index] = '2'
+      } else {
+        num[index] = ''
+      }
+      return num
+    }
+    if (num[0] === '' && num[1] === '1') {
+      if (index === 0) {
+        num[index] = '2'
+      } else {
+        num[index] = ''
+      }
+      return num
+    }
+    if (num[0] === '1' && num[1] === '2') {
+      if (index === 0) {
+        num[0] = ''
+        num[1] = '1'
+      } else {
+        num[1] = ''
+      }
+      return num
+    }
+    if (num[0] === '2' && num[1] === '1') {
+      if (index === 1) {
+        num[0] = '1'
+        num[1] = ''
+      } else {
+        num[0] = ''
+        num[1] = '1'
+      }
+      return num
+    }
+  }
   public headIcon = () => {
     return(
       <ReactSVG path='./assets/images/User/addnoborder.svg' svgStyle={{ width: 22, height: 22 }}/>

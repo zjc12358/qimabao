@@ -12,7 +12,7 @@ import Loading from '@components/Loading'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { ProductOrder } from '@datasources/ProductOrder'
-import { cloneDeep, get } from 'lodash'
+import { cloneDeep, isNil } from 'lodash'
 import LoadMore from '@components/LoadMoreTwo'
 import { AliPayBean } from '@datasources/aliPayBean'
 import * as dd from 'dingtalk-jsapi'
@@ -28,21 +28,15 @@ export interface Props {
   updateProductOrder: (productOrder: Array<ProductOrder>) => void
   changeTab: (index: number) => void
   changeIndex: (index: number) => void
-  agentId: string
-  corpId: string
-  timeStamp: string
-  nonceStr: string
-  signature: string
 }
 
 interface State {
-  loading: boolean
   getEmpty: boolean
   refresh: string
   pageNum: number
   isLoading: boolean
   count: number
-  hasMore: boolean // 是否还有更多
+  hasMore: Array<boolean> // 是否还有更多
   productOrderAll: Array<ProductOrder>
   productOrderFu: Array<ProductOrder>
   productOrderPei: Array<ProductOrder>
@@ -66,11 +60,10 @@ class User extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      loading: true,
       getEmpty: true,
       refresh: '',
       pageNum: 1,
-      hasMore: true,
+      hasMore: [true,true,true,true,true,true],
       isLoading: false,
       count: 0,
       productOrderAll: [],
@@ -83,22 +76,17 @@ class User extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    // this.getPower()
-    this.getData(null, this.props.tab)
+    this.getData(null,this.props.tab)
   }
-
   getData = (tab, index) => {
     this.props.changeTab(index)
-    this.setState({
-      loading: true
-    })
     let url = 'CanteenProcurementManager/user/productOrder/findProductOrder?'
     let query = 'pageNum=' + this.state.pageNum
     query += '&pageSize=' + NUM_ROWS
     if (index === 0) query += ''
     else query += '&payStatus=' + (index - 1)
     console.log(url + query)
-    axios.get<MyResponse<ProductOrder>>(url + query)
+    axios.get<any>(url + query)
       .then(data => {
         console.log('--- data =', data.data.data)
         if (data.data.code === 0) {
@@ -135,6 +123,18 @@ class User extends React.Component<Props, State> {
                 })
                 break
             }
+            if (isNil(data.data.data) || data.data.data.length === 0) {
+              let hasMore = this.state.hasMore
+              hasMore[index] = false
+              this.setState({
+                count: 0,
+                hasMore: hasMore
+              })
+            } else {
+              this.setState({
+                count: data.data.count
+              })
+            }
           } else {
             switch (index) {
               case 0:
@@ -169,9 +169,13 @@ class User extends React.Component<Props, State> {
                 break
             }
           }
-          this.setState({
-            loading: false
-          })
+          if (this.state.count < this.state.pageNum * NUM_ROWS) {
+            let hasMore = this.state.hasMore
+            hasMore[index] = false
+            this.setState({
+              hasMore: hasMore
+            })
+          }
           this.props.updateProductOrder(cloneDeep(data.data.data))
         } else {
           Toast.info('获取订单信息失败,请重试', 2, null, false)
@@ -181,61 +185,59 @@ class User extends React.Component<Props, State> {
         Toast.info('请检查网络设置!')
       })
   }
-  tabOnClick = (tab, index, pageNum) => {
-    this.setState({
-      pageNum: pageNum
-    })
-    this.getData(tab, index)
-  }
-  loadingRender = () => {
-    if (this.state.loading) {
-      return (
-        <Loading/>
-      )
+  tabOnClick = (tab, index,pageNum) => {
+    if (!isNil(document.getElementById(index))) {
+      document.getElementById(index).scrollTop = 0
     }
+    let hasMore = this.state.hasMore
+    hasMore[index] = true
+    this.setState({
+      pageNum: pageNum,
+      hasMore: hasMore
+    }, () => {
+      this.props.changeTab(index)
+      this.getData(tab, index)
+    })
   }
   /**
    * 内容
    */
   public renderContent = () => {
-    return (
-      <div className={'moBar'} style={{ color: '#858585', position: 'relative' }}>
-        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab, index, 1)}
-              animated={true} initialPage={this.props.tab}
-              renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6}/>}
+    return(
+      <div className={'moBar'} style={{ color: '#858585',height: '100vh' }}>
+        <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
         >
-          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll) : this.renderNone}
-          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu) : this.renderNone}
-          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei) : this.renderNone}
-          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou) : this.renderNone}
-          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing) : this.renderNone}
-          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan) : this.renderNone}
+          {this.state.productOrderAll.length !== 0 ? () => this.renderSwitch(this.state.productOrderAll,0) : this.renderNone}
+          {this.state.productOrderFu.length !== 0 ? () => this.renderSwitch(this.state.productOrderFu,1) : this.renderNone}
+          {this.state.productOrderPei.length !== 0 ? () => this.renderSwitch(this.state.productOrderPei,2) : this.renderNone}
+          {this.state.productOrderShou.length !== 0 ? () => this.renderSwitch(this.state.productOrderShou,3) : this.renderNone}
+          {this.state.productOrderPing.length !== 0 ? () => this.renderSwitch(this.state.productOrderPing,4) : this.renderNone}
+          {this.state.productOrderWan.length !== 0 ? () => this.renderSwitch(this.state.productOrderWan,5) : this.renderNone}
         </Tabs>
-        {this.loadingRender()}
       </div>
     )
   }
   /**
    * 全部
    */
-  public renderSwitch = (poi) => {
+  public renderSwitch = (poi,id) => {
     let list = poi.map((i, index) => this.renderItem(i, index))
     return (
-      <div id={'list'} className='touch_scroll scroll product-list'
-           style={{ backgroundColor: 'white', paddingTop: 20 }}>
-        <LoadMore itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this)}
+      <div id={id} className='touch_scroll scroll product-list'
+           style={{ paddingTop: 20 }}>
+        <LoadMore id={id} itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this,id)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
-                  hasMore={this.state.hasMore}/>
+                  hasMore={this.state.hasMore} index={id}/>
       </div>
     )
   }
-  loadMore = () => {
-    if (!this.state.hasMore) {
+  loadMore = (index) => {
+    if (!this.state.hasMore[index]) {
       return
     }
     this.setState({
       pageNum: this.state.pageNum + 1
-    }, () => this.getData(null, this.props.tab))
+    }, () => this.getData(null,this.props.tab))
   }
   public renderItem = (i: ProductOrder, index) => {
     let font: any = null
@@ -347,7 +349,7 @@ class User extends React.Component<Props, State> {
             height: 'auto',
             maxWidth: '100%',
             maxHeight: '100%'
-          }}/></div>
+          }} src='../../../../assets/images/SupplierTest/vegetable.png' /></div>
         </div>
         <div className={'flex-space-between-column-flex-start'}
              style={{ width: window.innerWidth - 116, position: 'absolute', left: 100, height: 70 }}>
@@ -546,24 +548,6 @@ class User extends React.Component<Props, State> {
       })
   }
 
-  /**
-   * 钉钉鉴权
-   */
-  getPower = () => {
-    dd.config({
-      agentId: this.props.agentId, // 必填，微应用ID
-      corpId: this.props.corpId,// 必填，企业ID
-      timeStamp: this.props.timeStamp, // 必填，生成签名的时间戳
-      nonceStr: this.props.nonceStr, // 必填，生成签名的随机串
-      signature: this.props.signature, // 必填，签名
-      type: 0, // 选填，0表示微应用的jsapi，1表示服务窗的jsapi，不填默认为0。该参数从dingtalk.js的0.8.3版本开始支持
-      jsApiList: ['biz.alipay.pay', 'biz.util.open'] // 必填，需要使用的jsapi列表，注意：不要带dd。
-    })
-    dd.error(err => {
-      alert(JSON.stringify(err))
-    })
-  }
-
   public confirmOnclick = (id, index) => {
     let url = 'CanteenProcurementManager/user/productOrder/updatePyStates?'
     let query = 'states=' + 4 + '&orderId=' + id
@@ -589,7 +573,8 @@ class User extends React.Component<Props, State> {
   public render () {
     return (
       <div style={{
-        height: '100vh'
+        overflow: 'hidden',
+        height: '100%'
       }}>
         <Head title={'订单管理'} titleColor={'#ffffff'} showLeftIcon={true} backgroundColor={'#0084e7'}
               leftIconColor={'white'}/>
@@ -601,12 +586,7 @@ class User extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
-    tab: state.productOrderData.tab,
-    agentId: state.globalData.agentId,
-    corpId: state.globalData.corpId,
-    timeStamp: state.globalData.timeStamp,
-    nonceStr: state.globalData.nonceStr,
-    signature: state.globalData.signature
+    tab: state.productOrderData.tab
   }
 }
 

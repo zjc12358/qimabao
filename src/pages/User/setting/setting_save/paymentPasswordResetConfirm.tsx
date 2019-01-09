@@ -13,6 +13,7 @@ import Head from '@components/Head'
 export interface Props {
   pageTab: PageTab
   userInfo: UserInfo
+  phone: string
   updatePageTab: (pageTab: PageTab) => void
   updateUserInfo: (userInfo: UserInfo) => void
 }
@@ -49,7 +50,7 @@ class User extends React.Component<Props, State> {
           <span style={{ fontSize: 16 }}> 到您的手机</span>
           <br/>
           <br/>
-          <span style={{ fontSize: 20,color: '#000000' }}>{this.state.phone.replace(/\s+/g,'').replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
+          <span style={{ fontSize: 20,color: '#000000' }}>{this.props.phone.replace(/\s+/g,'').replace(/(\d{3})(\d{6})(\d{2})/,'$1******$3')}</span>
         </div>
         <div className='Segment_line2'></div>
         <div style={{ backgroundColor: 'transparent',textAlign: 'center' }}>
@@ -164,7 +165,8 @@ class User extends React.Component<Props, State> {
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
     pageTab: state.globalData.pageTab,
-    userInfo: state.globalData.userInfo
+    userInfo: state.globalData.userInfo,
+    phone: state.globalData.phone
   }
 }
 

@@ -217,7 +217,7 @@ class Supplier extends React.Component<Props, State> {
            style={{ paddingTop: 20 }}>
         <LoadMore id={id} itemHeight={91} list={list} listData={poi} getData={this.loadMore.bind(this,id)}
                   isLoading={this.state.isLoading} loadHeight={10} bodyName={'scroll scroll product-list'}
-                  hasMore={this.state.hasMore}/>
+                  hasMore={this.state.hasMore} index={id}/>
       </div>
     )
   }
