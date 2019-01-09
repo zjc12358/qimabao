@@ -205,7 +205,14 @@ class Home extends React.Component<Props, State> {
             </a>
           ))}
         </Carousel>
-        <div style={{ position: 'absolute', bottom: 10, right: 30, color: '#333333', fontSize: 20 }}>
+        <div style={{
+          position: 'absolute', bottom: 10, right: 30, color: '#333333', fontSize: 20,
+          borderStyle: 'solid',
+          borderWidth: 0,
+          borderRadius: 30,
+          backgroundColor: '#b2b2b2',
+          padding: 5
+        }}>
           <span>{this.state.current + 1}</span>
           <span>/</span>
           <span>{this.state.topImgData.length}</span>
@@ -282,7 +289,7 @@ class Home extends React.Component<Props, State> {
    */
   renderEvaluation = () => {
     return (
-      (this.state.productDetails === null || isNil(this.state.productDetails.product_evaluation_item)) &&
+      !(this.state.productDetails === null || isNil(this.state.productDetails.product_evaluation_item)) &&
       <div className='vertical'
            style={{ width: '100%', backgroundColor: 'white', color: 'black' }}>
         <div className='horizontal evaluation-head'>

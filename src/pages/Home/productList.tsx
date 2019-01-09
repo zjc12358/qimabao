@@ -165,7 +165,7 @@ class Home extends React.Component<Props, State> {
             <span className='center goToCart' style={{ height: 40, width: 50 }} onClick={this.goCartOnClick}>
             <ReactSVG path='./assets/images/shop_cart.svg' svgClassName='cartLogo'
                       svgStyle={{ width: 22, height: 22 }}/>
-            <span className='cartNumber'>{this.state.cartNumber}</span>
+              {this.state.cartNumber > 0 && <span className='cartNumber'>{this.state.cartNumber}</span>}
           </span>
           </div>
         </div>
