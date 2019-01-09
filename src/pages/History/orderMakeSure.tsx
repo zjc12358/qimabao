@@ -13,9 +13,12 @@ import { OrderMakeSureBean } from '@datasources/OrderMakeSureBean'
 import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { updatePageTab } from '@store/actions/global_data'
+import Drawer from '@material-ui/core/Drawer'
 import { setPayInfo } from '@store/actions/pay_data'
 import * as dd from 'dingtalk-jsapi'
 import { AddressBean } from '@datasources/AddressBean'
+import Input from '@material-ui/core/Input/Input'
+import { jumpToOrder } from '@store/actions/jump_data'
 
 const nowTimeStamp = Date.now()
 const now = new Date(nowTimeStamp)
@@ -37,6 +40,7 @@ export interface Props {
   updatePageTab: (pageTab: string) => void
   setPayInfo: (outTradeNo: string, totalAmount: string, subject: string, body: string) => void
   updateAddress: boolean
+  jumpToOrder: (go: boolean) => void
 }
 
 interface State {
@@ -50,10 +54,13 @@ interface State {
   timeIsSet: any,
   modal1: boolean,
   modal2: boolean,
+  modal3: boolean,
   dateChooseData: any,
   buyMsg: any,
   fullscreen: boolean,
-  addressInfo: AddressBean
+  addressInfo: AddressBean,
+  isLoading: boolean,
+  payPassword: number
 }
 
 function closest (el, selector) {
@@ -78,6 +85,7 @@ class History extends React.Component<Props, State> {
       ],
       modal1: false,
       modal2: false,
+      modal3: false,
       timeIsSet: false,
       startVisible: false,
       endVisible: false,
@@ -88,7 +96,9 @@ class History extends React.Component<Props, State> {
       orderData: this.props.orderData,
       buyMsg: '',
       fullscreen: false,
-      addressInfo: null
+      addressInfo: null,
+      isLoading: false,
+      payPassword: null
     }
   }
 
@@ -151,16 +161,20 @@ class History extends React.Component<Props, State> {
     e.preventDefault() // 修复 Android 上点击穿透
     if (n === 1) {
       this.setState({ modal1: true })
-    } else {
+    } else if (n === 2) {
       this.setState({ modal2: true })
+    } else if (n === 3) {
+      this.setState({ modal3: true })
     }
   }
   onClose = (n) => {
     if (n === 1) {
       let timeIsSet = this.state.startdpValue && this.state.enddpValue ? true : false
       this.setState({ modal1: false, timeIsSet: timeIsSet })
-    } else {
+    } else if (n === 2) {
       this.setState({ modal2: false })
+    } else if (n === 3) {
+      this.setState({ modal3: false })
     }
   }
 
@@ -177,7 +191,7 @@ class History extends React.Component<Props, State> {
    */
   subOnChange = (e) => {
     if (this.state.timeIsSet === true) {
-      this.submite()
+      this.setState({ modal2: true })
     } else {
       Toast.info('请选择配送时间!', 2, null, false)
       this.showModal(e, 1)
@@ -269,9 +283,9 @@ class History extends React.Component<Props, State> {
             fullscreen: false
           })
           Toast.hide()
-          this.setState({ modal2: true })
           this.props.updatePageTab('UserPageTabBar')
-          // history().goBack()
+          this.props.jumpToOrder(true)
+          history().goBack()
           // this.props.setPayInfo(this.props.orderId, this.props.total.toString(), '主题', '描述')
           // history().push('/myOrder')
           // history().push('/payOrder')
@@ -284,9 +298,9 @@ class History extends React.Component<Props, State> {
       })
   }
 
-  /*
-  * 修改送达时间组件
-  * */
+  /**
+   * 修改送达时间组件
+   */
   renderSetTime = () => {
     return (
       <div>
@@ -307,9 +321,9 @@ class History extends React.Component<Props, State> {
     )
   }
 
-  /*
-  * 供应商选项
-  * */
+  /**
+   * 供应商选项
+   */
   renderSupplier = (i) => {
     return (
       <div style={{ marginBottom: 20 }}>
@@ -350,9 +364,9 @@ class History extends React.Component<Props, State> {
     )
   }
 
-  /*
-  * 确认付款
-  * */
+  /**
+   * 确认付款
+   */
   renderPayConfirm = () => {
     return (
       <Modal
@@ -362,17 +376,17 @@ class History extends React.Component<Props, State> {
         animationType='slide-up'
         className='paySure'
       >
-        <List renderHeader={'确认付款'} className='popup-list'>
-          <List.Item>
-            <div className='account'>
-              <div className='accountPice'>￥{this.props.total}</div>
-              <div className='accountDetail'>
-                <div>支付宝账号</div>
-                <div style={{ flex: 1 }}></div>
-                <div>156666666</div>
-              </div>
-            </div>
-          </List.Item>
+        <List renderHeader={'选择付款方式'} className='popup-list'>
+          {/*<List.Item>*/}
+          {/*<div className='account'>*/}
+          {/*<div className='accountPice'>￥{this.props.total}</div>*/}
+          {/*<div className='accountDetail'>*/}
+          {/*<div>支付宝账号</div>*/}
+          {/*<div style={{ flex: 1 }}></div>*/}
+          {/*<div>156666666</div>*/}
+          {/*</div>*/}
+          {/*</div>*/}
+          {/*</List.Item>*/}
           <List.Item>
             <div className='balance'>
               <div>付款方式</div>
@@ -383,11 +397,61 @@ class History extends React.Component<Props, State> {
           </List.Item>
           <div style={{ height: 210 }}></div>
           <List.Item>
-            <Button type='primary' onClick={() => this.onClose(2)}>立即付款</Button>
+            <Button type='primary' onClick={(e) => {
+              this.onClose(2)
+              this.showModal(e, 3)
+            }}>立即付款</Button>
           </List.Item>
         </List>
       </Modal>
     )
+  }
+
+  /**
+   * 输入支付密码支付
+   */
+  passwordPay = () => {
+    return (
+      <Drawer anchor={'bottom'} open={this.state.modal3} onClose={() => this.onClose(3)}
+              style={{
+                width: '100%', height: '60%'
+              }}>
+        <List renderHeader={'请输入支付密码'} style={{
+          width: '100%', height: '60%', backgroundColor: 'white',
+          color: 'black'
+        }}>
+          <List.Item>
+            <div className='balance'>
+              {/*<div>付款方式</div>*/}
+              {/*<div style={{ flex: 1 }}></div>*/}
+              {/*<div>账户余额</div>*/}
+              {/*<Icon type='right'/>*/}
+              <Input className='center' onChange={this.payChange}
+                     placeholder={'请输入支付密码'}
+                     type={'numberPassword'} disableUnderline={true}
+                     value={this.state.payPassword === null ? null : this.state.payPassword.toString()}>
+                {this.state.payPassword === null ? '' : this.state.payPassword}
+              </Input>
+            </div>
+          </List.Item>
+          <div style={{ height: 210, backgroundColor: 'white' }}></div>
+          <List.Item>
+            <Button style={{ width: '100%' }} type='primary' onClick={() => this.submite()}>立即付款</Button>
+          </List.Item>
+        </List>
+      </Drawer>
+    )
+  }
+
+  /**
+   * 输入支付密码
+   * @param event
+   */
+  payChange = (event) => {
+    console.log('p' + event.target.value)
+    this.setState({
+      payPassword: event.target.value
+    })
   }
 
   /**
@@ -463,6 +527,39 @@ class History extends React.Component<Props, State> {
       })
       .catch(err => {
         alert(JSON.stringify(err))
+      })
+  }
+
+  /**
+   * 余额支付
+   */
+  balancePay = (payMoney: number) => {
+    if (this.state.isLoading) {
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    let url = 'CanteenProcurementManager/user/nail/updatePayMoney?'
+    let query = 'pay_money' + payMoney
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        this.setState({
+          isLoading: false
+        })
+        if (data.data.code === 0) {
+          Toast.info('支付成功!', 2, null, false)
+          history().goBack()
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+        this.setState({
+          isLoading: false
+        })
       })
   }
 
@@ -602,6 +699,7 @@ class History extends React.Component<Props, State> {
           </List>
         </Modal>
         {this.renderPayConfirm()}
+        {this.passwordPay()}
       </div>
     )
   }
@@ -622,7 +720,8 @@ const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updataOrderMakeSure,
   needReload,
   updatePageTab,
-  setPayInfo
+  setPayInfo,
+  jumpToOrder
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(History)

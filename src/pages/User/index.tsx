@@ -20,6 +20,7 @@ export interface Props {
   changeTab: (index: number) => void
   updateUserInfo: (userInfo: UserInfo) => void
   changeMode: (model: 'supplier' | 'purchaser') => void
+  jumpOrder: boolean
 }
 
 interface State {
@@ -35,6 +36,7 @@ const order = [
   { title: '待评价' },
   { title: '已完成' }
 ]
+
 class User extends React.Component<Props, State> {
   private RightIconMaxSize: number = 16
   private MenuMaxSize: number = 22
@@ -57,10 +59,16 @@ class User extends React.Component<Props, State> {
       )
     }
     window.console.log(window.navigator)
+    // if (this.props.jumpOrder) {
+    //   this.props.changeTab(1)
+    //   history().push('/myOrder')
+    // }
   }
+
   public componentWillUnmount () {
     clearInterval(this.time)
   }
+
   public timeGo = () => {
     this.setState({
       NewestOrder: Object.assign({}, this.state.NewestOrder, { over_time: this.state.NewestOrder.over_time - 1 })
@@ -163,7 +171,8 @@ class User extends React.Component<Props, State> {
             alignItems: 'center',
             height: 50
           }}>
-            <ReactSVG onClick={() => this.ddScan()} path='./assets/images/User/scan.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
+            <ReactSVG onClick={() => this.ddScan()} path='./assets/images/User/scan.svg'
+                      svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
             <ReactSVG path='./assets/images/User/qr_code.svg' svgStyle={{ width: 22, height: 22 }}/>&nbsp;&nbsp;&nbsp;
           </div>
           <div style={{
@@ -221,7 +230,9 @@ class User extends React.Component<Props, State> {
               style={{
                 width: '100%',
                 height: '100%'
-              }} src={this.state.userInfo.user_head_portrait === '' ? 'assets/images/User/noPic.svg' : this.state.userInfo.user_head_portrait}/></div>
+              }}
+              src={this.state.userInfo.user_head_portrait === '' ? 'assets/images/User/noPic.svg' : this.state.userInfo.user_head_portrait}/>
+          </div>
           <div style={{ width: 110 }}>
             <span style={{
               overflow: 'hidden',
@@ -241,7 +252,7 @@ class User extends React.Component<Props, State> {
       onSuccess: function (data) {
         alert(data.text)
       },
-      onFail : function (err) {
+      onFail: function (err) {
         alert(JSON.stringify(err))
       }
     })
@@ -261,7 +272,7 @@ class User extends React.Component<Props, State> {
         <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }}>
           <span style={{ fontSize: '16px', fontWeight: 700, color: '#4f4f55', fontFamily: '微软雅黑' }}>我的订单</span>
         </div>
-        <div className='Segment_line' />
+        <div className='Segment_line'/>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -277,7 +288,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'center'
-          }} onClick={this.orderOnclick.bind(this,1)}>
+          }} onClick={this.orderOnclick.bind(this, 1)}>
             <div style={{ position: 'relative' }}>
               <Badge num={2} left={25}/>
               <ReactSVG path='./assets/images/User/pay.svg'
@@ -290,7 +301,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'center'
-          }} onClick={this.orderOnclick.bind(this,2)}>
+          }} onClick={this.orderOnclick.bind(this, 2)}>
             <ReactSVG path='./assets/images/User/delivery.svg'
                       svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
             <span style={{ fontSize: '10px', color: '#828282', fontFamily: '黑体' }}>待配送</span>
@@ -300,7 +311,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'center'
-          }} onClick={this.orderOnclick.bind(this,3)}>
+          }} onClick={this.orderOnclick.bind(this, 3)}>
             <ReactSVG path='./assets/images/User/get.svg'
                       svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
             <span style={{ fontSize: '10px', color: '#828282', fontFamily: '黑体' }}>待收货</span>
@@ -310,7 +321,7 @@ class User extends React.Component<Props, State> {
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'center'
-          }} onClick={this.orderOnclick.bind(this,4)}>
+          }} onClick={this.orderOnclick.bind(this, 4)}>
             <ReactSVG path='./assets/images/User/evaluation.svg'
                       svgStyle={{ width: OrderIconMaxSize, height: OrderIconMaxSize }}/>
             <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '黑体' }}>待评价</span>
@@ -333,20 +344,32 @@ class User extends React.Component<Props, State> {
               height: 'auto',
               maxWidth: '100%',
               maxHeight: '100%'
-            }} src={this.state.NewestOrder.over_time <= 0 || this.state.NewestOrder.over_time === undefined ? 'assets/images/User/noProduct.svg' : 'http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg'}/></div>
+            }}
+                 src={this.state.NewestOrder.over_time <= 0 || this.state.NewestOrder.over_time === undefined ? 'assets/images/User/noProduct.svg' : 'http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg'}/>
+          </div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
             paddingLeft: 10
-          }} onClick={this.orderOnclick.bind(this,0)}>
-            <span style={{ fontSize: '13px', color: '#0285e7', fontFamily: '微软雅黑' }}>{this.state.NewestOrder.over_time <= 0 || this.state.NewestOrder.over_time === undefined ? '尚无最新订单' : order[this.state.NewestOrder.pay_status] === undefined ? '' : order[this.state.NewestOrder.pay_status].title}</span>
-            <span style={{ fontSize: '10px', color: '#8d8d8d', fontFamily: '微软雅黑', marginTop: 7 }}>{this.state.NewestOrder.over_time <= 0 || this.state.NewestOrder.over_time === undefined ? '' : ((this.state.NewestOrder.over_time / 60).toFixed(0) + '分钟后订单关闭')}</span>
+          }} onClick={this.orderOnclick.bind(this, 0)}>
+            <span style={{
+              fontSize: '13px',
+              color: '#0285e7',
+              fontFamily: '微软雅黑'
+            }}>{this.state.NewestOrder.over_time <= 0 || this.state.NewestOrder.over_time === undefined ? '尚无最新订单' : order[this.state.NewestOrder.pay_status] === undefined ? '' : order[this.state.NewestOrder.pay_status].title}</span>
+            <span style={{
+              fontSize: '10px',
+              color: '#8d8d8d',
+              fontFamily: '微软雅黑',
+              marginTop: 7
+            }}>{this.state.NewestOrder.over_time <= 0 || this.state.NewestOrder.over_time === undefined ? '' : ((this.state.NewestOrder.over_time / 60).toFixed(0) + '分钟后订单关闭')}</span>
           </div>
         </div>
         <div style={{ height: 'auto' }}>
           <div className='Segment_line2'/>
-          <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }} onClick={this.orderOnclick.bind(this,5)}>
+          <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px' }}
+               onClick={this.orderOnclick.bind(this, 5)}>
             <span style={{ fontSize: '16px' }}>我的购买</span>
             <ReactSVG path='./assets/images/User/right.svg'
                       svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
@@ -544,7 +567,8 @@ class User extends React.Component<Props, State> {
 const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
   return {
     pageTab: state.globalData.pageTab,
-    userInfo: state.globalData.userInfo
+    userInfo: state.globalData.userInfo,
+    jumpOrder: state.jumpData.jumpOrder
   }
 }
 

@@ -183,7 +183,7 @@ class Supplier extends React.Component<Props, State> {
       <div className={'flex-space-between-column-stretch'}>
         <div style={{ height: 180, backgroundColor: '#0084E7', position: 'relative' }}>
           <div className={'flex-space-around-row-center'} style={{ padding: '60px 9% 0', width: '82%' }}>
-            { !isNil(this.state.SOrderNumber) && this.state.data.map((item, i) => this.orderNumberItem(i))}
+            {this.state.data.map((item, i) => this.orderNumberItem(i))}
           </div>
         </div>
         <div className={'headMenuWrap'}>
@@ -232,7 +232,8 @@ class Supplier extends React.Component<Props, State> {
     return (
       <div className={'flex-space-around-column-center'} style={{ height: 50 }}
            onClick={() => this.orderOnclick(i)}>
-        <span className={'commonFont'} style={{ fontSize: 20, color: '#fff' }}>{this.getOrderNumber(i)}</span>
+        <span className={'commonFont'}
+              style={{ fontSize: 20, color: '#fff' }}>{!isNil(this.state.SOrderNumber) && this.getOrderNumber(i)}</span>
         <label className={'commonFont'} style={{ fontSize: 12, color: '#fff' }}>{dataViewTitle[i]}</label>
       </div>
     )
