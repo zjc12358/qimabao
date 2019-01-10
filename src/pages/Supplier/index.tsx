@@ -21,6 +21,7 @@ import { updateAppointmentState, updateBusinessState, updateSupplierInfo } from 
 import { changeTab } from '@store/actions/supplierProductOrder_data'
 import { SOrderNumberBean } from '@datasources/SOrderNumberBean'
 import { cloneDeep, isNil } from 'lodash'
+import { SProductBean } from '@datasources/SProductBean'
 
 export interface Props {
   changeMode: (model: 'supplier' | 'purchaser') => void
@@ -38,6 +39,7 @@ interface State {
   isLoading: boolean
   drawerOpen: boolean
   SOrderNumber: SOrderNumberBean
+  SProductNumber: SProductBean
 }
 
 let IconMaxSize: number = 30
@@ -55,12 +57,14 @@ class Supplier extends React.Component<Props, State> {
       data: [1, 17, 143, 5, 0],
       dataShop: [3, 10, 5, 0],
       drawerOpen: false,
-      SOrderNumber: null
+      SOrderNumber: null,
+      SProductNumber: null
     }
   }
 
   componentDidMount () {
     this.getSOrderNumber()
+    this.getSProductNumber()
     // 获取供应商详情
     this.getSupplierInfo()
     // 基于准备好的dom，初始化echarts实例
@@ -345,13 +349,32 @@ class Supplier extends React.Component<Props, State> {
           {this.state.dataShop.map((i, index) => (
             <div className={'flex-space-between-column-center'} style={{ height: 35 }}>
               <span className={'commonFont'}
-                    style={{ fontSize: 14, color: '#0084E7' }}>{this.state.dataShop[index]}</span>
+                    style={{ fontSize: 14, color: '#0084E7' }}>{!isNil(this.state.SProductNumber) && this.getProductNumber(index)}</span>
               <span className={'commonFont'} style={{ fontSize: 14, color: '#60656F' }}>{dataShopTitle[index]}</span>
             </div>
           ))}
         </div>
       </div>
     )
+  }
+
+  /**
+   * 获取店铺 对应字段数量
+   * @param index
+   */
+  getProductNumber = (index: number): number => {
+    switch (index) {
+      case 0:
+        return this.state.SProductNumber.normal
+      case 1:
+        return this.state.SProductNumber.soldout
+      case 2:
+        return this.state.SProductNumber.repertory
+      case 3:
+        return this.state.SProductNumber.lower
+      default:
+        return 0
+    }
   }
   /**
    * 工具
@@ -493,6 +516,28 @@ class Supplier extends React.Component<Props, State> {
         if (data.data.code === 0) {
           this.setState({
             SOrderNumber: data.data.data
+          })
+        } else {
+          Toast.info(data.data.msg, 2, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!', 2, null, false)
+      })
+  }
+
+  /**
+   * 获取供应商 商品数量
+   */
+  getSProductNumber = () => {
+    let url = 'CanteenProcurementManager/supplier/info/findSupplierProductTable'
+    let query = ''
+    axios.get<MyResponse<SProductBean>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            SProductNumber: data.data.data
           })
         } else {
           Toast.info(data.data.msg, 2, null, false)

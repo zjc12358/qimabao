@@ -453,8 +453,8 @@ class User extends React.Component<Props, State> {
    * 空
    */
   public renderNone = () => {
-    return(
-      <div className={'flex-center-column-center'} style={{ height: '90vh',backgroundColor: '#fff' }}>
+    return (
+      <div className={'flex-center-column-center'} style={{ height: '90vh', backgroundColor: '#fff' }}>
         <ReactSVG path='./assets/images/noOrder.svg'
                   svgStyle={{ width: '100%' }}/>
         <span>当前没有订单</span>
@@ -642,6 +642,20 @@ class User extends React.Component<Props, State> {
           {/*</div>*/}
           {/*</div>*/}
           {/*</List.Item>*/}
+          <List.Item>
+            <div className='balance'>
+              <div>订单号</div>
+              <div style={{ flex: 1 }}></div>
+              <div>{!isNil(this.state.orderInfo) && this.state.orderInfo.order_id}</div>
+            </div>
+          </List.Item>
+          <List.Item>
+            <div className='balance'>
+              <div>订单金额</div>
+              <div style={{ flex: 1 }}></div>
+              <div>{!isNil(this.state.orderInfo) && this.state.orderInfo.order_amount}</div>
+            </div>
+          </List.Item>
           <List.Item>
             <div className='balance'>
               <div>付款方式</div>
