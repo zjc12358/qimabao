@@ -290,7 +290,7 @@ class Home extends React.Component<Props, State> {
            onClick={() => this.productOnClick(item.product_id)}>
         <div className='horizontal foodListItem'
              style={{ height: 90, width: '100%' }}>
-          <span className='redCart'></span>
+          {/*<span className='redCart'></span>*/}
           <img className='product-img' src={'./assets/images/SupplierTest/vegetable.png'}/>
           <div className='vertical product-list-item-content'
                style={{ justifyContent: 'space-between' }}>
