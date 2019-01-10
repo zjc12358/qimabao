@@ -20,6 +20,9 @@ import {
   updataCategoryId,
   updataProductDescription
 } from '@store/actions/release_data'
+import {
+  updateProductListDetail
+} from '@store/actions/supplierProductList_data'
 import { ProductList } from '@datasources/ProductList'
 const alert = Modal.alert
 
@@ -28,6 +31,7 @@ export interface Props {
   updataCategoryId: (categoryId: number) => void,
   updataCategoryClassId: (categoryClassId: number,categoryName: string) => void,
   updataProductDescription: (productDescription: string) => void,
+  updateProductListDetail: (productListDetail: ProductList) => void,
   productDescription: string,
   productMsg: any,
   categoryId: number,
@@ -51,6 +55,7 @@ interface State {
   productDescription: string,
   msg: string,
   carouselIndex: number
+  productListDetail: ProductList
 }
 let IconMaxSize: number = 30
 class Release extends React.Component<Props, State> {
@@ -72,7 +77,8 @@ class Release extends React.Component<Props, State> {
       productLabel: this.props.productMsg.productLabel,
       productDescription: '',
       msg: '',
-      carouselIndex: 0
+      carouselIndex: 0,
+      productListDetail: this.props.productListDetail
     }
   }
   componentDidMount () {
@@ -251,6 +257,7 @@ class Release extends React.Component<Props, State> {
    * @param type  input类型
    */
   renderParameterInput = (param,type,stateName) => {
+    let pro: ProductList = this.state.productListDetail
     return (
       <List.Item>
         <div className='parameter'>
@@ -258,19 +265,29 @@ class Release extends React.Component<Props, State> {
           <InputItem
             style={{ flex: 1 }}
             type={type}
-            defaultValue={this.props.productMsg[stateName]}
+            defaultValue={stateName}
             onBlur={ (e) => {
-              switch (stateName) {
-                case 'productPrice':
-                  this.setState({ productPrice: Number(e) },() => {
-                    this.updataSaveProductMsg()
-                    console.log(this.props.productMsg)
+              switch (param) {
+                case '价格':
+                  pro.product_price = e
+                  this.setState({
+                    productListDetail: pro
                   })
+                  this.props.updateProductListDetail(this.state.productListDetail)
                   break
-                case 'productStock':
-                  this.setState({ productStock: Number(e) },() => {
-                    this.updataSaveProductMsg()
+                case '库存':
+                  pro.product_stock = e
+                  this.setState({
+                    productListDetail: pro
                   })
+                  this.props.updateProductListDetail(this.state.productListDetail)
+                  break
+                case '产品标签':
+                  pro.product_label = e
+                  this.setState({
+                    productListDetail: pro
+                  })
+                  this.props.updateProductListDetail(this.state.productListDetail)
                   break
               }
             }}
@@ -290,7 +307,7 @@ class Release extends React.Component<Props, State> {
         className='category'
         onClick={() => { history().push(path) }}
         arrow='horizontal'
-        extra={ param === '类目' ? this.props.categoryName : this.props.productDescription}
+        extra={ param === '类目' ? this.props.productListDetail.category_class_name : this.props.productListDetail.product_description}
       >
         {param}
       </List.Item>
@@ -348,6 +365,7 @@ class Release extends React.Component<Props, State> {
   }
 
   public render () {
+    let pro: ProductList = this.state.productListDetail
     return (
       <div style={{ height: '100vh' }}>
         <Head
@@ -366,19 +384,21 @@ class Release extends React.Component<Props, State> {
               placeholder='输入商品标题'
               rows={2}
               count={60}
-              defaultValue={this.state.productName}
+              defaultValue={this.props.productListDetail.product_name}
               onBlur={ e => {
-                this.setState({ productName: e },() => {
-                  this.updataSaveProductMsg()
+                pro.product_name = e
+                this.setState({
+                  productListDetail: pro
                 })
+                this.props.updateProductListDetail(this.state.productListDetail)
               }}
             />
             {this.renderListItemGoTo('类目', '/category')}
           </div>
           <div className='paramContent' style={{ marginTop: 15, backgroundColor: 'white' }}>
-            {this.renderParameterInput('价格', 'number','productPrice')}
-            {this.renderParameterInput('库存', 'number','productStock')}
-            {this.renderParameterInput('产品标签', 'text','productLabel')}
+            {this.renderParameterInput('价格', 'number',this.state.productListDetail.product_price)}
+            {this.renderParameterInput('库存', 'number',this.state.productListDetail.product_stock)}
+            {this.renderParameterInput('产品标签', 'text',this.state.productListDetail.product_label)}
             {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
           {this.renderBottomDrawer()}
@@ -411,7 +431,8 @@ const mapDispatchToProps: MapDispatchToProps<any, any> = {
   saveProductMsg,
   updataCategoryId,
   updataCategoryClassId,
-  updataProductDescription
+  updataProductDescription,
+  updateProductListDetail
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Release)

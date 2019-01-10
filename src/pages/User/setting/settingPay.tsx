@@ -119,7 +119,7 @@ class User extends React.Component<Props, State> {
           height: 20
         }}>
           <span style={{ fontSize: '14px', marginLeft: 10,color: '#8f8f8f' }}>系统将根据以下排序按顺序扣款</span>
-          <span>拖动</span>
+          <span></span>
         </div>
         <div className='Segment_line2' />
         <div style={{ left: 32, fontSize: 14,color: '#8f8f8f',position: 'absolute',top: top + this.state.data.length * 40 + 50 }}>

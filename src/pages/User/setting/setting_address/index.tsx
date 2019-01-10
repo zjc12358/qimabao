@@ -98,8 +98,10 @@ class User extends React.Component<Props, State> {
             <span style={{
               fontSize: 12,
               paddingTop: 5,
+              width: '80%',
+              whiteSpace: 'normal',
               color: '#969696'
-            }}>{i.receiving_address}&nbsp;{i.receiving_address_detail.substr(0,30)}{i.receiving_address_detail.length > 30 ? '...' : ''}</span>
+            }}>{i.receiving_address}&nbsp;{i.receiving_address_detail.substr(0,20)}{i.receiving_address_detail.length > 30 ? '...' : ''}</span>
           </div>
           <div style={{
             padding: 20
