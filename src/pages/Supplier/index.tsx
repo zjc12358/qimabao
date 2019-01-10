@@ -156,7 +156,9 @@ class Supplier extends React.Component<Props, State> {
   public renderNav = () => {
     return (
       <div className='navWrap' style={{ position: this.props.mode === 'supplier' ? 'fixed' : 'static' }}>
-        <div style={{ width: '20%' }} onClick={() => this.toggleDrawer(true)}>图标</div>
+        <div style={{ width: '20%' }} onClick={() => this.toggleDrawer(true)}>
+          <img src={this.props.supplierStateInfo.supplier_icon}/>
+        </div>
         <div style={{ width: '50%', textAlign: 'center' }}>
           <span className={'commonFont'} style={{ fontSize: 18, color: '#fff' }}>食堂采购商家平台</span>
         </div>
@@ -349,7 +351,10 @@ class Supplier extends React.Component<Props, State> {
           {this.state.dataShop.map((i, index) => (
             <div className={'flex-space-between-column-center'} style={{ height: 35 }}>
               <span className={'commonFont'}
-                    style={{ fontSize: 14, color: '#0084E7' }}>{!isNil(this.state.SProductNumber) && this.getProductNumber(index)}</span>
+                    style={{
+                      fontSize: 14,
+                      color: '#0084E7'
+                    }}>{!isNil(this.state.SProductNumber) && this.getProductNumber(index)}</span>
               <span className={'commonFont'} style={{ fontSize: 14, color: '#60656F' }}>{dataShopTitle[index]}</span>
             </div>
           ))}

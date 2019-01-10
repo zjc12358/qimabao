@@ -408,6 +408,20 @@ class History extends React.Component<Props, State> {
           {/*</List.Item>*/}
           <List.Item>
             <div className='balance'>
+              <div>订单号</div>
+              <div style={{ flex: 1 }}></div>
+              <div>{this.props.orderId}</div>
+            </div>
+          </List.Item>
+          <List.Item>
+            <div className='balance'>
+              <div>订单金额</div>
+              <div style={{ flex: 1 }}></div>
+              <div>{this.props.total}</div>
+            </div>
+          </List.Item>
+          <List.Item>
+            <div className='balance'>
               <div>付款方式</div>
               <div style={{ flex: 1 }}></div>
               <div>账户余额</div>
@@ -450,7 +464,7 @@ class History extends React.Component<Props, State> {
             {/*value={this.state.payPassword === null ? null : this.state.payPassword.toString()}>*/}
             {/*{this.state.payPassword === null ? '' : this.state.payPassword}*/}
             {/*</Input>*/}
-            <div className={'payBigWrap'} style={{ position: 'relative',height: 60 }}>
+            <div className={'payBigWrap'} style={{ position: 'relative', height: 60 }}>
               <div className={'payPwdBox'}>
                 <div></div>
                 <div></div>
@@ -465,7 +479,7 @@ class History extends React.Component<Props, State> {
                 maxLength={6}
                 type={'money'}
                 moneyKeyboardAlign={'left'}
-                onChange={ (v) => {
+                onChange={(v) => {
                   this.setState({ payPassword: v })
                 }}
               />
@@ -701,7 +715,7 @@ class History extends React.Component<Props, State> {
           bottom: 0
         }}>
           <div style={{ flex: 1 }}></div>
-          <div style={{ color: 'red', paddingRight: 20,fontSize: '20px' }}>￥{this.props.total}</div>
+          <div style={{ color: 'red', paddingRight: 20, fontSize: '20px' }}>￥{this.props.total}</div>
           <Button type='primary' style={{ height: 50, width: 120, borderRadius: 0 }}
                   onClick={this.subOnChange}
           >提交订单</Button>
