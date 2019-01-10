@@ -37,6 +37,10 @@ import SProductList from './pages/Supplier/productList/index'
 /*供应商商品管理*/
 import SProductListEdit from './pages/Supplier/productList/edit'
 /*供应商商品编辑管理*/
+import SPDescribe from './pages/Supplier/productList/describe'
+/*供应商商品编辑管理描述*/
+import SPCategory from './pages/Supplier/productList/category'
+/*供应商商品编辑管理分类*/
 import AfterSaleSuccess from './pages/Supplier/afterSale/afterSaleSuccess'
 /*售后退款查询结果页面*/
 /* 采购商
@@ -163,6 +167,8 @@ ReactDOM.render(
         <Route path='/withdrawal' component={Withdrawal}/>
         <Route path='/addBankCard' component={AddBankCard}/>
         <Route path='/sProductList' component={SProductList}/>
+        <Route path='/spDescribe' component={SPDescribe}/>
+        <Route path='/spCategory' component={SPCategory}/>
         <Route path='/sProductListEdit' component={SProductListEdit}/>
         <Route path='/supplierOrder' component={SupplierOrder}/>
         <Route path='/detection' component={Detection}/>

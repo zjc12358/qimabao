@@ -50,6 +50,7 @@ interface State {
   modal3: boolean
   payPassword: number
   orderInfo: ProductOrder
+  oid: number
 }
 
 const tabs = [
@@ -83,7 +84,8 @@ class User extends React.Component<Props, State> {
       modal2: false,
       modal3: false,
       payPassword: null,
-      orderInfo: null
+      orderInfo: null,
+      oid: 0
     }
   }
 
@@ -421,7 +423,8 @@ class User extends React.Component<Props, State> {
                   onClick={(e) => {
                     this.showModal(e, 2)
                     this.setState({
-                      orderInfo: i
+                      orderInfo: i,
+                      oid: index
                     })
                   }}>立即付款</button>
         break
@@ -432,7 +435,7 @@ class User extends React.Component<Props, State> {
         break
       case 3:
         showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
-                           onClick={() => this.confirmOnclick(i.order_id, 4)}>确认收货</button>
+                           onClick={() => this.confirmOnclick(i.order_id, index)}>确认收货</button>
         break
       case 4:
         showDeal =
@@ -765,6 +768,10 @@ class User extends React.Component<Props, State> {
         })
         if (data.data.code === 0) {
           Toast.hide()
+          this.state.productOrderFu.splice(this.state.oid, 1)
+          this.setState({
+            refresh: 'refresh'
+          })
           Toast.info('支付成功!', 2, null, false)
           this.onClose(3)
           // TODO 2019/1/9 重新获取下待付款列表

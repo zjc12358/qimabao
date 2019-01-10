@@ -42,7 +42,7 @@ const tabs = [
   { title: '仓库中' },
   { title: '已下架' }
 ]
-const operation = ['','上架','下架']
+const operation = ['上架','下架','']
 const alert = Modal.alert
 const NUM_ROWS = 5
 class Supplier extends React.Component<Props, State> {

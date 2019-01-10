@@ -12,7 +12,6 @@ import history from 'history/createHashHistory'
 import ReactSVG from 'react-svg'
 import Head from '../../../components/Head/index'
 import './describe.less'
-import { cloneDeep, get } from 'lodash'
 import {
   updateProductListDetail
 } from '@store/actions/supplierProductList_data'
@@ -26,6 +25,7 @@ export interface Props {
 
 interface State {
   productListDetail: ProductList
+  data: string
 }
 let IconMaxSize: number = 30
 class Describe extends React.Component<Props, State> {
@@ -33,7 +33,8 @@ class Describe extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      productListDetail: this.props.productListDetail
+      productListDetail: this.props.productListDetail,
+      data: ''
     }
   }
   componentDidMount () {
@@ -49,6 +50,7 @@ class Describe extends React.Component<Props, State> {
   }
 
   public render () {
+    let pro: ProductList = this.state.productListDetail
     return (
       <div className={'describeWrap'}>
         <div className='describeHead'>
@@ -61,11 +63,15 @@ class Describe extends React.Component<Props, State> {
         <div className='describeContainer'>
           <TextareaItem
             rows={8}
-            defaultValue={ this.props.productDescription ? this.props.productDescription : '' }
+            defaultValue={ this.props.productListDetail.product_description ? this.props.productListDetail.product_description : '' }
             placeholder='请输入商品描述'
             onBlur={ e => {
               // console.log(e)
-              this.setState({ data: e })
+              pro.product_description = e
+              this.setState({
+                productListDetail: pro
+              })
+              this.props.updateProductListDetail(this.state.productListDetail)
             }}
           />
         </div>
@@ -76,7 +82,6 @@ class Describe extends React.Component<Props, State> {
               type='primary'
               onClick={ () => {
                 console.log(this.state.data)
-                this.props.updateProductListDetail(this.state.data)
                 history().goBack()
                 Toast.success('', 2, null , false)
               }}
