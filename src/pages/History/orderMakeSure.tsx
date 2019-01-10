@@ -415,13 +415,6 @@ class History extends React.Component<Props, State> {
           </List.Item>
           <List.Item>
             <div className='balance'>
-              <div>订单金额</div>
-              <div style={{ flex: 1 }}></div>
-              <div>{this.props.total}</div>
-            </div>
-          </List.Item>
-          <List.Item>
-            <div className='balance'>
               <div>付款方式</div>
               <div style={{ flex: 1 }}></div>
               <div>账户余额</div>
