@@ -480,7 +480,7 @@ class Home extends React.Component<Props, State> {
     this.setState({
       drawerOpen: false
     })
-    this.getProductList()
+    this.refresh()
   }
 
   /**
@@ -738,6 +738,18 @@ class Home extends React.Component<Props, State> {
       .catch(() => {
         Toast.info('请检查网络设置!')
       })
+  }
+
+  /**
+   * 清空搜索条件
+   */
+  clearSearchInfo = () => {
+    this.setState({
+      minPrice: null,
+      maxPrice: null,
+      tagList: [],
+      sortIndex: null
+    })
   }
 
   public render () {
