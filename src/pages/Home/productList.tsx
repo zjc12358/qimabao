@@ -338,7 +338,8 @@ class Home extends React.Component<Props, State> {
                 <span style={{ width: 15, height: 1, backgroundColor: 'black', marginRight: 2, marginLeft: 2 }}/>
                 <Input className='center price-input-border' onChange={this.priceMaxChange}
                        placeholder={this.state.maxPrice === null ? '最高价' : this.state.maxPrice.toString()}
-                       type={'number'} disableUnderline={true}>
+                       type={'number'} disableUnderline={true}
+                       value={this.state.maxPrice === null ? null : this.state.maxPrice.toString()}>
                   {this.state.maxPrice === null ? '' : this.state.maxPrice}
                 </Input>
               </div>
