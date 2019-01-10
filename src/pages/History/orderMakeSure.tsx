@@ -398,7 +398,7 @@ class History extends React.Component<Props, State> {
         <List renderHeader={'选择付款方式'} className='popup-list'>
           {/*<List.Item>*/}
           {/*<div className='account'>*/}
-          {/*<div className='accountPice'>￥{this.props.total}</div>*/}
+          <div className='accountPice'>￥{this.props.total}</div>
           {/*<div className='accountDetail'>*/}
           {/*<div>支付宝账号</div>*/}
           {/*<div style={{ flex: 1 }}></div>*/}

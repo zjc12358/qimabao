@@ -39,8 +39,8 @@ interface State {
 const tabs = [
   { title: '全部' },
   { title: '待付款' },
-  { title: '待收货' },
   { title: '待发货' },
+  { title: '待收货' },
   { title: '待评价' },
   { title: '已完成' }
 ]
@@ -72,7 +72,8 @@ class Supplier extends React.Component<Props, State> {
     let query = 'pageNum=' + this.state.pageNum
     query += '&pageSize=' + NUM_ROWS
     if (index === 0) query += ''
-    else query += '&payStatus=' + (index - 1)
+    if (index > 0 && index < 3) query += '&payStatus=' + (index - 1)
+    if (index >= 3) query += '&payStatus=' + index
     console.log(url + query)
     axios.get<any>(url + query)
       .then(data => {
@@ -360,7 +361,7 @@ class Supplier extends React.Component<Props, State> {
   }
   public deliveryOnclick = (id,index) => {
     let url = 'CanteenProcurementManager/user/productOrder/updatePyStates?'
-    let query = 'states=' + 2 + '&orderId=' + id
+    let query = 'states=' + 3 + '&orderId=' + id
     console.log(url + query)
     axios.get<MyResponse<any>>(url + query)
       .then(data => {

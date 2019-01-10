@@ -97,7 +97,8 @@ class User extends React.Component<Props, State> {
     let query = 'pageNum=' + this.state.pageNum
     query += '&pageSize=' + NUM_ROWS
     if (index === 0) query += ''
-    else query += '&payStatus=' + (index - 1)
+    if (index > 0 && index < 3) query += '&payStatus=' + (index - 1)
+    if (index >= 3) query += '&payStatus=' + index
     console.log(url + query)
     axios.get<any>(url + query)
       .then(data => {
@@ -429,11 +430,11 @@ class User extends React.Component<Props, State> {
           <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
                   onClick={() => this.sendOnClick(i.order_id)}>立即催货</button>
         break
-      case 2:
-        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
-                           onClick={() => this.confirmOnclick(i.order_id, index)}>确认收货</button>
-        break
       case 3:
+        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
+                           onClick={() => this.confirmOnclick(i.order_id, 4)}>确认收货</button>
+        break
+      case 4:
         showDeal =
           <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
                   onClick={() => this.evaOnClick(i.order_id)}>立即评价</button>

@@ -68,26 +68,26 @@ class Describe extends React.Component<Props, State> {
             }}
           />
         </div>
-        <div className={'payBigWrap'} style={{ position: 'relative',height: 60 }}>
-          <div className={'payPwdBox'}>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <span className={'showPayPwd'}>{this.state.payPwd}</span>
-          </div>
-          <InputItem
-            className={'paypwd'}
-            maxLength={6}
-            type={'money'}
-            moneyKeyboardAlign={'left'}
-            onChange={ (v) => {
-              this.setState({ payPwd: v })
-            }}
-          />
-        </div>
+        {/*<div className={'payBigWrap'} style={{ position: 'relative',height: 60 }}>*/}
+          {/*<div className={'payPwdBox'}>*/}
+            {/*<div></div>*/}
+            {/*<div></div>*/}
+            {/*<div></div>*/}
+            {/*<div></div>*/}
+            {/*<div></div>*/}
+            {/*<div></div>*/}
+            {/*<span className={'showPayPwd'}>{this.state.payPwd}</span>*/}
+          {/*</div>*/}
+          {/*<InputItem*/}
+            {/*className={'paypwd'}*/}
+            {/*maxLength={6}*/}
+            {/*type={'money'}*/}
+            {/*moneyKeyboardAlign={'left'}*/}
+            {/*onChange={ (v) => {*/}
+              {/*this.setState({ payPwd: v })*/}
+            {/*}}*/}
+          {/*/>*/}
+        {/*</div>*/}
         <div className='describeFooter'>
           {/*<div></div>*/}
           <div>
