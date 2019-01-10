@@ -68,7 +68,7 @@ class Describe extends React.Component<Props, State> {
             }}
           />
         </div>
-        <div style={{ position: 'relative',height: 60 }}>
+        <div className={'payBigWrap'} style={{ position: 'relative',height: 60 }}>
           <div className={'payPwdBox'}>
             <div></div>
             <div></div>
