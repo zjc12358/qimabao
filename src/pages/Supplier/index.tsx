@@ -42,7 +42,7 @@ interface State {
 
 let IconMaxSize: number = 30
 let MenuMaxSize: number = 24
-const dataViewTitle: any = ['待付款', '待收货', '待发货', '待评价', '退款/售后']
+const dataViewTitle: any = ['待付款', '待发货', '待收货', '待评价', '退款/售后']
 const dataShopTitle: any = ['出售中', '已售完', '仓库中', '已下架']
 
 class Supplier extends React.Component<Props, State> {
