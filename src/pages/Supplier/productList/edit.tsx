@@ -393,13 +393,13 @@ class Release extends React.Component<Props, State> {
                 this.props.updateProductListDetail(this.state.productListDetail)
               }}
             />
-            {this.renderListItemGoTo('类目', '/category')}
+            {this.renderListItemGoTo('类目', '/spCategory')}
           </div>
           <div className='paramContent' style={{ marginTop: 15, backgroundColor: 'white' }}>
             {this.renderParameterInput('价格', 'number',this.state.productListDetail.product_price)}
             {this.renderParameterInput('库存', 'number',this.state.productListDetail.product_stock)}
             {this.renderParameterInput('产品标签', 'text',this.state.productListDetail.product_label)}
-            {this.renderListItemGoTo('宝贝描述', '/describe')}
+            {this.renderListItemGoTo('宝贝描述', '/spDescribe')}
           </div>
           {this.renderBottomDrawer()}
           <div className='releaseFooter'>

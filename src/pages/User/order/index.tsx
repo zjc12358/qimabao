@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Tabs, Button, Icon, Toast, Modal, List } from 'antd-mobile'
+import { Tabs, Button, Icon, Toast, Modal, List, InputItem } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { connect, MapDispatchToProps, MapStateToPropsParam } from 'react-redux'
 import { GlobalData } from '../../../store/reducers/globalDataReducer'
@@ -48,8 +48,9 @@ interface State {
   modal1: boolean
   modal2: boolean
   modal3: boolean
-  payPassword: number
+  payPassword: any
   orderInfo: ProductOrder
+  oid: number
 }
 
 const tabs = [
@@ -83,7 +84,8 @@ class User extends React.Component<Props, State> {
       modal2: false,
       modal3: false,
       payPassword: null,
-      orderInfo: null
+      orderInfo: null,
+      oid: 0
     }
   }
 
@@ -421,7 +423,8 @@ class User extends React.Component<Props, State> {
                   onClick={(e) => {
                     this.showModal(e, 2)
                     this.setState({
-                      orderInfo: i
+                      orderInfo: i,
+                      oid: index
                     })
                   }}>立即付款</button>
         break
@@ -432,7 +435,7 @@ class User extends React.Component<Props, State> {
         break
       case 3:
         showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
-                           onClick={() => this.confirmOnclick(i.order_id, 4)}>确认收货</button>
+                           onClick={() => this.confirmOnclick(i.order_id, index)}>确认收货</button>
         break
       case 4:
         showDeal =
@@ -632,6 +635,7 @@ class User extends React.Component<Props, State> {
         className='paySure'
       >
         <List renderHeader={'选择付款方式'} className='popup-list'>
+          <div className='accountPice'>￥{!isNil(this.state.orderInfo) && this.state.orderInfo.order_amount}</div>
           {/*<List.Item>*/}
           {/*<div className='account'>*/}
           {/*<div className='accountPice'>￥{this.props.total}</div>*/}
@@ -649,13 +653,13 @@ class User extends React.Component<Props, State> {
               <div>{!isNil(this.state.orderInfo) && this.state.orderInfo.order_id}</div>
             </div>
           </List.Item>
-          <List.Item>
-            <div className='balance'>
-              <div>订单金额</div>
-              <div style={{ flex: 1 }}></div>
-              <div>{!isNil(this.state.orderInfo) && this.state.orderInfo.order_amount}</div>
-            </div>
-          </List.Item>
+          {/*<List.Item>*/}
+          {/*<div className='balance'>*/}
+          {/*<div>订单金额</div>*/}
+          {/*<div style={{ flex: 1 }}></div>*/}
+          {/*<div>{!isNil(this.state.orderInfo) && this.state.orderInfo.order_amount}</div>*/}
+          {/*</div>*/}
+          {/*</List.Item>*/}
           <List.Item>
             <div className='balance'>
               <div>付款方式</div>
@@ -696,25 +700,43 @@ class User extends React.Component<Props, State> {
               style={{
                 width: '100%', height: '60%'
               }}>
-        <List renderHeader={'请输入支付密码'} style={{
+        <List className={'pwdPayBoxTitle'} renderHeader={'请输入支付密码'} style={{
           width: '100%', height: '60%', backgroundColor: 'white',
           color: 'black'
         }}>
-          <List.Item>
-            <div className='balance'>
-              {/*<div>付款方式</div>*/}
-              {/*<div style={{ flex: 1 }}></div>*/}
-              {/*<div>账户余额</div>*/}
-              {/*<Icon type='right'/>*/}
-              <Input className='center' onChange={this.payChange}
-                     placeholder={'请输入支付密码'}
-                     type={'numberPassword'} disableUnderline={true}
-                     value={this.state.payPassword === null ? null : this.state.payPassword.toString()}>
-                {this.state.payPassword === null ? '' : this.state.payPassword}
-              </Input>
+          <div className='balance'>
+            {/*<div>付款方式</div>*/}
+            {/*<div style={{ flex: 1 }}></div>*/}
+            {/*<div>账户余额</div>*/}
+            {/*<Icon type='right'/>*/}
+            {/*<Input className='center' onChange={this.payChange}*/}
+            {/*placeholder={'请输入支付密码'}*/}
+            {/*type={'numberPassword'} disableUnderline={true}*/}
+            {/*value={this.state.payPassword === null ? null : this.state.payPassword.toString()}>*/}
+            {/*{this.state.payPassword === null ? '' : this.state.payPassword}*/}
+            {/*</Input>*/}
+            <div className={'payBigWrap'} style={{ position: 'relative', height: 60 }}>
+              <div className={'payPwdBox'}>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <span className={'showPayPwd'}>{this.state.payPassword}</span>
+              </div>
+              <InputItem
+                className={'paypwd'}
+                maxLength={6}
+                type={'money'}
+                moneyKeyboardAlign={'left'}
+                onChange={(v) => {
+                  this.setState({ payPassword: v })
+                }}
+              />
             </div>
-          </List.Item>
-          <div style={{ height: 210, backgroundColor: 'white' }}></div>
+          </div>
+          <div style={{ height: 180, backgroundColor: 'white' }}></div>
           <List.Item>
             <Button style={{ width: '100%' }} type='primary'
                     onClick={() => this.checkPayPassword(this.state.payPassword)}>立即付款</Button>
@@ -765,6 +787,10 @@ class User extends React.Component<Props, State> {
         })
         if (data.data.code === 0) {
           Toast.hide()
+          this.state.productOrderFu.splice(this.state.oid, 1)
+          this.setState({
+            refresh: 'refresh'
+          })
           Toast.info('支付成功!', 2, null, false)
           this.onClose(3)
           // TODO 2019/1/9 重新获取下待付款列表

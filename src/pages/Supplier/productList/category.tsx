@@ -23,6 +23,7 @@ export interface Props {
 }
 
 interface State {
+  productListDetail: ProductList
   allCategory: Array<CategoryBean>
 }
 
@@ -31,7 +32,8 @@ class Supplier extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      allCategory: []
+      allCategory: [],
+      productListDetail: this.props.productListDetail
     }
   }
 
@@ -89,8 +91,14 @@ class Supplier extends React.Component<Props, State> {
    * 点击二级类目
    */
   secondCategoryOnClick = (id: number, categoryId: number, categoryName: string) => {
-    this.props.updataCategoryId(id)
-    this.props.updataCategoryClassId(categoryId, categoryName)
+    let pro: ProductList = this.state.productListDetail
+    pro.category_id = id
+    pro.category_class_id = categoryId
+    pro.category_class_name = categoryName
+    this.setState({
+      productListDetail: pro
+    })
+    this.props.updateProductListDetail(this.state.productListDetail)
     history().goBack()
   }
 

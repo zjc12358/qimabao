@@ -338,7 +338,8 @@ class Home extends React.Component<Props, State> {
                 <span style={{ width: 15, height: 1, backgroundColor: 'black', marginRight: 2, marginLeft: 2 }}/>
                 <Input className='center price-input-border' onChange={this.priceMaxChange}
                        placeholder={this.state.maxPrice === null ? '最高价' : this.state.maxPrice.toString()}
-                       type={'number'} disableUnderline={true}>
+                       type={'number'} disableUnderline={true}
+                       value={this.state.maxPrice === null ? null : this.state.maxPrice.toString()}>
                   {this.state.maxPrice === null ? '' : this.state.maxPrice}
                 </Input>
               </div>
@@ -480,7 +481,7 @@ class Home extends React.Component<Props, State> {
     this.setState({
       drawerOpen: false
     })
-    this.getProductList()
+    this.refresh()
   }
 
   /**
@@ -647,7 +648,7 @@ class Home extends React.Component<Props, State> {
             this.setState({
               productList: newList
             })
-            if (this.state.count < this.state.pageNum * NUM_ROWS) {
+            if (this.state.count <= this.state.pageNum * NUM_ROWS) {
               this.setState({ hasMore: false })
             }
           }
@@ -738,6 +739,18 @@ class Home extends React.Component<Props, State> {
       .catch(() => {
         Toast.info('请检查网络设置!')
       })
+  }
+
+  /**
+   * 清空搜索条件
+   */
+  clearSearchInfo = () => {
+    this.setState({
+      minPrice: null,
+      maxPrice: null,
+      tagList: [],
+      sortIndex: null
+    })
   }
 
   public render () {
