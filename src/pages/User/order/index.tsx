@@ -757,9 +757,15 @@ class User extends React.Component<Props, State> {
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
+        this.setState({
+          payPassword: null
+        })
       })
       .catch(() => {
         Toast.info('请检查网络设置!', 2, null, false)
+        this.setState({
+          payPassword: null
+        })
       })
   }
 
