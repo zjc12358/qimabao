@@ -460,8 +460,12 @@ class Supplier extends React.Component<Props, State> {
   }
 
   public orderOnclick = (index) => {
-    this.props.changeTab(index + 1)
-    history().push('supplierOrder')
+    if (index === 4) {
+      history().push('supplierAfterSale')
+    } else {
+      this.props.changeTab(index + 1)
+      history().push('supplierOrder')
+    }
   }
 
   /**
