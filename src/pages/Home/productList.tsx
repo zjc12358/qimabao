@@ -648,7 +648,7 @@ class Home extends React.Component<Props, State> {
             this.setState({
               productList: newList
             })
-            if (this.state.count < this.state.pageNum * NUM_ROWS) {
+            if (this.state.count <= this.state.pageNum * NUM_ROWS) {
               this.setState({ hasMore: false })
             }
           }
