@@ -582,10 +582,7 @@ class User extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          this.state.productOrderShou.splice(index, 1)
-          this.setState({
-            refresh: 'refresh'
-          })
+          this.getData(null, this.props.tab)
           Toast.info('确认成功!', 1, null, false)
         } else {
           Toast.info(data.data.msg, 2, null, false)
@@ -760,9 +757,15 @@ class User extends React.Component<Props, State> {
         } else {
           Toast.info(data.data.msg, 2, null, false)
         }
+        this.setState({
+          payPassword: null
+        })
       })
       .catch(() => {
         Toast.info('请检查网络设置!', 2, null, false)
+        this.setState({
+          payPassword: null
+        })
       })
   }
 
@@ -787,10 +790,7 @@ class User extends React.Component<Props, State> {
         })
         if (data.data.code === 0) {
           Toast.hide()
-          this.state.productOrderFu.splice(this.state.oid, 1)
-          this.setState({
-            refresh: 'refresh'
-          })
+          this.getData(null, this.props.tab)
           Toast.info('支付成功!', 2, null, false)
           this.onClose(3)
           // TODO 2019/1/9 重新获取下待付款列表

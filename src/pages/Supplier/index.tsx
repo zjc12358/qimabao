@@ -254,9 +254,9 @@ class Supplier extends React.Component<Props, State> {
       case 0:
         return this.state.SOrderNumber.unpaid
       case 1:
-        return this.state.SOrderNumber.received
-      case 2:
         return this.state.SOrderNumber.shipped
+      case 2:
+        return this.state.SOrderNumber.received
       case 3:
         return this.state.SOrderNumber.commented
       case 4:
@@ -460,9 +460,12 @@ class Supplier extends React.Component<Props, State> {
   }
 
   public orderOnclick = (index) => {
-    console.log(index)
-    this.props.changeTab(index)
-    history().push('supplierOrder')
+    if (index === 4) {
+      history().push('supplierAfterSale')
+    } else {
+      this.props.changeTab(index + 1)
+      history().push('supplierOrder')
+    }
   }
 
   /**

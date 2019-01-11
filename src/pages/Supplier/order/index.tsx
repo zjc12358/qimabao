@@ -367,10 +367,7 @@ class Supplier extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          this.state.supplierProductOrderPei.splice(index,1)
-          this.setState({
-            refresh: 'refresh'
-          })
+          this.getData(this.props.tab,this.props.tab)
           Toast.info('发货成功', 1, null, false)
         } else {
           Toast.info(data.data.msg, 2, null, false)
