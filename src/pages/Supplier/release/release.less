@@ -5,6 +5,7 @@
 .cameraIcon{
   width: 45px;
   height: 35px;
+  flex-direction: column;
 }
 .img_picker{
   position: relative;
@@ -85,10 +86,9 @@
   border-top: none;
 }
 .releaseFooter{
-  display: flex;
-  position: fixed;
   width: 100%;
-  bottom: 0;
+  height: 46px;
+  display: flex;
   &>div{
     display: flex;
     align-items: center;
@@ -156,6 +156,9 @@ html:not([data-scale]) .am-list-body:before {
   //}
 }
 .releaseContainer{
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   .el-carousel__item{
     display: inline-block!important;
   }

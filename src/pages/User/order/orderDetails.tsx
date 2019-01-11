@@ -43,7 +43,11 @@ class User extends React.Component<Props, State> {
           // console.log(data.data.data)
           this.setState({ data: data.data.data },() => {
             console.log(this.state.data)
-            this.setState({ address: JSON.parse(this.state.data[0].buyer_address) })
+            if (this.state.data[0].buyer_address) {
+              this.setState({ address: JSON.parse(this.state.data[0].buyer_address) })
+            } else {
+              return
+            }
           })
         } else {
           Toast.info(data.data.msg, 2, null, false)
@@ -183,29 +187,29 @@ class User extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div>
-        <div>
-          <Head
-            showLeftIcon='true'
-            title='订单详情'
-            backgroundColor='#0084e7'
-            leftIconColor='white'
-          />
-        </div>
-        <div className='stateBox'>
-          <div>
-            <div style={{ fontSize: 18 }}>{this.state.data ? this.state.data[0].pay_china_status : null }</div>
-            <div style={{ marginTop: 5 }}>超市关闭</div>
+      <div style={{ display: 'flex',flexDirection: 'column',height: '100vh' }}>
+        <Head
+          showLeftIcon='true'
+          title='订单详情'
+          backgroundColor='#0084e7'
+          leftIconColor='white'
+        />
+        <div style={{ flex: 1,overflow: 'auto' }}>
+          <div className='stateBox'>
+            <div>
+              <div style={{ fontSize: 18 }}>{this.state.data ? this.state.data[0].pay_china_status : null }</div>
+              <div style={{ marginTop: 5 }}>超市关闭</div>
+            </div>
+            <div style={{ flex: 1 }}></div>
+            <div>
+              <img style={{ width: 151,display: 'block' }} src='./assets/images/box.png' />
+            </div>
           </div>
-          <div style={{ flex: 1 }}></div>
-          <div>
-            <img style={{ width: 151,display: 'block' }} src='./assets/images/box.png' />
-          </div>
+          {this.renderAddress()}
+          {this.renderOrderItem()}
+          {this.renderPriceList()}
+          {this.renderOrderMsg()}
         </div>
-        {this.renderAddress()}
-        {this.renderOrderItem()}
-        {this.renderPriceList()}
-        {this.renderOrderMsg()}
       </div>
     )
   }
