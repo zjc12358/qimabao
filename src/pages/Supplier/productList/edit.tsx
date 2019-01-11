@@ -367,7 +367,7 @@ class Release extends React.Component<Props, State> {
   public render () {
     let pro: ProductList = this.state.productListDetail
     return (
-      <div style={{ height: '100vh' }}>
+      <div style={{ height: '100vh',display: 'flex',flexDirection: 'column' }}>
         <Head
           showLeftIcon='true'
           title='编辑商品'
