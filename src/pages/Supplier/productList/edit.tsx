@@ -45,12 +45,13 @@ interface State {
   openDrawer: boolean,
   files: Array<any>,
   multiple: boolean,
+  productId: string
   productData: any,
   productName: string,
   categoryId: number,
   categoryClassId: number,
-  productPrice: number,
-  productStock: number,
+  productPrice: any,
+  productStock: any,
   productLabel: string,
   productDescription: string,
   msg: string,
@@ -66,15 +67,16 @@ class Release extends React.Component<Props, State> {
     this.state = {
       data: {},
       openDrawer: false,
-      files: this.props.productMsg.productImg,
+      files: [],
       multiple: false,
       productData: {},
-      productName: this.props.productMsg.productName,
+      productId: this.props.productListDetail.product_id,
+      productName: this.props.productListDetail.product_name,
       categoryId: null,
       categoryClassId: null,
-      productPrice: this.props.productMsg.productPrice,
-      productStock: this.props.productMsg.productStock,
-      productLabel: this.props.productMsg.productLabel,
+      productPrice: this.props.productListDetail.product_price,
+      productStock: this.props.productListDetail.product_stock,
+      productLabel: this.props.productListDetail.product_label,
       productDescription: '',
       msg: '',
       carouselIndex: 0,
@@ -89,39 +91,50 @@ class Release extends React.Component<Props, State> {
   }
 
   submite = (productStatus) => {
-    let url = 'CanteenProcurementManager/user/ProductInfo/releaseProduct'
+    let url = 'CanteenProcurementManager/user/ProductInfo/updateProductEdit'
     let data = {
+      productId: this.state.productId,
+      productIcon: '533.png',
       productName: this.state.productName,
-      categoryId: this.props.categoryId,
-      categoryClassId: this.props.categoryClassId,
+      categoryClassId: this.props.productListDetail.category_class_id,
       productPrice: this.state.productPrice,
       productStock: this.state.productStock,
       productLabel: this.state.productLabel,
-      productDescription: this.props.productDescription,
-      files: this.state.files
+      productDescription: this.props.productListDetail.product_description
     }
     // let data2 = JSON.stringify(data)
-    let files2 = { files: data.files }
+    let files2 = { files: data.productIcon }
     let ret = ''
     for (let it in data) {
       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
     }
     console.log(ret)
     let fd = new FormData()
+    fd.append('productId', data.productId)
+    fd.append('productIcon', '533.png')
     fd.append('productName', data.productName)
-    fd.append('categoryId', JSON.stringify(data.categoryId))
     fd.append('categoryClassId', JSON.stringify(data.categoryClassId))
     fd.append('productPrice', JSON.stringify(data.productPrice))
     fd.append('productStock', JSON.stringify(data.productStock))
     fd.append('productLabel', JSON.stringify(data.productLabel))
     fd.append('productDescription', data.productDescription)
-    fd.append('files', JSON.stringify(files2))
-    fd.append('productStatus', JSON.stringify(productStatus))
+
     /**
      * 状态 1
      */
-    console.log(fd.get('productName'))
-    axios.post(url,fd,{ headers: { 'Content-Type': 'application/json' } })
+    console.log(this.state.productListDetail.category_class_id)
+    axios.get(url,{
+      params: {
+        productId: this.state.productListDetail.product_id,
+        productIcon: '533.png',
+        productName: this.state.productListDetail.product_name,
+        categoryClassId: this.state.productListDetail.category_class_id,
+        productPrice: this.state.productListDetail.product_price,
+        productStock: this.state.productListDetail.product_stock,
+        productLabel: this.state.productListDetail.product_label,
+        productDescription: this.state.productListDetail.product_description
+      }
+    })
       .then(data => {
         console.log('--- 购物车data =', data)
         if (data.data.code === 0) {

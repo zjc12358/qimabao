@@ -4,7 +4,7 @@ export interface ProductList {
   create_time: string
   product_description: string
   product_icon: string
-  product_id: number
+  product_id: string
   product_label: string
   product_name: string
   product_price: string
