@@ -540,10 +540,14 @@ class Home extends React.Component<Props, State> {
    * @param event
    */
   priceMinChange = (event) => {
-    console.log('minP' + event.target.value)
     this.setState({
       minPrice: event.target.value
     })
+    if (event.target.value.length < 1) {
+      this.setState({
+        minPrice: null
+      })
+    }
   }
 
   /**
@@ -554,6 +558,11 @@ class Home extends React.Component<Props, State> {
     this.setState({
       maxPrice: event.target.value
     })
+    if (event.target.value.length < 1) {
+      this.setState({
+        maxPrice: null
+      })
+    }
   }
 
   /**
@@ -597,7 +606,7 @@ class Home extends React.Component<Props, State> {
    * 获取商品列表
    */
   getProductList () {
-    console.log(this.getMode(this.state.sortIndex))
+    console.log(this.getMode(this.state.sortIndex) + 'min' + this.state.minPrice)
     if (this.state.isLoading) {
       return
     }
