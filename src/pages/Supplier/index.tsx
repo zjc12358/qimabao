@@ -254,9 +254,9 @@ class Supplier extends React.Component<Props, State> {
       case 0:
         return this.state.SOrderNumber.unpaid
       case 1:
-        return this.state.SOrderNumber.received
-      case 2:
         return this.state.SOrderNumber.shipped
+      case 2:
+        return this.state.SOrderNumber.received
       case 3:
         return this.state.SOrderNumber.commented
       case 4:
