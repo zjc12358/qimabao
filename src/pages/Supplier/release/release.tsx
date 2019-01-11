@@ -74,6 +74,12 @@ class Release extends React.Component<Props, State> {
     }
   }
 
+  componentDidMount () {
+    window.onresize = function (e) {
+      // console.log(e.target.innerHeight)
+    }
+  }
+
   toggleDrawer = (side, open) => () => {
     this.setState({ openDrawer: open })
   }
@@ -351,7 +357,7 @@ class Release extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{ height: '100vh' }}>
+      <div style={{ height: '100vh',display: 'flex',flexDirection: 'column' }}>
         <Head
           showLeftIcon='true'
           title='发布商品'
@@ -384,14 +390,14 @@ class Release extends React.Component<Props, State> {
             {this.renderListItemGoTo('宝贝描述', '/describe')}
           </div>
           {this.renderBottomDrawer()}
-          <div className='releaseFooter'>
-            <div onClick={() => {
-              this.submite(2)
-            }}>放入仓库</div>
-            <div onClick={() => {
-              this.submite(0)
-            }}>立即发布</div>
-          </div>
+        </div>
+        <div className='releaseFooter'>
+          <div style={{ backgroundColor: 'white' }} onClick={() => {
+            this.submite(2)
+          }}>放入仓库</div>
+          <div onClick={() => {
+            this.submite(0)
+          }}>立即发布</div>
         </div>
       </div>
     )
