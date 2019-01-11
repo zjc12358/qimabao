@@ -583,6 +583,7 @@ class User extends React.Component<Props, State> {
         console.log('--- data =', data)
         if (data.data.code === 0) {
           this.state.productOrderShou.splice(index, 1)
+          this.state.productOrderAll[index].pay_status = 4
           this.setState({
             refresh: 'refresh'
           })
@@ -788,6 +789,7 @@ class User extends React.Component<Props, State> {
         if (data.data.code === 0) {
           Toast.hide()
           this.state.productOrderFu.splice(this.state.oid, 1)
+          this.state.productOrderAll[this.state.oid].pay_status = 2
           this.setState({
             refresh: 'refresh'
           })

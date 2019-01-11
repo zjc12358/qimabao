@@ -368,6 +368,7 @@ class Supplier extends React.Component<Props, State> {
         console.log('--- data =', data)
         if (data.data.code === 0) {
           this.state.supplierProductOrderPei.splice(index,1)
+          this.state.supplierProductOrderAll[index].pay_status = 3
           this.setState({
             refresh: 'refresh'
           })
