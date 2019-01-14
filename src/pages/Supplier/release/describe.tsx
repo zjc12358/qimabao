@@ -55,7 +55,9 @@ class Describe extends React.Component<Props, State> {
             <ReactSVG svgClassName='ic' path='./assets/images/ic_back-grey.svg'/>
           </div>
           <div>商品描述</div>
-          <div><ReactSVG svgClassName='ic delete' path='./assets/images/Supplier/drawerDelete.svg'/></div>
+          <div>
+            {/*<ReactSVG svgClassName='ic delete' path='./assets/images/Supplier/drawerDelete.svg'/>*/}
+          </div>
         </div>
         <div className='describeContainer'>
           <TextareaItem
