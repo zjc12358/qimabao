@@ -9,6 +9,8 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import Nav from '@components/Head/nav'
 import history from 'history/createHashHistory'
 import '../../master.css'
+import './payPwd.less'
+import axios from 'axios'
 
 export interface Props {
   pageTab: PageTab
@@ -18,14 +20,18 @@ export interface Props {
 }
 
 interface State {
-
+  payPassword: string
+  payPasswordStar: string
 }
 
 class User extends React.Component<Props, State> {
 
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      payPassword: '',
+      payPasswordStar: ''
+    }
   }
 
   /**
@@ -44,23 +50,49 @@ class User extends React.Component<Props, State> {
         }}>
           <span style={{ fontSize: 16 }}>输入支付密码，完成验证 </span>
         </div>
-        <div className='Segment_line2'/>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          paddingTop: 40
-        }}>
-          <div className='passContainer'>
-            <input maxLength={6} autoFocus={true} type='password' className={'passWordInput'}
-                   onChange={(e) => this.passwordOnchange(e)}/>
-            <div className='passItem'/>
-            <div className='passItem'/>
-            <div className='passItem'/>
-            <div className='passItem'/>
-            <div className='passItem'/>
-            <div className='passItem'/>
+        <div className={'BigWrap'} style={{ position: 'relative', height: 60,marginTop: 50 }}>
+          <div className={'PwdBox'}>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <span className={'showPwd'}>{this.state.payPasswordStar}</span>
           </div>
+          <InputItem
+            className={'pwd'}
+            maxLength={6}
+            type={'money'}
+            moneyKeyboardAlign={'left'}
+            onChange={(v) => {
+              this.setState({
+                payPassword: v
+              },() => {
+                this.setState({
+                  payPasswordStar: v.replace(/.(?=.)/g, '*')
+                },() => {
+                  if (v.length === 6) {
+                    let url = 'CanteenProcurementManager/user/nail/checkSamePassword?'
+                    let query = 'password=' + v
+                    axios.get<any>(url + query)
+                      .then(data => {
+                        console.log('--- data =', data)
+                        if (data.data.code === 0) {
+                          history().push('/paymentPasswordReset')
+                          Toast.info('验证通过', 1, null, false)
+                        } else {
+                          Toast.info('验证失败，密码不正确', 1, null, false)
+                        }
+                      })
+                      .catch(() => {
+                        Toast.info('请检查网络设置!')
+                      })
+                  }
+                })
+              })
+            }}
+          />
         </div>
         <div style={{
           textAlign: 'center',
@@ -74,9 +106,7 @@ class User extends React.Component<Props, State> {
 
   passwordOnchange (e) {
     console.log(e.target.value + '   ' + e.target.value.length)
-    if (e.target.value.length === 6) {
-      history().push('/paymentPasswordReset')
-    }
+
   }
 
   public render () {

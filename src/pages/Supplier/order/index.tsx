@@ -13,12 +13,13 @@ import axios from 'axios'
 import { MyResponse } from '@datasources/MyResponse'
 import { SupplierProductOrder } from '@datasources/SupplierProductOrder'
 import { cloneDeep, isNil } from 'lodash'
-import { updateSupplierProductOrder,changeTab } from '@store/actions/supplierProductOrder_data'
+import { updateSupplierProductOrder,changeTab, changeIndex } from '@store/actions/supplierProductOrder_data'
 import LoadMore from '@components/LoadMoreTwo'
 
 export interface Props {
   updateSupplierProductOrder: (SupplierProductOrder: Array<SupplierProductOrder>) => void
   changeTab: (index: number) => void
+  changeIndex: (index: number) => void
   tab: number
 }
 
@@ -193,7 +194,6 @@ class Supplier extends React.Component<Props, State> {
    * 内容
    */
   public renderContent = () => {
-
     return(
       <div className={'oBar'} style={{ color: '#858585',height: '100vh' }}>
         <Tabs swipeable={false} tabs={tabs} onChange={(tab: any, index: number) => this.tabOnClick(tab,index,1)} animated={true} initialPage={this.props.tab} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}
@@ -258,7 +258,7 @@ class Supplier extends React.Component<Props, State> {
         <div className={'Segment_line2'} />
         <div className={'flex-space-between-row-center'} style={{ height: 40,padding: 5 }}>
           <div className={'commonFont'} style={{ fontSize: 12, color: '#999' }}>订单号：{i.order_id}</div>
-          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{tabs[i.pay_status + 1].title}</div>
+          <div className={'flex-center-row-center'} style={{  borderRadius: 20,backgroundColor: '#ff9900',color: '#ffffff',width: 70, height: 25,textAlign: 'center' }}>{i.pay_china_status}</div>
         </div>
         <div className={'Segment_line2'} />
         {i.orderDetailList.map((lI, lIndex) => (
@@ -338,7 +338,7 @@ class Supplier extends React.Component<Props, State> {
     return(
       <div className={'flex-flex-end-row-center'}
            style={{ height: 40,backgroundColor: '#fafafa',padding: '0 5px' }}>
-        <button className={'buttonViewDetail'} onClick={this.viewResultOnclick}>查看详情</button>
+        <button className={'buttonViewDetail'} onClick={() => this.viewResultOnclick(i.order_id)}>查看详情</button>
         {showDeal === true ? <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
             onClick={() => this.deliveryOnclick(i.order_id,index)}>
           立即发货
@@ -367,7 +367,7 @@ class Supplier extends React.Component<Props, State> {
       .then(data => {
         console.log('--- data =', data)
         if (data.data.code === 0) {
-          this.getData(this.props.tab,this.props.tab)
+          this.getData(null,this.props.tab)
           Toast.info('发货成功', 1, null, false)
         } else {
           Toast.info(data.data.msg, 2, null, false)
@@ -381,8 +381,9 @@ class Supplier extends React.Component<Props, State> {
     history().push('/afterSaleDetail')
   }
 
-  public viewResultOnclick = () => {
-    history().push('/afterSaleResult')
+  public viewResultOnclick = (id) => {
+    this.props.changeIndex(id)
+    history().push('/sOrderDetail')
   }
 
   public render () {
@@ -406,7 +407,8 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updateSupplierProductOrder,
-  changeTab
+  changeTab,
+  changeIndex
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)

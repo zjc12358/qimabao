@@ -9,6 +9,7 @@ import { updateUserInfo, updatePageTab } from '@store/actions/global_data'
 import history from 'history/createHashHistory'
 import '../../master.css'
 import Head from '@components/Head'
+import axios from 'axios'
 
 export interface Props {
   pageTab: PageTab
@@ -22,6 +23,8 @@ interface State {
   resetPasswordType: string
   passwordConfirmButtonType: boolean
   resetPassword: string
+  payPassword: string
+  payPasswordStar: string
 }
 
 class User extends React.Component<Props, State> {
@@ -32,7 +35,9 @@ class User extends React.Component<Props, State> {
       data: { phone: '13589458987',address: '中国大陆' },   /*数据源 */
       resetPasswordType: 'password',       /*要重置的密码输入框类型  */
       passwordConfirmButtonType: false,  /*false为disabled */
-      resetPassword: ''     /*要重置的密码 */
+      resetPassword: '',     /*要重置的密码 */
+      payPassword: '',
+      payPasswordStar: ''
     }
   }
 
@@ -58,16 +63,41 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          marginTop: 20,
-          border: '1px solid #dddddd',
-          backgroundColor: '#ffffff'
-        }}>
-          <input type={this.state.resetPasswordType} className='editpasswordinput' placeholder={'请输入密码'} onChange={this.onPasswordChange}/>
-          <Icon type={'loading'} style={{ marginTop: 8 }} />
+        <div className={'BigWrap'} style={{ position: 'relative', height: 60,marginTop: 50 }}>
+          <div className={'PwdBox'}>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <span className={'showPwd'}>{this.state.payPasswordStar}</span>
+          </div>
+          <InputItem
+            className={'pwd'}
+            maxLength={6}
+            type={'money'}
+            moneyKeyboardAlign={'left'}
+            onChange={(v) => {
+              this.setState({
+                payPassword: v
+              },() => {
+                this.setState({
+                  payPasswordStar: v.replace(/.(?=.)/g, '*')
+                },() => {
+                  if (v.length === 6) {
+                    this.setState({
+                      passwordConfirmButtonType: true
+                    })
+                  } else {
+                    this.setState({
+                      passwordConfirmButtonType: false
+                    })
+                  }
+                })
+              })
+            }}
+          />
         </div>
         <div style={{
           padding: 13
@@ -85,21 +115,21 @@ class User extends React.Component<Props, State> {
     )
   }
   public nextOnclick = () => {
-    let reg2 = /([a-zA-Z0-9!@#$%^&*()_?<>{}]){8,18}/
-    let reg3 = /[a-zA-Z]+/
-    let reg4 = /[0-9]+/
-    if (reg2.test(this.state.resetPassword) && reg3.test(this.state.resetPassword) && reg4.test(this.state.resetPassword)) {
-      history().push('/paymentPasswordResetConfirm')
-    } else if (!reg2.test(this.state.resetPassword)) {
-      Toast.info('长度必须在8-18位！', 1)
-      return false
-    } else if (!reg3.test(this.state.resetPassword)) {
-      Toast.info('必须包含字母！', 1)
-      return false
-    } else if (!reg4.test(this.state.resetPassword)) {
-      Toast.info('必须包含数字！', 1)
-      return false
-    }
+    let url = 'CanteenProcurementManager/user/nail/setUserPassword?'
+    let query = 'password=' + this.state.payPassword
+    axios.get<any>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          history().push('/paymentPasswordResetConfirm')
+          Toast.info('密码重置成功', 1, null, false)
+        } else {
+          Toast.info('密码修改失败，请检查网络', 1, null, false)
+        }
+      })
+      .catch(() => {
+        Toast.info('请检查网络设置!')
+      })
   }
   public onPasswordChange = (e) => {
     if (e.target.value.length > 6) {
