@@ -54,18 +54,18 @@ class Home extends React.Component<Props, State> {
         </div>
         <div className='horizontal'
              style={{
-               flex: 4,
+               flex: 6,
                height: 30,
                borderStyle: 'solid',
                borderWidth: 0,
                borderRadius: 10,
-               backgroundColor: '#f5f5f5'
+               backgroundColor: '#efefef'
              }}>
           <span style={{ paddingLeft: 8 }}>
             <ReactSVG path='./assets/images/search.svg' svgStyle={{ width: 16, height: 16, marginTop: 2 }}/>
           </span>
           <input style={{
-            backgroundColor: '#f5f5f5', borderStyle: 'solid', paddingLeft: 10,
+            backgroundColor: '#efefef', borderStyle: 'solid', paddingLeft: 10,
             borderWidth: 0
           }} onChange={this.textChange} value={this.props.searchData.searchText}/>
         </div>
@@ -129,7 +129,9 @@ class Home extends React.Component<Props, State> {
         borderStyle: 'solid',
         borderWidth: 0,
         borderRadius: 20,
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#f5f5f5',
+        color: '#333333',
+        fontSize: 12
       }} onClick={() => this.historySearchOnClick(this.state.searchHistoryList[index])}>
         {item.find_history_name}
       </div>
@@ -239,7 +241,7 @@ class Home extends React.Component<Props, State> {
 
   public render () {
     return (
-      <div style={{ height: '100vh', backgroundColor: '#efeff5' }}>
+      <div style={{ height: '100vh', backgroundColor: 'white' }}>
         {this.renderHead()}
         {this.renderSearchHistory()}
         {this.state.isLoading && <Loading fullscreen={true}/>}
