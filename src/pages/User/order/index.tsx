@@ -327,7 +327,7 @@ class User extends React.Component<Props, State> {
             width: 70,
             height: 25,
             textAlign: 'center'
-          }}>{tabs[i.pay_status + 1].title}</div>
+          }}>{i.pay_china_status}</div>
         </div>
         <div className={'Segment_line2'}/>
         {i.orderDetailList.map((lI, lIndex) => (

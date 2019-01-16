@@ -43,6 +43,8 @@ import SPCategory from './pages/Supplier/productList/category'
 /*供应商商品编辑管理分类*/
 import AfterSaleSuccess from './pages/Supplier/afterSale/afterSaleSuccess'
 /*售后退款查询结果页面*/
+import SOrderDetail from './pages/Supplier/order/orderDetails'
+/* 订单详情 */
 /* 采购商
  ============================================================================*/
 import NavBar from './pages/index'
@@ -172,6 +174,7 @@ ReactDOM.render(
         <Route path='/sProductListEdit' component={SProductListEdit}/>
         <Route path='/supplierOrder' component={SupplierOrder}/>
         <Route path='/detection' component={Detection}/>
+        <Route path='/sOrderDetail' component={SOrderDetail}/>
         /* 采购商
          ============================================================================*/
         <Route path='/NavBar' component={NavBar}/>

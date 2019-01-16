@@ -50,8 +50,7 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return(
       <div style={{ backgroundColor: '#ffffff',color: '#858585' }}>
-        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }}
-             onClick={this.uploadPicturesOnClick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }}>
           <span style={{ fontSize: '16px',color: '#333' }}>用户头像</span>
           <div className={'flex-center-row-center'}>
             <div style={{
@@ -67,7 +66,6 @@ class User extends React.Component<Props, State> {
                 }} src={this.state.userInfo.user_head_portrait} />
               </div>
             </div>
-            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize,paddingLeft: 5 }}/>
           </div>
         </div>
         <div className='Segment_line2' />
@@ -85,12 +83,10 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2'/>
-        <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}
-             onClick={this.phoneOnclick}>
+        <div className={'flex-space-between-row-center'} style={{ padding: '15px 15px' }}>
           <span style={{ fontSize: '16px',color: '#333' }}>手机号码</span>
           <div className={'flex-center-row-center'}>
             <span style={{ fontSize: '14px' }}>{this.state.userInfo.user_phone}</span>
-            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
           </div>
         </div>
         <div className='Segment_line2'/>
@@ -118,35 +114,6 @@ class User extends React.Component<Props, State> {
    */
   nameOnclick = () => {
     history().push('/userInfoNameEdit')
-  }
-  /**
-   * 点击手机号修改
-   */
-  phoneOnclick = () => {
-    history().push('/userInfoPhoneEdit')
-  }
-  /**
-   * 点击上传头像显示弹窗
-   */
-  uploadPicturesOnClick = () => {
-    const BUTTONS = ['拍摄', '从相册上传', '取消']
-    ActionSheet.showActionSheetWithOptions({
-      options: BUTTONS,
-      cancelButtonIndex: BUTTONS.length - 1,
-      message: '',
-      maskClosable: true
-    }, (buttonIndex) => {
-      switch (buttonIndex) {
-        case 0:
-          this.photographOnClick()
-          break
-        case 1:
-          this.albumOnClick()
-          break
-        default:
-          break
-      }
-    })
   }
   photographOnClick = () => {
     return

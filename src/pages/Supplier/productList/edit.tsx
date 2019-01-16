@@ -415,14 +415,14 @@ class Release extends React.Component<Props, State> {
             {this.renderListItemGoTo('宝贝描述', '/spDescribe')}
           </div>
           {this.renderBottomDrawer()}
-          <div className='releaseFooter'>
-            <div onClick={() => {
-              this.submite(2)
-            }}>取消</div>
-            <div onClick={() => {
-              this.submite(0)
-            }}>保存</div>
-          </div>
+        </div>
+        <div className='releaseFooter'>
+          <div onClick={() => {
+            this.submite(2)
+          }}>取消</div>
+          <div onClick={() => {
+            this.submite(0)
+          }}>保存</div>
         </div>
       </div>
     )

@@ -17,6 +17,7 @@ import releaseDataReducer from '@store/reducers/releaseDataReducer'
 import supplierProductListDataReducer from '@store/reducers/supplierProductListDataReducer'
 import payDataReducer from '@store/reducers/payDataReducer'
 import jumpDataReducer from '@store/reducers/jumpDataReducer'
+import supplierProductOrderDataReducer from '@store/reducers/supplierProductOrderDataReducer'
 
 const rootReducer = combineReducers<any>({
   globalData: globalDataReducer as any,
@@ -36,7 +37,8 @@ const rootReducer = combineReducers<any>({
   releaseData: releaseDataReducer as any,
   supplierProductListData: supplierProductListDataReducer as any,
   payData: payDataReducer as any,
-  jumpData: jumpDataReducer as any
+  jumpData: jumpDataReducer as any,
+  supplierProductOrderData: supplierProductOrderDataReducer as any
 })
 
 export default rootReducer

@@ -227,7 +227,7 @@ class Release extends React.Component<Props, State> {
             }).catch(err => console.log(err))
           } }
         >
-          <div onClick={ (e) => { e.stopPropagation() }}>
+          <div style={{ position: 'relative' }} onClick={ (e) => { e.stopPropagation() }}>
             <Carousel height='204px' autoplay={false} arrow='always'
                       ref={(input) => { this.inputInstance = input }}
             >
@@ -241,6 +241,15 @@ class Release extends React.Component<Props, State> {
                 })
               }
             </Carousel>
+            <div className={'clickRead'}
+              onClick={() => {
+                console.log(111)
+                dd.biz.util.previewImage({
+                  urls: this.state.files,
+                  current: this.state.files[this.state.carouselIndex]
+                }).catch(err => console.log(err))
+              }}
+            ></div>
           </div>
         </div>
       </div>
