@@ -13,13 +13,13 @@ import { ProductList } from '@datasources/ProductList'
 import Loading from '@components/Loading'
 import Result from '@components/Result'
 import { cloneDeep, isNil } from 'lodash'
-import { updateProductList,updateProductListDetail,changeTab } from '@store/actions/supplierProductList_data'
+import { updateProductList,updateProductListDetail,changeTabl } from '@store/actions/supplierProductList_data'
 import LoadMore from '@components/LoadMoreTwo'
 
 export interface Props {
   updateProductList: (ProductList: Array<ProductList>) => void
   updateProductListDetail: (ProductListDetail: ProductList) => void
-  changeTab: (index: number) => void
+  changeTabl: (index: number) => void
   tab: number
 }
 
@@ -67,7 +67,7 @@ class Supplier extends React.Component<Props, State> {
     this.getData(null,this.props.tab)
   }
   getData = (tab, index) => {
-    this.props.changeTab(index)
+    this.props.changeTabl(index)
     let url = 'CanteenProcurementManager/user/ProductInfo/selectProductInfo?'
     let query = 'pageNum=' + this.state.pageNum
     query += '&pageSize=' + NUM_ROWS
@@ -307,8 +307,10 @@ class Supplier extends React.Component<Props, State> {
             <span className={'commonFont'} style={{ fontSize: 14, color: '#000' }} >￥<span style={{ color: 'red' }}>{i.product_price}</span></span>
           </div>
           <div>
-            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }} >库存：{i.product_stock}kg
-              {type === 'inSale' ? <span>&nbsp;&nbsp;&nbsp;&nbsp;销量：{i.product_volume}kg</span> : ''}</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#666' }} >库存：</span>
+            <span className={'commonFont'} style={{ fontSize: 12, color: '#999' }} >{i.product_stock}件
+              {type === 'inSale' ? <span>&nbsp;&nbsp;&nbsp;&nbsp;销量：{i.product_volume}件
+              </span> : ''}</span>
           </div>
         </div>
       </div>
@@ -447,7 +449,7 @@ const mapStateToProps: MapStateToPropsParam<any, any, any> = (state: any) => {
 
 const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updateProductList,
-  changeTab,
+  changeTabl,
   updateProductListDetail
 }
 

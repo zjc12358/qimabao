@@ -167,7 +167,7 @@ class User extends React.Component<Props, State> {
   }
   womanOnClick = () => {
     let url = 'CanteenProcurementManager/user/nail/updateMeans?'
-    let query = 'index=user_sex&content=' + '男'
+    let query = 'index=user_sex&content=' + '女'
     console.log(url + query)
     axios.get<MyResponse<any>>(url + query)
       .then(data => {

@@ -19,6 +19,7 @@ import { MyResponse } from '@datasources/MyResponse'
 import { SupplierStateInfoBean } from '@datasources/SupplierStateInfoBean'
 import { updateAppointmentState, updateBusinessState, updateSupplierInfo } from '@store/actions/supplier_info_data'
 import { changeTab } from '@store/actions/supplierProductOrder_data'
+import { changeTabl } from '@store/actions/supplierProductList_data'
 import { SOrderNumberBean } from '@datasources/SOrderNumberBean'
 import { cloneDeep, isNil } from 'lodash'
 import { SProductBean } from '@datasources/SProductBean'
@@ -30,6 +31,7 @@ export interface Props {
   updateBusinessState: (state: 'Y' | 'N') => void
   updateAppointmentState: (state: 'Y' | 'N') => void
   changeTab: (index: number) => void
+  changeTabl: (index: number) => void
   mode: string
 }
 
@@ -201,7 +203,10 @@ class Supplier extends React.Component<Props, State> {
               <span style={{ fontSize: '16px', color: '#616670' }}>店铺</span>
             </div>
             <div className={'flex-space-between-column-center'}
-                 onClick={() => history().push('sProductList')}>
+                 onClick={() => {
+                   this.props.changeTabl(0)
+                   history().push('sProductList')
+                 }}>
               <ReactSVG path='./assets/images/Supplier/commodity.svg'
                         svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px', color: '#616670' }}>商品</span>
@@ -213,7 +218,10 @@ class Supplier extends React.Component<Props, State> {
               <span style={{ fontSize: '16px', color: '#616670' }}>发布</span>
             </div>
             <div className={'flex-space-between-column-center'}
-                 onClick={() => history().push('supplierOrder')}>
+                 onClick={() => {
+                   this.props.changeTab(0)
+                   history().push('supplierOrder')
+                 }}>
               <ReactSVG path='./assets/images/Supplier/order.svg'
                         svgStyle={{ width: IconMaxSize, height: IconMaxSize }}/>
               <span style={{ fontSize: '16px', color: '#616670' }}>订单</span>
@@ -584,7 +592,8 @@ const mapDispatchToProps: MapDispatchToProps<any, any> = {
   updateSupplierInfo,
   updateBusinessState,
   updateAppointmentState,
-  changeTab
+  changeTab,
+  changeTabl
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Supplier)

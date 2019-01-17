@@ -416,32 +416,34 @@ class User extends React.Component<Props, State> {
    */
   public renderItemStatus = (i: ProductOrder, index) => {
     let showDeal: any = false
-    switch (i.pay_status) {
-      case 0:
-        showDeal =
-          <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
-                  onClick={(e) => {
-                    this.showModal(e, 2)
-                    this.setState({
-                      orderInfo: i,
-                      oid: index
-                    })
-                  }}>立即付款</button>
-        break
-      case 1:
-        showDeal =
-          <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
-                  onClick={() => this.sendOnClick(i.order_id)}>立即催货</button>
-        break
-      case 3:
-        showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
-                           onClick={() => this.confirmOnclick(i.order_id, index)}>确认收货</button>
-        break
-      case 4:
-        showDeal =
-          <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
-                  onClick={() => this.evaOnClick(i.order_id)}>立即评价</button>
-        break
+    if (i.pay_china_status !== '已关闭交易') {
+      switch (i.pay_status) {
+        case 0:
+          showDeal =
+            <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
+                    onClick={(e) => {
+                      this.showModal(e, 2)
+                      this.setState({
+                        orderInfo: i,
+                        oid: index
+                      })
+                    }}>立即付款</button>
+          break
+        case 1:
+          showDeal =
+            <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
+                    onClick={() => this.sendOnClick(i.order_id)}>立即催货</button>
+          break
+        case 3:
+          showDeal = <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
+                             onClick={() => this.confirmOnclick(i.order_id, index)}>确认收货</button>
+          break
+        case 4:
+          showDeal =
+            <button className={'buttonDelivery'} style={{ marginLeft: 10 }}
+                    onClick={() => this.evaOnClick(i.order_id)}>立即评价</button>
+          break
+      }
     }
     return (
       <div className={'flex-flex-end-row-center'}
@@ -510,6 +512,7 @@ class User extends React.Component<Props, State> {
    */
   sendOnClick = (orderId: string) => {
     // TODO 2019/1/3 立即催货
+    Toast.info('商家正在为您加急派送中',2,null,false)
   }
 
   /**
