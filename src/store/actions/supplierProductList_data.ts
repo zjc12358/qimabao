@@ -28,7 +28,7 @@ export const updateProductListDetail = (ProductListDetailData: ProductList) =>
     ProductListDetailData: ProductListDetailData
   })
 
-export const changeTab = (tab: number) =>
+export const changeTabl = (tab: number) =>
   (dispatch) => dispatch({
     type: Type.CHANGE_TAB,
     tab: tab

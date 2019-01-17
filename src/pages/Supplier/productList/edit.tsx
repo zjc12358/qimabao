@@ -94,7 +94,7 @@ class Release extends React.Component<Props, State> {
     let url = 'CanteenProcurementManager/user/ProductInfo/updateProductEdit'
     let data = {
       productId: this.state.productId,
-      productIcon: '533.png',
+      productIcon: this.state.files,
       productName: this.state.productName,
       categoryClassId: this.props.productListDetail.category_class_id,
       productPrice: this.state.productPrice,
@@ -111,7 +111,7 @@ class Release extends React.Component<Props, State> {
     console.log(ret)
     let fd = new FormData()
     fd.append('productId', data.productId)
-    fd.append('productIcon', '533.png')
+    fd.append('productIcon', JSON.stringify(files2))
     fd.append('productName', data.productName)
     fd.append('categoryClassId', JSON.stringify(data.categoryClassId))
     fd.append('productPrice', JSON.stringify(data.productPrice))
@@ -126,7 +126,7 @@ class Release extends React.Component<Props, State> {
     axios.get(url,{
       params: {
         productId: this.state.productListDetail.product_id,
-        productIcon: '533.png',
+        productIcon: JSON.stringify(files2),
         productName: this.state.productListDetail.product_name,
         categoryClassId: this.state.productListDetail.category_class_id,
         productPrice: this.state.productListDetail.product_price,

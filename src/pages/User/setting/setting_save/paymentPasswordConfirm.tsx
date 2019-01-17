@@ -11,6 +11,7 @@ import history from 'history/createHashHistory'
 import '../../master.css'
 import './payPwd.less'
 import axios from 'axios'
+import Head from '@components/Head'
 
 export interface Props {
   pageTab: PageTab
@@ -40,7 +41,6 @@ class User extends React.Component<Props, State> {
   public renderContent = () => {
     return (
       <div>
-        <div className='Segment_line2'></div>
         <div style={{
           textAlign: 'center',
           backgroundColor: '#ffffff',
@@ -114,7 +114,7 @@ class User extends React.Component<Props, State> {
       <div style={{
         height: '100vh'
       }}>
-        <Nav title={'修改支付密码'} color={'#ffffff'}/>
+        <Head title={'修改支付密码'} titleColor={'#000000'} showLeftIcon={true} backgroundColor={'#fff'} leftIconColor={'grey'} showLine={true}/>
         {this.renderContent()}
       </div>
     )

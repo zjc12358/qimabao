@@ -25,6 +25,7 @@ export interface Props {
 interface State {
   userInfo: UserInfo
   NewestOrder: NewestOrder
+  isSupplier: boolean
 }
 
 let OrderIconMaxSize: number = 35
@@ -44,7 +45,8 @@ class User extends React.Component<Props, State> {
     super(props)
     this.state = {
       userInfo: this.props.userInfo,
-      NewestOrder: {} as NewestOrder
+      NewestOrder: {} as NewestOrder,
+      isSupplier: false
     }
   }
 
@@ -56,6 +58,7 @@ class User extends React.Component<Props, State> {
         1000
       )
     }
+    this.isSupplier()
   }
   public componentWillUnmount () {
     clearInterval(this.time)
@@ -332,7 +335,7 @@ class User extends React.Component<Props, State> {
               height: 'auto',
               maxWidth: '100%',
               maxHeight: '100%'
-            }} src={this.state.NewestOrder.over_time <= 0 || this.state.NewestOrder.over_time === undefined ? 'assets/images/User/noProduct.svg' : 'http://img.gexing.me/uploads/allimg/170830/1-1FR9161152259.jpg'}/></div>
+            }} src={this.state.NewestOrder.over_time <= 0 || this.state.NewestOrder.over_time === undefined ? 'assets/images/User/noProduct.svg' : this.state.NewestOrder.icon}/></div>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -364,9 +367,9 @@ class User extends React.Component<Props, State> {
         }}/>
         <div className={'flex-space-between-row-center'} style={{ padding: '16px 16px', backgroundColor: '#fff' }}
              onClick={() => this.props.changeMode('supplier')}>
-          <span style={{ fontSize: '16px', whiteSpace: 'nowrap' }}>我的店铺</span>
+          <span style={{ fontSize: '16px', whiteSpace: 'nowrap' }}>{this.state.isSupplier ? '我的店铺' : '商家入驻'}</span>
           <div className={'flex-flex-end-row-center'}>
-            <span style={{ fontSize: 12, color: 'red', whiteSpace: 'normal' }}>您有一条新的订单【点击查看】</span>
+{/*            <span style={{ fontSize: 12, color: 'red', whiteSpace: 'normal' }}>您有一条新的订单【点击查看】</span>*/}
             <ReactSVG path='./assets/images/User/right.svg'
                       svgStyle={{ width: this.RightIconMaxSize, height: this.RightIconMaxSize }}/>
           </div>
@@ -527,7 +530,52 @@ class User extends React.Component<Props, State> {
         console.log('未连接网络！')
       })
   }
-
+  /**
+   * 判断是否是供应商
+   */
+  isSupplier = () => {
+    let url = 'CanteenProcurementManager/supplier/info/checkSupplierExit'
+    let query = ''
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- isSP? =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            isSupplier: true
+          })
+        } else {
+          this.setState({
+            isSupplier: false
+          })
+        }
+      })
+      .catch(() => {
+        console.log('未连接网络！')
+      })
+  }
+  /**
+   * 成为供应商
+   */
+  changeToSupplier = () => {
+    let url = 'CanteenProcurementManager/supplier/info/checkSupplierExit'
+    let query = ''
+    axios.get<MyResponse<any>>(url + query)
+      .then(data => {
+        console.log('--- data =', data)
+        if (data.data.code === 0) {
+          this.setState({
+            isSupplier: true
+          })
+        } else {
+          this.setState({
+            isSupplier: false
+          })
+        }
+      })
+      .catch(() => {
+        console.log('未连接网络！')
+      })
+  }
   public render () {
     return (
       <div style={{

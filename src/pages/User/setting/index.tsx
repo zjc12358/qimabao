@@ -65,16 +65,6 @@ class User extends React.Component<Props, State> {
           </div>
         </div>
         <div className='Segment_line2' />
-        <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }} onClick={this.EliminateOnclick}>
-          <div className={'flex-center-row-center'}>
-            <ReactSVG path='./assets/images/User/eliminate.svg' svgStyle={{ width: 22, height: 22 }}/>
-            <span className={'commonFont'} style={{ fontSize: '16px', paddingLeft: 10 }}>清除缓存</span>
-          </div>
-          <div className={'flex-center-row-center'}>
-            <ReactSVG path='./assets/images/User/right.svg' svgStyle={{ width: RightIconMaxSize, height: RightIconMaxSize }}/>
-          </div>
-        </div>
-        <div className='Segment_line2' />
         <div className={'flex-space-between-row-center'} style={{ padding: '12px 15px' }} onClick={this.aboutOnclick}>
           <div className={'flex-center-row-center'}>
             <ReactSVG path='./assets/images/User/about.svg' svgStyle={{ width: 22, height: 22 }}/>
@@ -123,7 +113,7 @@ class User extends React.Component<Props, State> {
   }
 
   EliminateOnclick = () => {
-    Toast.loading('警告：手机3秒后爆炸！',3,undefined,false)
+    Toast.loading('清除成功！',3,undefined,false)
   }
   public render () {
     return (

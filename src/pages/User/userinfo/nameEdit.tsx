@@ -71,6 +71,10 @@ class User extends React.Component<Props, State> {
   }
   public textOnchange = () => {
     let nickname: any = this.input
+    if (nickname.state.value === '') {
+      Toast.info('昵称不能为空', 2, null, false)
+      return
+    }
     let url = 'CanteenProcurementManager/user/nail/updateMeans?'
     let query = 'index=user_name&content=' + nickname.state.value
     console.log(url + query)
