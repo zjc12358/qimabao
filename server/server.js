@@ -8,7 +8,7 @@ const app = express();
 // 这里从环境变量读取配置，方便命令行启动
 // HOST 指目标地址
 // PORT 服务端口
-const { HOST = "http://47.100.177.41:9091", PORT = "8888" } = process.env;
+const {HOST = "http://47.100.177.41:9091", PORT = "8888"} = process.env;
 
 
 // 超时时间
@@ -37,7 +37,7 @@ app.use(bodyParser.json());
 
 // 反向代理（这里把需要进行反代的路径配置到这里即可）
 // eg:将/api/test 代理到 ${HOST}/api/test
-app.use(proxy("/CanteenProcurementManager",{target: HOST}));
+app.use(proxy("/CanteenProcurementManager", {target: HOST}));
 
 // 监听端口
 app.listen(app.get("port"), function () {

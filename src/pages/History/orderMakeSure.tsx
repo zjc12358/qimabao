@@ -23,6 +23,7 @@ import { jumpToOrder } from '@store/actions/jump_data'
 const nowTimeStamp = Date.now()
 const now = new Date(nowTimeStamp)
 const RadioItem = Radio.RadioItem
+const antAlert = Modal.alert
 const SERVICE: string = 'mobile.securitypay.pay' // 接口名称，固定值
 const _INPUT_CHARSET = 'utf-8' // 商户网站使用的编码格式，固定为UTF-8
 const SIGN_TYPE = 'RSA' // 签名类型，目前仅支持RSA
@@ -397,7 +398,13 @@ class History extends React.Component<Props, State> {
       <Modal
         popup
         visible={this.state.modal2}
-        onClose={() => this.onClose(2)}
+        onClose={() => {
+          this.onClose(2)
+          this.props.updatePageTab('UserPageTabBar')
+          history().goBack()
+        }}
+        closable={true}
+        maskClosable={false}
         animationType='slide-up'
         className='paySure'
       >
@@ -439,15 +446,24 @@ class History extends React.Component<Props, State> {
     )
   }
 
+  closeAndOpen = () => {
+    this.onClose(2)
+    this.showModal(null, 2)
+  }
+
   /**
    * 输入支付密码支付
    */
   passwordPay = () => {
     return (
-      <Drawer anchor={'bottom'} open={this.state.modal3} onClose={() => this.onClose(3)}
-              style={{
-                width: '100%', height: '60%'
-              }}>
+      <Modal
+        popup
+        visible={this.state.modal3}
+        onClose={this.closeAndOpen}
+        closable={true}
+        maskClosable={false}
+        animationType='slide-up'
+      >
         <List className={'pwdPayBoxTitle'} renderHeader={'请输入支付密码'} style={{
           width: '100%', height: '60%', backgroundColor: 'white',
           color: 'black'
@@ -490,8 +506,31 @@ class History extends React.Component<Props, State> {
                     onClick={() => this.checkPayPassword(this.state.payPassword)}>立即付款</Button>
           </List.Item>
         </List>
-      </Drawer>
+      </Modal>
     )
+  }
+
+  /**
+   * 显示弹窗
+   * @param title
+   * @param msg
+   */
+  showAntAlert = (title: string, msg: string) => {
+    const alertInstance = antAlert(title, msg, [
+      { text: '取消', onPress: () => console.log('cancel'), style: 'default' },
+      {
+        text: '确认', onPress: () => {
+          this.onClose(2)
+          this.props.updatePageTab('UserPageTabBar')
+          history().goBack()
+        }
+      }
+    ])
+    setTimeout(() => {
+      // 可以调用close方法以在外部close
+      console.log('auto close')
+      alertInstance.close()
+    }, 500000)
   }
 
   /**
